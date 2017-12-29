@@ -13,26 +13,25 @@
             android:icon="@drawable/ic_shopping_basket_black_24dp"
             android:title="Compras" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/Productos"
+            android:icon="@drawable/ic_toc_black_24dp"
+            android:title="Productos" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Administrar...">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/Vendedores"
+                android:icon="@drawable/ic_supervisor_account_black_24dp"
+                android:title="Vendedores" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/Provedores"
+                android:icon="@drawable/ic_assignment_ind_black_24dp"
+                android:title="Provedores" />
+            <item
+                android:id="@+id/Clientes"
+                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:title="Clientes" />
         </menu>
     </item>
-
 </menu>
