@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -32,6 +33,31 @@
                 android:id="@+id/Clientes"
                 android:icon="@mipmap/ic_account_circle_black_24dp"
                 android:title="Clientes" />
+            <item
+                android:id="@+id/Reportes"
+                android:icon="@mipmap/ic_assignment_black_24dp"
+                android:title="Reportes" />
         </menu>
     </item>
+    <item android:title="Más...">
+        <menu>
+            <item
+                android:id="@+id/Personalizar"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Personalizar" />
+            <item
+                android:id="@+id/Configurar"
+                android:icon="@mipmap/ic_settings_black_24dp"
+                android:title="Configurar" />
+            <item
+                android:id="@+id/Contáctanos"
+                android:icon="@mipmap/ic_perm_phone_msg_black_24dp"
+                android:title="Contáctanos" />
+            <item
+                android:id="@+id/Terminos"
+                android:icon="@mipmap/ic_border_color_black_24dp"
+                android:title="Terminos y Condiciones" />
+        </menu>
+    </item>
+
 </menu>
