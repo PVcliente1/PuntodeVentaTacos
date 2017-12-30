@@ -6,15 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/Ventas"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:icon="@mipmap/ic_shopping_cart_black_24dp"
             android:title="Ventas" />
         <item
             android:id="@+id/Compras"
-            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:icon="@mipmap/ic_shopping_basket_black_24dp"
             android:title="Compras" />
         <item
             android:id="@+id/Productos"
-            android:icon="@drawable/ic_toc_black_24dp"
+            android:icon="@mipmap/ic_toc_black_24dp"
             android:title="Productos" />
     </group>
 
@@ -22,15 +22,15 @@
         <menu>
             <item
                 android:id="@+id/Vendedores"
-                android:icon="@drawable/ic_supervisor_account_black_24dp"
+                android:icon="@mipmap/ic_supervisor_account_black_24dp"
                 android:title="Vendedores" />
             <item
                 android:id="@+id/Provedores"
-                android:icon="@drawable/ic_assignment_ind_black_24dp"
+                android:icon="@mipmap/ic_assignment_ind_black_24dp"
                 android:title="Provedores" />
             <item
                 android:id="@+id/Clientes"
-                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:icon="@mipmap/ic_account_circle_black_24dp"
                 android:title="Clientes" />
         </menu>
     </item>
