@@ -37,6 +37,10 @@
                 android:id="@+id/Reportes"
                 android:icon="@mipmap/ic_assignment_black_24dp"
                 android:title="Reportes" />
+            <item
+                android:id="@+id/Inventario"
+                android:icon="@mipmap/ic_description_black_24dp"
+                android:title="Inventario" />
         </menu>
     </item>
     <item android:title="Más...">

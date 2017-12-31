@@ -12,10 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragment
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,25 +68,38 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
+    ///////////////////////método que maneja el item seleccionado
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        //android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
+        TextView fragabierto= findViewById(R.id.Fragabierto);  ///textview que va en la app bar e indica que item esta abierto
         int id = item.getItemId();
+        fragabierto.setText(item.getTitle());
+       // manejador.beginTransaction().replace(R.id.Principal, new item.() ).commit(); ///cambio de fragments
 
         if (id == R.id.Ventas) {
-            // Handle the camera action
+            manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragments
         } else if (id == R.id.Compras) {
-
+            manejador.beginTransaction().replace(R.id.Principal, new Compras()).commit();
         } else if (id == R.id.Productos) {
-
+            manejador.beginTransaction().replace(R.id.Principal, new Productos()).commit();
         } else if (id == R.id.Vendedores) {
-
+            manejador.beginTransaction().replace(R.id.Principal, new Vendedores()).commit();
         } else if (id == R.id.Provedores) {
-
+            manejador.beginTransaction().replace(R.id.Principal, new Provedores()).commit();
         } else if (id == R.id.Clientes) {
-
+            manejador.beginTransaction().replace(R.id.Principal, new Clientes()).commit();
+        } else if (id == R.id.Reportes) {
+            manejador.beginTransaction().replace(R.id.Principal, new Reportes()).commit();
+        } else if (id == R.id.Inventario) {
+            manejador.beginTransaction().replace(R.id.Principal, new Inventario()).commit();
+        } else if (id == R.id.Personalizar) {
+            manejador.beginTransaction().replace(R.id.Principal, new Personalizar()).commit();
+        } else if (id == R.id.Configurar) {
+            manejador.beginTransaction().replace(R.id.Principal, new Configurar()).commit();
+        } else if (id == R.id.Contáctanos) {
+            manejador.beginTransaction().replace(R.id.Principal, new Contactanos()).commit();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
