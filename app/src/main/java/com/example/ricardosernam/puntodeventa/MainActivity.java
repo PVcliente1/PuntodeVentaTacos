@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
-    Switch sw= findViewById(R.id.Switch);
+    //Switch sw= findViewById(R.id.Switch);
 
     /*private void switche() {
 

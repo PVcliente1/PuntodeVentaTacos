@@ -1,15 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.ricardosernam.puntodeventa.Ventas">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/textView"
@@ -31,6 +39,7 @@
             android:layout_marginLeft="140dp"
             android:layout_marginTop="-30dp"
             android:text="Venta" />
+
         <RadioButton
             android:id="@+id/Cotizacion"
             android:layout_width="match_parent"
@@ -51,26 +60,33 @@
 
     <LinearLayout
         android:id="@+id/ConBarras"
-        android:layout_marginTop="95dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@layout/solobordes"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="MissingConstraints">
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:ems="10"
             android:inputType="number"
-            android:layout_marginLeft="3dp"
             android:textSize="14sp"
             tools:text="Nombre/Código" />
 
         <Button
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="-35dp"
             android:text="Escanear" />
 
     </LinearLayout>
@@ -79,8 +95,14 @@
         android:id="@+id/Cobrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="145dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints">
 
 
         <LinearLayout
@@ -177,7 +199,7 @@
                 android:id="@+id/Info."
                 android:layout_width="50dp"
                 android:layout_height="63dp"
-                android:layout_marginLeft="335dp"
+                android:layout_marginLeft="330dp"
                 android:layout_marginTop="-106dp"
                 android:backgroundTint="@color/ic_launcher_background"
                 android:drawableTint="@android:color/black"
@@ -213,4 +235,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
