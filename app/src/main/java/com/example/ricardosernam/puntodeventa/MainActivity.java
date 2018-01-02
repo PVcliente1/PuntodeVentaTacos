@@ -12,17 +12,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
+    Switch sw= findViewById(R.id.Switch);
+
+    /*private void switche() {
+
+
+        if (!sw.isChecked()) {
+            Toast.makeText(getApplicationContext(), "Desactivado", Toast.LENGTH_SHORT).show();
+            //btnaceptar.setEnabled(false);
+        } else {
+            Toast.makeText(getApplicationContext(), "Activado", Toast.LENGTH_SHORT).show();
+            //btnaceptar.setEnabled(false);
+        }
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //switche();
         manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragment
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
