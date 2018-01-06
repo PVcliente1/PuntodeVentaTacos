@@ -32,11 +32,11 @@ public class Caca extends AppCompatActivity {
         items.add(new Productos_venta("Cervezas"));
 
 // Obtener el Recycler
-       recycler = (RecyclerView) findViewById(R.id.reciclador);
+       recycler = findViewById(R.id.reciclador);
         recycler.setHasFixedSize(true);
 
 // Usar un administrador para LinearLayout
-        lManager = new LinearLayoutManager(this);
+        lManager = new LinearLayoutManager(getApplicationContext());
         recycler.setLayoutManager(lManager);
 
 // Crear un nuevo adaptador

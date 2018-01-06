@@ -14,18 +14,17 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
 
     public static class Productos_ventasViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
-        public TextView nombre;
-        public CardView tarjeta;
+        public TextView nombreP;
 
         public Productos_ventasViewHolder(View v) {
             super(v);
-            nombre = (TextView) v.findViewById(R.id.nombre);
-            tarjeta=(CardView) v.findViewById(R.id.tarjeta);
+            nombreP = (TextView) v.findViewById(R.id.nombreProductos);
         }
     }
 
     public Productos_ventasAdapter(ArrayList<Productos_venta> items) {
         this.items = items;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,6 +41,7 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
 
     @Override
     public void onBindViewHolder(Productos_ventasViewHolder holder, int position) {
-        holder.nombre.setText(items.get(position).getNombre());
+        holder.nombreP.setText(items.get(position).getNombre());
+        notifyDataSetChanged();
     }
 }
