@@ -1,8 +1,12 @@
 package com.example.ricardosernam.puntodeventa;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentManagerNonConfig;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,17 +33,23 @@ public class Ventas extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final Dialog popProducts = new Dialog(getContext());
-        final Dialog reciclador=new Dialog (getContext());
+
+        //final Dialog popProducts = new Dialog(getContext());
+        //final Dialog reciclador=new Dialog (getContext());
 
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
 
-        popProducts.setContentView(R.layout.popoutproducts);
-        reciclador.setContentView(R.layout.prueba);
+        //popProducts.setContentView(R.layout.popoutproducts);
+        //reciclador.setContentView(R.layout.recilador1);
 
         //RecyclerView reciclador= (RecyclerView) view.findViewById(R.id.reciclador);
 
-        final Button Cancelar= (Button) popProducts.findViewById(R.id.Cancelar);
+        //final Button Cancelar= (Button) popProducts.findViewById(R.id.Cancelar);
+
+        final FragmentManager fm= getActivity().getFragmentManager();
+        //final android.support.v4.app.FragmentManager fm= g;
+        final Pro pro =new Pro ();
+
         Button sw= (Button) view.findViewById (R.id.Escanear);
         Button Productos= (Button) view.findViewById(R.id.Productos);
 
@@ -54,16 +64,16 @@ public class Ventas extends Fragment {
         Productos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cancelar.setOnClickListener(new View.OnClickListener() {
+                /*Cancelar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         popProducts.dismiss();
                     }
-                });
-                reciclador.show();
+                });*/
+                //pro.show();
+                pro.show(fm, "Pro");
             }
         });
         return view;
     }
-
 }

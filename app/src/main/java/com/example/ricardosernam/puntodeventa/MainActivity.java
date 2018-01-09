@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragment
+
+       manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragment
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
