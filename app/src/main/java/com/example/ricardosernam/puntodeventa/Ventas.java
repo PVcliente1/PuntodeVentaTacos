@@ -34,20 +34,11 @@ public class Ventas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //final Dialog popProducts = new Dialog(getContext());
-        //final Dialog reciclador=new Dialog (getContext());
-
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
 
-        //popProducts.setContentView(R.layout.popoutproducts);
-        //reciclador.setContentView(R.layout.recilador1);
-
-        //RecyclerView reciclador= (RecyclerView) view.findViewById(R.id.reciclador);
-
-        //final Button Cancelar= (Button) popProducts.findViewById(R.id.Cancelar);
+        final Button Cancelar= (Button) view.findViewById(R.id.Cancelar);
 
         final FragmentManager fm= getActivity().getFragmentManager();
-        //final android.support.v4.app.FragmentManager fm= g;
         final Pro pro =new Pro ();
 
         Button sw= (Button) view.findViewById (R.id.Escanear);
@@ -57,19 +48,18 @@ public class Ventas extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Activado", Toast.LENGTH_SHORT).show();
-                //manejador.beginTransaction().replace(R.id.Ventas, new Products()).commit(); ///cambio de fragment
             }
         });
 
         Productos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Cancelar.setOnClickListener(new View.OnClickListener() {
+                Cancelar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        popProducts.dismiss();
+                        pro.dismiss();
                     }
-                });*/
+                });
                 //pro.show();
                 pro.show(fm, "Pro");
             }

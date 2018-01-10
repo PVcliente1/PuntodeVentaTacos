@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +30,7 @@ public class Pro extends DialogFragment {
         items.add(new Productos_venta("Quesadillas"));
         items.add(new Productos_venta("Refrescos"));
         items.add(new Productos_venta("Cervezas"));
+        items.add(new Productos_venta("Pizza"));
 
 // Obtener el Recycler
         recycler = rootView.findViewById(R.id.reciclador);

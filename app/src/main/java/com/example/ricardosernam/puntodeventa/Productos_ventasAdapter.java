@@ -24,7 +24,6 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
 
     public Productos_ventasAdapter(ArrayList<Productos_venta> items) {
         this.items = items;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -35,13 +34,11 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
     @Override
     public Productos_ventasViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tarjetas_productos, viewGroup, false);
-        notifyDataSetChanged();
         return new Productos_ventasViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(Productos_ventasViewHolder holder, int position) {
         holder.nombreP.setText(items.get(position).getNombre());
-        notifyDataSetChanged();
     }
 }
