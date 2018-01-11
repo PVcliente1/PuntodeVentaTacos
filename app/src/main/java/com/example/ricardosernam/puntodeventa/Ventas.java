@@ -26,17 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ventas extends Fragment {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
 
-        final Button Cancelar= (Button) view.findViewById(R.id.Cancelar);
+        RecyclerView recicler=(RecyclerView) view.findViewById(R.id.recicladorPro);
+        //final Button Cancelar= (Button) view.findViewById(R.id.Cancelar);
 
         final FragmentManager fm= getActivity().getFragmentManager();
         final Pro pro =new Pro ();
@@ -54,13 +53,6 @@ public class Ventas extends Fragment {
         Productos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cancelar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        pro.dismiss();
-                    }
-                });
-                //pro.show();
                 pro.show(fm, "Pro");
             }
         });
