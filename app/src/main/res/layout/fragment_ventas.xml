@@ -127,20 +127,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/Cobrar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
             android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/TarjetaCobrar">
-            </android.support.v7.widget.RecyclerView>
-
-        </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

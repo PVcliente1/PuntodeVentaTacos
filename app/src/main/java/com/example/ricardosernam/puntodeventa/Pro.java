@@ -1,31 +1,33 @@
 package com.example.ricardosernam.puntodeventa;
 
-import android.app.AlertDialog;
+
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+
+@SuppressLint("ValidFragment")
 public class Pro extends DialogFragment {
-    private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lManager;
-   // private Context context;
+    private RecyclerView recycler,recycler2;
+    private RecyclerView.Adapter adapter,adapter2;
+    private RecyclerView.LayoutManager lManager,lManager2;
+    private ArrayList<Productos_venta> items;
+
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.popoutproducts);
-        View rootView=inflater.inflate(R.layout.recyclerpro,container);
-        ArrayList<Productos_venta> items = new ArrayList <>();
+
+        final View rootView=inflater.inflate(R.layout.recyclerpro,container);
+        items = new ArrayList <>();
         items.add(new Productos_venta("Tacos"));
         items.add(new Productos_venta("Tortas"));
         items.add(new Productos_venta("Quesadillas"));
@@ -33,50 +35,37 @@ public class Pro extends DialogFragment {
         items.add(new Productos_venta("Cervezas"));
         items.add(new Productos_venta("Pizza"));
 
-// Obtener el Recycler
-        recycler = rootView.findViewById(R.id.recicladorPro);
-        //recycler.setHasFixedSize(true);
+        final FragmentManager fm= getFragmentManager();
+        //android.support.v4.app.FragmentManager fm = getSuppFragmentManager();  //manejador que permite hacer el cambio de ventanas
 
-// Usar un administrador para LinearLayout
+        // Commit a la transacción
+        recycler = rootView.findViewById(R.id.recicladorPro);
         lManager = new LinearLayoutManager(this.getActivity());
         recycler.setLayoutManager(lManager);
-
-// Crear un nuevo adaptador
         adapter = new Productos_ventasAdapter(items, new interfaz() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "Putos", Toast.LENGTH_SHORT).show();
                 dismiss();
 
+                fm.beginTransaction().replace(R.id.Cobrar, new Cobrar()).commit(); ///cambio de fragment
+
+                /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.Ventas, new Compras());
+                transaction.addToBackStack(null);
+                transaction.commit();*/
+
+                //new Cobrar().show(fm,"Cobrar");
             }
         });
+
         recycler.setAdapter(adapter);
 
         this.getDialog().setTitle("Productos");
 
+
         return rootView;
-        //return createPro();
     }
-    /*public AlertDialog createPro() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Titulo")
-                .setMessage("El Mensaje para el usuario")
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Acciones
-                            }
-                        })
-                .setNegativeButton("CANCELAR",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Acciones
-                            }
-                        });
-
-        return builder.create();
-    }*/
+    public String getSeleccionado() {
+        return items.get(recycler.getChildAdapterPosition(getView())).getNombre();
+    }
 }
