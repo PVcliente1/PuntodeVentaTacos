@@ -29,7 +29,7 @@
             android:layout_marginBottom="43dp"
             android:background="@layout/solobordes"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/Cobrar"
+            app:layout_constraintBottom_toTopOf="@+id/LOcobrar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,12 +43,13 @@
                 android:text="Vendedor" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/SpnVendedor"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content" />
 
 
             <RadioGroup
+                android:id="@+id/RGopcionVentas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="150dp"
@@ -74,7 +75,7 @@
             </RadioGroup>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/BtnHistorial"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="270dp"
@@ -98,7 +99,7 @@
             tools:ignore="MissingConstraints">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/ETcodigo"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -108,7 +109,7 @@
                 tools:text="Nombre/Código" />
 
             <Button
-                android:id="@+id/Escanear"
+                android:id="@+id/BtnEscanear"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="170dp"
@@ -117,7 +118,7 @@
                 android:textSize="13dp" />
 
             <Button
-                android:id="@+id/Productos"
+                android:id="@+id/BtnProductos"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="262dp"
@@ -128,7 +129,7 @@
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/Cobrar"
+            android:id="@+id/LOcobrar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

@@ -29,7 +29,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
-    //private FragmentManager fm= getFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragment
+       manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,33 +83,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
-        TextView fragabierto= findViewById(R.id.Fragabierto);  ///textview que va en la app bar e indica que item esta abierto
+        TextView fragAbierto= findViewById(R.id.TVFragabierto);  ///textview que va en la app bar e indica que item esta abierto
         int id = item.getItemId();
-        fragabierto.setText(item.getTitle());
+        fragAbierto.setText(item.getTitle());
        // manejador.beginTransaction().replace(R.id.Principal, new item.() ).commit(); ///cambio de fragments
 
         if (id == R.id.Ventas) {
-            manejador.beginTransaction().replace(R.id.Principal, new Ventas()).commit(); ///cambio de fragments
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
         } else if (id == R.id.Compras) {
-            manejador.beginTransaction().replace(R.id.Principal, new Compras()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Compras()).commit();
         } else if (id == R.id.Productos) {
-            manejador.beginTransaction().replace(R.id.Principal, new Productos()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
         } else if (id == R.id.Vendedores) {
-            manejador.beginTransaction().replace(R.id.Principal, new Vendedores()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Vendedores()).commit();
         } else if (id == R.id.Provedores) {
-            manejador.beginTransaction().replace(R.id.Principal, new Provedores()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Provedores()).commit();
         } else if (id == R.id.Clientes) {
-            manejador.beginTransaction().replace(R.id.Principal, new Clientes()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
         } else if (id == R.id.Reportes) {
-            manejador.beginTransaction().replace(R.id.Principal, new Reportes()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Reportes()).commit();
         } else if (id == R.id.Inventario) {
-            manejador.beginTransaction().replace(R.id.Principal, new Inventario()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
         } else if (id == R.id.Personalizar) {
-            manejador.beginTransaction().replace(R.id.Principal, new Personalizar()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Personalizar()).commit();
         } else if (id == R.id.Configurar) {
-            manejador.beginTransaction().replace(R.id.Principal, new Configurar()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Configurar()).commit();
         } else if (id == R.id.Contáctanos) {
-            manejador.beginTransaction().replace(R.id.Principal, new Contactanos()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
