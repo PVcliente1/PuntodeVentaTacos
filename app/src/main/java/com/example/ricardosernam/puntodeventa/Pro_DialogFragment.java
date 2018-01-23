@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,7 +46,8 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         final FragmentManager fm= getFragmentManager();
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
-        lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
+        ///lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
+        lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
         adapter = new Productos_ventasAdapter(itemsProductos, new interfaz_OnClick() { ///llamamos al adaptador y le enviamos el array y la interface  como parametro (la interface es un onclick)
             @Override
