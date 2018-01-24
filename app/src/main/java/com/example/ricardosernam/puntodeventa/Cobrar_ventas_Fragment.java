@@ -20,8 +20,6 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Button eliminar;
-    private int select;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
 
@@ -40,8 +38,6 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view2= inflater.inflate(R.layout.recyclercobrar, container, false);
-
-        eliminar=view2.findViewById(R.id.BtnEliminarArt);
 
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter=new Cobrar_ventasAdapter(itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro

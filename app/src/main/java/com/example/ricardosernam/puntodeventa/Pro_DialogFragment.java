@@ -24,23 +24,21 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
     private ArrayList<Productos_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
+    public Pro_DialogFragment(ArrayList itemsProductos){
+        this.itemsProductos=itemsProductos;
+
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /////////////productos de ejemplo//////////////7
-        itemsProductos.add(new Productos_ventas_class("Tacos"));
-        itemsProductos.add(new Productos_ventas_class("Tortas"));
-        itemsProductos.add(new Productos_ventas_class("Quesadillas"));
-        itemsProductos.add(new Productos_ventas_class("Refrescos"));
-        itemsProductos.add(new Productos_ventas_class("Cervezas"));
-        itemsProductos.add(new Productos_ventas_class("Pizza"));
+        /////////////productos de ejemplo//////////////
     }
 
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         View rootView=inflater.inflate(R.layout.recyclerpro,container);
 
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
