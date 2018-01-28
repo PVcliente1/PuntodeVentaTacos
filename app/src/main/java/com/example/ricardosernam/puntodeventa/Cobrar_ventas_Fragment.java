@@ -114,7 +114,13 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         hora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Hora_DialogFragment().show(getFragmentManager(),"Fecha_hora");
+                new Hora_DialogFragment().show(getFragmentManager(),"Hora_apartado");
+            }
+        });
+        fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Fecha_DialogFragment().show(getFragmentManager(),"Fecha_apartado");
             }
         });
 
