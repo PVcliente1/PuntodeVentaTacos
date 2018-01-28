@@ -1,5 +1,8 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,32 +15,22 @@ import java.util.ArrayList;
 
 public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAdapter.Productos_ventasViewHolder>{  ///adaptador para la seccion de cobrar
     private ArrayList<Cobrar_ventas_class> itemsCobrar;
-    //private interfaz_OnClick interfaz;
+    private Context context;
 
-    public Cobrar_ventasAdapter(ArrayList<Cobrar_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
+    public Cobrar_ventasAdapter(Context context, Activity activity, ArrayList<Cobrar_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
         this.itemsCobrar=itemsCobrar;
-        //this.interfaz=interfaz;
+        this.context=context;
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder {    ////clase donde van los elementos del cardview
         public TextView nombreP;
-        public Button eliminar;
+        public Button eliminarArt,eliminarCompra ;
 
         public Productos_ventasViewHolder(View v) {
             super(v);
             nombreP = (TextView) v.findViewById(R.id.TVnombreProductoCobrar);  ///cardviews donde va el nombre del producto
-            eliminar = v.findViewById(R.id.BtnEliminarArt);
-
-            eliminar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Toast.makeText(view.getContext(),"Se abrio", Toast.LENGTH_SHORT).show();
-                    //interfaz.onClick(view);
-                    //b poeritemsCobrar.remove(view);
-                    //itemsCobrar.remove(itemsCobrar.get(recycler.getChildAdapterPosition(v))) ;
-                    //itemsCobrar.remove(itemsCobrar.get(1));
-                }
-            });
+            eliminarArt = v.findViewById(R.id.BtnEliminarArt);
+            eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
         }
     }
     @Override
@@ -54,12 +47,16 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     @Override
     public void onBindViewHolder(Productos_ventasViewHolder holder, final int position) {  ////mencionamos que se hara con los elementos del cardview
         holder.nombreP.setText(itemsCobrar.get(position).getSeleccionado());
-        holder.eliminar.setOnClickListener(new View.OnClickListener() {
+        final FragmentManager manager = ((Activity) context).getFragmentManager();
+        holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 itemsCobrar.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsCobrar.size());
+                if(itemsCobrar.isEmpty()){
+                    manager.beginTransaction().remove(manager.findFragmentById(R.id.LOcobrar)).commit();
+                }
             }
         });
     }
