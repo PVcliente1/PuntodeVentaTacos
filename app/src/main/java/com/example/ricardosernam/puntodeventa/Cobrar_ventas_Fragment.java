@@ -2,15 +2,13 @@ package com.example.ricardosernam.puntodeventa;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,7 +30,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RadioGroup opcionVentas;
     private LinearLayout pagar;
     private Button eliminarCompra;
-    private EditText cliente, descripcion;
+    private EditText cliente, descripcion, hora, fecha;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
 
@@ -53,8 +50,12 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         View view2 = inflater.inflate(R.layout.recyclercobrar, container, false);
         pagarAhora = view2.findViewById(R.id.RBpagarAhora);
         vender=view2.findViewById(R.id.RBvender);
+        hora=view2.findViewById(R.id.EThora);
+        fecha=view2.findViewById(R.id.ETfecha);
         vender.setChecked(true);
         pagarAhora.setChecked(true);
+        hora.setInputType(InputType.TYPE_NULL);
+        fecha.setInputType(InputType.TYPE_NULL);
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter = new Cobrar_ventasAdapter(view2.getContext(), this.getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view2.findViewById(R.id.RVrecicladorCobrar);///declaramos el recycler
@@ -108,6 +109,12 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                     }
                 });
                 cancelarCompra.show();
+            }
+        });
+        hora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Hora_DialogFragment().show(getFragmentManager(),"Fecha_hora");
             }
         });
 

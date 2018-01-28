@@ -135,30 +135,11 @@
 
             </LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/LOradios_botones"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/BtnFecha"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="20dp"
-                        android:backgroundTint="@android:color/background_light"
-                        android:text="Fecha y hora"
-                        android:textSize="13sp"
-                        android:visibility="visible" />
-
                 <LinearLayout
                     android:id="@+id/LOpagar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
+                    android:layout_gravity="right"
                     android:orientation="horizontal">
                 <RadioGroup
                     android:id="@+id/RGcobrar"
@@ -179,7 +160,6 @@
 
                 </RadioGroup>
                 </LinearLayout>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LObotones_edittext"
