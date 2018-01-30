@@ -174,23 +174,26 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/ETfecha"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="-80dp"
-                    android:background="@drawable/edittexts"
-                    android:ems="10"
-                    android:hint="Fecha"
-                    android:inputType="number"
-                    android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/ETfecha"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="-80dp"
+                        android:background="@drawable/edittexts"
+                        android:ems="10"
+                        android:hint="Fecha"
+                        android:inputType="number"
+                        android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/EThora"
                     android:layout_width="100dp"
                     android:layout_marginLeft="10dp"
                     android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_gravity="right"
                     android:background="@drawable/edittexts"
                     android:ems="10"

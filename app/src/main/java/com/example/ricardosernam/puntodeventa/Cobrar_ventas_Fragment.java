@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -120,7 +121,13 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Fecha_DialogFragment().show(getFragmentManager(),"Fecha_apartado");
+                new Fecha_DialogFragment(new interfaz_OnClickFecha() {
+                    @Override
+                    public void onClick(View v, int i, int i1, int i2) {
+                       // Toast.makeText(getView().getContext(), (i + "/" + i1 + "/" + i2), Toast.LENGTH_LONG).show();
+                        fecha.setText(i2 + "/" + i1+1 + "/" + i);
+                    }
+                }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
 
