@@ -10,4 +10,18 @@
         android:text="pruebaEscanear"
         android:onClick="EscanearQR"
         android:id="@+id/BtnEscanearQR"/>
+
+    <EditText
+        android:id="@+id/ETCodigo_compras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/BtnEscanearQR"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="codigo de barras"
+        android:inputType="textPersonName" />
 </RelativeLayout >

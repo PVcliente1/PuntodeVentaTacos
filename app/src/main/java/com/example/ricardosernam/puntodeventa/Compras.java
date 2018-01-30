@@ -2,50 +2,54 @@ package com.example.ricardosernam.puntodeventa;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class Compras extends Fragment implements ZXingScannerView.ResultHandler{
+public class Compras extends Fragment{
 private ZXingScannerView escanerView;
+    private Button escan;
+    private EditText codigoBarras;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compras, container, false);
+        View view = inflater.inflate(R.layout.fragment_compras, container, false);
+
+        escan = (Button)view.findViewById(R.id.BtnEscanearQR);
+        codigoBarras = (EditText)view.findViewById(R.id.ETCodigo_compras);
+
+        escan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
+                startActivityForResult(intent,2);//inicializar el activity con RequestCode2
+            }
+        });
+
+        return view;
     }
 
-
-    public void BtnEscanearQR(View view){
-        escanerView=new ZXingScannerView(getContext());
-        escanerView.setResultHandler(this);
-        escanerView.startCamera();
-    }
-
+    //metodo para obtener resultados
     @Override
-    public void onPause() {
-        super.onPause();
-        escanerView.stopCamera();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //Codigo 2
+        if (requestCode == 2 && data != null) {
+            //obtener resultados
+            codigoBarras.setText(data.getStringExtra("BARCODE"));
+        }
     }
 
-    @Override
-    public void handleResult(Result result) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Resultado del escaner");
-        builder.setMessage("Resultado " + result.getText() + "\n" + "Formato "+result.getBarcodeFormat());
-        AlertDialog alertDialog=builder.create();
-        alertDialog.show();
-        escanerView.resumeCameraPreview(this);
-
-
-
-    }
 }
