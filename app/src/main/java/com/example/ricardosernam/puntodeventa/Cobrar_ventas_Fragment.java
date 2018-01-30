@@ -30,7 +30,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RadioButton pagarAhora,vender;
     private RadioGroup opcionVentas;
     private LinearLayout pagar;
-    private Button eliminarCompra;
+    private Button eliminarCompra,aceptarCompra;
     private EditText cliente, descripcion, hora, fecha;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
@@ -70,6 +70,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
+        aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
@@ -112,10 +113,21 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                 cancelarCompra.show();
             }
         });
+        aceptarCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),"La venta ha sido enviada",Toast.LENGTH_LONG).show();
+            }
+        });
         hora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Hora_DialogFragment().show(getFragmentManager(),"Hora_apartado");
+                new Hora_DialogFragment(new interfaz_OnClickHora() {
+                    @Override
+                    public void onClick(View v, int i, int i1) {
+                        hora.setText(i + ":" + i1);
+                    }
+                }).show(getFragmentManager(),"Hora_apartado");
             }
         });
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +136,6 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                 new Fecha_DialogFragment(new interfaz_OnClickFecha() {
                     @Override
                     public void onClick(View v, int i, int i1, int i2) {
-                       // Toast.makeText(getView().getContext(), (i + "/" + i1 + "/" + i2), Toast.LENGTH_LONG).show();
                         fecha.setText(i2 + "/" + i1+1 + "/" + i);
                     }
                 }).show(getFragmentManager(),"Fecha_apartado");

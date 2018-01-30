@@ -203,22 +203,24 @@
                     android:visibility="visible" />
                 </LinearLayout>
             <Button
-                android:id="@+id/BtnAceptarCompra"
+                android:id="@+id/BtnEliminarCompra"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="45dp"
                 android:backgroundTint="@android:color/background_light"
                 android:drawableTint="@color/cardview_dark_background"
-                android:drawableTop="@mipmap/ic_check_circle_black_24dp"
-                android:visibility="visible" />
-            <Button
-                android:id="@+id/BtnEliminarCompra"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:backgroundTint="@android:color/background_light"
                 android:drawableTop="@mipmap/ic_delete_forever_black_24dp"
                 android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/BtnAceptarCompra"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:drawableTop="@mipmap/ic_check_circle_black_24dp"
+                    android:backgroundTint="@android:color/background_light"
+
+                    android:visibility="visible" />
             </LinearLayout>
 
 
