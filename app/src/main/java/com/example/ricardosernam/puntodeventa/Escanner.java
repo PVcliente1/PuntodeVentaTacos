@@ -47,7 +47,7 @@ public class Escanner extends AppCompatActivity implements ZXingScannerView.Resu
         String resultado;
         resultado = rawResult.getText().toString().trim();
 
-        Toast.makeText(this, resultado.trim(), Toast.LENGTH_SHORT).show();//mostrar en un mensaje emerjente
+        Toast.makeText(this, resultado, Toast.LENGTH_SHORT).show();//mostrar en un mensaje emerjente
 
         //regresar resultado
         Intent intent = new Intent();
