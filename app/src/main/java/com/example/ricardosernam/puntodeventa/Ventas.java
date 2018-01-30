@@ -23,6 +23,7 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
     private Button productos;
     private EditText codigo;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
