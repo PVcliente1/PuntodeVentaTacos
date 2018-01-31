@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <Button
+        android:id="@+id/BtnEscanearQR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pruebaEscanear"
+        android:layout_below="@+id/textView7"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
         android:onClick="EscanearQR"
-        android:id="@+id/BtnEscanearQR"/>
+        android:text="Escanear Código" />
 
     <EditText
         android:id="@+id/ETCodigo_compras"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp"
+        android:ems="10"
+        android:hint="Ingresa producto "
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColorHint="@android:color/background_dark" />
+
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/BtnEscanearQR"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="codigo de barras"
-        android:inputType="textPersonName" />
-</RelativeLayout >
+        android:layout_below="@+id/ETCodigo_compras"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="Ó"
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
+
+
+</RelativeLayout>
