@@ -1,7 +1,9 @@
 package com.example.ricardosernam.puntodeventa;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -32,12 +34,30 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private LinearLayout pagar;
     private Button eliminarCompra,aceptarCompra;
     private EditText cliente, descripcion, hora, fecha;
+    private interfaz_historial Interface_historial;
+    private String tipo;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
+    ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
+
+    /*public interface interfaz_historial2 {
+       void mandarHistorial(ArrayList<Historial_ventas_class> tipo);
+    }*/
 
     @SuppressLint("ValidFragment")
     public Cobrar_ventas_Fragment(ArrayList itemsCobrar) {
         this.itemsCobrar = itemsCobrar; ///recibios como parametro el array
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            Interface_historial=(interfaz_historial)context;
+            //mCallback = (OnHeadlineSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement interfaz_historial");
+        }
     }
 
     @Override
@@ -55,7 +75,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         fecha=view2.findViewById(R.id.ETfecha);
         vender.setChecked(true);
         pagarAhora.setChecked(true);
-        hora.setInputType(InputType.TYPE_NULL);
+        hora.setInputType(InputType.TYPE_NULL);///evitamos que se abra el teclado automaticamente
         fecha.setInputType(InputType.TYPE_NULL);
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter = new Cobrar_ventasAdapter(view2.getContext(), this.getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
@@ -75,17 +95,20 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
         descripcion=getActivity().findViewById(R.id.ETdescripcion);
-        opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.RBcotizar:
                         pagar.setVisibility(View.INVISIBLE);
+                        tipo= "Cotización";
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
+                        tipo= "Apartado";
                         break;
                     case R.id.RBvender:
+                        tipo= "Venta";
                         pagar.setVisibility(View.VISIBLE);
                         break;
 
@@ -94,7 +117,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         });
         eliminarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {  ///al eliminar compra mostramos un AlertDialog
                 AlertDialog.Builder cancelarCompra = new AlertDialog.Builder(getActivity());
                 cancelarCompra.setTitle("Cuidado");
                 cancelarCompra.setMessage("¿Seguro que quieres cancelar la venta?");
@@ -113,15 +136,18 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                 cancelarCompra.show();
             }
         });
-        aceptarCompra.setOnClickListener(new View.OnClickListener() {
+        aceptarCompra.setOnClickListener(new View.OnClickListener() {  ////agregamos la venta y lo notificamos
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"La venta ha sido enviada",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"La venta de tipo "+ tipo+ " ha sido enviada",Toast.LENGTH_LONG).show();
+                itemsHistorial.add(new Historial_ventas_class(tipo));
+                Interface_historial.mandarHistorial(itemsHistorial);
+
             }
         });
         hora.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
                     public void onClick(View v, int i, int i1) {
@@ -132,7 +158,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         });
         fecha.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {   ///abrimos el dialogo de DatePicker
                 new Fecha_DialogFragment(new interfaz_OnClickFecha() {
                     @Override
                     public void onClick(View v, int i, int i1, int i2) {

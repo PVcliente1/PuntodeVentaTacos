@@ -25,8 +25,9 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
     private ArrayList<Productos_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
-    public Pro_DialogFragment(ArrayList itemsProductos){
+    public Pro_DialogFragment(ArrayList itemsProductos, ArrayList itemsCobrar){
         this.itemsProductos=itemsProductos;
+        this.itemsCobrar=itemsCobrar;
 
     }
 

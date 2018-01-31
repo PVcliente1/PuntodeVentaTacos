@@ -14,11 +14,11 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
-public class Hora_DialogFragment extends DialogFragment {
+public class Hora_DialogFragment extends DialogFragment {   ////Dialog Fragment que muestra mi timePicker
     private TimePicker hora;
     private Button aceptar, cancelar;
     private Calendar calendar;
-    private interfaz_OnClickHora Interface;
+    private interfaz_OnClickHora Interface;  ////interfaz para comunicarlo con ventas
 
     @SuppressLint("ValidFragment")
     public Hora_DialogFragment(interfaz_OnClickHora Interface){
@@ -35,13 +35,13 @@ public class Hora_DialogFragment extends DialogFragment {
         cancelar=rootView.findViewById(R.id.BtncancelarHora);
         hora=rootView.findViewById(R.id.TPhora);
 
-        hora.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+        hora.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {  ////escuchador de cambios del timePicker
             @Override
             public void onTimeChanged(TimePicker timePicker, final int i, final int i1) {
                 aceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Interface.onClick(view, i, i1);
+                        Interface.onClick(view, i, i1);   ///enviamos los datos a ventas
                         dismiss();
                     }
                 });

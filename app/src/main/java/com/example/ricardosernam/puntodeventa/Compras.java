@@ -18,7 +18,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
 public class Compras extends Fragment{
-private ZXingScannerView escanerView;
     private Button escan;
     private EditText codigoBarras;
     @Override

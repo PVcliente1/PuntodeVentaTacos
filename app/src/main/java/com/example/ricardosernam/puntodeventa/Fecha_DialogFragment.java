@@ -16,11 +16,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
-public class Fecha_DialogFragment extends DialogFragment {
+public class Fecha_DialogFragment extends DialogFragment {    ///Dialog Fragment para DatePicker
     private DatePicker fecha;
     private Button aceptar, cancelar;
     private Calendar calendar;
-    private interfaz_OnClickFecha Interface;
+    private interfaz_OnClickFecha Interface;  ///inrefaz para comunicar con ventas
 
     @SuppressLint("ValidFragment")
     public Fecha_DialogFragment(interfaz_OnClickFecha Interface){
@@ -42,7 +42,7 @@ public class Fecha_DialogFragment extends DialogFragment {
                         aceptar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Interface.onClick(view, i, i1, i2);
+                                Interface.onClick(view, i, i1, i2); ///interfaz para comunicar con ventas
                                 dismiss();
                             }
                         });
