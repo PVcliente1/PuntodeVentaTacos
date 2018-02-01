@@ -30,8 +30,6 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
         this.itemsCobrar=itemsCobrar;
 
     }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +50,7 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
             public void onClick(View v) {  ////cuando se presione un Cardview...
                 dismiss(); ////cerramos la ventana
                 itemsCobrar.add(new Cobrar_ventas_class(itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre()));//obtenemos el cardview seleccionado y lo agregamos a items2
-                fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout frament por el del recycler de cobrar
+                fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout fragment por el del recycler de cobrar
             }
         });
         recycler.setAdapter(adapter);

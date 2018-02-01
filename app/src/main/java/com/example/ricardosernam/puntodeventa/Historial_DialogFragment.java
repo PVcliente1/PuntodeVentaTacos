@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,6 @@ public class Historial_DialogFragment extends DialogFragment {
     public Historial_DialogFragment(ArrayList<Historial_ventas_class> itemsHistorial){
         this.itemsHistorial=itemsHistorial;
     }
-
 
     @Nullable
     @Override

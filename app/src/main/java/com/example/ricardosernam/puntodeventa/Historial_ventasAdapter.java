@@ -1,7 +1,5 @@
 package com.example.ricardosernam.puntodeventa;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,7 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
 
     public class HistorialVentasViewHolder extends RecyclerView.ViewHolder {
         public TextView tipo;
+
         public HistorialVentasViewHolder(View itemView) {
             super(itemView);
             tipo=itemView.findViewById(R.id.TVtipoHistorial);

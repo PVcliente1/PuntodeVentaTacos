@@ -24,7 +24,7 @@
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
                              android:layout_weight="1"
-                             android:text="Cotizar" />
+                             android:text="Cotización" />
 
                          <RadioButton
                              android:id="@+id/RBapartar"
@@ -32,7 +32,7 @@
                              android:layout_height="wrap_content"
                              android:layout_marginLeft="10dp"
                              android:layout_weight="1"
-                             android:text="Apartar" />
+                             android:text="Apartado" />
 
                          <RadioButton
                              android:id="@+id/RBvender"
@@ -40,7 +40,7 @@
                              android:layout_height="wrap_content"
                              android:layout_marginLeft="10dp"
                              android:layout_weight="1"
-                             android:text="Vender" />
+                             android:text="Venta" />
                      </RadioGroup>
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView
@@ -188,19 +188,19 @@
                         android:inputType="number"
                         android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/EThora"
-                    android:layout_width="100dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_height="30dp"
-                    android:gravity="center"
-                    android:layout_gravity="right"
-                    android:background="@drawable/edittexts"
-                    android:ems="10"
-                    android:hint="Hora (Opcional)"
-                    android:inputType="number"
-                    android:textSize="14sp"
-                    android:visibility="visible" />
+                    <EditText
+                        android:id="@+id/EThora"
+                        android:layout_width="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:layout_gravity="right"
+                        android:background="@drawable/edittexts"
+                        android:ems="10"
+                        android:hint="Hora (Opcional)"
+                        android:inputType="number"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
                 </LinearLayout>
             <Button
                 android:id="@+id/BtnEliminarCompra"

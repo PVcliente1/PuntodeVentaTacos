@@ -21,15 +21,24 @@ import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Ventas extends Fragment {     /////Fragment de categoria ventas
+public class Ventas extends Fragment{     /////Fragment de categoria ventas
     private FragmentManager fm;
     private ArrayList<Productos_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
+    private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     private Button productos, escanear, historial;
     private EditText codigo;
     private Pro_DialogFragment pro;
     private Historial_DialogFragment DFhistorial;
 
+    @SuppressLint("ValidFragment")
+    public Ventas(ArrayList tipo) {
+        this.itemsHistorial=tipo;   /////viene del mainActivity (Mediante Interface)
+    }
+
+    @SuppressLint("ValidFragment")
+    public Ventas() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,18 +52,14 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
         itemsProductos.add(new Productos_ventas_class("Pizza"));
     }
 
-    /*@Override
-    public void mandarHistorial(ArrayList<Historial_ventas_class> tipo) {
-        DFhistorial=new Historial_DialogFragment(tipo);
-    }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
         onViewCreated(view, savedInstanceState);
-       fm= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de productos
+        fm= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
 
-       pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
+        pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
+        DFhistorial=new Historial_DialogFragment(itemsHistorial);  ////enviamos el array con las compras al fragment de historial
 
         productos= view.findViewById(R.id.BtnProductos);
         historial= view.findViewById(R.id.BtnHistorial);
@@ -77,6 +82,7 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
             }
         });
         historial.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 DFhistorial.show(fm, "Historial_DialogFragment");

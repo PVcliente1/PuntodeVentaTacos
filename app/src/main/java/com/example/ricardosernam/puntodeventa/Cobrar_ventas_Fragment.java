@@ -32,32 +32,17 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RadioButton pagarAhora,vender;
     private RadioGroup opcionVentas;
     private LinearLayout pagar;
-    private Button eliminarCompra,aceptarCompra;
+    private Button eliminarCompra,aceptarCompra, descuento;
     private EditText cliente, descripcion, hora, fecha;
-    private interfaz_historial Interface_historial;
-    private String tipo;
+    interfaz_historial Interface_historial;
+    private RadioButton seleccionado;
+    private LinearLayout editsApartado;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
-    ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
-
-    /*public interface interfaz_historial2 {
-       void mandarHistorial(ArrayList<Historial_ventas_class> tipo);
-    }*/
 
     @SuppressLint("ValidFragment")
     public Cobrar_ventas_Fragment(ArrayList itemsCobrar) {
         this.itemsCobrar = itemsCobrar; ///recibios como parametro el array
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            Interface_historial=(interfaz_historial)context;
-            //mCallback = (OnHeadlineSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement interfaz_historial");
-        }
     }
 
     @Override
@@ -89,27 +74,47 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Interface_historial =(interfaz_historial) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
+
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
+        descuento=getActivity().findViewById(R.id.BtnDescuento);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
         descripcion=getActivity().findViewById(R.id.ETdescripcion);
+        editsApartado=getActivity().findViewById(R.id.LOedittext);
         opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.RBcotizar:
                         pagar.setVisibility(View.INVISIBLE);
-                        tipo= "Cotización";
+                        //editsApartado.setEnabled(false);
+                        editsApartado.setVisibility(View.INVISIBLE);
+                        aceptarCompra.setVisibility(View.INVISIBLE);
+                        descuento.setVisibility(View.INVISIBLE);
+                        cliente.setVisibility(View.INVISIBLE);
+                        descripcion.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
-                        tipo= "Apartado";
+                        editsApartado.setVisibility(View.VISIBLE);
+                        aceptarCompra.setVisibility(View.VISIBLE);
+                        descuento.setVisibility(View.VISIBLE);
+                        cliente.setText("Cliente (Obligatorio)");
+                        cliente.setVisibility(View.VISIBLE);
+                        descripcion.setVisibility(View.VISIBLE);
                         break;
                     case R.id.RBvender:
-                        tipo= "Venta";
                         pagar.setVisibility(View.VISIBLE);
+                        editsApartado.setVisibility(View.VISIBLE);
+                        aceptarCompra.setVisibility(View.VISIBLE);
+                        descuento.setVisibility(View.VISIBLE);
+                        cliente.setText("Cliente (Opcional)");
+                        cliente.setVisibility(View.VISIBLE);
+                        descripcion.setVisibility(View.VISIBLE);
                         break;
 
                 }
@@ -136,13 +141,13 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                 cancelarCompra.show();
             }
         });
-        aceptarCompra.setOnClickListener(new View.OnClickListener() {  ////agregamos la venta y lo notificamos
+        aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"La venta de tipo "+ tipo+ " ha sido enviada",Toast.LENGTH_LONG).show();
-                itemsHistorial.add(new Historial_ventas_class(tipo));
-                Interface_historial.mandarHistorial(itemsHistorial);
-
+                seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
+                Toast.makeText(getActivity(),"Tu "+ seleccionado.getText().toString()+ " se envió",Toast.LENGTH_LONG).show();
+                Interface_historial.mandarHistorial(seleccionado.getText().toString());  ///usamos la interface para "puentear" con el activity y mandar a historial
+                getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();///cerramos la venta
             }
         });
         hora.setOnClickListener(new View.OnClickListener() {
