@@ -35,6 +35,7 @@ public class Historial_DialogFragment extends DialogFragment {
                 lManager = new LinearLayoutManager(getActivity());  //declaramos el layoutmanager
                 recycler.setLayoutManager(lManager);
                 recycler.setAdapter(adapter);
+                this.getDialog().setTitle("Historial");///cambiamos titulo del DialogFragment
         return view2;
     }
 }

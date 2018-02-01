@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,13 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
     @Override
     public void onBindViewHolder(HistorialVentasViewHolder holder, int position) {
         holder.tipo.setText(itemsHistorial.get(position).getNombre());
+        if(itemsHistorial.get(position).getNombre().equals("Venta")){
+            //holder.itemView.setBackgroundColor(4);
+            holder.itemView.setBackgroundColor(Color.RED);
+        }
+        else if(itemsHistorial.get(position).getNombre().equals("Apartado")){
+            holder.itemView.setBackgroundColor(Color.BLUE);
+        }
     }
 
 
