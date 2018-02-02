@@ -1,5 +1,8 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +16,12 @@ import java.util.ArrayList;
 
 public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_ventasAdapter.HistorialVentasViewHolder> {
     private ArrayList<Historial_ventas_class> itemsHistorial;
+    private Context context;
 
-    public Historial_ventasAdapter(ArrayList<Historial_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
+    public Historial_ventasAdapter(Context context, ArrayList<Historial_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
         this.itemsHistorial=itemsCobrar;
+        this.context=context;
+
     }
 
     public class HistorialVentasViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +51,8 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
         return itemsHistorial.size();
     }
     @Override
-    public void onBindViewHolder(HistorialVentasViewHolder holder, int position) {
+    public void onBindViewHolder(HistorialVentasViewHolder holder, final int position) {
+        final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.tipo.setText(itemsHistorial.get(position).getTipo());
         holder.pagar.setText(itemsHistorial.get(position).getPagar());
         if(itemsHistorial.get(position).getPagar().equals("Pagar ahora")){
@@ -67,6 +74,12 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
         else if(itemsHistorial.get(position).getTipo().equals("Apartado")){
             holder.itemView.setBackgroundColor(Color.CYAN);
         }
+        /*holder.pagarDeuda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new pagar_DialogFragment(itemsHistorial.get(position).getTipo(),(itemsHistorial.get(position).getPagar())).show(manager,"pagarDiaogFragment");
+            }
+        });*/
     }
 
 
