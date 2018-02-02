@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
             ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
-    public void mandarHistorial(String tipo) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
-        itemsHistorial.add(new Historial_ventas_class(tipo));  ///tipo viene de fragment_cobrar
+    public void mandarHistorial(String tipo, String pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
+        itemsHistorial.add(new Historial_ventas_class(tipo, pagar));  ///tipo viene de fragment_cobrar
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas(itemsHistorial)).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
 
     }

@@ -30,12 +30,12 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private RadioButton pagarAhora,vender;
-    private RadioGroup opcionVentas;
+    private RadioGroup opcionVentas, opcionCobrar;
     private LinearLayout pagar;
     private Button eliminarCompra,aceptarCompra, descuento;
     private EditText cliente, descripcion, hora, fecha;
     interfaz_historial Interface_historial;
-    private RadioButton seleccionado;
+    private RadioButton seleccionado, seleccionado2;
     private LinearLayout editsApartado;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
@@ -81,6 +81,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
         descuento=getActivity().findViewById(R.id.BtnDescuento);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
+        opcionCobrar= getActivity().findViewById(R.id.RGopcionCobrar);
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
         descripcion=getActivity().findViewById(R.id.ETdescripcion);
@@ -145,9 +146,8 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
             @Override
             public void onClick(View view) {
                 seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
-                Toast.makeText(getActivity(),"Tu "+ seleccionado.getText().toString()+ " se envió",Toast.LENGTH_LONG).show();
-                Interface_historial.mandarHistorial(seleccionado.getText().toString());  ///usamos la interface para "puentear" con el activity y mandar a historial
-                getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();///cerramos la venta
+                seleccionado2=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
+                new pagar_DialogFragment(seleccionado.getText().toString(),seleccionado2.getText().toString()).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
         hora.setOnClickListener(new View.OnClickListener() {
