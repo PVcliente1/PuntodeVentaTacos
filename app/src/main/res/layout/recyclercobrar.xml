@@ -141,24 +141,26 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:orientation="horizontal">
-                <RadioGroup
-                    android:id="@+id/RGcobrar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/RBpagarAhora"
+                    <RadioGroup
+                        android:id="@+id/RGopcionCobrar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pagar ahora" />
-                    <RadioButton
-                        android:id="@+id/RBporCobrar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Por Cobrar" />
+                        android:orientation="horizontal">
 
-                </RadioGroup>
+                        <RadioButton
+                            android:id="@+id/RBpagarAhora"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pagar ahora" />
+
+                        <RadioButton
+                            android:id="@+id/RBporCobrar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Por Cobrar" />
+
+                    </RadioGroup>
                 </LinearLayout>
 
             <LinearLayout
