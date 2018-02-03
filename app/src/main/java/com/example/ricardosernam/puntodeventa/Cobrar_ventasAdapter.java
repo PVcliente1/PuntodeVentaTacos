@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +27,14 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder {    ////clase donde van los elementos del cardview
         public TextView nombreP;
         public Button eliminarArt,eliminarCompra ;
+        public CheckBox descuento;
 
         public Productos_ventasViewHolder(View v) {
             super(v);
             nombreP = (TextView) v.findViewById(R.id.TVnombreProductoCobrar);  ///cardviews donde va el nombre del producto
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
             eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
+            descuento=v.findViewById(R.id.CBDescuento);
         }
     }
     @Override
@@ -57,6 +61,12 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 if(itemsCobrar.isEmpty()){
                     manager.beginTransaction().remove(manager.findFragmentById(R.id.LOcobrar)).commit();
                 }
+            }
+        });
+        holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Toast.makeText(context, "Simon", Toast.LENGTH_LONG).show();
             }
         });
     }
