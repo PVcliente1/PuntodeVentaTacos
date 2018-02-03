@@ -26,8 +26,8 @@ public class Compras extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
 
-        escan = (Button)view.findViewById(R.id.BtnEscanearQR);
-        codigoBarras = (EditText)view.findViewById(R.id.ETCodigo_compras);
+        escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
+        codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
 
         escan.setOnClickListener(new View.OnClickListener() {
             @Override
