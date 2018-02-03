@@ -6,12 +6,32 @@
     android:background="@color/viewfinder_border"
     android:backgroundTint="@android:color/holo_blue_bright"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Total $" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:text="Total" />
+    </LinearLayout>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:layout_gravity="center"
-        android:text="Cantidad"/>
+        android:text="Cantidad $"/>
     <EditText
         android:id="@+id/editText"
         android:layout_width="200dp"
