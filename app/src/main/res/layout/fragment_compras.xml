@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/ETCapturarProducto"
-        android:layout_width="175"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/BtnEscanearCodigo"
         android:layout_alignParentLeft="true"
@@ -21,7 +21,7 @@
 
     <Button
         android:id="@+id/BtnEscanearCodigo"
-        android:layout_width="75"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="11dp"
@@ -33,7 +33,7 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="60"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/BtnEscanearCodigo"
         android:layout_alignBottom="@+id/BtnEscanearCodigo"
