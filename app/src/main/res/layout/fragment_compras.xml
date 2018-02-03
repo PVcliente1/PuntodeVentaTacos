@@ -4,42 +4,230 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="30dp"
+    android:layout_marginTop="5dp">
 
-    <EditText
-        android:id="@+id/ETCapturarProducto"
-        android:layout_width="175dp"
+    <LinearLayout
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/BtnEscanearCodigo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp"
-        android:ems="10"
-        android:hint="Nombre producto"
-        android:inputType="textPersonName"
-        android:textAlignment="center" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-    <Button
-        android:id="@+id/BtnEscanearCodigo"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="63dp"
-        android:layout_toEndOf="@+id/ETCapturarProducto"
-        android:layout_toRightOf="@+id/ETCapturarProducto"
-        android:text="Scan" />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Existente"
+                android:layout_marginLeft="60dp"
+                android:textSize="18dp"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuevo"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"/>
+        </RadioGroup>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="60dp"
+
+    </LinearLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/BtnEscanearCodigo"
-        android:layout_alignBottom="@+id/BtnEscanearCodigo"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_toEndOf="@+id/BtnEscanearCodigo"
-        android:layout_toRightOf="@+id/BtnEscanearCodigo"
-        android:text="Add" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout3">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/ETCapturarProducto"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:hint="Nombre producto"
+                android:layout_marginLeft="10dp"
+                android:inputType="text"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/BtnEscanearCodigo"
+                android:layout_marginLeft="10"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="Scan" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Código:"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ETcodigoCapturado"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:ems="10"
+                android:hint="Código"
+                android:inputType="number"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ETnombreProducto"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ems="10"
+                android:hint="Ingrese nombre"
+                android:inputType="text"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Cantidad: "
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Existentes:"
+                android:layout_marginLeft="20dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Precio (Compra):"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ETprecioCompra"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ems="10"
+                android:hint="$"
+                android:inputType="number"
+                android:textAlignment="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar a productos:"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Precio (Venta):"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ETprecioVenta"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botones"
+                android:layout_marginLeft="10dp"
+                android:ems="10"
+                android:hint="$"
+                android:inputType="number"
+                android:textAlignment="center" />
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="X"/>
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="ok"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
 </RelativeLayout>
