@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -74,12 +75,13 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
         else if(itemsHistorial.get(position).getTipo().equals("Apartado")){
             holder.itemView.setBackgroundColor(Color.CYAN);
         }
-        /*holder.pagarDeuda.setOnClickListener(new View.OnClickListener() {
+        holder.pagarDeuda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new pagar_DialogFragment(itemsHistorial.get(position).getTipo(),(itemsHistorial.get(position).getPagar())).show(manager,"pagarDiaogFragment");
+                Toast.makeText(context, "Simon", Toast.LENGTH_LONG).show();
+                //new pagar_DialogFragment(itemsHistorial.get(position).getTipo(),(itemsHistorial.get(position).getPagar())).show(manager,"pagarDiaogFragment");
             }
-        });*/
+        });
     }
 
 

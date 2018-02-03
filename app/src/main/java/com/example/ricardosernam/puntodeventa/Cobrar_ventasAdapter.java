@@ -1,8 +1,10 @@
 package com.example.ricardosernam.puntodeventa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder {    ////clase donde van los elementos del cardview
-        public TextView nombreP;
+        public TextView nombreP, tipoD;
         public Button eliminarArt,eliminarCompra ;
         public CheckBox descuento;
 
@@ -35,6 +37,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
             eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
             descuento=v.findViewById(R.id.CBDescuento);
+            tipoD=v.findViewById(R.id.TVtipoDescuento);
         }
     }
     @Override
@@ -49,7 +52,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     }
 
     @Override
-    public void onBindViewHolder(Productos_ventasViewHolder holder, final int position) {  ////mencionamos que se hara con los elementos del cardview
+    public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {  ////mencionamos que se hara con los elementos del cardview
         holder.nombreP.setText(itemsCobrar.get(position).getSeleccionado());
         final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +66,34 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 }
             }
         });
-        holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(context, "Simon", Toast.LENGTH_LONG).show();
-            }
-        });
+        //if(holder.descuento.isChecked()) {
+            holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+               @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                   if(b) {
+                       final AlertDialog.Builder tipoDescuento= new AlertDialog.Builder(context);
+                       tipoDescuento.setTitle("Descuentos");
+                       tipoDescuento.setMessage("Seleccion un tipo de descuento");
+                       tipoDescuento.setCancelable(false);
+                       tipoDescuento.setPositiveButton("Normal  (%)", new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface tipoDescuento, int id) {
+                               holder.tipoD.setText("Normal (%)");
+
+                               tipoDescuento.dismiss();
+                           }
+                       });
+                       tipoDescuento.setNegativeButton("Especial (%)", new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface tipoDescuento, int id) {
+                               holder.tipoD.setText("Especial (%)");
+                               tipoDescuento.dismiss();
+                           }
+                       });
+                       tipoDescuento.show();
+                   }
+                   else{
+                       holder.tipoD.setText(" ");
+                   }
+                }
+            });
     }
 }
