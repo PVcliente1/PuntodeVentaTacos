@@ -64,7 +64,7 @@
 
             <Button
                 android:id="@+id/BtnEscanearCodigo"
-                android:layout_marginLeft="10"
+                android:layout_marginLeft="10dp"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:text="Scan" />
