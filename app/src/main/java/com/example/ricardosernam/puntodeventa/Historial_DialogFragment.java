@@ -30,7 +30,13 @@ public class Historial_DialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view2 = inflater.inflate(R.layout.recyclerhistorial, container, false);
-              adapter = new Historial_ventasAdapter(getActivity(), itemsHistorial);///llamamos al adaptador y le enviamos el array como parametro
+              adapter = new Historial_ventasAdapter(getActivity(), itemsHistorial, new interfaz_OnClick() {
+                  @Override
+                  public void onClick(View v) {
+                      dismiss();
+                      getFragmentManager().beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment()).commit();
+                  }
+              });///llamamos al adaptador y le enviamos el array como parametro
                 recycler = view2.findViewById(R.id.RVrecicladorHistorial);///declaramos el recycler
                 lManager = new LinearLayoutManager(getActivity());  //declaramos el layoutmanager
                 recycler.setLayoutManager(lManager);

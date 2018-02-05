@@ -3,11 +3,14 @@ package com.example.ricardosernam.puntodeventa;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -15,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,18 +37,24 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private RecyclerView.LayoutManager lManager;
     private RadioButton pagarAhora,vender;
     private RadioGroup opcionVentas, opcionCobrar;
-    private LinearLayout pagar;
-    private Button eliminarCompra,aceptarCompra, descuento;
+    private LinearLayout pagar, fechaHora, tipoDescuento;
+    private Button eliminarCompra,aceptarCompra;
     private EditText cliente, descripcion, hora, fecha;
     interfaz_historial Interface_historial;
     private RadioButton seleccionado, seleccionado2;
     private LinearLayout editsApartado;
+    public CheckBox descuento;
+    public TextView tipoD;
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
 
     @SuppressLint("ValidFragment")
     public Cobrar_ventas_Fragment(ArrayList itemsCobrar) {
         this.itemsCobrar = itemsCobrar; ///recibios como parametro el array
+    }
+
+    @SuppressLint("ValidFragment")
+    public Cobrar_ventas_Fragment() {
     }
 
     @Override
@@ -55,11 +67,13 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                              Bundle savedInstanceState) {
         View view2 = inflater.inflate(R.layout.recyclercobrar, container, false);
         pagarAhora = view2.findViewById(R.id.RBpagarAhora);
+        fechaHora=view2.findViewById(R.id.LOedittext);
         vender=view2.findViewById(R.id.RBvender);
         hora=view2.findViewById(R.id.EThora);
         fecha=view2.findViewById(R.id.ETfecha);
         vender.setChecked(true);
         pagarAhora.setChecked(true);
+        fechaHora.setVisibility(View.INVISIBLE);
         hora.setInputType(InputType.TYPE_NULL);///evitamos que se abra el teclado automaticamente
         fecha.setInputType(InputType.TYPE_NULL);
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
@@ -79,13 +93,15 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
 
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
-        descuento=getActivity().findViewById(R.id.BtnDescuento);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
         opcionCobrar= getActivity().findViewById(R.id.RGopcionCobrar);
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
         descripcion=getActivity().findViewById(R.id.ETdescripcion);
         editsApartado=getActivity().findViewById(R.id.LOedittext);
+        descuento=getActivity().findViewById(R.id.CBDescuento);
+        tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
+        tipoDescuento=getActivity().findViewById(R.id.LOdescuento);
         opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -95,27 +111,30 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                         //editsApartado.setEnabled(false);
                         editsApartado.setVisibility(View.INVISIBLE);
                         aceptarCompra.setVisibility(View.INVISIBLE);
-                        descuento.setVisibility(View.INVISIBLE);
                         cliente.setVisibility(View.INVISIBLE);
                         descripcion.setVisibility(View.INVISIBLE);
+                        fechaHora.setVisibility(View.INVISIBLE);
+                        tipoDescuento.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
                         editsApartado.setVisibility(View.VISIBLE);
                         aceptarCompra.setVisibility(View.VISIBLE);
-                        descuento.setVisibility(View.VISIBLE);
                         cliente.setText("Cliente (Obligatorio)");
                         cliente.setVisibility(View.VISIBLE);
                         descripcion.setVisibility(View.VISIBLE);
+                        fechaHora.setVisibility(View.VISIBLE);
+                        tipoDescuento.setVisibility(View.VISIBLE);
                         break;
                     case R.id.RBvender:
                         pagar.setVisibility(View.VISIBLE);
                         editsApartado.setVisibility(View.VISIBLE);
                         aceptarCompra.setVisibility(View.VISIBLE);
-                        descuento.setVisibility(View.VISIBLE);
                         cliente.setText("Cliente (Opcional)");
                         cliente.setVisibility(View.VISIBLE);
                         descripcion.setVisibility(View.VISIBLE);
+                        fechaHora.setVisibility(View.INVISIBLE);
+                        tipoDescuento.setVisibility(View.VISIBLE);
                         break;
 
                 }
@@ -172,6 +191,32 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                 }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
-
+        descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    final AlertDialog.Builder tipoDescuento= new AlertDialog.Builder(getActivity());
+                    tipoDescuento.setTitle("Descuentos");
+                    tipoDescuento.setMessage("Seleccion un tipo de descuento");
+                    tipoDescuento.setCancelable(false);
+                    tipoDescuento.setPositiveButton("Normal  (%)", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface tipoDescuento, int id) {
+                            tipoD.setText("Normal (%)");
+                            tipoDescuento.dismiss();
+                        }
+                    });
+                    tipoDescuento.setNegativeButton("Especial (%)", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface tipoDescuento, int id) {
+                            tipoD.setText("Especial (%)");
+                            tipoDescuento.dismiss();
+                        }
+                    });
+                    tipoDescuento.show();
+                }
+                else{
+                    tipoD.setText(" ");
+                }
+            }
+        });
     }
 }

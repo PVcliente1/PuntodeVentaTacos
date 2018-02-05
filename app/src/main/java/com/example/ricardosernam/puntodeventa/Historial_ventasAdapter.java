@@ -18,26 +18,34 @@ import java.util.ArrayList;
 public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_ventasAdapter.HistorialVentasViewHolder> {
     private ArrayList<Historial_ventas_class> itemsHistorial;
     private Context context;
+    private interfaz_OnClick Interfaz;
 
-    public Historial_ventasAdapter(Context context, ArrayList<Historial_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
+    public Historial_ventasAdapter(Context context, ArrayList<Historial_ventas_class> itemsCobrar, interfaz_OnClick Interfaz) {  ///recibe el arrayCobrar como parametro
         this.itemsHistorial=itemsCobrar;
         this.context=context;
+        this.Interfaz=Interfaz;
 
     }
 
     public class HistorialVentasViewHolder extends RecyclerView.ViewHolder {
         public TextView tipo,pagar;
         public LinearLayout estatus, fechaEntrega, deuda;
-        public Button pagarDeuda;
+        public FragmentManager manager;
 
         public HistorialVentasViewHolder(View itemView) {
             super(itemView);
             tipo=itemView.findViewById(R.id.TVtipoHistorial);
             pagar=itemView.findViewById(R.id.TVestatusHistorial);
             estatus=itemView.findViewById(R.id.LOestatus);
-            pagarDeuda=itemView.findViewById(R.id.BtnPagar);
             fechaEntrega=itemView.findViewById(R.id.LOfechaEntrega);
+            manager = ((Activity) context).getFragmentManager();
             deuda=itemView.findViewById(R.id.LOdeuda);
+            /*itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Interfaz.onClick(view);
+                }
+            });*/
         }
 
     }
@@ -53,35 +61,30 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
     }
     @Override
     public void onBindViewHolder(HistorialVentasViewHolder holder, final int position) {
-        final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.tipo.setText(itemsHistorial.get(position).getTipo());
         holder.pagar.setText(itemsHistorial.get(position).getPagar());
         if(itemsHistorial.get(position).getPagar().equals("Pagar ahora")){
             holder.pagar.setText("Pagado");
             holder.estatus.setBackgroundColor(Color.GREEN);
             holder.itemView.setFocusable(false);
-            holder.pagarDeuda.setVisibility(View.INVISIBLE);
             holder.deuda.setVisibility(View.INVISIBLE);
         }
         else{
             holder.estatus.setBackgroundColor(Color.RED);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Interfaz.onClick(view);
+                }
+            });
         }
-
         if(itemsHistorial.get(position).getTipo().equals("Venta")){
             holder.itemView.setBackgroundColor(Color.GRAY);
             holder.fechaEntrega.setVisibility(View.INVISIBLE);
-
         }
         else if(itemsHistorial.get(position).getTipo().equals("Apartado")){
             holder.itemView.setBackgroundColor(Color.CYAN);
         }
-        holder.pagarDeuda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Simon", Toast.LENGTH_LONG).show();
-                //new pagar_DialogFragment(itemsHistorial.get(position).getTipo(),(itemsHistorial.get(position).getPagar())).show(manager,"pagarDiaogFragment");
-            }
-        });
     }
 
 
