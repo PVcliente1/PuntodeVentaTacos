@@ -38,9 +38,9 @@ public class Compras extends Fragment{
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
             switch (i){
                 case R.id.RBexistente:
-                    Toast.makeText(getContext(),"JOTO",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
                 case R.id.RBnuevo:
-                    Toast.makeText(getContext(),"PUÑAL",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
 
             }
 
