@@ -102,6 +102,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         descuento=getActivity().findViewById(R.id.CBDescuento);
         tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
         tipoDescuento=getActivity().findViewById(R.id.LOdescuento);
+
         opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
