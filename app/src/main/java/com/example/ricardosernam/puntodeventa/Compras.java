@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -24,14 +25,31 @@ public class Compras extends Fragment{
     private Button escan;
     private EditText codigoBarras;
     private RadioButton RBexistente,RBnuevo;
+    private RadioGroup opciones;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
+        opciones=view.findViewById(R.id.RGopcionesCompra);
+        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+            switch (i){
+                case R.id.RBexistente:
+                    Toast.makeText(getContext(),"JOTO",Toast.LENGTH_LONG).show();
+                case R.id.RBnuevo:
+                    Toast.makeText(getContext(),"PUÑAL",Toast.LENGTH_LONG).show();
+
+            }
+
+            }
+        });
+
         RBexistente=(RadioButton)view.findViewById(R.id.RBexistente);
         RBnuevo=(RadioButton)view.findViewById(R.id.RBnuevo);
+
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
 
@@ -56,26 +74,5 @@ public class Compras extends Fragment{
             codigoBarras.setText(data.getStringExtra("BARCODE"));
         }
     }
-
-    public void onRadioButtonClicked(View view) {
-
-        // Is the button now checked?
-
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // hacemos un case con lo que ocurre cada vez que pulsemos un botón
-
-        switch(view.getId()) {
-            case R.id.RBexistente:
-                if (checked)
-                    Toast.makeText(getContext(),"HOLA",Toast.LENGTH_LONG).show();
-                    break;
-            case R.id.RBnuevo:
-                if (checked)
-                    Toast.makeText(getContext(),"JOTO",Toast.LENGTH_LONG).show();
-                    break;
-        }
-    }
-
 
 }
