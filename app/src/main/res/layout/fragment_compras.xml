@@ -21,18 +21,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <RadioButton
+                android:id="@+id/RBexistente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Existente"
                 android:layout_marginLeft="60dp"
-                android:textSize="18dp"/>
+                android:checked="true"
+                android:text="Existente"
+                android:textSize="18dp"
+                android:onClick="onRadioButtonClicked"/>
+
             <RadioButton
+                android:id="@+id/RBnuevo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nuevo"
                 android:layout_marginLeft="10dp"
-                android:textSize="18dp"/>
+                android:text="Nuevo"
+                android:textSize="18dp"
+                android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
 
 
@@ -64,7 +71,7 @@
 
             <Button
                 android:id="@+id/BtnEscanearCodigo"
-                android:layout_marginLeft="10"
+                android:layout_marginLeft="10dp"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:text="Scan" />
