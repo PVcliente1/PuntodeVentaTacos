@@ -32,20 +32,6 @@ public class Compras extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
-        opciones=view.findViewById(R.id.RGopcionesCompra);
-        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            switch (i){
-                case R.id.RBexistente:
-                    Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
-                case R.id.RBnuevo:
-                    Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
-
-            }
-
-            }
-        });
 
         RBexistente=(RadioButton)view.findViewById(R.id.RBexistente);
         RBnuevo=(RadioButton)view.findViewById(R.id.RBnuevo);
@@ -64,7 +50,27 @@ public class Compras extends Fragment{
         return view;
     }
 
-    //metodo para obtener resultados
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        opciones=getActivity().findViewById(R.id.RGopcionesCompra);
+        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.RBexistente:
+                        Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
+                    case R.id.RBnuevo:
+                        Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+        });
+
+    }
+
+        //metodo para obtener resultados
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
