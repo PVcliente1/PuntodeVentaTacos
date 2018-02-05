@@ -88,17 +88,33 @@
                 android:background="@layout/bordes"
                 android:text=" " />
 
-            <Button
-                android:id="@+id/BtnDescuento"
-                android:layout_width="81dp"
-                android:layout_height="54dp"
+            <LinearLayout
+                android:id="@+id/LOdescuento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="-40dp"
-                android:backgroundTint="@color/ic_launcher_background"
-                android:drawableTop="@mipmap/ic_exposure_black_24dp"
-                android:inputType="textMultiLine"
-                android:text="Descuento"
-                android:textSize="10sp" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:text="Descuento"/>
+                <CheckBox
+                    android:id="@+id/CBDescuento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/ic_launcher_background"
+                    android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/TVtipoDescuento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=" "/>
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/ETcliente"

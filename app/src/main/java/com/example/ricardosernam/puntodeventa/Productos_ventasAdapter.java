@@ -22,7 +22,7 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
         public TextView nombreP;
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
-            nombreP = (TextView) v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
+            nombreP = v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
             v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
                 @Override
                 public void onClick(View view) {
