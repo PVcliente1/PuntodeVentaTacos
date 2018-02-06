@@ -8,15 +8,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ventasAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
-    private ArrayList<Productos_ventas_class> itemsProductos;
+public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
+    private ArrayList<Pro_ventas_class> itemsProductos;
     private interfaz_OnClick Interfaz;
 
-    public Productos_ventasAdapter(ArrayList<Productos_ventas_class> itemsProductos, interfaz_OnClick Interfaz) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(ArrayList<Pro_ventas_class> itemsProductos, interfaz_OnClick Interfaz) {  ///recibe el arrayProductos como parametro y la interface
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
     }
-    public Productos_ventasAdapter(ArrayList<Productos_ventas_class> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(ArrayList<Pro_ventas_class> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
         this.itemsProductos = itemsProductos;
     }
 
@@ -42,7 +42,7 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
 
     @Override
     public Productos_ventasViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tarjetas_productos, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tarjetas_productos_ventas, viewGroup, false);
         return new Productos_ventasViewHolder(v);
     }
 
