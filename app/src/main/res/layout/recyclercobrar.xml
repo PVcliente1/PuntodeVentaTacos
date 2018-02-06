@@ -43,6 +43,7 @@
                              android:text="Venta" />
                      </RadioGroup>
                 </LinearLayout>
+
                 <android.support.v7.widget.RecyclerView
                 android:id="@+id/RVrecicladorCobrar"
                 android:layout_width="match_parent"
