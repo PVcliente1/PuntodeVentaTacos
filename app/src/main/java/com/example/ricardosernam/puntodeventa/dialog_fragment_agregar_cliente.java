@@ -12,18 +12,16 @@ import android.widget.Button;
 
 
 public class dialog_fragment_agregar_cliente extends DialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBERll
+    private Button guardar_cliente, cancelar_cliente;
 
-    private Button agregar_cliente, guardar_cliente, cancelar_cliente;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        getDialog().setTitle("Agregar Cliente");  //Agregar Título a dialog fragment
 
+        getDialog().setTitle("My Dialog Title");
         View view = inflater.inflate(R.layout.fragment_dialog_fragment_agregar_cliente, container, false);
-        guardar_cliente=view.findViewById(R.id.BtnAgregarCliente);
+
+        guardar_cliente=view.findViewById(R.id.BtnGuardarCliente);
         cancelar_cliente=view.findViewById(R.id.BtnCancelarAgregarCliente);
 
         guardar_cliente.setOnClickListener(new View.OnClickListener() {
