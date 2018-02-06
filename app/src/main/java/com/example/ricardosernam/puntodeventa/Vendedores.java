@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 
 public class Vendedores extends Fragment {
-    ListView lista;
     ArrayList<listaVendedores> items;
 
     //recycler
@@ -31,9 +30,7 @@ public class Vendedores extends Fragment {
 
         items = new ArrayList<>();
 
-        for (int i = 0; i < 15;){
-            items.add(new listaVendedores("Vendedor num " + i));
-        }
+        items.add(new listaVendedores("Juan"));
 
         recycler = view.findViewById(R.id.RVvendedores);
         lManager = new LinearLayoutManager(getActivity());
