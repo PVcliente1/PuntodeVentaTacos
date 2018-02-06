@@ -24,17 +24,30 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class Compras extends Fragment{
     private Button escan;
     private EditText codigoBarras;
-    private RadioButton RBexistente,RBnuevo;
     private RadioGroup opciones;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
+        opciones=view.findViewById(R.id.RGopcionesCompra);
 
-        RBexistente=(RadioButton)view.findViewById(R.id.RBexistente);
-        RBnuevo=(RadioButton)view.findViewById(R.id.RBnuevo);
+        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.RBexistente:
+                        Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.RBnuevo:
+                        Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
+                        break;
+                }
+
+            }
+        });
 
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
@@ -46,29 +59,31 @@ public class Compras extends Fragment{
                 startActivityForResult(intent,2);//inicializar el activity con RequestCode2
             }
         });
-
         return view;
     }
 
-
+    /*@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         opciones=getActivity().findViewById(R.id.RGopcionesCompra);
+
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.RBexistente:
                         Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
+                        break;
                     case R.id.RBnuevo:
                         Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
-
+                        break;
                 }
 
             }
         });
 
-    }
+    }*/
 
         //metodo para obtener resultados
     @Override

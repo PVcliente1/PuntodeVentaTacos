@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
-                android:checked="true"
-                android:onClick="onRadioButtonClicked"
+                android:checked="false"
                 android:text="Existente"
                 android:textSize="18dp" />
 
@@ -38,7 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:onClick="onRadioButtonClicked"
                 android:text="Nuevo"
                 android:textSize="18dp" />
         </RadioGroup>

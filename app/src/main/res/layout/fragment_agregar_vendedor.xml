@@ -1,0 +1,115 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ricardosernam.puntodeventa.AgregarVendedor">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="164dp"
+            android:layout_height="43dp"
+            android:gravity="center"
+            android:text="Nuevo Vendedor"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="110dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <EditText
+            android:id="@+id/ETNombreVendedor"
+            android:layout_width="309dp"
+            android:layout_height="49dp"
+            android:ems="10"
+            android:hint="Nombre"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="76dp" />
+
+        <EditText
+            android:id="@+id/ETApPat"
+            android:layout_width="309dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Apellido Paterno"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/ETNombreVendedor"
+            tools:layout_editor_absoluteX="38dp" />
+
+        <EditText
+            android:id="@+id/ETApMat"
+            android:layout_width="309dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Apellido Materno"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/ETApPat"
+            tools:layout_editor_absoluteX="38dp" />
+
+        <EditText
+            android:id="@+id/ETApMat2"
+            android:layout_width="309dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Puesto"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/ETApMat"
+            tools:layout_editor_absoluteX="38dp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="315dp" />
+
+        <RadioGroup
+            android:id="@+id/RadioGroupSexo"
+            android:layout_width="141dp"
+            android:layout_height="61dp"
+            tools:layout_editor_absoluteX="122dp"
+            tools:layout_editor_absoluteY="315dp">
+
+            <RadioButton
+                android:id="@+id/radioButtonHombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Masculino" />
+
+            <RadioButton
+                android:id="@+id/radioButtonMujer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Femenino" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnAgregarVendedor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="397dp" />
+
+        <Button
+            android:id="@+id/btnAtras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Atras"
+            tools:layout_editor_absoluteX="226dp"
+            tools:layout_editor_absoluteY="397dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>
