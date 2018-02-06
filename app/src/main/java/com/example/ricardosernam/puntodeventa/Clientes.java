@@ -17,7 +17,7 @@ public class Clientes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_dialog_fragment_agregar_cliente, container, false);
+        View view = inflater.inflate(R.layout.fragment_clientes, container, false);
 
         agregar_cliente = view.findViewById(R.id.BtnAgregarCliente);
 

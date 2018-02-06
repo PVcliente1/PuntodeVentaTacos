@@ -16,6 +16,9 @@ public class Productos_ventasAdapter extends RecyclerView.Adapter <Productos_ven
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
     }
+    public Productos_ventasAdapter(ArrayList<Productos_ventas_class> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
+        this.itemsProductos = itemsProductos;
+    }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
