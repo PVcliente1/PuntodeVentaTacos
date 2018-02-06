@@ -26,6 +26,7 @@ public class Compras extends Fragment{
     private EditText codigoBarras;
     private RadioButton RBexistente,RBnuevo;
     private RadioGroup opciones;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +47,6 @@ public class Compras extends Fragment{
                 startActivityForResult(intent,2);//inicializar el activity con RequestCode2
             }
         });
-
         return view;
     }
 
