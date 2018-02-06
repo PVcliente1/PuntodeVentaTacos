@@ -2,7 +2,6 @@ package com.example.ricardosernam.puntodeventa;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
@@ -12,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +18,7 @@ import java.util.ArrayList;
 @SuppressLint("ValidFragment")
 public class Ventas extends Fragment{     /////Fragment de categoria ventas
     private FragmentManager fm;
-    private ArrayList<Productos_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
+    private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
     private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     private Button productos, escanear, historial;
@@ -44,12 +39,12 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /////////////productos de ejemplo//////////////
-        itemsProductos.add(new Productos_ventas_class("Tacos"));
-        itemsProductos.add(new Productos_ventas_class("Tortas"));
-        itemsProductos.add(new Productos_ventas_class("Quesadillas"));
-        itemsProductos.add(new Productos_ventas_class("Refrescos"));
-        itemsProductos.add(new Productos_ventas_class("Cervezas"));
-        itemsProductos.add(new Productos_ventas_class("Pizza"));
+        itemsProductos.add(new Pro_ventas_class("Tacos"));
+        itemsProductos.add(new Pro_ventas_class("Tortas"));
+        itemsProductos.add(new Pro_ventas_class("Quesadillas"));
+        itemsProductos.add(new Pro_ventas_class("Refrescos"));
+        itemsProductos.add(new Pro_ventas_class("Cervezas"));
+        itemsProductos.add(new Pro_ventas_class("Pizza"));
     }
 
     @Override

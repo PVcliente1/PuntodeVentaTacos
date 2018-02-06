@@ -8,22 +8,30 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class vendedoresAdapter extends RecyclerView.Adapter <vendedoresAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
-    private ArrayList<listaVendedores> itemsProductos;
+public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
+    private ArrayList<Pro_ventas_class> itemsProductos;
     private interfaz_OnClick Interfaz;
 
-    public vendedoresAdapter(ArrayList<listaVendedores> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
+    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, interfaz_OnClick Interfaz) {  ///recibe el arrayProductos como parametro y la interface
+        this.itemsProductos = itemsProductos;
+        this.Interfaz=Interfaz;
+    }
+    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
         this.itemsProductos = itemsProductos;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
-        public TextView nombre;
-
+        public TextView nombreP;
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
-            nombre = v.findViewById(R.id.TVnombre);
-
+            nombreP = v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
+            v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
+                @Override
+                public void onClick(View view) {
+                    Interfaz.onClick(view);
+                }
+            });
         }
     }
     @Override
@@ -40,6 +48,6 @@ public class vendedoresAdapter extends RecyclerView.Adapter <vendedoresAdapter.P
 
     @Override
     public void onBindViewHolder(Productos_ventasViewHolder holder, int position) {
-        holder.nombre.setText(itemsProductos.get(position).showNombre());
+        holder.nombreP.setText(itemsProductos.get(position).getNombre());
     }
 }

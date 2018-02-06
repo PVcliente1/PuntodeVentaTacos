@@ -6,13 +6,10 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +20,7 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
 
-    private ArrayList<Productos_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
+    private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
     public Pro_DialogFragment(ArrayList itemsProductos, ArrayList itemsCobrar){
@@ -46,7 +43,7 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new Productos_ventasAdapter(itemsProductos, new interfaz_OnClick() { ///llamamos al adaptador y le enviamos el array y la interface  como parametro (la interface es un onclick)
+        adapter = new Pro_ventasAdapter(itemsProductos, new interfaz_OnClick() { ///llamamos al adaptador y le enviamos el array y la interface  como parametro (la interface es un onclick)
             @Override
             public void onClick(View v) {  ////cuando se presione un Cardview...
                 dismiss(); ////cerramos la ventana

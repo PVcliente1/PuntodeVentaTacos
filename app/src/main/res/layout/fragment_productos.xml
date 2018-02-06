@@ -39,19 +39,23 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="Ingresa el nombre"
             android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="40dp"
-            android:layout_height="57dp"
-            android:drawableTop="@android:drawable/ic_search_category_default" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Escanear"
+            />
+        <!--android:drawableTop="@android:drawable/ic_search_category_default" />-->
     </LinearLayout>
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textSize="18dp"
         android:text="Productos" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RVproductos"
