@@ -10,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class AgregarVendedor extends DialogFragment {
-
+public class AgregarProvedor extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_agregar_vendedor, container, false);
+        return inflater.inflate(R.layout.fragment_agregar_provedor, container, false);
     }
-
 }
