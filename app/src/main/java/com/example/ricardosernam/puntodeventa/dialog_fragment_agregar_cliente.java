@@ -20,6 +20,7 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getDialog().setTitle("Agregar Cliente");  //Agregar Título a dialog fragment
 
         View view = inflater.inflate(R.layout.fragment_dialog_fragment_agregar_cliente, container, false);
         guardar_cliente=view.findViewById(R.id.BtnAgregarCliente);
