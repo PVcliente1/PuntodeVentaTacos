@@ -1,7 +1,10 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,7 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.dialog_fragment_agregar_cliente, container, false);
+        View view = inflater.inflate(R.layout.fragment_dialog_fragment_agregar_cliente, container, false);
 
         guardar_cliente=view.findViewById(R.id.BtnGuardarCliente);
         cancelar_cliente=view.findViewById(R.id.BtnCancelarAgregarCliente);
