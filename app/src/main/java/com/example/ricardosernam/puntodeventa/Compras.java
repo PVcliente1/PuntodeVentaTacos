@@ -68,29 +68,6 @@ public class Compras extends Fragment{
         return view;
     }
 
-    /*@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        opciones=getActivity().findViewById(R.id.RGopcionesCompra);
-
-        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.RBexistente:
-                        Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
-                        break;
-                    case R.id.RBnuevo:
-                        Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
-                        break;
-                }
-
-            }
-        });
-
-    }*/
-
         //metodo para obtener resultados
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
