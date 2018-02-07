@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,16 +8,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 
-public class Productos extends Fragment {
+@SuppressLint("ValidFragment")
+public class Productos extends Fragment{
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
+    private Button nuevoProducto;
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
+    @SuppressLint("ValidFragment")
+    public Productos(ArrayList itemsProductos){
+        this.itemsProductos=itemsProductos;
+    }
+    @SuppressLint("ValidFragment")
+    public Productos(){
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +46,18 @@ public class Productos extends Fragment {
                              Bundle savedInstanceState) {
 
        View view=inflater.inflate(R.layout.fragment_productos, container, false);
+        nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
         recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new ProductosAdapter(itemsProductos);
+        adapter = new ProductosAdapter(getActivity(), itemsProductos);
         recycler.setAdapter(adapter);
+        nuevoProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new nuevoProducto_DialogFragment().show(getActivity().getFragmentManager(), "nuevoProducto");
+            }
+        });
        return view;
     }
 
