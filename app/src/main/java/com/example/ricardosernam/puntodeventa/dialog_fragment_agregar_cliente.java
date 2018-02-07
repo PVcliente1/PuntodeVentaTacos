@@ -18,7 +18,7 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_dialog_fragment_agregar_cliente, container, false);
+        View view = inflater.inflate(R.layout.dialog_fragment_agregar_cliente, container, false);
 
         guardar_cliente=view.findViewById(R.id.BtnGuardarCliente);
         cancelar_cliente=view.findViewById(R.id.BtnCancelarAgregarCliente);
@@ -35,6 +35,7 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
                 dismiss();
             }
         });
+        getDialog().setTitle("Agregar Cliente");
         return view;
 
     }
