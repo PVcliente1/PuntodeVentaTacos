@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ public class Compras extends Fragment{
     private EditText codigoBarras, etcodigocapturado;
     private RadioGroup opciones;
     private TextView codigo;
+    private CheckBox agregaraproductos;     //checkbox para agregar a productos
+    private LinearLayout precioventa;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +41,9 @@ public class Compras extends Fragment{
         opciones=view.findViewById(R.id.RGopcionesCompra);
         etcodigocapturado=view.findViewById(R.id.ETcodigoCapturado);
         codigo=view.findViewById(R.id.TVcodigo);
+        agregaraproductos=view.findViewById(R.id.CBagregarProductos);
+        precioventa=view.findViewById(R.id.LLprecioVenta);
+
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -54,6 +61,11 @@ public class Compras extends Fragment{
 
             }
         });
+        if (agregaraproductos.isChecked()==true) {
+            precioventa.setVisibility(View.VISIBLE);
+        }else{
+            precioventa.setVisibility(View.GONE);
+        }
 
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
