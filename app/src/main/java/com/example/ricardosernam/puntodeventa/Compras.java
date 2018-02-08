@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -61,11 +62,16 @@ public class Compras extends Fragment{
 
             }
         });
-        if (agregaraproductos.isChecked()==true) {
-            precioventa.setVisibility(View.VISIBLE);
-        }else{
-            precioventa.setVisibility(View.GONE);
-        }
+        agregaraproductos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    precioventa.setVisibility(View.VISIBLE);
+                }else{
+                    precioventa.setVisibility(View.GONE);
+                }
+            }
+        });
 
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
