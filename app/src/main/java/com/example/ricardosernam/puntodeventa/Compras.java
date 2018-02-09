@@ -11,9 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -23,8 +27,11 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Compras extends Fragment{
     private Button escan;
-    private EditText codigoBarras;
+    private EditText codigoBarras, etcodigocapturado;
     private RadioGroup opciones;
+    private TextView codigo;
+    private CheckBox agregaraproductos;     //checkbox para agregar a productos
+    private LinearLayout precioventa;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,19 +40,36 @@ public class Compras extends Fragment{
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
         opciones=view.findViewById(R.id.RGopcionesCompra);
+        etcodigocapturado=view.findViewById(R.id.ETcodigoCapturado);
+        codigo=view.findViewById(R.id.TVcodigo);
+        agregaraproductos=view.findViewById(R.id.CBagregarProductos);
+        precioventa=view.findViewById(R.id.LLprecioVenta);
+
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.RBexistente:
-                        Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
+                        etcodigocapturado.setVisibility(View.INVISIBLE);
+                        codigo.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.RBnuevo:
-                        Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
+                        etcodigocapturado.setVisibility(View.VISIBLE);
+                        codigo.setVisibility(View.VISIBLE);
                         break;
                 }
 
+            }
+        });
+        agregaraproductos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    precioventa.setVisibility(View.VISIBLE);
+                }else{
+                    precioventa.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -61,29 +85,6 @@ public class Compras extends Fragment{
         });
         return view;
     }
-
-    /*@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        opciones=getActivity().findViewById(R.id.RGopcionesCompra);
-
-        opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.RBexistente:
-                        Toast.makeText(getActivity(),"JOTO",Toast.LENGTH_LONG).show();
-                        break;
-                    case R.id.RBnuevo:
-                        Toast.makeText(getActivity(),"PUÑAL",Toast.LENGTH_LONG).show();
-                        break;
-                }
-
-            }
-        });
-
-    }*/
 
         //metodo para obtener resultados
     @Override

@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
-                android:checked="false"
+                android:checked="true"
                 android:text="Existente"
                 android:textSize="18dp" />
 
@@ -48,8 +48,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="70dp"
         android:orientation="vertical"
         android:id="@+id/linearLayout3">
@@ -61,7 +61,7 @@
 
             <EditText
                 android:id="@+id/ETCapturarProducto"
-                android:layout_width="175dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:hint="Nombre producto"
                 android:layout_marginLeft="10dp"
@@ -70,35 +70,12 @@
 
             <Button
                 android:id="@+id/BtnEscanearCodigo"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="30dp"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:text="Scan" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Código:"
-                android:layout_marginLeft="10dp"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/ETcodigoCapturado"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:ems="10"
-                android:hint="Código"
-                android:inputType="number"
-                android:textAlignment="center" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -124,6 +101,7 @@
                 android:textAlignment="center" />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -139,14 +117,38 @@
             <EditText
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/TVcodigo"
+                android:text="Código:"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/ETcodigoCapturado"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Código"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:visibility="visible" />/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Existentes:"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10sp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -165,6 +167,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/TVprecioCompraExistente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Precio (Compra):"
@@ -196,19 +199,30 @@
                 android:textSize="18sp" />
 
             <CheckBox
+                android:id="@+id/CBagregarProductos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
+
+
+
+        <!--Colocamos el atributo de visibiliti=gone para que al iniciar no aparezca
+        sino hasta ser presionado el Checkbox -->
+
         <LinearLayout
+            android:id="@+id/LLprecioVenta"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
+
             <TextView
+                android:id="@+id/TVprecioVenta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Precio (Venta):"
                 android:layout_marginLeft="10dp"
+                android:text="Precio (Venta):"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -216,22 +230,33 @@
                 android:id="@+id/ETprecioVenta"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/botones"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:hint="$"
                 android:inputType="number"
                 android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:textAlignment="center"
+            android:visibility="visible">
+
             <Button
-                android:layout_width="45dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="X"/>
+                android:text="X" />
+
             <Button
-                android:layout_width="45dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="ok"/>
+                android:text="ok" />
         </LinearLayout>
     </LinearLayout>
 
