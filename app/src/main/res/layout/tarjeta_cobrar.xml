@@ -5,7 +5,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@layout/bordes"
+        android:background="@drawable/bordes_grosor"
         android:orientation="vertical">
 
         <LinearLayout
@@ -113,7 +113,7 @@
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:background="@layout/bordes"
+                android:background="@drawable/bordes_grosor"
                 android:text=" " />
             <Button
                 android:id="@+id/BtnInfo"
