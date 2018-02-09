@@ -86,7 +86,7 @@
                 android:layout_height="30dp"
                 android:gravity="left"
                 android:layout_marginTop="10dp"
-                android:background="@layout/bordes"
+                android:background="@drawable/bordes_grosor"
                 android:text=" " />
 
             <LinearLayout
