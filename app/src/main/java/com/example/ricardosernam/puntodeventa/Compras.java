@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class Compras extends Fragment{
     private TextView codigo;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
     private LinearLayout precioventa;
+    private Spinner unidad;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +47,10 @@ public class Compras extends Fragment{
         codigo=view.findViewById(R.id.TVcodigo);
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
         precioventa=view.findViewById(R.id.LLprecioVenta);
+        unidad=view.findViewById(R.id.SpnUnidad);
+
+        String[] letra = {"A","B","C","D","E"};
+        unidad.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,letra));
 
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -62,6 +69,7 @@ public class Compras extends Fragment{
 
             }
         });
+
         agregaraproductos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
