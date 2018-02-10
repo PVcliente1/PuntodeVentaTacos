@@ -23,45 +23,65 @@
             android:orientation="horizontal">
 
             <RadioGroup
+                android:id="@+id/RGopcionesFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/RBdia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dia" />
 
                 <RadioButton
+                    android:id="@+id/RBperiodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="Periodo" />
             </RadioGroup>
-
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/LLopcionesInicio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
             <Button
+                android:id="@+id/BtnFechaInicial"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:drawableTint="@android:color/background_dark"
                 android:drawableTop="@android:drawable/ic_menu_my_calendar" />
 
             <EditText
+                android:textSize="13dp"
+                android:id="@+id/ETfechaInicial"
                 android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_height="40dp"
                 android:hint="de: " />
-
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/LLopcionesFinal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
             <Button
+                android:id="@+id/BtnFechaFinal"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:drawableTint="@android:color/background_dark"
                 android:drawableTop="@android:drawable/ic_menu_my_calendar" />
 
             <EditText
+                android:textSize="13dp"
+                android:id="@+id/ETfechaFinal"
                 android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_height="40dp"
                 android:hint="a: " />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
