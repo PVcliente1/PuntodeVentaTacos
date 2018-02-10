@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,45 +12,39 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Reportes extends Fragment {
-    public GridLayout reportes;
+    public TableLayout reportes;
+    public LinearLayout layout;
+    public FragmentManager manager;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.ejemplo, container, false);
-
-        /*reportes=view.findViewById(R.id.GLgrid);
-        int childCount=reportes.getChildCount();
-
-        for (int i= 0; i < childCount; i++) {
-            //CardView conta = (CardView) reportes.getChildAt(childCount);
-            LinearLayout conta = (LinearLayout) reportes.getChildAt(childCount);
-            conta.setOnClickListener(new View.OnClickListener() {
+        View view=inflater.inflate(R.layout.fragment_reportes, container, false);
+        manager= getFragmentManager();
+        //manager2=getChildFragmentManager();
+        reportes=view.findViewById(R.id.TLreportes);
+            for(int i=0; i<reportes.getChildCount();i++){  ///me dara 4
+                final TableRow row = (TableRow) reportes.getChildAt(i); ///me dara 2
+                for(int j=0;j<row.getChildCount();j++){
+                    LinearLayout Card = (LinearLayout) row.getChildAt(j);
+                    Card.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Entre", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Somos ", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.SVreportes, new formatoReportes_Fragments()).commit(); ///sustituimos el layout fragment por el del recycler de cobra
                 }
-            });
-        }
-        /*conta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"Entre", Toast.LENGTH_SHORT).show();
+                });
+                }
             }
-        });*/
-        /*reportes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), reportes.getChildCount(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
-        /*reportes.getChildAt(reportes.getChildCount()).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"Entre", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-        //getFragmentManager().beginTransaction().replace(R.id.LOcobrar, new formatoReportes_Fragments()).commit(); ///sustituimos el layout fragment por el del recycler de cobrar
+
         return view;
     }
 }
