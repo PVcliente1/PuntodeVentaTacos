@@ -58,7 +58,7 @@
                 android:layout_marginTop="0dp"
                 android:gravity="bottom"
                 android:orientation="horizontal"
-                app:cardBackgroundColor="?android:attr/floatingToolbarDividerColor"
+                app:cardBackgroundColor="?android:attr/windowBackground"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="4dp">
 

@@ -28,8 +28,9 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
 public class Compras extends Fragment{
+    private LinearLayout existentes;
     private Button escan;
-    private EditText codigoBarras, etcodigocapturado;
+    private EditText codigoBarras, capturarProducto;
     private RadioGroup opciones;
     private TextView codigo;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
@@ -43,14 +44,14 @@ public class Compras extends Fragment{
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
         opciones=view.findViewById(R.id.RGopcionesCompra);
-        etcodigocapturado=view.findViewById(R.id.ETcodigoCapturado);
-        codigo=view.findViewById(R.id.TVcodigo);
+        capturarProducto=view.findViewById(R.id.ETCapturarProducto);
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
         precioventa=view.findViewById(R.id.LLprecioVenta);
+       existentes=view.findViewById(R.id.LLexistentes);
         unidad=view.findViewById(R.id.SpnUnidad);
 
-        String[] letra = {"A","B","C","D","E"};
-        unidad.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,letra));
+        String[] unidades= {"Litro","Kilo","Gramos","Metro","Pieza"};
+        unidad.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,unidades));
 
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -58,12 +59,12 @@ public class Compras extends Fragment{
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.RBexistente:
-                        etcodigocapturado.setVisibility(View.INVISIBLE);
-                        codigo.setVisibility(View.INVISIBLE);
+                        capturarProducto.setHint("Nombre");
+                        existentes.setVisibility(View.VISIBLE);
                         break;
                     case R.id.RBnuevo:
-                        etcodigocapturado.setVisibility(View.VISIBLE);
-                        codigo.setVisibility(View.VISIBLE);
+                        capturarProducto.setHint("Código (Opcional)");
+                        existentes.setVisibility(View.GONE);
                         break;
                 }
 

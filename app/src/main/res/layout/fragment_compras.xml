@@ -63,8 +63,8 @@
                 android:id="@+id/ETCapturarProducto"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Nombre producto"
                 android:layout_marginLeft="10dp"
+                android:hint="Nombre"
                 android:inputType="text"
                 android:textAlignment="center" />
 
@@ -120,29 +120,14 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                />
+                /><![CDATA[
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/TVcodigo"
-                android:text="Código:"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+            />
 
-            <EditText
-                android:id="@+id/ETcodigoCapturado"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:hint="Código"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:visibility="visible" />/>
-
+        ]]>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/LLexistentes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"

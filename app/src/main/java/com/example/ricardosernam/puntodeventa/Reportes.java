@@ -38,7 +38,6 @@ public class Reportes extends Fragment {
                     Card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Somos ", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.SVreportes, new formatoReportes_Fragments()).commit(); ///sustituimos el layout fragment por el del recycler de cobra
                 }
                 });
