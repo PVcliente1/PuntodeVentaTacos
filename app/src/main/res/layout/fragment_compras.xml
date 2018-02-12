@@ -3,23 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
 <LinearLayout
-    android:layout_width="wrap_content"
+    android:gravity="center"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
     android:layout_marginTop="5dp">
 
     <LinearLayout
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
 
         <RadioGroup
             android:id="@+id/RGopcionesCompra"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -55,23 +56,22 @@
         android:id="@+id/linearLayout3">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
             <EditText
                 android:id="@+id/ETCapturarProducto"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Nombre producto"
                 android:layout_marginLeft="10dp"
+                android:hint="Nombre"
                 android:inputType="text"
                 android:textAlignment="center" />
 
             <Button
                 android:id="@+id/BtnEscanearCodigo"
                 android:layout_marginLeft="30dp"
-                android:layout_width="75dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Scan" />
         </LinearLayout>
@@ -80,6 +80,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -92,7 +93,7 @@
 
             <EditText
                 android:id="@+id/ETnombreProducto"
-                android:layout_width="140dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
@@ -105,6 +106,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -117,32 +119,19 @@
             <EditText
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/TVcodigo"
-                android:text="Código:"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/ETcodigoCapturado"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Código"
                 android:inputType="number"
-                android:textAlignment="center"
-                android:visibility="visible" />/>
+                /><![CDATA[
 
+            />
+
+        ]]>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/LLexistentes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -164,7 +153,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:id="@+id/TVprecioCompraExistente"
@@ -188,7 +178,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/TVunidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unidad:"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/SpnUnidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -259,6 +272,4 @@
                 android:text="ok" />
         </LinearLayout>
     </LinearLayout>
-
-
 </RelativeLayout>

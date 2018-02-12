@@ -108,14 +108,14 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.RBcotizar:
-                        pagar.setVisibility(View.INVISIBLE);
+                        pagar.setVisibility(View.GONE);
                         //editsApartado.setEnabled(false);
-                        editsApartado.setVisibility(View.INVISIBLE);
-                        aceptarCompra.setVisibility(View.INVISIBLE);
-                        cliente.setVisibility(View.INVISIBLE);
-                        descripcion.setVisibility(View.INVISIBLE);
-                        fechaHora.setVisibility(View.INVISIBLE);
-                        tipoDescuento.setVisibility(View.INVISIBLE);
+                        editsApartado.setVisibility(View.GONE);
+                        aceptarCompra.setVisibility(View.GONE);
+                        cliente.setVisibility(View.GONE);
+                        descripcion.setVisibility(View.GONE);
+                        fechaHora.setVisibility(View.GONE);
+                        tipoDescuento.setVisibility(View.GONE);
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
