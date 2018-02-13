@@ -28,13 +28,12 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
 public class Compras extends Fragment{
-    private LinearLayout existentes;
-    private Button escan;
-    private EditText codigoBarras, capturarProducto;
+    private LinearLayout existentes,agregar;
+    private TextView nombre, cantidadExistentes, totalCompra;
+    private Button escan,aceptar,cancelar;
+    private EditText capturarProducto,cantidad,precioCompra, precioVenta;
     private RadioGroup opciones;
-    private TextView codigo;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
-    private LinearLayout precioventa;
     private Spinner unidad;
 
     @Override
@@ -44,11 +43,31 @@ public class Compras extends Fragment{
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
         opciones=view.findViewById(R.id.RGopcionesCompra);
+        ////editText
         capturarProducto=view.findViewById(R.id.ETCapturarProducto);
+        cantidad=view.findViewById(R.id.ETcantidadCompra);
+        precioCompra=view.findViewById(R.id.ETprecioCompra);
+        precioVenta=view.findViewById(R.id.ETprecioVenta);
+        ///botones
+        aceptar=view.findViewById(R.id.BtnAceptarCompra);
+        cancelar=view.findViewById(R.id.BtnCancelarCompra);
+        escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
+
+        //textviews
+        cantidadExistentes= view.findViewById(R.id.TVexistentes);
+        nombre= view.findViewById(R.id.TVnombreCompra);
+        totalCompra= view.findViewById(R.id.TVtotalCompra);
+
+
+
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
-        precioventa=view.findViewById(R.id.LLprecioVenta);
-       existentes=view.findViewById(R.id.LLexistentes);
         unidad=view.findViewById(R.id.SpnUnidad);
+
+        ///layouts
+        agregar=view.findViewById(R.id.LLagregarProductos);
+       existentes=view.findViewById(R.id.LLexistentes);
+
+
 
         String[] unidades= {"Litro","Kilo","Gramos","Metro","Pieza"};
         unidad.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,unidades));
@@ -59,7 +78,7 @@ public class Compras extends Fragment{
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.RBexistente:
-                        capturarProducto.setHint("Nombre");
+                        capturarProducto.setHint("Ingresa Nombre");
                         existentes.setVisibility(View.VISIBLE);
                         break;
                     case R.id.RBnuevo:
@@ -75,15 +94,14 @@ public class Compras extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    precioventa.setVisibility(View.VISIBLE);
+                    agregar.setVisibility(View.VISIBLE);
                 }else{
-                    precioventa.setVisibility(View.GONE);
+                    agregar.setVisibility(View.GONE);
                 }
             }
         });
 
-        escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
-        codigoBarras = (EditText)view.findViewById(R.id.ETCapturarProducto);
+
 
         escan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +110,21 @@ public class Compras extends Fragment{
                 startActivityForResult(intent,2);//inicializar el activity con RequestCode2
             }
         });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VaciarFormulario();
+                Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
+            }
+        });
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VaciarFormulario();
+            }
+        });
+
         return view;
     }
 
@@ -102,8 +135,23 @@ public class Compras extends Fragment{
         //Codigo 2
         if (requestCode == 2 && data != null) {
             //obtener resultados
-            codigoBarras.setText(data.getStringExtra("BARCODE"));
+            capturarProducto.setText(data.getStringExtra("BARCODE"));
         }
+    }
+    public void VaciarFormulario(){
+        capturarProducto.setText(" ");
+        cantidad.setText(" ");
+        precioCompra.setText(" ");
+        precioVenta.setText(" ");
+
+        //textviews
+        cantidadExistentes.setText(" ");
+        nombre.setText(" ");
+        totalCompra.setText(" ");
+
+
+        agregaraproductos.setChecked(false);
+        unidad.setSelection(0);
     }
 
 }
