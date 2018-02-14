@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +26,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +42,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        /////comprobamos si es la primera vez que se abre
+        if(appGetFirstTimeRun()==0 ){
+            Toast.makeText(getApplicationContext(), "Es la primera vez", Toast.LENGTH_LONG).show();
+        }
+        else if(appGetFirstTimeRun()==1){
+            Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
+        }
+        else if(appGetFirstTimeRun()==2){
+            Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
+        }
 
-       manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -85,10 +101,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
-        TextView fragAbierto= findViewById(R.id.TVFragabierto);  ///textview que va en la app bar e indica que item esta abierto
+        TextView fragAbierto = findViewById(R.id.TVFragabierto);  ///textview que va en la app bar e indica que item esta abierto
         int id = item.getItemId();
         fragAbierto.setText(item.getTitle());
-       // manejador.beginTransaction().replace(R.id.Principal, new item.() ).commit(); ///cambio de fragments
+        // manejador.beginTransaction().replace(R.id.Principal, new item.() ).commit(); ///cambio de fragments
 
         if (id == R.id.Ventas) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
@@ -104,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
         } else if (id == R.id.Descuentos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Descuentos()).commit();
-        }else if (id == R.id.Reportes) {
+        } else if (id == R.id.Reportes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Reportes()).commit();
         } else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
@@ -121,10 +137,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-            ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
+    ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
     public void mandarHistorial(String tipo, String pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
         itemsHistorial.add(new Historial_ventas_class(tipo, pagar));  ///tipo viene de fragment_cobrar
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas(itemsHistorial)).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
 
+    }
+    private int appGetFirstTimeRun() {
+        //Check if App Start First Time
+        SharedPreferences appPreferences = getSharedPreferences("MyAPP", 0);
+        int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
+        int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
+
+        if (appLastBuildVersion == appCurrentBuildVersion ) {
+            return 1; //ya has iniciado la appp alguna vez
+
+        } else {
+            appPreferences.edit().putInt("app_first_time", appCurrentBuildVersion).apply();
+            if (appLastBuildVersion == 0) {
+                return 0; //es la primera vez
+            } else {
+                return 2; //es una versión nueva
+            }
+        }
     }
 }
