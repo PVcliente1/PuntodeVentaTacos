@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +29,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.Benvenida.Bienvenida;
+
 import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -39,21 +44,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //CoordinatorLayout chingon=findViewById(R.id.chingon);
+        AppBarLayout bar=findViewById(R.id.appBar);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         /////comprobamos si es la primera vez que se abre
         if(appGetFirstTimeRun()==0 ){
             Toast.makeText(getApplicationContext(), "Es la primera vez", Toast.LENGTH_LONG).show();
+            manejador.beginTransaction().replace(R.id.chingon, new Bienvenida()).commit(); ///cambio de fragment
         }
         else if(appGetFirstTimeRun()==1){
             Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
+            manejador.beginTransaction().replace(R.id.chingon, new Bienvenida()).commit(); ///cambio de fragment
+            bar.setVisibility(View.INVISIBLE);
+            //manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+            /*Intent i = new Intent(this, Main2Activity.class);
+            startActivity(i);*/
         }
         else if(appGetFirstTimeRun()==2){
-            Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
         }
 
-        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+        ///manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

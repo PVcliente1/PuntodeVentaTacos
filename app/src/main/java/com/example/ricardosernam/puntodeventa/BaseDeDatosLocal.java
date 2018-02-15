@@ -4,11 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by daniel-linux on 2/11/18.
- * aun no funciona
- */
-
 public class BaseDeDatosLocal extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "PuntoDeVenta.db";
     public static final String TABLE_NAME = "Usuarios";
@@ -24,12 +19,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Password TEXT, Nivel INTEGER)");
+        sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Password TEXT, Nivel BOOL)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Password TEXT, Nivel BOOL)");
     }
 }
