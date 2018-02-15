@@ -3,8 +3,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+         android:background="?android:attr/windowBackground"
         android:fitsSystemWindows="true"
-        tools:context="com.example.ricardosernam.puntodeventa.Benvenida.Bienvenida">
+        tools:context="com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial">
 
         <LinearLayout
             android:orientation="vertical"
@@ -30,7 +31,7 @@
                     android:id="@+id/ETnombreAdministrador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre"
+                    android:hint="Nombre de usuario"
                     android:inputType="textCapWords" />
             </android.support.design.widget.TextInputLayout>
 

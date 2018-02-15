@@ -1,8 +1,8 @@
 package com.example.ricardosernam.puntodeventa.Benvenida;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -15,17 +15,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa.Ventas;
 
-import static android.app.Activity.RESULT_OK;
-
-public class Bienvenida extends Fragment {
+public class Registro_inicial extends Fragment {
     private static final String TAG = "SignupActivity";
     private Button registrarse;
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre, correo, contraseña, telefono;
+    private String name, password, email, phone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class Bienvenida extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_bienvenida, container, false);
+        View view=inflater.inflate(R.layout.fragment_registro, container, false);
         bar=getActivity().findViewById(R.id.APLappBar);
         registrarse=view.findViewById(R.id.BtnRegistrar);
         ///editText
@@ -45,6 +44,11 @@ public class Bienvenida extends Fragment {
         nombre=view.findViewById(R.id.ETnombreAdministrador);
         telefono=view.findViewById(R.id.ETtelefonoAdministrador);
         iniciarSesion=view.findViewById(R.id.TViniciarSesion);
+
+       /*name = nombre.getText().toString();
+        email = correo.getText().toString();
+        password = contraseña.getText().toString();
+        phone = telefono.getText().toString();*/
 
         registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +60,7 @@ public class Bienvenida extends Fragment {
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                //finish();
-                //bar.setVisibility(View.VISIBLE);
-                getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+                getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
             }
         });
         return view;
@@ -72,9 +73,9 @@ public class Bienvenida extends Fragment {
             return;
         }
         else {  ///si cargo correctamente (Mostramos un progress dialog)
+            insertarUsuario();///insertamos y actualizamos
 
             registrarse.setEnabled(false);
-
             final ProgressDialog progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Creando cuenta...");
@@ -85,9 +86,9 @@ public class Bienvenida extends Fragment {
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            onSignupSuccess();////cuando cargue
+                            //onSignupSuccess();////cuando cargue
+                            getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
                             progressDialog.dismiss();
-                            bar.setVisibility(View.VISIBLE);
                         }
                     }, 3000);
         }
@@ -97,11 +98,8 @@ public class Bienvenida extends Fragment {
 
     public void onSignupSuccess() {  ///es correcto
         registrarse.setEnabled(true);
-        //setResult(RESULT_OK, null);
         bar.setVisibility(View.VISIBLE);
-        //getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
-        getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
     }
 
     public void onSignupFailed() {  //es incorrecto
@@ -112,11 +110,10 @@ public class Bienvenida extends Fragment {
 
     public boolean validate() {  ///validamos que los campos cumplan los requisitos
         boolean valid = true;
-
-        String name = nombre.getText().toString();
-        String email = correo.getText().toString();
-        String password = contraseña.getText().toString();
-        String phone = telefono.getText().toString();
+        name = nombre.getText().toString();
+        email = correo.getText().toString();
+        password = contraseña.getText().toString();
+        phone = telefono.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nombre.setError("Minimo 3 caracteres");
@@ -126,19 +123,37 @@ public class Bienvenida extends Fragment {
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            correo.setError("enter a valid email address");
+            correo.setError("Ingrea un correo correcto");
             valid = false;
         } else {
             correo.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            contraseña.setError("between 4 and 10 alphanumeric characters");
+            contraseña.setError("Ingresa 6 o más caracteres alfanuméricos");
             valid = false;
         } else {
             contraseña.setError(null);
         }
 
         return valid;
+    }
+    public void insertarUsuario(){
+        //int idUsuario = 0;
+        name = nombre.getText().toString();
+        password = contraseña.getText().toString();
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"PuntoDeVenta.db",null,1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        if(db!=null){
+            ContentValues values = new ContentValues();
+            values.put("Nombre", name);
+            values.put("Contraseña", password);
+            db.insert("Usuarios", null, values);
+            //idUsuario = (int) db.insert("Usuarios", null, values);
+            //db.update("TableUsuarios", values, "id = ?", new String[]{String.valueOf(idUsuario)});
+            Toast.makeText(getContext(), name + password, Toast.LENGTH_SHORT).show();
+        }
+        db.close();
+        //return  idUsuario;
     }
 }

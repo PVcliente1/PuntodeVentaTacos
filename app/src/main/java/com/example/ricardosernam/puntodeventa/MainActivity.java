@@ -1,20 +1,8 @@
 package com.example.ricardosernam.puntodeventa;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.FragmentManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,17 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Benvenida.Bienvenida;
+import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 
-import java.io.File;
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_historial {
 
@@ -49,16 +32,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         /////comprobamos si es la primera vez que se abre
         if(appGetFirstTimeRun()==0 ){
             //Toast.makeText(getApplicationContext(), "Es la primera vez", Toast.LENGTH_LONG).show();
-            //manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Bienvenida()).commit(); ///cambio de fragment
+            //manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
             //bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==1){
             //Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
             //manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Bienvenida()).commit(); ///cambio de fragment
+            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
             bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==2){
