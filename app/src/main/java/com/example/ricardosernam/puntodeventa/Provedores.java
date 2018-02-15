@@ -1,5 +1,7 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
@@ -20,7 +22,8 @@ import static com.example.ricardosernam.puntodeventa.R.id.Layout1;
 public class Provedores extends Fragment {
     Button btnNuevoProvedor;
     Spinner spinner;
-    String[] items;
+    //String[] items;
+    ArrayList<String> items1 = new ArrayList<String>();
     LinearLayout layout1,layout2,layout3,layout4,layout5,layout6,SpinnerLayout;
     Boolean visible;
     @Override
@@ -28,7 +31,9 @@ public class Provedores extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_provedores, container, false);
 
-        visible = false;
+
+        visible = false;//variable para saber si los proovedores estan visibles
+        //casting de los layouts a ocultar
         layout1 = view.findViewById(R.id.Layout1);
         layout2 = view.findViewById(R.id.Layout2);
         layout3 = view.findViewById(R.id.Layout3);
@@ -40,11 +45,14 @@ public class Provedores extends Fragment {
         btnNuevoProvedor = view.findViewById(R.id.BtnAgregarProvedor);
         spinner = view.findViewById(R.id.SPprovedores);
 
+        /*
         items = new String[]{
                 "----","1","2","3","4","5","6","7"
         };
+        */
+        llenarLista();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, items); //selected item will look like a spinner set from XML
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, items1); //selected item will look like a spinner set from XML
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -68,8 +76,10 @@ public class Provedores extends Fragment {
                     layout5.setVisibility(View.VISIBLE);
                     layout6.setVisibility(View.VISIBLE);
                     visible = true;
-                    Toast.makeText(getContext(), item, Toast.LENGTH_SHORT).show();
                 }
+
+                if(item != "----")
+                Toast.makeText(getContext(), item, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -80,5 +90,23 @@ public class Provedores extends Fragment {
 
         return view;
 
+    }
+
+    public void llenarLista(){
+        //sacar datos de la base de datos
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext(),"Proveedores",null,1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+
+        Cursor datos = db.rawQuery("Select Nombre from Proveedores", null);
+
+        if(datos.getCount() > 0){
+            for (int i = 0; i < datos.getCount(); i++) {
+                datos.moveToNext();
+                items1.add(datos.getString(0));
+            }
+        }
+
+        datos.close();
+        db.close();
     }
 }
