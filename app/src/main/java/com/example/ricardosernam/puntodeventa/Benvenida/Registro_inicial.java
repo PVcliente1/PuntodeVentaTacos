@@ -150,11 +150,11 @@ public class Registro_inicial extends Fragment {
             //values.put("id", 01);
             values.put("Nombre", name);
             values.put("Contrasena", password);
-            db.insert("Usuarios",BaseDeDatosLocal.COL_1 , values);
+            db.insert("Usuarios",null, values);
 
-            long idUsuario = db.insert("Usuarios", BaseDeDatosLocal.COL_1 , values);
+            //long idUsuario = db.insert("Usuarios", null , values);
             //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});
-            Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
         //}
         db.close();
         //return  idUsuario;
