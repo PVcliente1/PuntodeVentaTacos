@@ -75,12 +75,14 @@
             android:visibility="invisible">
 
             <Button
+                android:id="@+id/BTNeditarProveedor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:text="Editar" />
 
             <Button
+                android:id="@+id/BTNBajaProveedores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -102,6 +104,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/ETNombreMOD"
                 android:layout_width="223dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp" />
@@ -122,6 +125,7 @@
                 android:textSize="18sp" />
 
             <EditText
+                android:id="@+id/ETApellidosMOD"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -141,6 +145,7 @@
                 android:textSize="18sp" />/>
 
             <EditText
+                android:id="@+id/ETTelefonoMOD"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -162,6 +167,7 @@
                 android:textSize="18sp" />/>
 
             <EditText
+                android:id="@+id/ETDireccionMOD"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-1dp"

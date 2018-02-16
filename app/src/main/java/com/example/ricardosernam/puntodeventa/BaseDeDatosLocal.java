@@ -22,13 +22,15 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE Proveedores(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Apellidos TEXT, Telefono INTEGER, Direccion TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE Vendedores(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Apellidos TEXT, Telefono INTEGER, Direccion TEXT)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("drop table if exists Usuarios");
+        //sqLiteDatabase.execSQL("drop table if exists Proveedores");
         sqLiteDatabase.execSQL("CREATE TABLE Proveedores(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Apellidos TEXT, Telefono INTEGER, Direccion TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE Vendedores(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Apellidos TEXT, Telefono INTEGER, Direccion TEXT)");
 
     }
 }

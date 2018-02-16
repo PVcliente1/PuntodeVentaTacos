@@ -24,20 +24,24 @@ public class AgregarProvedor extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_fragment_agregar_provedor, container, false);
 
+        //casting de los botones
         btnGuardar = view.findViewById(R.id.btnGuardarNuevo);
         btnCancelar = view.findViewById(R.id.btnCancelar);
 
+        //casting de los campos
         EtNombre = view.findViewById(R.id.EtNombreNew);
         EtApellido = view.findViewById(R.id.EtApellidoNew);
         EtTelefono = view.findViewById(R.id.EtTelefonoNew);
         EtDireccion = view.findViewById(R.id.EtDireccionNew);
 
+        //evento de
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View view) {
                 alta("Proveedores");
                 Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
                 dismiss();
+
             }
         });
 
