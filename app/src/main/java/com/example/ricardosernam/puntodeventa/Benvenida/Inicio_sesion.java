@@ -48,33 +48,37 @@ public class Inicio_sesion extends Fragment {
     }
     public void onSignupSuccess() {  ///es correcto
         //iniciarSesion.setEnabled(true);
-        //bar.setVisibility(View.VISIBLE);
+        bar.setVisibility(View.VISIBLE);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
     }
     public void ingresar(){
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"PuntoDeVenta.db",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"PuntoDeVenta",null,1);
         SQLiteDatabase db=admin.getWritableDatabase();
         usuario=nombreUsuario.getText().toString();
         contraseña=contraseñaUsuario.getText().toString();
-        fila=db.rawQuery("select Nombre,Contraseña from Usuarios where Nombre='"+usuario+"' and Contrasena='"+contraseña+"'",null);
+        //Toast.makeText(getContext(), "esta"+ usuario+" y "+contraseña, Toast.LENGTH_SHORT).show();
+        fila=db.rawQuery("select Nombre, Contrasena from Usuarios where Nombre='"+usuario+"' and Contrasena='"+contraseña+"'",null);
                 //preguntamos si el cursor tiene algun valor almacenado
+
         if(fila.moveToFirst()==true){
-            Toast.makeText(getContext(), "Hay algo", Toast.LENGTH_SHORT).show();
             //capturamos los valores del cursos y lo almacenamos en variable
-            /*String usua=fila.getString(0);
-            String pass=fila.getString(1);
             //preguntamos si los datos ingresados son iguales
+            String usua=fila.getString(0);
+            String pass=fila.getString(1);
             if (usuario.equals(usua)&&contraseña.equals(pass)){
                 //si son iguales entonces vamos a otra ventana
                 //Menu es una nueva actividad empty
-                //onSignupSuccess();
+                onSignupSuccess();
                 //limpiamos las las cajas de texto
                 nombreUsuario.setText("");
                 contraseñaUsuario.setText("");
             }
             else{
                 Toast.makeText(getContext(), "Datos incorrectos, vuelve a intentar", Toast.LENGTH_SHORT).show();
-            }*/
+            }
+        }
+        else{
+            Toast.makeText(getContext(), "No hay nada", Toast.LENGTH_SHORT).show();
         }
     }
 
