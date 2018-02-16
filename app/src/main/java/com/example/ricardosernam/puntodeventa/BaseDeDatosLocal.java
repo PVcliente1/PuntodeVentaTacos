@@ -19,15 +19,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table Usuarios(id integer primary key autoincrement, Nombre text, Contrasena text)");
-        sqLiteDatabase.execSQL("insert into Usuarios values (01, 'admin', 'admin')");
-        //sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Contraseña TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Contraseña TEXT)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("create table Usuarios(id integer primary key autoincrement, Nombre text, Contrasena text)");
-        sqLiteDatabase.execSQL("insert into Usuarios values (01, 'admin', 'admin')");
-        //onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("CREATE TABLE Usuarios(id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT,Contraseña TEXT)");
     }
 }
