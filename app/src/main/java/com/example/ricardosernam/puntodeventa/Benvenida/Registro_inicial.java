@@ -142,14 +142,16 @@ public class Registro_inicial extends Fragment {
         //int idUsuario = 0;
         name = nombre.getText().toString();
         password = contraseña.getText().toString();
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"PuntoDeVenta.db",null,1);
+
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Usuarios",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
-            values.put("id", 01);
+            //values.put("id", 01);
             values.put("Nombre", name);
             values.put("Contrasena", password);
             db.insert("Usuarios",BaseDeDatosLocal.COL_1 , values);
+
             long idUsuario = db.insert("Usuarios", BaseDeDatosLocal.COL_1 , values);
             //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});
             Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
