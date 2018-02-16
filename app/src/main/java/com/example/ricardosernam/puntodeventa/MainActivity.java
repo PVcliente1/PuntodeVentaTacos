@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(appGetFirstTimeRun()==1){
             //Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
-            //manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
-            bar.setVisibility(View.INVISIBLE);
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+//            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
+ //          bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==2){
             Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
