@@ -52,14 +52,14 @@ public class Inicio_sesion extends Fragment {
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
     }
     public void ingresar(){
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"PuntoDeVenta",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Usuarios",null,1);
         SQLiteDatabase db=admin.getWritableDatabase();
         usuario=nombreUsuario.getText().toString();
         contraseña=contraseñaUsuario.getText().toString();
         //Toast.makeText(getContext(), "esta"+ usuario+" y "+contraseña, Toast.LENGTH_SHORT).show();
         fila=db.rawQuery("select Nombre, Contrasena from Usuarios where Nombre='"+usuario+"' and Contrasena='"+contraseña+"'",null);
                 //preguntamos si el cursor tiene algun valor almacenado
-
+        //Toast.makeText(getContext(), "No hay nada", Toast.LENGTH_SHORT).show();
         if(fila.moveToFirst()==true){
             //capturamos los valores del cursos y lo almacenamos en variable
             //preguntamos si los datos ingresados son iguales
