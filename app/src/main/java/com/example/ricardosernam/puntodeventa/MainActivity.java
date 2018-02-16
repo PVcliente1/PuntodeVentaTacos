@@ -3,7 +3,6 @@ package com.example.ricardosernam.puntodeventa;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 
 import java.util.ArrayList;
 
@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(appGetFirstTimeRun()==1){
             //Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
-            //manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
-           bar.setVisibility(View.INVISIBLE);
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+            //manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
+            //bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==2){
             Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.Miembros) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Vendedores()).commit();
         } else if (id == R.id.Provedores) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Provedores()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
         } else if (id == R.id.Clientes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
         } else if (id == R.id.Descuentos) {
