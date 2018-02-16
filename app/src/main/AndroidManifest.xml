@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Escanner" />
+        <activity android:name=".Login" />
+        <activity android:name=".Registro"></activity>
     </application>
 
 </manifest>
