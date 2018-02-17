@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //CoordinatorLayout chingon=findViewById(R.id.chingon);
         AppBarLayout bar=findViewById(R.id.APLappBar);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -35,15 +34,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         /////comprobamos si es la primera vez que se abre
         if(appGetFirstTimeRun()==0 ){
-            //Toast.makeText(getApplicationContext(), "Es la primera vez", Toast.LENGTH_LONG).show();
-            //manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
-            //bar.setVisibility(View.INVISIBLE);
+            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
+            bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==1){
-            //Toast.makeText(getApplicationContext(), "Ya se habia abierto", Toast.LENGTH_LONG).show();
-            //manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
-           bar.setVisibility(View.INVISIBLE);
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         }
         else if(appGetFirstTimeRun()==2){
             Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
