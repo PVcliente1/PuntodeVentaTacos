@@ -50,6 +50,7 @@ public class Inicio_sesion extends Fragment {
         //iniciarSesion.setEnabled(true);
         bar.setVisibility(View.VISIBLE);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
+        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOprincipal)).commit();
     }
     public void ingresar(){
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Usuarios",null,1);
@@ -78,7 +79,7 @@ public class Inicio_sesion extends Fragment {
             }
         }
         else{
-            Toast.makeText(getContext(), "No hay nada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No hay usuarios registrados", Toast.LENGTH_SHORT).show();
         }
     }
 

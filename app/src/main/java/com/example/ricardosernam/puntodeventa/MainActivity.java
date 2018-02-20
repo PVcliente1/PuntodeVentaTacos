@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.Benvenida.Inicio_sesion;
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 
 import java.util.ArrayList;
 
@@ -41,20 +43,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         }
         else if(appGetFirstTimeRun()==2){
-            Toast.makeText(getApplicationContext(), "Es una catualizacion", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Es una atualización", Toast.LENGTH_LONG).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -77,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -92,8 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView fragAbierto = findViewById(R.id.TVFragabierto);  ///textview que va en la app bar e indica que item esta abierto
         int id = item.getItemId();
         fragAbierto.setText(item.getTitle());
-        // manejador.beginTransaction().replace(R.id.Principal, new item.() ).commit(); ///cambio de fragments
-
         if (id == R.id.Ventas) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
         } else if (id == R.id.Compras) {
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.Miembros) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Vendedores()).commit();
         } else if (id == R.id.Provedores) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Provedores()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
         } else if (id == R.id.Clientes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
         } else if (id == R.id.Descuentos) {
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.Contáctanos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas(itemsHistorial)).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
 
     }
-    private int appGetFirstTimeRun() {
+    private int appGetFirstTimeRun() {  ///comprobamos si es la primera vez que se abre la app
         //Check if App Start First Time
         SharedPreferences appPreferences = getSharedPreferences("MyAPP", 0);
         int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
