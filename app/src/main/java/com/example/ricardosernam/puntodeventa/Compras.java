@@ -28,10 +28,10 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
 public class Compras extends Fragment{
-    private LinearLayout existentes,agregar;
+    private LinearLayout existentes,agregar, campos , foto;
     private TextView nombre, cantidadExistentes, totalCompra;
     private Button escan,aceptar,cancelar;
-    private EditText capturarProducto,cantidad,precioCompra, precioVenta;
+    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto;
     private RadioGroup opciones;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
     private Spinner unidad;
@@ -48,6 +48,7 @@ public class Compras extends Fragment{
         cantidad=view.findViewById(R.id.ETcantidadCompra);
         precioCompra=view.findViewById(R.id.ETprecioCompra);
         precioVenta=view.findViewById(R.id.ETprecioVenta);
+        nombreProducto=view.findViewById(R.id.ETnombreProducto);
         ///botones
         aceptar=view.findViewById(R.id.BtnAceptarCompra);
         cancelar=view.findViewById(R.id.BtnCancelarCompra);
@@ -66,6 +67,8 @@ public class Compras extends Fragment{
         ///layouts
         agregar=view.findViewById(R.id.LLagregarProductos);
        existentes=view.findViewById(R.id.LLexistentes);
+        campos=view.findViewById(R.id.LLcamposDatos);
+        foto=view.findViewById(R.id.LLfoto);
 
 
 
@@ -78,10 +81,18 @@ public class Compras extends Fragment{
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.RBexistente:
+                        nombre.setVisibility(View.VISIBLE);
+                        nombreProducto.setVisibility(View.GONE);
+                        foto.setVisibility(View.GONE);
+                        campos.setVisibility(View.GONE);
                         capturarProducto.setHint("Ingresa Nombre");
                         existentes.setVisibility(View.VISIBLE);
                         break;
                     case R.id.RBnuevo:
+                        nombre.setVisibility(View.GONE);
+                        nombreProducto.setVisibility(View.VISIBLE);
+                        foto.setVisibility(View.VISIBLE);
+                        campos.setVisibility(View.VISIBLE);
                         capturarProducto.setHint("Código (Opcional)");
                         existentes.setVisibility(View.GONE);
                         break;
