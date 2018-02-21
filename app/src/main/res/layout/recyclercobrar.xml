@@ -140,7 +140,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/edittexts"
                         android:ems="10"
-                        android:hint="Descripción de la compra"
+                        android:hint="Descripción de la venta"
                         android:inputType="number"
                         android:textSize="14sp"
                         android:visibility="visible" />

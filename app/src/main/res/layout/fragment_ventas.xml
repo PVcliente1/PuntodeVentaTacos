@@ -8,8 +8,6 @@
     tools:context="com.example.ricardosernam.puntodeventa.Ventas"
     tools:layout_editor_absoluteY="81dp">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
