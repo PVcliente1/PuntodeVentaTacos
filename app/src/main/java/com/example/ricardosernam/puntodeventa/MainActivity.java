@@ -105,8 +105,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
         } else if (id == R.id.Clientes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
-        } else if (id == R.id.Descuentos) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Descuentos()).commit();
         } else if (id == R.id.Reportes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Reportes()).commit();
         } else if (id == R.id.Inventario) {

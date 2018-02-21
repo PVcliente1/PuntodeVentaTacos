@@ -9,7 +9,6 @@
     <item
         android:id="@+id/action_user"
         android:icon="@mipmap/ic_supervisor_account_black_24dp"
-        android:iconTint="@color/cardview_light_background"
         android:title="@string/action_users"
         app:showAsAction="ifRoom" />
 </menu>

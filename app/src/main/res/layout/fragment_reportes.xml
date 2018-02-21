@@ -327,6 +327,84 @@
                 </LinearLayout>
             </LinearLayout>
         </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true">
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/tarjetas_reportes"
+                android:backgroundTint="@android:color/holo_green_dark">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/tarjetas_reportes"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="textMultiLine"
+                        android:singleLine="true"
+                        android:text="Vendedores General"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_assignment_black_24dp"
+                        android:tint="@color/cardview_light_background" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/tarjetas_reportes"
+                android:backgroundTint="@android:color/holo_green_dark">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/tarjetas_reportes"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="textMultiLine"
+                        android:singleLine="true"
+                        android:text="Top Vendedores"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_assignment_black_24dp"
+                        android:tint="@color/cardview_light_background" />
+                </LinearLayout>
+            </LinearLayout>
+        </TableRow>
     </TableLayout>
 </FrameLayout>
 

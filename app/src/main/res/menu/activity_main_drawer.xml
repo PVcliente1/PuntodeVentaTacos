@@ -34,10 +34,6 @@
                 android:icon="@mipmap/ic_account_circle_black_24dp"
                 android:title="Clientes" />
             <item
-                android:id="@+id/Descuentos"
-                android:icon="@mipmap/ic_exposure_black_24dp"
-                android:title="Descuentos" />
-            <item
                 android:id="@+id/Reportes"
                 android:icon="@mipmap/ic_assignment_black_24dp"
                 android:title="Reportes" />
