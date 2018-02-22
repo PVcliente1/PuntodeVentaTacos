@@ -86,7 +86,7 @@
 <!--layout campos-->
         <LinearLayout
             android:id="@+id/LLcamposDatos"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,6 +122,28 @@
                 android:layout_height="wrap_content"
                 android:inputType="number" />
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/TVproveedor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Proveedor"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/SpnProvedor"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content">
+
+                </Spinner>
+            </LinearLayout>
 
 
         <LinearLayout
@@ -211,7 +233,7 @@
 
             <Spinner
                 android:id="@+id/SpnUnidad"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content">
 
             </Spinner>
