@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Benvenida.Inicio_sesion;
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.Productos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
         } else if (id == R.id.Miembros) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Vendedores()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Miembros()).commit();
         } else if (id == R.id.Provedores) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
         } else if (id == R.id.Clientes) {
