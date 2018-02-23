@@ -4,16 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.ricardosernam.puntodeventa.dialog_fragment_agregar_cliente">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -70,6 +65,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Puesto: "
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/SPpuestos"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+            </Spinner>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Turno: "
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/SPturnos"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+            </Spinner>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/Layout5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,50 +114,48 @@
                 android:textSize="18sp" />/>
 
             <EditText
-                android:id="@+id/EtTelefonoNew"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:inputType="number" />
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/Layout6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dirección: "
+                android:text="Correo: "
                 android:textColor="@android:color/background_dark"
-                android:textSize="18sp" />/>
+                android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/EtDireccionNew"
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-1dp"
                 android:inputType="number" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="305dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_gravity="right"
             android:layout_marginTop="10dp">
-
-            <Button
-                android:id="@+id/btnGuardarNuevo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:text="Guardar" />
-
             <Button
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:text="Cancelar" />
+            <Button
+                android:id="@+id/btnGuardarNuevo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar" />
         </LinearLayout>
 
     </LinearLayout>

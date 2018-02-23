@@ -3,6 +3,10 @@ package com.example.ricardosernam.puntodeventa;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
+import com.example.ricardosernam.puntodeventa.Miembros.MiPerfil;
+import com.example.ricardosernam.puntodeventa.Miembros.Miembros;
+import com.example.ricardosernam.puntodeventa.Miembros.Perfiles;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_historial {
-
+    ViewPager viewPager;
+    TabLayout tabLayout;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     @Override
@@ -29,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppBarLayout bar=findViewById(R.id.APLappBar);
-
+        tabLayout =  findViewById(R.id.TLtabla);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
@@ -94,26 +102,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragAbierto.setText(item.getTitle());
         if (id == R.id.Ventas) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Compras) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Compras()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Productos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Miembros) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Miembros()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Perfiles()).commit();
+            //tabLayout.setVisibility(View.VISIBLE);
         } else if (id == R.id.Provedores) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Clientes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Reportes) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Reportes()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Personalizar) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Personalizar()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Configurar) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Configurar()).commit();
+            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Contáctanos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();
+            tabLayout.setVisibility(View.GONE);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -133,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
         int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
 
-        if (appLastBuildVersion == appCurrentBuildVersion ) {
+        if (appLastBuildVersion == appCurrentBuildVersion) {
             return 1; //ya has iniciado la appp alguna vez
 
         } else {
