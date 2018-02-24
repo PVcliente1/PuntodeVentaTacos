@@ -11,16 +11,17 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
-                "  `idmiembro` INT NOT NULL,\n" +
+                "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellidos` VARCHAR(45),\n" +
                 "  `puesto` VARCHAR(45),\n" +
-                "  `telefono` INT ,\n" +
+                "  `telefono` INTEGER ,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
                 "  `usuario` VARCHAR(45),\n" +
-                "  PRIMARY KEY (`idmiembro`))");
+                "  `turno` VARCHAR(45))");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Proveedores (\n" +
                 "  `idproveedor` INT NOT NULL,\n" +
@@ -147,16 +148,15 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Empresa");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
-                "  `idmiembro` INT NOT NULL,\n" +
+                "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellidos` VARCHAR(45),\n" +
                 "  `puesto` VARCHAR(45),\n" +
-                "  `telefono` INT ,\n" +
+                "  `telefono` INTEGER ,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
                 "  `usuario` VARCHAR(45),\n" +
-                "  `turno` VARCHAR(45),\n" +
-                "  PRIMARY KEY (`idmiembro`))");
+                "  `turno` VARCHAR(45))");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Proveedores (\n" +
                 "  `idproveedor` INT NOT NULL,\n" +

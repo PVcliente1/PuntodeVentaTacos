@@ -154,7 +154,7 @@ public class Registro_inicial extends Fragment {
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
-            //values.put("id", 01);
+            //values.put("idmiembro",0);
             values.put("nombre", name);
             values.put("apellidos", lastname);
             values.put("puesto", "Admin");
