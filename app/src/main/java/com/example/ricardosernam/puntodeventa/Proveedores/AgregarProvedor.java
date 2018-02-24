@@ -42,7 +42,7 @@ public class AgregarProvedor extends DialogFragment {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View view) {
-                alta("Proveedores");
+                alta("proveedores");
                 Toast.makeText(getContext(), "Guardado correctamente, refresca para visualizarlo", Toast.LENGTH_LONG).show();
                 dismiss();
 
@@ -64,7 +64,7 @@ public class AgregarProvedor extends DialogFragment {
     //funcion para dar de alta, si funciona regresa true, si no regresa un false
     public void alta(String tabla)
     {
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext(),"Proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext(),"proveedores",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //nuevo registro

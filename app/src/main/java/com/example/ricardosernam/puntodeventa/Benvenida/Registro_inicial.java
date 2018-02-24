@@ -18,13 +18,16 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 
+import static java.lang.Integer.parseInt;
+
 public class Registro_inicial extends Fragment {
     private static final String TAG = "SignupActivity";
     private Button registrarse;
     private AppBarLayout bar;
     private TextView iniciarSesion;
-    private EditText nombre, correo, contraseña, telefono;
-    private String name, password, email, phone;
+    private EditText nombre,apellidos, contraseña,telefono, correo;
+    private String name, password, email,lastname, puesto="Admin",user,turno="noturno";
+    private int phone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,9 @@ public class Registro_inicial extends Fragment {
         registrarse=view.findViewById(R.id.BtnRegistrar);
         ///editText
         nombre=view.findViewById(R.id.ETnombreAdministrador);
+        apellidos=view.findViewById(R.id.ETapellidosAdministrador);
         correo=view.findViewById(R.id.ETcorreoAdministrador);
         contraseña=view.findViewById(R.id.ETcontraseñaAdministrador);
-        nombre=view.findViewById(R.id.ETnombreAdministrador);
         telefono=view.findViewById(R.id.ETtelefonoAdministrador);
         iniciarSesion=view.findViewById(R.id.TViniciarSesion);
 
@@ -111,9 +114,10 @@ public class Registro_inicial extends Fragment {
     public boolean validate() {  ///validamos que los campos cumplan los requisitos
         boolean valid = true;
         name = nombre.getText().toString();
+        lastname =apellidos.getText().toString();
         email = correo.getText().toString();
         password = contraseña.getText().toString();
-        phone = telefono.getText().toString();
+        phone = parseInt(telefono.getText().toString());
 
         if (name.isEmpty() || name.length() < 3) {
             nombre.setError("Minimo 3 caracteres");
@@ -141,16 +145,25 @@ public class Registro_inicial extends Fragment {
     public void insertarUsuario(){
         //int idUsuario = 0;
         name = nombre.getText().toString();
+        lastname =apellidos.getText().toString();
+        email = correo.getText().toString();
         password = contraseña.getText().toString();
+        phone = parseInt(telefono.getText().toString());
 
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
             //values.put("id", 01);
-            values.put("Nombre", name);
-            values.put("Contrasena", password);
-            db.insert("Usuarios",null, values);
+            values.put("nombre", name);
+            values.put("apellidos", lastname);
+            values.put("puesto", "Admin");
+            values.put("telefono", phone);
+            values.put("correo", email);
+            values.put("contrasena", password);
+            values.put("usuario", user);
+            values.put("turno", turno);
+            db.insert("Miembros",null, values);
 
             //long idUsuario = db.insert("Usuarios", null , values);
             //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});

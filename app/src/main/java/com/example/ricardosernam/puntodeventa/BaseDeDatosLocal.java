@@ -155,6 +155,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
                 "  `usuario` VARCHAR(45),\n" +
+                "  `turno` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`))");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Proveedores (\n" +

@@ -123,7 +123,7 @@ public class Proveedores extends Fragment {
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        Cursor c = db.rawQuery("select id AS _id, Contacto from Proveedores", null);
+        Cursor c = db.rawQuery("select idproveedor AS _id, contacto from proveedores", null);
 
         if (c.getCount() > 0){
             //adapter
@@ -145,11 +145,11 @@ public class Proveedores extends Fragment {
 
     //Procedimiento para extraer datos de X id y mostrarlos para su manejo
     public void jalarDatos(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"Proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        Cursor c = db.rawQuery("select Contacto, Telefono, Direccion, Empresa from Proveedores where id = " + id, null);
+        Cursor c = db.rawQuery("select idproveedor, contacto, telefono, direccion, nombre_empresa from proveedores where idproveedor = " + id, null);
         //inicializamos el cursor
         c.moveToPosition(0);
 
@@ -163,11 +163,11 @@ public class Proveedores extends Fragment {
 
     //procedimiento para dar de baja
     public void baja(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"Proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //Se borra el registro que contenga el id seleccionado
-        db.delete("Proveedores", "id = "+  id, null);
+        db.delete("proveedores", "idproveedor = "+  id, null);
 
         //actualizar espinner
         adapterSpinner();
@@ -175,7 +175,7 @@ public class Proveedores extends Fragment {
 
     //procedimiento para modificar
     public void modificar(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"Proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //creamos nuevo registro
@@ -186,7 +186,7 @@ public class Proveedores extends Fragment {
         registro.put("Direccion", ET_direccion.getText().toString());
         registro.put("Empresa", ET_empresa.getText().toString());
         //se realiza un update en donde el id sea igual al id seleccionado
-        db.update("Proveedores", registro, "id = " + id, null);
+        db.update("proveedores", registro, "idproveedor = " + id, null);
 
         //actualizar espinner
         adapterSpinner();
