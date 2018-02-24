@@ -26,8 +26,7 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    private String name, password, email,lastname, puesto="Admin",user,turno="noturno";
-    private int phone;
+    private String name, password, email,lastname, puesto="Admin",user,turno="noturno",phone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +116,7 @@ public class Registro_inicial extends Fragment {
         lastname =apellidos.getText().toString();
         email = correo.getText().toString();
         password = contraseña.getText().toString();
-        phone = parseInt(telefono.getText().toString());
+        phone = telefono.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nombre.setError("Minimo 3 caracteres");
@@ -148,7 +147,7 @@ public class Registro_inicial extends Fragment {
         lastname =apellidos.getText().toString();
         email = correo.getText().toString();
         password = contraseña.getText().toString();
-        phone = parseInt(telefono.getText().toString());
+        phone = telefono.getText().toString();
 
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
