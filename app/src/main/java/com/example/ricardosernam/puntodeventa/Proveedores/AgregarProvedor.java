@@ -43,7 +43,7 @@ public class AgregarProvedor extends DialogFragment {
             @Override
                 public void onClick(View view) {
                 alta("Proveedores");
-                Toast.makeText(getContext(), "Guardado correctamente favor de refrescar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Guardado correctamente, refresca para visualizarlo", Toast.LENGTH_LONG).show();
                 dismiss();
 
             }
@@ -55,6 +55,7 @@ public class AgregarProvedor extends DialogFragment {
                 dismiss();
             }
         });
+        getDialog().setTitle("Nuevo Proveedor");
 
         // Inflate the layout for this fragment
         return view;

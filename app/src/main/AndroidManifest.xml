@@ -27,9 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Escanner" />
-        <activity android:name=".Login" />
-        <activity android:name=".Registro"></activity>
+        <activity android:name=".____herramientas_app.Escanner" />
     </application>
 
 </manifest>

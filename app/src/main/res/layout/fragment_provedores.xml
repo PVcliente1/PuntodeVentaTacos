@@ -2,10 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ricardosernam.puntodeventa.Clientes"
+    tools:context="com.example.ricardosernam.puntodeventa.Clientes.Clientes"
     android:orientation="vertical">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,17 +91,17 @@
 
             <Button
                 android:id="@+id/BTN_ProveedoresEditarSel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Editar seleccionado" />
+                android:text="Editar " />
 
             <Button
                 android:id="@+id/BTN_ProveedoresEliminarSel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Eliminar seleccionado" />
+                android:text="Eliminar " />
         </LinearLayout>
 
         <LinearLayout

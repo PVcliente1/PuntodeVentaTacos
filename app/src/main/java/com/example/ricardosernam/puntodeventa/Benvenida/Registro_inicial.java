@@ -143,7 +143,7 @@ public class Registro_inicial extends Fragment {
         name = nombre.getText().toString();
         password = contraseña.getText().toString();
 
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Usuarios",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();

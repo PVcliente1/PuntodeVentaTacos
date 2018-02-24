@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,10 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
-import com.example.ricardosernam.puntodeventa.Miembros.MiPerfil;
-import com.example.ricardosernam.puntodeventa.Miembros.Miembros;
+import com.example.ricardosernam.puntodeventa.Clientes.Clientes;
+import com.example.ricardosernam.puntodeventa.Compras.Compras;
+import com.example.ricardosernam.puntodeventa.Configurar.Configurar;
+import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
+import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
 import com.example.ricardosernam.puntodeventa.Miembros.Perfiles;
+import com.example.ricardosernam.puntodeventa.Personalizar.Personalizar;
+import com.example.ricardosernam.puntodeventa.Productos.Productos;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
+import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
+import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
+import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
 
 import java.util.ArrayList;
 

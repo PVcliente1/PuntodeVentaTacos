@@ -42,6 +42,7 @@ public class Proveedores extends Fragment {
 
         //Cast de componentes
         BTN_abrirFragmentAgregarNuevo = view.findViewById(R.id.BTN_ProveedoresAgregarNuevo);
+
         BTN_editarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEditarSel);
         BTN_eliminarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEliminarSel);
         BTN_refrescar = view.findViewById(R.id.BTN_ProveedoresRefescar);

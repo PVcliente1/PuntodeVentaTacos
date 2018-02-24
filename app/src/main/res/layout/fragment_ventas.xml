@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.ricardosernam.puntodeventa.Ventas"
+    tools:context="com.example.ricardosernam.puntodeventa.Ventas.Ventas"
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout

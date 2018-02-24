@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.ricardosernam.puntodeventa.dialog_fragment_agregar_cliente">
+    tools:context="com.example.ricardosernam.puntodeventa.Clientes.dialog_fragment_agregar_cliente">
 
     <LinearLayout
         android:layout_width="wrap_content"

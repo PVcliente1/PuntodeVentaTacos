@@ -18,7 +18,7 @@ public class Miembros extends Fragment {
     LinearLayout contenedor, infoMiembro, miembroL;
     String[] items;
     Spinner spinner;
-    Button btnNuevoVendedor;
+    Button btnNuevoVendedor, editarMiembro, imagen;
 
 
     @Override
@@ -32,6 +32,8 @@ public class Miembros extends Fragment {
 
         View view= inflater.inflate(R.layout.fragment_miembros, container, false);
         btnNuevoVendedor = view.findViewById(R.id.BtnAgregarVendedor);
+        editarMiembro = view.findViewById(R.id.BtnEditarMiembro);
+        imagen = view.findViewById(R.id.BtnImagen);
 
         spinner = view.findViewById(R.id.SPvendedores);
         infoMiembro=view.findViewById(R.id.LLinformación);
@@ -50,6 +52,13 @@ public class Miembros extends Fragment {
             @Override
             public void onClick(View view) {
                 new dialog_fragment_agregar_miembros().show(getFragmentManager(),"Agregar Vendedor");
+            }
+        });
+
+        editarMiembro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagen.setVisibility(View.VISIBLE);
             }
         });
 

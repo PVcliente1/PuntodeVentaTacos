@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ricardosernam.puntodeventa.dialog_fragment_agregar_cliente">
+    tools:context="com.example.ricardosernam.puntodeventa.Clientes.dialog_fragment_agregar_cliente">
 
     <!-- TODO: Update blank fragment layout -->
 
