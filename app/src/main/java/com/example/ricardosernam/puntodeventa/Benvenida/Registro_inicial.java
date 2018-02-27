@@ -26,7 +26,7 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    private String name, password, email,lastname, puesto="Admin",foto="nofoto",phone,;
+    private String name, password, email,lastname, puesto="Admin",foto="nofoto",phone;
     private int idturno=0;
     private int idpuesto=1;
 
