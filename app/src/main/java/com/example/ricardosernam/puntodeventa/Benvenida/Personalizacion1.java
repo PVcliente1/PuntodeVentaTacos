@@ -26,7 +26,7 @@ import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFr
 
 public class Personalizacion1 extends Fragment {
     EditText entradaHorario, salidaHorario, entradaTurno1,salidaTurno1, entradaTurno2,salidaTurno2;
-    Button aceptar;
+    Button aceptar, imagen;
     AppBarLayout bar;
 
     @Override
@@ -39,8 +39,14 @@ public class Personalizacion1 extends Fragment {
                              Bundle savedInstanceState) {
       View view= inflater.inflate(R.layout.fragment_personalizacion1, container, false);
       bar=getActivity().findViewById(R.id.APLappBar);
+      ///editTexts/////
       entradaHorario=view.findViewById(R.id.ETentradaHorario);
       salidaHorario=view.findViewById(R.id.ETsalidaHorario);
+      entradaTurno1=view.findViewById(R.id.ETentradaTurno1);
+      salidaTurno1=view.findViewById(R.id.ETsalidaTurno1);
+      entradaTurno2=view.findViewById(R.id.ETentradaTurno2);
+      salidaTurno2=view.findViewById(R.id.ETsalidaTurno2);
+      ///Botones///
       aceptar=view.findViewById(R.id.BtnAceptarPersonalización);
 
       entradaHorario.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +67,29 @@ public class Personalizacion1 extends Fragment {
                     @Override
                     public void onClick(View v, int i, int i1) {
                         salidaHorario.setText(i + ":" + i1);
+                    }
+                }).show(getFragmentManager(),"Entrada_Horario");
+            }
+        });
+
+        entradaTurno1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
+                new Hora_DialogFragment(new interfaz_OnClickHora() {
+                    @Override
+                    public void onClick(View v, int i, int i1) {
+                        entradaTurno1.setText(i + ":" + i1);
+                    }
+                }).show(getFragmentManager(),"Entrada_Horario");
+            }
+        });
+        salidaTurno1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
+                new Hora_DialogFragment(new interfaz_OnClickHora() {
+                    @Override
+                    public void onClick(View v, int i, int i1) {
+                        salidaTurno1.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
             }
