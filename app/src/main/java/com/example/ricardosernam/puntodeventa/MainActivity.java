@@ -1,5 +1,7 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -31,6 +33,7 @@ import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
 import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 
 import java.util.ArrayList;
 

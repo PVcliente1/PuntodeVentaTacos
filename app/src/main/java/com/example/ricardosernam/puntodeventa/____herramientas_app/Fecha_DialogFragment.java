@@ -16,7 +16,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFe
 import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
-public class Fecha_DialogFragment extends DialogFragment {    ///Dialog Fragment para DatePicker
+public class Fecha_DialogFragment extends android.support.v4.app.DialogFragment{    ///Dialog Fragment para DatePicker
     private DatePicker fecha;
     private Button aceptar, cancelar;
     private Calendar calendar;

@@ -15,7 +15,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHo
 import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
-public class Hora_DialogFragment extends DialogFragment {   ////Dialog Fragment que muestra mi timePicker
+public class Hora_DialogFragment extends android.support.v4.app.DialogFragment {   ////Dialog Fragment que muestra mi timePicker
     private TimePicker hora;
     private Button aceptar, cancelar;
     private Calendar calendar;

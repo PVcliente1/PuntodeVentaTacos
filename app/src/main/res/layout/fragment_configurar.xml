@@ -187,61 +187,61 @@
                 android:textSize="18dp"
                 android:text="Turnos"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:id="@+id/LLturnos">
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp"
-                        android:text="Turno 1"/>
-                    <EditText
-                        android:gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="Hora"/>
-                </LinearLayout>
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:text="Turno 2"/>
-                <EditText
-                    android:gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="Hora"/>
-            </LinearLayout>
-        </LinearLayout>
         <!--Botones finales-->
         <LinearLayout
+            android:id="@+id/LLturnos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal">
-            <Button
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancelar"/>
-            <Button
+                android:gravity="center"
+                android:text="Turno 1"
+                android:textSize="18dp" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Entrada" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Salida" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/LLturno2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guardar"/>
+                android:text="Turno 2"
+                android:textSize="18dp" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="Entrada" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="Salida" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
