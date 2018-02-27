@@ -26,7 +26,10 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    private String name, password, email,lastname, puesto="Admin",user,turno="noturno",phone;
+    private String name, password, email,lastname, puesto="Admin",foto="nofoto",phone;
+    private int idturno=0;
+    private int idpuesto=1;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,8 +155,9 @@ public class Registro_inicial extends Fragment {
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);
-            values.put("usuario", user);
-            values.put("turno", turno);
+            values.put("idturno", idturno);
+            values.put("idpuesto", idpuesto);
+            values.put("foto", foto);
             db.insert("Miembros",null, values);
         db.close();
     }

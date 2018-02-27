@@ -43,14 +43,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla Miembros
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
-                "  `idmiembro` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45) ,\n" +
                 "  `apellido` VARCHAR(45),\n" +
                 "  `teléfono` INT,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `usuario` VARCHAR(45),\n" +
-                "  `turnoFK` VARCHAR(45),\n" +
                 "  `idturno` INT NOT NULL,\n" +
                 "  `idpuesto` INT NOT NULL,\n" +
                 "  `foto` VARCHAR(45),\n" +
@@ -284,14 +282,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla Miembros
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
-                "  `idmiembro` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45) ,\n" +
                 "  `apellido` VARCHAR(45),\n" +
                 "  `teléfono` INT,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `usuario` VARCHAR(45),\n" +
-                "  `turnoFK` VARCHAR(45),\n" +
                 "  `idturno` INT NOT NULL,\n" +
                 "  `idpuesto` INT NOT NULL,\n" +
                 "  `foto` VARCHAR(45),\n" +
