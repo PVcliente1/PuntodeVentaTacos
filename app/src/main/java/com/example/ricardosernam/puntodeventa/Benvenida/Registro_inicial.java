@@ -91,7 +91,6 @@ public class Registro_inicial extends Fragment {
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            //onSignupSuccess();////cuando cargue
                             getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
                             progressDialog.dismiss();
                         }
@@ -99,13 +98,6 @@ public class Registro_inicial extends Fragment {
         }
 
         }
-
-
-    public void onSignupSuccess() {  ///es correcto
-        registrarse.setEnabled(true);
-        bar.setVisibility(View.VISIBLE);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
-    }
 
     public void onSignupFailed() {  //es incorrecto
         Toast.makeText(getContext(), "Registro fallido", Toast.LENGTH_LONG).show();
@@ -167,12 +159,6 @@ public class Registro_inicial extends Fragment {
             values.put("idpuesto", idpuesto);
             values.put("foto", foto);
             db.insert("Miembros",null, values);
-
-            //long idUsuario = db.insert("Usuarios", null , values);
-            //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});
-            //Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
-        //}
         db.close();
-        //return  idUsuario;
     }
 }

@@ -32,7 +32,6 @@ public class Inicio_sesion extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_incio_sesion, container, false);
-        bar=getActivity().findViewById(R.id.APLappBar);
         iniciarSesion=view.findViewById(R.id.BtnIniciarSesion);
         nombreUsuario=view.findViewById(R.id.ETnombreUsuario);
         contraseñaUsuario=view.findViewById(R.id.ETcontraseñaUsuario);
@@ -48,9 +47,7 @@ public class Inicio_sesion extends Fragment {
     }
     public void onSignupSuccess() {  ///es correcto
         //iniciarSesion.setEnabled(true);
-        bar.setVisibility(View.VISIBLE);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
-        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOprincipal)).commit();
+        getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Personalizacion1()).commit();
     }
     public void ingresar(){
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);

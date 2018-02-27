@@ -63,7 +63,7 @@ public class formatoReportes_Fragments extends android.support.v4.app.Fragment{
                     public void onClick(View v, int i, int i1, int i2) {
                         fechaI.setText(i2 + "/" + i1+1 + "/" + i);
                     }
-                }).show(getActivity().getFragmentManager(),"Fecha_apartado");
+                }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
         fechaFinal.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class formatoReportes_Fragments extends android.support.v4.app.Fragment{
                     public void onClick(View v, int i, int i1, int i2) {
                         fechaF.setText(i2 + "/" + i1+1 + "/" + i);
                     }
-                }).show(getActivity().getFragmentManager(),"Fecha_apartado");
+                }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
 

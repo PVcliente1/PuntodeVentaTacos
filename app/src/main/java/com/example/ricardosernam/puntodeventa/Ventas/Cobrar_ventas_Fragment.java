@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -46,6 +47,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
     private LinearLayout editsApartado;
     public CheckBox descuento;
     public TextView tipoD;
+    FragmentActivity context= (FragmentActivity) getActivity();
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
 
@@ -179,7 +181,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                     public void onClick(View v, int i, int i1) {
                         hora.setText(i + ":" + i1);
                     }
-                }).show(getFragmentManager(),"Hora_apartado");
+                }).show(context.getSupportFragmentManager(),"Hora_apartado");
             }
         });
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +192,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                     public void onClick(View v, int i, int i1, int i2) {
                         fecha.setText(i2 + "/" + i1+1 + "/" + i);
                     }
-                }).show(getFragmentManager(),"Fecha_apartado");
+                }).show(context.getSupportFragmentManager(),"Fecha_apartado");
             }
         });
         descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

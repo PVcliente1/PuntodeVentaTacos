@@ -65,6 +65,7 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
         codigo=view.findViewById(R.id.ETcodigo);
 
         codigo.setInputType(InputType.TYPE_NULL);
+
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

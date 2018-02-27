@@ -70,6 +70,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                 imagenProducto.setTitle("Imagen");
                 imagenProducto.setMessage("Seleccion como quieres traer tu imagen");
                 imagenProducto.setCancelable(false);
+
                 imagenProducto.setPositiveButton("Desde galeria...", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface tipoDescuento, int id) {
                        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
