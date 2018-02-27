@@ -26,9 +26,9 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    private String name, password, email,lastname, puesto="Admin",foto="nofoto",phone;
-    private int idturno=0;
-    private int idpuesto=1;
+    public String name, password, email,lastname,foto="nofoto",phone;
+    public int idturno=1;
+    public int idpuesto=2;
 
 
     @Override
@@ -145,7 +145,7 @@ public class Registro_inicial extends Fragment {
             ContentValues values = new ContentValues();
             //values.put("idmiembro",0);
             values.put("nombre", name);
-            values.put("apellidos", lastname);
+            values.put("apellido", lastname);
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);

@@ -288,8 +288,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `telefono` VARCHAR(45),\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INT ,\n" +
-                "  `idpuesto` INT ,\n" +
+                "  `idturno` INTEGER NOT NULL ,\n" +
+                "  `idpuesto` INTEGER NOT NULL,\n" +
                 "  `foto` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`, `idturno`, `idpuesto`),\n" +
                 "  CONSTRAINT `fk_miembros_turnos1`\n" +
