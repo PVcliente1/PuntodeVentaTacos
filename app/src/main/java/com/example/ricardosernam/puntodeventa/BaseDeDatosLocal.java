@@ -39,28 +39,27 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creamos el index de Puestos para hacer la relación con la columna supervisor
 
         sqLiteDatabase.execSQL("CREATE INDEX `fk_puestos_puestos1_idx` ON Puestos (`supervisor` ASC);");
-
         //Creación de la tabla Miembros
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Miembros (\n" +
                 "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre` VARCHAR(45) ,\n" +
-                "  `apellido` VARCHAR(45),\n" +
-                "  `telefono` VARCHAR(45),\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                " `telefono` varchar(45),\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INT ,\n" +
-                "  `idpuesto` INT ,\n" +
+                "  `idturno` INTEGER ,\n" +
+                "  `idpuesto` INTEGER ,\n" +
                 "  `foto` VARCHAR(45),\n" +
+                "  `apellido` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`, `idturno`, `idpuesto`),\n" +
                 "  CONSTRAINT `fk_miembros_turnos1`\n" +
                 "    FOREIGN KEY (`idturno`)\n" +
                 "    REFERENCES Turnos (`idturno`)\n" +
-                "    ON DELETE NO ACTION,\n" +
+                "    ON DELETE NO ACTION , \n" +
                 "  CONSTRAINT `fk_miembros_puestos1`\n" +
                 "    FOREIGN KEY (`idpuesto`)\n" +
                 "    REFERENCES Puestos (`idpuesto`)\n" +
-                "    ON DELETE NO ACTION)");
+                "    ON DELETE NO ACTION);");
 
         //Creación el INDEX para la relación de la tabla de miembros con la tabla de puestos
 
@@ -140,7 +139,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de tabla ventas
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Ventas (\n" +
-                "  `idventa` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idventa` ,\n" +
                 "  `tipo` VARCHAR(45),\n" +
                 "  `fecha` DATETIME ,\n" +
                 "  `fecha_entrega` DATETIME ,\n" +
@@ -179,7 +178,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de tabla datos_empresa
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS datos_empresa (\n" +
-                "  `idempresa` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idempresa` INT NOT NULL,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `encargado` VARCHAR(45),\n" +
                 "  `direccion` VARCHAR(45),\n" +
@@ -193,7 +192,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de tabla descuentos
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Descuentos(\n" +
-                "  `iddescuento` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `iddescuento` INT NOT NULL,\n" +
                 "  `tipo_descuento` VARCHAR(45),\n" +
                 "  `porentaje` INT,\n" +
                 "  PRIMARY KEY (`iddescuento`))");
@@ -239,6 +238,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+  /*
+
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Puestos");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Cobros");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Turnos");
@@ -255,15 +256,16 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creamos la tabla de turnos
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Turnos (\n" +
-                "  `idturno` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idturno` INT NOT NULL,\n" +
                 "  `entrada` DATETIME ,\n" +
                 "  `salida` DATETIME ,\n" +
-                "  `tipo_turno` VARCHAR(45))");
+                "  `tipo_turno` VARCHAR(45),\n" +
+                "  PRIMARY KEY (`idturno`))\n");
 
         //Creamos la tabla de puestos
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Puestos (\n" +
-                "  `idpuesto` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idpuesto` INT NOT NULL,\n" +
                 "  `nombre_puesto` VARCHAR(45),\n" +
                 "  `vender` TINYINT ,\n" +
                 "  `comprar` TINYINT ,\n" +
@@ -282,14 +284,16 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla Miembros
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Miembros (\n" +
-                "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idmiembro` INT NOT NULL,\n" +
                 "  `nombre` VARCHAR(45) ,\n" +
                 "  `apellido` VARCHAR(45),\n" +
-                "  `telefono` VARCHAR(45),\n" +
+                "  `teléfono` INT,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INTEGER NOT NULL ,\n" +
-                "  `idpuesto` INTEGER NOT NULL,\n" +
+                "  `usuario` VARCHAR(45),\n" +
+                "  `turnoFK` VARCHAR(45),\n" +
+                "  `idturno` INT NOT NULL,\n" +
+                "  `idpuesto` INT NOT NULL,\n" +
                 "  `foto` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`, `idturno`, `idpuesto`),\n" +
                 "  CONSTRAINT `fk_miembros_turnos1`\n" +
@@ -312,7 +316,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla proveedores
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Proveedores (\n" +
-                "  `idproveedor` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idproveedor` INT NOT NULL,\n" +
                 "  `contacto` VARCHAR(45),\n" +
                 "  `telefono` INT,\n" +
                 "  `direccion` VARCHAR(45),\n" +
@@ -322,14 +326,14 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla Unidades
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Unidades (\n" +
-                "  `idunidad` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idunidad` INT NOT NULL,\n" +
                 "  `nombre_unidad` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idunidad`))");
 
         //Creamos la tabla de productos
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Productos (\n" +
-                "  `idproducto` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idproducto` INT NOT NULL,\n" +
                 "  `codigo_barras` INT ,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `ruta_imagen` VARCHAR(45),\n" +
@@ -361,7 +365,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla clientes
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Clientes (\n" +
-                "  `idcliente` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idcliente` INT NOT NULL,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellido` VARCHAR(45),\n" +
                 "  `alias` VARCHAR(45),\n" +
@@ -372,14 +376,14 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de la tabla cobros
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Cobros (\n" +
-                "  `idcobro` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idcobro` INT NOT NULL,\n" +
                 "  `nombre_cobro` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idcobro`))");
 
         //Creación de tabla ventas
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Ventas (\n" +
-                "  `idventa` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idventa` INT NOT NULL,\n" +
                 "  `tipo` VARCHAR(45),\n" +
                 "  `fecha` DATETIME ,\n" +
                 "  `fecha_entrega` DATETIME ,\n" +
@@ -418,7 +422,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de tabla datos_empresa
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS datos_empresa (\n" +
-                "  `idempresa` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idempresa` INT NOT NULL,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `encargado` VARCHAR(45),\n" +
                 "  `direccion` VARCHAR(45),\n" +
@@ -432,7 +436,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de tabla descuentos
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Descuentos(\n" +
-                "  `iddescuento` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `iddescuento` INT NOT NULL,\n" +
                 "  `tipo_descuento` VARCHAR(45),\n" +
                 "  `porentaje` INT,\n" +
                 "  PRIMARY KEY (`iddescuento`))");
@@ -470,6 +474,9 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         //Creación de index para la relación de venta_Detalles con Descuentos
 
         sqLiteDatabase.execSQL("CREATE INDEX `fk_venta_detalles_descuentos1_idx` ON venta_detalles(`iddescuentos` ASC)");
+    */
+
 
     }
+
 }

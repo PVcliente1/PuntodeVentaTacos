@@ -26,10 +26,22 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    public String name, password, email,lastname,foto="nofoto",phone;
-    public int idturno=1;
-    public int idpuesto=2;
+    private String name, lastname, phone, email, password,foto;
+    private int idturno=0;
+    private int idpuesto=1;
 
+
+    /*
+    "  `idmiembro` INT NOT NULL,\n" +
+        "  `nombre` VARCHAR(45),\n" +
+        "  `apellido` VARCHAR(45),\n" +
+        "  `telefono` varchar(45),\n" +
+        "  `correo` VARCHAR(45),\n" +
+        "  `contrasena` VARCHAR(45),\n" +
+        "  `idturno` INT NOT NULL,\n" +
+        "  `idpuesto` INT NOT NULL,\n" +
+        "  `foto` VARCHAR(45),\n" +
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +98,7 @@ public class Registro_inicial extends Fragment {
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
+                            //onSignupSuccess();////cuando cargue
                             getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
                             progressDialog.dismiss();
                         }
@@ -93,6 +106,13 @@ public class Registro_inicial extends Fragment {
         }
 
         }
+
+
+    public void onSignupSuccess() {  ///es correcto
+        registrarse.setEnabled(true);
+        bar.setVisibility(View.VISIBLE);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
+    }
 
     public void onSignupFailed() {  //es incorrecto
         Toast.makeText(getContext(), "Registro fallido", Toast.LENGTH_LONG).show();
@@ -139,20 +159,38 @@ public class Registro_inicial extends Fragment {
         password = contraseña.getText().toString();
         phone = telefono.getText().toString();
 
+/*
+        "  `idmiembro` INT NOT NULL,\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `apellido` VARCHAR(45),\n" +
+                "  `telefono` varchar(45),\n" +
+                "  `correo` VARCHAR(45),\n" +
+                "  `contrasena` VARCHAR(45),\n" +
+                "  `idturno` INT NOT NULL,\n" +
+                "  `idpuesto` INT NOT NULL,\n" +
+                "  `foto` VARCHAR(45),\n" +
+
+ */
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
             //values.put("idmiembro",0);
             values.put("nombre", name);
-            values.put("apellido", lastname);
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);
+            values.put("apellido", lastname);
             values.put("idturno", idturno);
             values.put("idpuesto", idpuesto);
             values.put("foto", foto);
             db.insert("Miembros",null, values);
+
+            //long idUsuario = db.insert("Usuarios", null , values);
+            //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});
+            //Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
+        //}
         db.close();
+        //return  idUsuario;
     }
 }
