@@ -67,7 +67,18 @@
                 android:layout_width="222dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
+            <EditText
+                android:id="@+id/ETcontraseñaAdministrador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/ETconfirmarContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirmar contraseña"
+                android:inputType="textPassword" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
