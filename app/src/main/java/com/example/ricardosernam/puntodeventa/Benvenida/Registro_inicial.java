@@ -50,11 +50,6 @@ public class Registro_inicial extends Fragment {
         telefono=view.findViewById(R.id.ETtelefonoAdministrador);
         iniciarSesion=view.findViewById(R.id.TViniciarSesion);
 
-       /*name = nombre.getText().toString();
-        email = correo.getText().toString();
-        password = contraseña.getText().toString();
-        phone = telefono.getText().toString();*/
-
         registrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +146,6 @@ public class Registro_inicial extends Fragment {
             //values.put("idmiembro",0);
             values.put("nombre", name);
             values.put("apellidos", lastname);
-            values.put("puesto", "Admin");
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);

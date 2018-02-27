@@ -46,11 +46,11 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45) ,\n" +
                 "  `apellido` VARCHAR(45),\n" +
-                "  `teléfono` INT,\n" +
+                "  `telefono` VARCHAR(45),\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INT NOT NULL,\n" +
-                "  `idpuesto` INT NOT NULL,\n" +
+                "  `idturno` INT ,\n" +
+                "  `idpuesto` INT ,\n" +
                 "  `foto` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`, `idturno`, `idpuesto`),\n" +
                 "  CONSTRAINT `fk_miembros_turnos1`\n" +
@@ -285,11 +285,11 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idmiembro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45) ,\n" +
                 "  `apellido` VARCHAR(45),\n" +
-                "  `teléfono` INT,\n" +
+                "  `telefono` VARCHAR(45),\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INT NOT NULL,\n" +
-                "  `idpuesto` INT NOT NULL,\n" +
+                "  `idturno` INT ,\n" +
+                "  `idpuesto` INT ,\n" +
                 "  `foto` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idmiembro`, `idturno`, `idpuesto`),\n" +
                 "  CONSTRAINT `fk_miembros_turnos1`\n" +
