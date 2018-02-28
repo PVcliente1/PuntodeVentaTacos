@@ -64,7 +64,7 @@ public class AgregarProvedor extends DialogFragment {
     //funcion para dar de alta, si funciona regresa true, si no regresa un false
     public void alta(String tabla)
     {
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext(),"proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //nuevo registro

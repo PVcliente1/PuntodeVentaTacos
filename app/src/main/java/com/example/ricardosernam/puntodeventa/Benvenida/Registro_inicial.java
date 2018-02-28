@@ -27,8 +27,8 @@ public class Registro_inicial extends Fragment {
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
     private String name, lastname, phone, email, password,foto;
-    private int idturno=0;
-    private int idpuesto=1;
+    private Integer idturno=1;
+    private Integer idpuesto=1;
 
 
     /*
@@ -82,7 +82,7 @@ public class Registro_inicial extends Fragment {
 
         if (!validate()) {////si hay un error
             onSignupFailed();
-            return;
+            return ;
         }
         else {  ///si cargo correctamente (Mostramos un progress dialog)
             insertarUsuario();///insertamos y actualizamos
@@ -170,8 +170,19 @@ public class Registro_inicial extends Fragment {
                 "  `idpuesto` INT NOT NULL,\n" +
                 "  `foto` VARCHAR(45),\n" +
 
+
+                "  `nombre` VARCHAR(45), " +
+                " `telefono` varchar(45), " +
+                "  `correo` VARCHAR(45), " +
+                "  `contrasena` VARCHAR(45), " +
+                "  `idturno` INTEGER NOT NULL REFERENCES Turnos (idturno), " +
+                "  `idpuesto` INTEGER NOT NULL REFERENCES Puestos(idpuesto), " +
+                "  `foto` VARCHAR(45), " +
+                "  `apellido` VARCHAR(45))");
+
+
  */
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
@@ -180,11 +191,11 @@ public class Registro_inicial extends Fragment {
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);
-            values.put("apellido", lastname);
             values.put("idturno", idturno);
             values.put("idpuesto", idpuesto);
             values.put("foto", foto);
-            db.insert("Miembros",null, values);
+            values.put("apellido", lastname);
+            db.insertOrThrow("Miembros",null, values);
 
             //long idUsuario = db.insert("Usuarios", null , values);
             //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});

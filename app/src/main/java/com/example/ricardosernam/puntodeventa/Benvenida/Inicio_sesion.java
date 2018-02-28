@@ -50,7 +50,7 @@ public class Inicio_sesion extends Fragment {
         getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Personalizacion1()).commit();
     }
     public void ingresar(){
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());
         SQLiteDatabase db=admin.getWritableDatabase();
         usuario=nombreUsuario.getText().toString();
         contraseña=contraseñaUsuario.getText().toString();
