@@ -119,7 +119,7 @@ public class Proveedores extends Fragment {
 
     //procedimiento para agregar datos al spinner
     public void adapterSpinner(){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"Proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
@@ -145,7 +145,7 @@ public class Proveedores extends Fragment {
 
     //Procedimiento para extraer datos de X id y mostrarlos para su manejo
     public void jalarDatos(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
@@ -163,7 +163,7 @@ public class Proveedores extends Fragment {
 
     //procedimiento para dar de baja
     public void baja(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //Se borra el registro que contenga el id seleccionado
@@ -175,7 +175,7 @@ public class Proveedores extends Fragment {
 
     //procedimiento para modificar
     public void modificar(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext(),"proveedores",null,1);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //creamos nuevo registro

@@ -26,10 +26,22 @@ public class Registro_inicial extends Fragment {
     private AppBarLayout bar;
     private TextView iniciarSesion;
     private EditText nombre,apellidos, contraseña,telefono, correo;
-    private String name, password, email,lastname, puesto="Admin",foto="nofoto",phone;
-    private int idturno=0;
-    private int idpuesto=1;
+    private String name, lastname, phone, email, password,foto;
+    private Integer idturno=1;
+    private Integer idpuesto=1;
 
+
+    /*
+    "  `idmiembro` INT NOT NULL,\n" +
+        "  `nombre` VARCHAR(45),\n" +
+        "  `apellido` VARCHAR(45),\n" +
+        "  `telefono` varchar(45),\n" +
+        "  `correo` VARCHAR(45),\n" +
+        "  `contrasena` VARCHAR(45),\n" +
+        "  `idturno` INT NOT NULL,\n" +
+        "  `idpuesto` INT NOT NULL,\n" +
+        "  `foto` VARCHAR(45),\n" +
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +82,7 @@ public class Registro_inicial extends Fragment {
 
         if (!validate()) {////si hay un error
             onSignupFailed();
-            return;
+            return ;
         }
         else {  ///si cargo correctamente (Mostramos un progress dialog)
             insertarUsuario();///insertamos y actualizamos
@@ -86,6 +98,7 @@ public class Registro_inicial extends Fragment {
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
+                            //onSignupSuccess();////cuando cargue
                             getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
                             progressDialog.dismiss();
                         }
@@ -93,6 +106,13 @@ public class Registro_inicial extends Fragment {
         }
 
         }
+
+
+    public void onSignupSuccess() {  ///es correcto
+        registrarse.setEnabled(true);
+        bar.setVisibility(View.VISIBLE);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
+    }
 
     public void onSignupFailed() {  //es incorrecto
         Toast.makeText(getContext(), "Registro fallido", Toast.LENGTH_LONG).show();
@@ -139,20 +159,49 @@ public class Registro_inicial extends Fragment {
         password = contraseña.getText().toString();
         phone = telefono.getText().toString();
 
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
+/*
+        "  `idmiembro` INT NOT NULL,\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `apellido` VARCHAR(45),\n" +
+                "  `telefono` varchar(45),\n" +
+                "  `correo` VARCHAR(45),\n" +
+                "  `contrasena` VARCHAR(45),\n" +
+                "  `idturno` INT NOT NULL,\n" +
+                "  `idpuesto` INT NOT NULL,\n" +
+                "  `foto` VARCHAR(45),\n" +
+
+
+                "  `nombre` VARCHAR(45), " +
+                " `telefono` varchar(45), " +
+                "  `correo` VARCHAR(45), " +
+                "  `contrasena` VARCHAR(45), " +
+                "  `idturno` INTEGER NOT NULL REFERENCES Turnos (idturno), " +
+                "  `idpuesto` INTEGER NOT NULL REFERENCES Puestos(idpuesto), " +
+                "  `foto` VARCHAR(45), " +
+                "  `apellido` VARCHAR(45))");
+
+
+ */
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){
             ContentValues values = new ContentValues();
             //values.put("idmiembro",0);
             values.put("nombre", name);
-            values.put("apellidos", lastname);
             values.put("telefono", phone);
             values.put("correo", email);
             values.put("contrasena", password);
             values.put("idturno", idturno);
             values.put("idpuesto", idpuesto);
             values.put("foto", foto);
-            db.insert("Miembros",null, values);
+            values.put("apellido", lastname);
+            db.insertOrThrow("Miembros",null, values);
+
+            //long idUsuario = db.insert("Usuarios", null , values);
+            //db.update("Usuarios", values, "id = ?", n.ew String[]{String.valueOf(idUsuario)});
+            //Toast.makeText(getContext(), "Registro: "+ idUsuario , Toast.LENGTH_SHORT).show();
+        //}
         db.close();
+        //return  idUsuario;
     }
 }

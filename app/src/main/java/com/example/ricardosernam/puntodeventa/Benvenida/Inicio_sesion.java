@@ -50,12 +50,12 @@ public class Inicio_sesion extends Fragment {
         getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Personalizacion1()).commit();
     }
     public void ingresar(){
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext(),"Miembros",null,1);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());
         SQLiteDatabase db=admin.getWritableDatabase();
         usuario=nombreUsuario.getText().toString();
         contraseña=contraseñaUsuario.getText().toString();
         //Toast.makeText(getContext(), "esta"+ usuario+" y "+contraseña, Toast.LENGTH_SHORT).show();
-        fila=db.rawQuery("select nombre, contrasena from miembros where nombre='"+usuario+"' and contrasena='"+contraseña+"'",null);
+        fila=db.rawQuery("select nombre, contrasena from Miembros where nombre='"+usuario+"' and contrasena='"+contraseña+"'",null);
                 //preguntamos si el cursor tiene algun valor almacenado
         //Toast.makeText(getContext(), "No hay nada", Toast.LENGTH_SHORT).show();
         if(fila.moveToFirst()==true){
