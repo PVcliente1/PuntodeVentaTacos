@@ -3,6 +3,7 @@ package com.example.ricardosernam.puntodeventa.Productos;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class Productos extends Fragment{
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private Button nuevoProducto;
+    private android.app.FragmentManager fm;
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
@@ -40,10 +42,10 @@ public class Productos extends Fragment{
         itemsProductos.add(new Pro_ventas_class("Pizza"));
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
        View view=inflater.inflate(R.layout.fragment_productos, container, false);
+       fm=getActivity().getFragmentManager();
         nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
         recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
@@ -53,7 +55,7 @@ public class Productos extends Fragment{
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new nuevoProducto_DialogFragment().show(getActivity().getFragmentManager(), "nuevoProducto");
+                new nuevoProducto_DialogFragment().show(fm, "nuevoProducto");
             }
         });
        return view;

@@ -97,6 +97,7 @@
         <EditText
             android:id="@+id/ETentradaHorario"
             android:layout_width="70dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:gravity="center"
@@ -106,6 +107,7 @@
         <EditText
             android:id="@+id/ETsalidaHorario"
             android:layout_width="70dp"
+            android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:gravity="center"
@@ -130,6 +132,7 @@
         <EditText
             android:id="@+id/ETentradaTurno1"
             android:layout_width="70dp"
+            android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="Entrada" />
@@ -137,6 +140,7 @@
         <EditText
             android:id="@+id/ETsalidaTurno1"
             android:layout_width="70dp"
+            android:focusable="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="Salida" />
@@ -159,6 +163,7 @@
             android:id="@+id/ETentradaTurno2"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Entrada" />
@@ -167,6 +172,7 @@
             android:id="@+id/ETsalidaTurno2"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Salida" />

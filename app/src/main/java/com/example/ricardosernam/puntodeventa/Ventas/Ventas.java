@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
 public class Ventas extends Fragment{     /////Fragment de categoria ventas
-    private FragmentManager fm;
+    private android.support.v4.app.FragmentManager fm;
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
     private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
@@ -54,7 +54,7 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
         onViewCreated(view, savedInstanceState);
-        fm= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
+        fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
 
         pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
         DFhistorial=new Historial_DialogFragment(itemsHistorial);  ////enviamos el array con las compras al fragment de historial

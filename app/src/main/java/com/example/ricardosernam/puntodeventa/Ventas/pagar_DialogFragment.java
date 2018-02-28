@@ -13,7 +13,7 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
 
 @SuppressLint("ValidFragment")
-public class pagar_DialogFragment extends DialogFragment {
+public class pagar_DialogFragment extends android.support.v4.app.DialogFragment {
     private Button aceptar,cancelar;
     private String tipo,pagar;
     interfaz_historial Interface_historial;

@@ -32,7 +32,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial
 import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
-public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para seccion cobrar con recyclerview
+public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   ////Fragment para seccion cobrar con recyclerview
 
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
@@ -77,8 +77,6 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
         vender.setChecked(true);
         pagarAhora.setChecked(true);
         fechaHora.setVisibility(View.INVISIBLE);
-        hora.setInputType(InputType.TYPE_NULL);///evitamos que se abra el teclado automaticamente
-        fecha.setInputType(InputType.TYPE_NULL);
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter = new Cobrar_ventasAdapter(view2.getContext(), this.getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view2.findViewById(R.id.RVrecicladorCobrar);///declaramos el recycler
@@ -181,7 +179,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                     public void onClick(View v, int i, int i1) {
                         hora.setText(i + ":" + i1);
                     }
-                }).show(context.getSupportFragmentManager(),"Hora_apartado");
+                }).show(getFragmentManager(),"Hora_apartado");
             }
         });
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +190,7 @@ public class Cobrar_ventas_Fragment extends Fragment {   ////Fragment para secci
                     public void onClick(View v, int i, int i1, int i2) {
                         fecha.setText(i2 + "/" + i1+1 + "/" + i);
                     }
-                }).show(context.getSupportFragmentManager(),"Fecha_apartado");
+                }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
         descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

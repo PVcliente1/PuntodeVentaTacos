@@ -79,6 +79,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp">
 
@@ -90,12 +91,16 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="16sp" />
 
-                <Spinner
-                    android:id="@+id/SpnUnidad"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content">
-
-                </Spinner>
+                <EditText
+                    android:id="@+id/ETunidad"
+                    android:layout_width="70dp"
+                    android:focusable="false"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:ems="10"
+                    android:hint="Unidad"
+                    android:inputType="number"
+                    android:textAlignment="center" />
             </LinearLayout>
 
 

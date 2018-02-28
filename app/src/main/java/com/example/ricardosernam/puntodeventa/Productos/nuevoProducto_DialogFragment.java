@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class nuevoProducto_DialogFragment extends DialogFragment {
-    private EditText nombreP, precio, codigo;
+    private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
+    private FragmentActivity fm=(FragmentActivity) getActivity();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +38,14 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView=inflater.inflate(R.layout.dialog_fragment_nuevo_producto,container);
+
         nombreP = rootView.findViewById(R.id.ETnombre);  ////Textview donde se coloca el nombre del producto
         precio=rootView.findViewById(R.id.ETprecio);
         codigo=rootView.findViewById(R.id.ETcodigoNuevo);
         aceptarM=rootView.findViewById(R.id.BtnAceptarProducto);
         cancelarM=rootView.findViewById(R.id.BtnCancelarProducto);
         escanear=rootView.findViewById(R.id.BtnEscanearNuevo);
+        unidad=rootView.findViewById(R.id.ETunidad);
         imagen=rootView.findViewById(R.id.BtnImagen);
 
         aceptarM.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +66,12 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
                 startActivityForResult(intent,2);//inicializar el activity con RequestCode2
+            }
+        });
+        unidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Unidades().show(getFragmentManager(), "Unidades");
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {

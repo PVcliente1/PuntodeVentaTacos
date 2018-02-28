@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Historial_DialogFragment extends DialogFragment {
+public class Historial_DialogFragment extends android.support.v4.app.DialogFragment {
     private View view2;
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;

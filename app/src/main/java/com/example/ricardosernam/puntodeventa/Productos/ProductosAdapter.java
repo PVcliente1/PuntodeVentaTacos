@@ -36,13 +36,14 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
-        public EditText nombreP, precio;
+        public EditText nombreP, precio, unidad;
         public Button editar, eliminar, aceptarM, cancelarM, imagen;
         public LinearLayout botones;
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             nombreP = v.findViewById(R.id.ETnombre);  ////Textview donde se coloca el nombre del producto
             precio=v.findViewById(R.id.ETprecio);
+            unidad=v.findViewById(R.id.ETunidad);
             editar=v.findViewById(R.id.BtnEditarProducto);
             eliminar=v.findViewById(R.id.BtnEliminarProducto);
             aceptarM=v.findViewById(R.id.BtnAceptarProducto);
@@ -78,6 +79,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
             public void onClick(View view) {
                 holder.nombreP.setEnabled(true);
                 holder.precio.setEnabled(true);
+                holder.unidad.setEnabled(true);
                 holder.botones.setVisibility(View.VISIBLE);
                 holder.imagen.setVisibility(View.VISIBLE);
                 holder.aceptarM.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +87,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                     public void onClick(View view) {
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
+                        holder.unidad.setEnabled(false);
                         holder.botones.setVisibility(View.INVISIBLE);
                         holder.imagen.setVisibility(View.INVISIBLE);
                         Toast.makeText(context, "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
@@ -95,11 +98,18 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                     public void onClick(View view) {
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
+                        holder.unidad.setEnabled(true);
                         holder.imagen.setVisibility(View.INVISIBLE);
                         holder.botones.setVisibility(View.INVISIBLE);
                     }
                 });
 
+            }
+        });
+        holder.unidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Unidades().show(manager, "Unidades");
             }
         });
         holder.eliminar.setOnClickListener(new View.OnClickListener() {

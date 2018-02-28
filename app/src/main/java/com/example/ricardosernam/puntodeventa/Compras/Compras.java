@@ -4,6 +4,7 @@ package com.example.ricardosernam.puntodeventa.Compras;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.Productos.Unidades;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.R;
 
@@ -26,10 +28,10 @@ public class Compras extends Fragment{
     private LinearLayout existentes,agregar, campos , foto;
     private TextView nombre, cantidadExistentes, totalCompra;
     private Button escan,aceptar,cancelar;
-    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto;
+    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad;
     private RadioGroup opciones;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
-    private Spinner unidad;
+    private android.app.FragmentManager fm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +39,8 @@ public class Compras extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compras, container, false);
         //Econtramos los valores de nuestros Radio Button dentro del XML
+
+        fm=getActivity().getFragmentManager();
         opciones=view.findViewById(R.id.RGopcionesCompra);
         ////editText
         capturarProducto=view.findViewById(R.id.ETCapturarProducto);
@@ -57,7 +61,7 @@ public class Compras extends Fragment{
 
 
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
-        unidad=view.findViewById(R.id.SpnUnidad);
+        unidad=view.findViewById(R.id.ETunidad);
 
         ///layouts
         agregar=view.findViewById(R.id.LLagregarProductos);
@@ -65,10 +69,12 @@ public class Compras extends Fragment{
         campos=view.findViewById(R.id.LLcamposDatos);
         foto=view.findViewById(R.id.LLfoto);
 
-
-
-        String[] unidades= {"Litro","Kilo","Gramos","Metro","Pieza"};
-        unidad.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,unidades));
+        unidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Unidades().show(fm, "Unidades");
+            }
+        });
 
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

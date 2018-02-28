@@ -95,6 +95,29 @@ public class Personalizacion1 extends Fragment {
             }
         });
 
+        entradaTurno2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
+                new Hora_DialogFragment(new interfaz_OnClickHora() {
+                    @Override
+                    public void onClick(View v, int i, int i1) {
+                        entradaTurno2.setText(i + ":" + i1);
+                    }
+                }).show(getFragmentManager(),"Entrada_Horario");
+            }
+        });
+        salidaTurno2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
+                new Hora_DialogFragment(new interfaz_OnClickHora() {
+                    @Override
+                    public void onClick(View v, int i, int i1) {
+                        salidaTurno2.setText(i + ":" + i1);
+                    }
+                }).show(getFragmentManager(),"Entrada_Horario");
+            }
+        });
+
 
       aceptar.setOnClickListener(new View.OnClickListener() {
           @Override

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Pro_DialogFragment extends DialogFragment {     //clase que me crea el dialogFragment con productos
+public class Pro_DialogFragment extends android.support.v4.app.DialogFragment {     //clase que me crea el dialogFragment con productos
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
@@ -42,7 +42,8 @@ public class Pro_DialogFragment extends DialogFragment {     //clase que me crea
         View rootView=inflater.inflate(R.layout.recyclerpro,container);
 
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
-        final FragmentManager fm= getFragmentManager();
+        //final FragmentManager fm= getFragmentManager();
+        final android.support.v4.app.FragmentManager fm= getFragmentManager();
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
