@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         }
         else if(appGetFirstTimeRun()==2){
-            Toast.makeText(getApplicationContext(), "Es una atualización", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Es una actualización", Toast.LENGTH_LONG).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
