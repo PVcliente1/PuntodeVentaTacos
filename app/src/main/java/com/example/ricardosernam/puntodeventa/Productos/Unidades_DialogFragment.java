@@ -23,6 +23,7 @@ import com.example.ricardosernam.puntodeventa.Ventas.Cobrar_ventasAdapter;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
         values = new ContentValues();
 
         fila=db.rawQuery("select nombre_unidad from Unidades" ,null);
+
         while (fila.moveToNext()){
             itemsUnidades.add(new Unidades_class(fila.getString(0)));
         }
@@ -75,6 +77,12 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
             public void onClick(View v, String unidad) {
                 dismiss();
                 Interfaz.onClick(v, unidad);
+            }
+        }, new interfazUnidades_OnClick() {
+            @Override
+            public void onClick(View v, String unidad) {
+                db.delete(" Unidades ","nombre_unidad='"+unidad+"'", null);
+                Toast.makeText(getActivity(), "Borraste "+ unidad, Toast.LENGTH_LONG).show();
             }
         });///llamamos al adaptador y le enviamos el array como parametro
         recycler = view2.findViewById(R.id.RVrecicladorunidades);///declaramos el recycler
@@ -100,13 +108,6 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
                     db.insertOrThrow("Unidades",null, values);
 
                     db.close();
-                    //adapter.notifyDataSetChanged();
-                    //recycler.invalidate();
-                    //int position=itemsUnidades.size()+1;
-                    //Toast.makeText(getActivity(), "Agregado en "+ position, Toast.LENGTH_LONG).show();
-                    //adapter.notifyItemInserted(position);
-                    //adapter.notifyItemRangeChanged(0,position);
-                    recycler.setAdapter(adapter);
                     capturarNuevaUnidad.setText(" ");
                 }
             }

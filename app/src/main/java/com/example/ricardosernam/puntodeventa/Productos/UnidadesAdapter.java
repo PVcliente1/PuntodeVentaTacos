@@ -19,6 +19,7 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 
 import java.util.ArrayList;
 
@@ -26,25 +27,36 @@ public class UnidadesAdapter extends RecyclerView.Adapter <UnidadesAdapter.Produ
     private ArrayList<Unidades_class> itemsUnidades;
     private Context context;
     private interfazUnidades_OnClick Interfaz;
+    private interfazUnidades_OnClick Interfaz2;
 
-    public UnidadesAdapter(Context context, ArrayList<Unidades_class>  itemsUnidades, interfazUnidades_OnClick Interfaz) {  ///recibe el arrayProductos como parametro y la interface
+    public UnidadesAdapter(Context context, ArrayList<Unidades_class>  itemsUnidades, interfazUnidades_OnClick Interfaz, interfazUnidades_OnClick Interfaz2) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsUnidades = itemsUnidades;
         this.Interfaz=Interfaz;
+        this.Interfaz2=Interfaz2;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
        public TextView nombre;
+       public Button eliminar;
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             nombre = v.findViewById(R.id.TVnombreUnidad);  ////Textview donde se coloca el nombre del producto
+            eliminar = v.findViewById(R.id.BtnEliminarUnidad);  ////Textview donde se coloca el nombre del producto
             v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
                 @Override
                 public void onClick(View view) {
                     Interfaz.onClick(view, (String) nombre.getText());
                 }
             });
+            eliminar.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
+                @Override
+                public void onClick(View view) {
+                    Interfaz2.onClick(view, (String) nombre.getText());
+                }
+            });
+
         }
     }
     @Override
