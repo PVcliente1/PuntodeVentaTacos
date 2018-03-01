@@ -80,7 +80,7 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
             }
         }, new interfazUnidades_OnClick() {
             @Override
-            public void onClick(View v, String unidad) {
+            public void onClick(View v, String unidad) { //si se requiere eliminar una unidad.
                 db.delete(" Unidades ","nombre_unidad='"+unidad+"'", null);
                 Toast.makeText(getActivity(), "Borraste "+ unidad, Toast.LENGTH_LONG).show();
             }

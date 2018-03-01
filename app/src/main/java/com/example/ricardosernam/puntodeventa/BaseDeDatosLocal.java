@@ -79,8 +79,33 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (3,'Mililitros')");
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (4,'Litros')");
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (5,'Centimetros')");
-        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (6,'Metros')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (6,'Metros')");//Creamos la tabla de productos
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (7,'Piezas')");
+
+        /////creacion de productos
+        sqLiteDatabase.execSQL("CREATE TABLE Productos (\n" +
+                "  `idproducto` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `codigo_barras` VARCHAR(45),\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `precio_venta` VARCHAR(45)," +
+               "  `ruta_imagen` VARCHAR(45))");
+            /*   "  `cantidad` INT,\n" +
+                "  `existentes` INT,\n" +    ///debe ser una consulta
+                "  `precio_compra` INT,\n" +
+                "  `idunidad` INTEGER,\n" +                //LLAVE FORÁNEA
+                "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
+                "  `comercializable` TINYINT,\n" +
+                "  PRIMARY KEY (`idproducto`, `idproveedorFK`, `idunidad`),\n" +
+                "  CONSTRAINT `fk_productos_proveedores1`\n" +
+                "    FOREIGN KEY (`idproveedorFK`)\n" +
+                "    REFERENCES Proveedores (`idproveedor`)\n" +
+                "    ON DELETE NO ACTION, \n" +
+                "  CONSTRAINT `fk_productos_unidad1`\n" +
+                "    FOREIGN KEY (`idunidad`)\n" +
+                "    REFERENCES Unidades_DialogFragment(`idunidad`)\n" +
+                "    ON DELETE NO ACTION)");*/
+
+
 
 
         //Creación el INDEX para la relación de la tabla de miembros con la tabla de puestos      sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_puestos1_idx` ON Miembros (`idpuesto` ASC)");
@@ -108,29 +133,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `direccion` VARCHAR(45))");
                 //"  PRIMARY KEY (`idcliente`))");
 
-        //Creamos la tabla de productos
 
-        /*sqLiteDatabase.execSQL("CREATE TABLE Productos (\n" +
-                "  `idproducto` INT PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `codigo_barras` INT ,\n" +
-                "  `nombre` VARCHAR(45),\n" +
-                "  `ruta_imagen` VARCHAR(45),\n" +
-                "  `precio_venta` VARCHAR(45),\n" +
-                "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
-                "  `cantidad` INT,\n" +
-                "  `existentes` INT,\n" +
-                "  `precio_compra` INT,\n" +
-                "  `idunidad` INTEGER,\n" +                //LLAVE FORÁNEA
-                "  `comercializable` TINYINT,\n" +
-                "  PRIMARY KEY (`idproducto`, `idproveedorFK`, `idunidad`),\n" +
-                "  CONSTRAINT `fk_productos_proveedores1`\n" +
-                "    FOREIGN KEY (`idproveedorFK`)\n" +
-                "    REFERENCES Proveedores (`idproveedor`)\n" +
-                "    ON DELETE NO ACTION, \n" +
-                "  CONSTRAINT `fk_productos_unidad1`\n" +
-                "    FOREIGN KEY (`idunidad`)\n" +
-                "    REFERENCES Unidades_DialogFragment(`idunidad`)\n" +
-                "    ON DELETE NO ACTION)");
 
         //Creamos el index para relacionar productos con proveedores        sqLiteDatabase.execSQL("CREATE INDEX `fk_productos_proveedores1_idx` ON Productos (`idproveedorFK` ASC)");
 
@@ -140,7 +143,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de la tabla cobros
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Cobros (\n" +
+        /*sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Cobros (\n" +
                 "  `idcobro` INT PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre_cobro` VARCHAR(45),\n" +
                 "  PRIMARY KEY (`idcobro`))");

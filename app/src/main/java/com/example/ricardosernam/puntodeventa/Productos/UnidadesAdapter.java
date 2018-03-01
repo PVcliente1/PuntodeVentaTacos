@@ -50,12 +50,6 @@ public class UnidadesAdapter extends RecyclerView.Adapter <UnidadesAdapter.Produ
                     Interfaz.onClick(view, (String) nombre.getText());
                 }
             });
-            eliminar.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
-                @Override
-                public void onClick(View view) {
-                    Interfaz2.onClick(view, (String) nombre.getText());
-                }
-            });
 
         }
     }
@@ -72,5 +66,14 @@ public class UnidadesAdapter extends RecyclerView.Adapter <UnidadesAdapter.Produ
     @Override
     public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {
         holder.nombre.setText(itemsUnidades.get(position).getNombre());
+        holder.eliminar.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
+            @Override
+            public void onClick(View view) {
+                itemsUnidades.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,itemsUnidades.size());
+                Interfaz2.onClick(view, (String) holder.nombre.getText());
+            }
+        });
     }
 }

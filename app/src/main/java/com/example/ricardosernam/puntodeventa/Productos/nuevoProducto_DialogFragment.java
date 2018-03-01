@@ -3,8 +3,10 @@ package com.example.ricardosernam.puntodeventa.Productos;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -29,7 +32,12 @@ import java.io.InputStream;
 public class nuevoProducto_DialogFragment extends DialogFragment {
     private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
+    private ImageView ponerImagen;
+    private String rutaImagen;
+    private Uri selectedImage;
     private FragmentActivity fm=(FragmentActivity) getActivity();
+    private ContentValues values;
+    private SQLiteDatabase db;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,27 +53,19 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         aceptarM=rootView.findViewById(R.id.BtnAceptarProducto);
         cancelarM=rootView.findViewById(R.id.BtnCancelarProducto);
         escanear=rootView.findViewById(R.id.BtnEscanearNuevo);
-        unidad=rootView.findViewById(R.id.ETunidad);
         imagen=rootView.findViewById(R.id.BtnImagen);
+        unidad=rootView.findViewById(R.id.ETunidad);
+        ponerImagen = rootView.findViewById(R.id.ImgImagen);
 
-        aceptarM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-                Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
-            }
-        });
-        cancelarM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
+
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,2);//inicializar el activity con RequestCode2
+                startActivityForResult(intent,3);//inicializar el activity con RequestCode3
             }
         });
         unidad.setOnClickListener(new View.OnClickListener() {
@@ -99,11 +99,31 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                 imagenProducto.setNegativeButton("Tomar foto", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface tipoDescuento, int id) {
                         Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(i, 3);
+                        startActivityForResult(i, 2);
                         tipoDescuento.dismiss();
                     }
                 });
                 imagenProducto.show();
+            }
+        });
+        aceptarM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
+                values.put("codigo_barras", String.valueOf(codigo.getText()));
+                values.put("nombre", String.valueOf(nombreP.getText()));
+                values.put("precio_venta", String.valueOf(precio.getText()));
+                values.put("ruta_imagen", String.valueOf(selectedImage));
+                db.insertOrThrow("Productos",null, values);
+
+                db.close();
+            }
+        });
+        cancelarM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
             }
         });
         getDialog().setTitle("Nuevo Producto");
@@ -114,47 +134,68 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         ////1 para entrar a galeria y tomar una foto
         if (requestCode == 1) {
-            Uri selectedImage;
+            //Uri selectedImage;///uri es la ruta
             if (resultCode == Activity.RESULT_OK) {
-                selectedImage = data.getData();
-                String selectedPath=selectedImage.getPath();
-                if (requestCode == 1) {
+                selectedImage = data.getData();////data.get data es como mi file
+                assert selectedImage != null;
+                rutaImagen=selectedImage.getPath();///ruta de la imagen
 
-                    if (selectedPath != null) {
+                    if (rutaImagen != null) {
                         InputStream imageStream = null;
                         try {
                             imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-
-                        // Transformamos la URI de la imagen a inputStream y este a un Bitmap
+                        //ponerImagen.setImageURI(selectedImage);
+                         //Transformamos la URI de la imagen a inputStream y este a un Bitmap
                         Bitmap bmp = BitmapFactory.decodeStream(imageStream);
 
                         // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        ImageView mImg = (ImageView) getView().findViewById(R.id.ImgImagen);
-                        mImg.setImageBitmap(bmp);
-                        Toast.makeText(getActivity(), selectedPath, Toast.LENGTH_LONG).show();
-
+                        ponerImagen.setImageBitmap(bmp);
                     }
+            }
+        }
+        //2 Captura de foto
+        if(requestCode == 2) {
+            /*if(data != null) {
+                selectedImage = data.getData();////data.get data es como mi file
+                ponerImagen.setImageURI(selectedImage);
+
+                /*Bitmap photo = (Bitmap) data.getExtras().get("data");
+                ponerImagen.setImageBitmap(photo);
+
+                //Toast.makeText(getActivity(), data.getParcelableExtra("data") , Toast.LENGTH_LONG).show();
+            }
+            else{
+            }*/
+            if (resultCode == Activity.RESULT_OK) {
+                selectedImage = data.getData();////data.get data es como mi file
+                assert selectedImage != null;
+                rutaImagen=selectedImage.getPath();///ruta de la imagen
+
+                if (rutaImagen != null) {
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //ponerImagen.setImageURI(selectedImage);
+                    //Transformamos la URI de la imagen a inputStream y este a un Bitmap
+                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+
+                    // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
+                    ponerImagen.setImageBitmap(bmp);
                 }
             }
-
         }
-        ///2 para escanear
-        if (requestCode == 2 && data != null) {
+        ///3 para escanear
+        if (requestCode == 3 && data != null) {
             //obtener resultados
             codigo.setText(data.getStringExtra("BARCODE"));
         }
-        //3 Captura de foto
-        if(requestCode == 3) {
-            if(data != null) {
-                ImageView imagen = getView().findViewById(R.id.ImgImagen);
-                imagen.setImageBitmap((Bitmap) data.getParcelableExtra("data"));
-            }
-            else{
-            }
-        }
+
         }
 
 }
