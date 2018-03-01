@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,17 @@ public class AgregarProvedor extends DialogFragment {
             @Override
                 public void onClick(View view) {
                 alta("proveedores");
-                Toast.makeText(getContext(), "Guardado correctamente, refresca para visualizarlo", Toast.LENGTH_LONG).show();
-                dismiss();
+                Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
 
+                //todo este desmadre es para que se refresque
+                Proveedores frag = new Proveedores();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
+
+                //cerrar el dialog
+                dismiss();
             }
         });
         //evento de boton de atras
@@ -56,6 +65,8 @@ public class AgregarProvedor extends DialogFragment {
             }
         });
         getDialog().setTitle("Nuevo Proveedor");
+
+
 
         // Inflate the layout for this fragment
         return view;
@@ -70,10 +81,10 @@ public class AgregarProvedor extends DialogFragment {
         //nuevo registro
         ContentValues nuevoRegistro = new ContentValues();
         //agregar info al registro
-        nuevoRegistro.put("Contacto",ETContacto.getText().toString());
-        nuevoRegistro.put("Telefono",ETTelefono.getText().toString());
-        nuevoRegistro.put("Direccion",ETDireccion.getText().toString());
-        nuevoRegistro.put("Empresa", ETEmpresa.getText().toString());
+        nuevoRegistro.put("contacto",ETContacto.getText().toString());
+        nuevoRegistro.put("telefono",ETTelefono.getText().toString());
+        nuevoRegistro.put("direccion",ETDireccion.getText().toString());
+        nuevoRegistro.put("nombre_empresa", ETEmpresa.getText().toString());
 
         //insertar el nuevo registro
         db.insert(tabla,null, nuevoRegistro);
