@@ -30,19 +30,6 @@ public class Registro_inicial extends Fragment {
     private Integer idturno=1;
     private Integer idpuesto=1;
 
-
-    /*
-    "  `idmiembro` INT NOT NULL,\n" +
-        "  `nombre` VARCHAR(45),\n" +
-        "  `apellido` VARCHAR(45),\n" +
-        "  `telefono` varchar(45),\n" +
-        "  `correo` VARCHAR(45),\n" +
-        "  `contrasena` VARCHAR(45),\n" +
-        "  `idturno` INT NOT NULL,\n" +
-        "  `idpuesto` INT NOT NULL,\n" +
-        "  `foto` VARCHAR(45),\n" +
-    */
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,29 +146,6 @@ public class Registro_inicial extends Fragment {
         password = contraseña.getText().toString();
         phone = telefono.getText().toString();
 
-/*
-        "  `idmiembro` INT NOT NULL,\n" +
-                "  `nombre` VARCHAR(45),\n" +
-                "  `apellido` VARCHAR(45),\n" +
-                "  `telefono` varchar(45),\n" +
-                "  `correo` VARCHAR(45),\n" +
-                "  `contrasena` VARCHAR(45),\n" +
-                "  `idturno` INT NOT NULL,\n" +
-                "  `idpuesto` INT NOT NULL,\n" +
-                "  `foto` VARCHAR(45),\n" +
-
-
-                "  `nombre` VARCHAR(45), " +
-                " `telefono` varchar(45), " +
-                "  `correo` VARCHAR(45), " +
-                "  `contrasena` VARCHAR(45), " +
-                "  `idturno` INTEGER NOT NULL REFERENCES Turnos (idturno), " +
-                "  `idpuesto` INTEGER NOT NULL REFERENCES Puestos(idpuesto), " +
-                "  `foto` VARCHAR(45), " +
-                "  `apellido` VARCHAR(45))");
-
-
- */
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
         //if(db!=null){

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:shape="rectangle">
     <stroke
-        android:width="5px"
+        android:width="1px"
         android:color="#000" />
 </shape>
 

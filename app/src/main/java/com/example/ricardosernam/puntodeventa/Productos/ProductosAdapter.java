@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 
 import java.util.ArrayList;
@@ -109,7 +110,12 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.unidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Unidades().show(manager, "Unidades");
+                new Unidades_DialogFragment(new interfazUnidades_OnClick() {
+                    @Override
+                    public void onClick(View v, String unidadSeleccionada) {
+                        holder.unidad.setText(unidadSeleccionada);
+                    }
+                }).show(manager, "Unidades_DialogFragment");
             }
         });
         holder.eliminar.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +130,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                         itemsProductos.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position,itemsProductos.size());
-                        eliminarProducto .dismiss();
+                        eliminarProducto.dismiss();
                     }
                 });
                 eliminarProducto .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

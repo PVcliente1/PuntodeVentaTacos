@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 
 import java.io.FileNotFoundException;
@@ -71,7 +71,13 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         unidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Unidades().show(getFragmentManager(), "Unidades");
+                //new Unidades_DialogFragment().show(getFragmentManager(), "Unidades_DialogFragment");
+                new Unidades_DialogFragment(new interfazUnidades_OnClick() {
+                    @Override
+                    public void onClick(View v, String unidadSeleccionada) {
+                        unidad.setText(unidadSeleccionada);
+                    }
+                }).show(getFragmentManager(), "Unidades_DialogFragment");
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {

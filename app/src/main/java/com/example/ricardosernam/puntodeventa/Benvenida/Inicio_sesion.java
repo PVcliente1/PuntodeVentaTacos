@@ -58,7 +58,7 @@ public class Inicio_sesion extends Fragment {
         fila=db.rawQuery("select nombre, contrasena from Miembros where nombre='"+usuario+"' and contrasena='"+contraseña+"'",null);
                 //preguntamos si el cursor tiene algun valor almacenado
         //Toast.makeText(getContext(), "No hay nada", Toast.LENGTH_SHORT).show();
-        if(fila.moveToFirst()==true){
+        if(fila.moveToFirst()){
             //capturamos los valores del cursos y lo almacenamos en variable
             //preguntamos si los datos ingresados son iguales
             String usua=fila.getString(0);

@@ -68,6 +68,20 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 " FOREIGN KEY (idturno) REFERENCES Turnos(idturno), " +
                 " FOREIGN KEY (idpuesto)REFERENCES Puestos(idpuesto))");
 
+        //Creación de la tabla Unidades_DialogFragment
+
+        sqLiteDatabase.execSQL("CREATE TABLE Unidades (\n" +
+                "  `idunidad` INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
+                "  `nombre_unidad` VARCHAR(45))");
+
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (1,'Gramos')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (2,'Kilogramos')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (3,'Mililitros')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (4,'Litros')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (5,'Centimetros')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (6,'Metros')");
+        sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (7,'Piezas')");
+
 
         //Creación el INDEX para la relación de la tabla de miembros con la tabla de puestos      sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_puestos1_idx` ON Miembros (`idpuesto` ASC)");
 
@@ -76,24 +90,27 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de la tabla proveedores
 
-
-/*
         sqLiteDatabase.execSQL("CREATE TABLE Proveedores (\n" +
-                "  `idproveedor` INT PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `idproveedor` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `contacto` VARCHAR(45),\n" +
                 "  `telefono` INT,\n" +
                 "  `direccion` VARCHAR(45),\n" +
                 "  `nombre_empresa` VARCHAR(45))");
 
-        //Creación de la tabla Unidades
+        //Creación de la tabla clientes
 
-        sqLiteDatabase.execSQL("CREATE TABLE Unidades (\n" +
-                "  `idunidad` INT PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre_unidad` VARCHAR(45))");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Clientes (\n" +
+                "  `idcliente` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `apellido` VARCHAR(45),\n" +
+                "  `alias` VARCHAR(45),\n" +
+                "  `telefono` INT ,\n" +
+                "  `direccion` VARCHAR(45))");
+                //"  PRIMARY KEY (`idcliente`))");
 
         //Creamos la tabla de productos
 
-        sqLiteDatabase.execSQL("CREATE TABLE Productos (\n" +
+        /*sqLiteDatabase.execSQL("CREATE TABLE Productos (\n" +
                 "  `idproducto` INT PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `codigo_barras` INT ,\n" +
                 "  `nombre` VARCHAR(45),\n" +
@@ -112,23 +129,14 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "    ON DELETE NO ACTION, \n" +
                 "  CONSTRAINT `fk_productos_unidad1`\n" +
                 "    FOREIGN KEY (`idunidad`)\n" +
-                "    REFERENCES Unidades(`idunidad`)\n" +
+                "    REFERENCES Unidades_DialogFragment(`idunidad`)\n" +
                 "    ON DELETE NO ACTION)");
 
         //Creamos el index para relacionar productos con proveedores        sqLiteDatabase.execSQL("CREATE INDEX `fk_productos_proveedores1_idx` ON Productos (`idproveedorFK` ASC)");
 
         //Creamos el index para relacionar productos con unidades           sqLiteDatabase.execSQL("CREATE INDEX `fk_productos_unidad1_idx` ON Productos (`idunidad` ASC)");
 
-        //Creación de la tabla clientes
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Clientes (\n" +
-                "  `idcliente` INT PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre` VARCHAR(45),\n" +
-                "  `apellido` VARCHAR(45),\n" +
-                "  `alias` VARCHAR(45),\n" +
-                "  `telefono` INT ,\n" +
-                "  `direccion` VARCHAR(45),\n" +
-                "  PRIMARY KEY (`idcliente`))");
 
         //Creación de la tabla cobros
 

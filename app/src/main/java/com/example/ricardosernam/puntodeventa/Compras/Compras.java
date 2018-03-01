@@ -4,22 +4,20 @@ package com.example.ricardosernam.puntodeventa.Compras;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Productos.Unidades;
+import com.example.ricardosernam.puntodeventa.Productos.Unidades_DialogFragment;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.R;
 
@@ -72,7 +70,12 @@ public class Compras extends Fragment{
         unidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Unidades().show(fm, "Unidades");
+                new Unidades_DialogFragment(new interfazUnidades_OnClick() {
+                    @Override
+                    public void onClick(View v, String unidadSeleccionada) {
+                        unidad.setText(unidadSeleccionada);
+                    }
+                }).show(fm, "Unidades_DialogFragment");
             }
         });
 

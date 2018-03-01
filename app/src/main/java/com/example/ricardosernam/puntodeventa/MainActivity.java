@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         /////comprobamos si es la primera vez que se abre
         if(appGetFirstTimeRun()==0 ){
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Personalizacion1()).commit(); ///cambio de fragment
+            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
             bar.setVisibility(View.INVISIBLE);
         }
         else if(appGetFirstTimeRun()==1){
