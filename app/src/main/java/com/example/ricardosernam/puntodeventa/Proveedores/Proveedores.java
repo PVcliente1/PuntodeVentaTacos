@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +28,11 @@ import com.example.ricardosernam.puntodeventa.R;
 import java.util.ArrayList;
 
 public class Proveedores extends Fragment {
-    Button BTN_abrirFragmentAgregarNuevo, BTN_editarSeleccionado, BTN_eliminarSeleccionado, BTN_refrescar;
+    Button BTN_abrirFragmentAgregarNuevo, BTN_editarSeleccionado, BTN_eliminarSeleccionado;
     EditText ET_contaco, ET_telefono, ET_direccion, ET_empresa;
     TextView TV_idSeleccionado;
     Spinner Spinner;
     LinearLayout info;
-    ArrayList<String> listaProveedores = new ArrayList<String>();
     int idSeleccionado = 1;
 
     @Override
@@ -45,7 +45,6 @@ public class Proveedores extends Fragment {
 
         BTN_editarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEditarSel);
         BTN_eliminarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEliminarSel);
-        BTN_refrescar = view.findViewById(R.id.BTN_ProveedoresRefescar);
         ET_contaco = view.findViewById(R.id.ETProveedoresContacto);
         ET_telefono = view.findViewById(R.id.ETProveedoresTelefono);
         ET_direccion = view.findViewById(R.id.ETProveedoresDireccion);
@@ -56,21 +55,25 @@ public class Proveedores extends Fragment {
 
         //Adapter para pasarle datos al spinner
         adapterSpinner();
-
+        info.setVisibility(View.INVISIBLE);
         //Eventos de botones, 4 en total
         //Evento para lanzar framentDialog de agregar nuevo
         BTN_abrirFragmentAgregarNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //se abre el dialog fragment
                 new AgregarProvedor().show(getFragmentManager(),"AgregarProvedor");
             }
         });
+
+
         //Evento para editar el seleccionado
         BTN_editarSeleccionado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 modificar(idSeleccionado);
                 Toast.makeText(getContext(), "Editado", Toast.LENGTH_SHORT).show();
+                refrescar();
             }
         });
         //Evento para eleminar el seleccionado
@@ -79,16 +82,15 @@ public class Proveedores extends Fragment {
             public void onClick(View view) {
                 baja(idSeleccionado);
                 Toast.makeText(getContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+                //limpiar campos
+                TV_idSeleccionado.setText("ID seleccionado: ");
+                ET_contaco.setText("");
+                ET_telefono.setText("");
+                ET_direccion.setText("");
+                ET_empresa.setText("");
+                refrescar();
             }
         });
-        //Evento para refrescar el Spinner
-        BTN_refrescar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adapterSpinner();
-            }
-        });
-
 
         //evento para cuando se selecciona un proveedor
         Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -127,7 +129,7 @@ public class Proveedores extends Fragment {
 
         if (c.getCount() > 0){
             //adapter
-            String[] desde = new String[] {"Contacto"};
+            String[] desde = new String[] {"contacto"};
             int[] para = new int[] {android.R.id.text1};
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
             //activar al layout del adapter
@@ -149,16 +151,16 @@ public class Proveedores extends Fragment {
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        Cursor c = db.rawQuery("select idproveedor, contacto, telefono, direccion, nombre_empresa from proveedores where idproveedor = " + id, null);
+        Cursor c = db.rawQuery("select * from proveedores where idproveedor = " + id, null);
         //inicializamos el cursor
         c.moveToPosition(0);
 
         //llenar los campos a editar
-        TV_idSeleccionado.setText("ID seleccionado: " + id);
-        ET_contaco.setText(c.getString(0));
-        ET_telefono.setText(c.getString(1));
-        ET_direccion.setText(c.getString(2));
-        ET_empresa.setText(c.getString(3));
+        TV_idSeleccionado.setText("ID seleccionado: " + c.getString(0));
+        ET_contaco.setText(c.getString(1));
+        ET_telefono.setText(c.getString(2));
+        ET_direccion.setText(c.getString(3));
+        ET_empresa.setText(c.getString(4));
     }
 
     //procedimiento para dar de baja
@@ -168,9 +170,6 @@ public class Proveedores extends Fragment {
 
         //Se borra el registro que contenga el id seleccionado
         db.delete("proveedores", "idproveedor = "+  id, null);
-
-        //actualizar espinner
-        adapterSpinner();
     }
 
     //procedimiento para modificar
@@ -181,15 +180,17 @@ public class Proveedores extends Fragment {
         //creamos nuevo registro
         ContentValues registro = new ContentValues();
         //agregamos datos al registro
-        registro.put("Contacto", ET_contaco.getText().toString());
-        registro.put("Telefono", ET_telefono.getText().toString());
-        registro.put("Direccion", ET_direccion.getText().toString());
-        registro.put("Empresa", ET_empresa.getText().toString());
+        registro.put("contacto", ET_contaco.getText().toString());
+        registro.put("telefono", ET_telefono.getText().toString());
+        registro.put("direccion", ET_direccion.getText().toString());
+        registro.put("nombre_empresa", ET_empresa.getText().toString());
         //se realiza un update en donde el id sea igual al id seleccionado
         db.update("proveedores", registro, "idproveedor = " + id, null);
+    }
 
-        //actualizar espinner
-        adapterSpinner();
+    void refrescar(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 
 }
