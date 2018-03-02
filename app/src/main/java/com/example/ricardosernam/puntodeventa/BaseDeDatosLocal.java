@@ -89,9 +89,9 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `nombre` VARCHAR(45),\n" +
                 "  `precio_venta` VARCHAR(45)," +
                 "  `ruta_imagen` VARCHAR(45)," +
+                "  `unidad` varchar(30),\n" +
                 "  `cantidad` INT,\n" +
                 "  `precio_compra` INT,\n" +
-                "  `unidad` varchar(30),\n" +                //LLAVE FORÁNEA
                 "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
                 "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 

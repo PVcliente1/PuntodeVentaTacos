@@ -5,12 +5,14 @@ public class Pro_ventas_class {  ///clase para obtener productos para cobrar
     public String nombre;
     public String precio;
     public String foto;
+    public String unidad;
 
-    public Pro_ventas_class(String codigo, String nombre, String precio, String foto ) {   ///se manda desde el arrayProductos
+    public Pro_ventas_class(String codigo, String nombre, String precio, String foto, String unidad ) {   ///se manda desde el arrayProductos
         this.codigo = codigo;
         this.nombre = nombre;
         this.precio = precio;
         this.foto = foto;
+        this.unidad = unidad;
     }
     public Pro_ventas_class(String nombre) {   ///se manda desde el arrayProductos
         this.nombre = nombre;
@@ -26,5 +28,8 @@ public class Pro_ventas_class {  ///clase para obtener productos para cobrar
     }
     public String getFoto() {
         return foto;
+    }
+    public String getUnidad() {
+        return unidad;
     }
 }

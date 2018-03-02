@@ -22,6 +22,7 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickCodigo;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickImagen;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,12 +32,14 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
     private Context context;
     private interfazUnidades_OnClick Interfaz;
     private interfazUnidades_OnClickCodigo Interfaz2;
+    private interfazUnidades_OnClickImagen Interfaz3;
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfazUnidades_OnClickCodigo Interfaz2) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfazUnidades_OnClickCodigo Interfaz2, interfazUnidades_OnClickImagen Interfaz3) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
         this.Interfaz2=Interfaz2;
+        this.Interfaz3=Interfaz3;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
@@ -158,6 +161,12 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
             @Override
             public void onClick(View view) {
                 Interfaz2.onClick(view, holder.codigo);
+            }
+        });
+        holder.traerImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Interfaz3.onClick(view, holder.imagen);
             }
         });
     }

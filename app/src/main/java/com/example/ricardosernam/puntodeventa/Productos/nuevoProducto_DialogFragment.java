@@ -25,11 +25,12 @@ import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class nuevoProducto_DialogFragment extends DialogFragment {
+public class nuevoProducto_DialogFragment extends DialogFragment implements traerImagen.requestCode {
     private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
@@ -83,7 +84,10 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder imagenProducto= new AlertDialog.Builder(getActivity());
+                DialogFragment dialog = new traerImagen();
+                dialog.show(getFragmentManager(), "NoticeDialogFragment");
+
+                /*final AlertDialog.Builder imagenProducto= new AlertDialog.Builder(getActivity());
                 imagenProducto.setTitle("Imagen");
                 imagenProducto.setMessage("Seleccion como quieres traer tu imagen");
                 imagenProducto.setCancelable(false);
@@ -103,7 +107,8 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                         tipoDescuento.dismiss();
                     }
                 });
-                imagenProducto.show();
+                imagenProducto.show();*/
+
             }
         });
         aceptarM.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +120,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                 values.put("nombre", String.valueOf(nombreP.getText()));
                 values.put("precio_venta", String.valueOf(precio.getText()));
                 values.put("ruta_imagen", String.valueOf(selectedImage));
+                values.put("unidad", String.valueOf(unidad.getText()));
                 db.insertOrThrow("Productos",null, values);
 
                 db.close();
@@ -129,6 +135,11 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         getDialog().setTitle("Nuevo Producto");
         return rootView;
     }
+    @Override
+    public void onDialogPositiveClick(Intent data, int requestCode) {
+        startActivityForResult(data, requestCode);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -147,28 +158,17 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-                        //ponerImagen.setImageURI(selectedImage);
+                        ponerImagen.setImageURI(selectedImage);
                          //Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                        Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                        /*Bitmap bmp = BitmapFactory.decodeStream(imageStream);
 
                         // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        ponerImagen.setImageBitmap(bmp);
+                        ponerImagen.setImageBitmap(bmp);*/
                     }
             }
         }
         //2 Captura de foto
         if(requestCode == 2) {
-            /*if(data != null) {
-                selectedImage = data.getData();////data.get data es como mi file
-                ponerImagen.setImageURI(selectedImage);
-
-                /*Bitmap photo = (Bitmap) data.getExtras().get("data");
-                ponerImagen.setImageBitmap(photo);
-
-                //Toast.makeText(getActivity(), data.getParcelableExtra("data") , Toast.LENGTH_LONG).show();
-            }
-            else{
-            }*/
             if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data.getData();////data.get data es como mi file
                 assert selectedImage != null;
@@ -181,12 +181,13 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    //ponerImagen.setImageURI(selectedImage);
+                    ponerImagen.setImageURI(selectedImage);
+
                     //Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                    /*Bitmap bmp = BitmapFactory.decodeStream(imageStream);
 
                     // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                    ponerImagen.setImageBitmap(bmp);
+                    ponerImagen.setImageBitmap(bmp);*/
                 }
             }
         }
@@ -197,5 +198,4 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         }
 
         }
-
 }
