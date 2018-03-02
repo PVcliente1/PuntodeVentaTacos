@@ -88,22 +88,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `codigo_barras` VARCHAR(45),\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `precio_venta` VARCHAR(45)," +
-               "  `ruta_imagen` VARCHAR(45))");
-            /*   "  `cantidad` INT,\n" +
-                "  `existentes` INT,\n" +    ///debe ser una consulta
+                "  `ruta_imagen` VARCHAR(45)," +
+                "  `cantidad` INT,\n" +
                 "  `precio_compra` INT,\n" +
-                "  `idunidad` INTEGER,\n" +                //LLAVE FORÁNEA
+                "  `unidad` varchar(30),\n" +                //LLAVE FORÁNEA
                 "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
-                "  `comercializable` TINYINT,\n" +
-                "  PRIMARY KEY (`idproducto`, `idproveedorFK`, `idunidad`),\n" +
-                "  CONSTRAINT `fk_productos_proveedores1`\n" +
-                "    FOREIGN KEY (`idproveedorFK`)\n" +
-                "    REFERENCES Proveedores (`idproveedor`)\n" +
-                "    ON DELETE NO ACTION, \n" +
-                "  CONSTRAINT `fk_productos_unidad1`\n" +
-                "    FOREIGN KEY (`idunidad`)\n" +
-                "    REFERENCES Unidades_DialogFragment(`idunidad`)\n" +
-                "    ON DELETE NO ACTION)");*/
+                "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 
 
 
@@ -124,7 +114,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de la tabla clientes
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Clientes (\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Clientes (\n" +
                 "  `idcliente` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellido` VARCHAR(45),\n" +
