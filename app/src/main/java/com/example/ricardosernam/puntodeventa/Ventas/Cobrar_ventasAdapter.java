@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.R;
@@ -28,17 +29,23 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder {    ////clase donde van los elementos del cardview
-        public TextView nombreP, tipoD;
+        public TextView nombreP, tipoD, unidad;
+        public EditText cantidad, precio;
+        public TextView subtotal;
         public Button eliminarArt,eliminarCompra ;
         public CheckBox descuento;
 
         public Productos_ventasViewHolder(View v) {
             super(v);
             nombreP = (TextView) v.findViewById(R.id.TVnombreProductoCobrar);  ///cardviews donde va el nombre del producto
+            unidad = (TextView) v.findViewById(R.id.TVunidadProductoCobrar);
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
             eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
             descuento=v.findViewById(R.id.CBDescuento);
             tipoD=v.findViewById(R.id.TVtipoDescuento);
+            precio=v.findViewById(R.id.ETprecio);
+            cantidad=v.findViewById(R.id.ETcantidad);
+            subtotal=v.findViewById(R.id.TVsubtotal);
         }
     }
     @Override
@@ -54,7 +61,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
 
     @Override
     public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {  ////mencionamos que se hara con los elementos del cardview
-        holder.nombreP.setText(itemsCobrar.get(position).getSeleccionado());
+        holder.unidad.setText(itemsCobrar.get(position).getUnidad());
+        holder.nombreP.setText(itemsCobrar.get(position).getNombre());
+        holder.precio.setText(itemsCobrar.get(position).getPrecio());
         final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override

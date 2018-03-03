@@ -20,13 +20,13 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/ImgImagen"
+                android:id="@+id/IVimagenMiembro"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:src="@mipmap/ic_account_circle_black_24dp" />
 
             <Button
-                android:id="@+id/BtnImagen"
+                android:id="@+id/BtnimagenMiembro"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"

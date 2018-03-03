@@ -60,24 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         AppBarLayout bar=findViewById(R.id.APLappBar);
         tabLayout =  findViewById(R.id.TLtabla);
-        logo=  findViewById(R.id.IVlogoEmpresa);
-        nombreEmpresa=  findViewById(R.id.TVnombreEmpresa);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
-        db=admin.getWritableDatabase();
-        values = new ContentValues();
-
-        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
-
-        if(fila.moveToFirst()) {
-            //while (fila.moveToNext()) {
-                nombreEmpresa.setText(fila.getString(0));
-                logo.setImageURI(Uri.parse(fila.getString(1)));
-            //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
-            //}
-        }
 
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         /////comprobamos si es la primera vez que se abre
@@ -96,7 +80,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);//editamos el navigationheader
+        View hView = navigationView.getHeaderView(0);
+        logo=  hView.findViewById(R.id.IVlogoEmpresa);
+        nombreEmpresa=  hView.findViewById(R.id.TVnombreEmpresa);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
+
+        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
+
+        if(fila.moveToFirst()) {
+            //Toast.makeText(getApplicationContext(), fila.getString(0), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), fila.getString(1), Toast.LENGTH_LONG).show();
+            //nombreEmpresa.setText(fila.getString(0));
+            //logo.setImageURI(Uri.parse(fila.getString(1)));
+        }
         navigationView.setNavigationItemSelectedListener(this);
     }
 

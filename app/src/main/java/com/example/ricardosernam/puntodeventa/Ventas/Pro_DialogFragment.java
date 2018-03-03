@@ -4,13 +4,18 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 
@@ -22,7 +27,9 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-
+    private SQLiteDatabase db;
+    private ContentValues values;
+    private Cursor fila;
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
@@ -40,6 +47,10 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView=inflater.inflate(R.layout.recyclerpro,container);
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
+
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
 
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         //final FragmentManager fm= getFragmentManager();
@@ -51,7 +62,11 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
             @Override
             public void onClick(View v) {  ////cuando se presione un Cardview...
                 dismiss(); ////cerramos la ventana
-                itemsCobrar.add(new Cobrar_ventas_class(itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre()));//obtenemos el cardview seleccionado y lo agregamos a items2
+                fila=db.rawQuery("select unidad, nombre , precio_venta from Productos where nombre='"+itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre()+"'" ,null);
+
+                if(fila.moveToFirst()) {
+                        itemsCobrar.add(new Cobrar_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                }
                 fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout fragment por el del recycler de cobrar
             }
         });

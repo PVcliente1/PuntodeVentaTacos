@@ -2,7 +2,10 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 
@@ -26,6 +30,9 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     private Button productos, escanear, historial;
     private EditText codigo;
+    private SQLiteDatabase db;
+    private ContentValues values;
+    private Cursor fila, fila2;
     private Pro_DialogFragment pro;
     private Historial_DialogFragment DFhistorial;
 
@@ -39,30 +46,31 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        /////////////productos de ejemplo//////////////
-        itemsProductos.add(new Pro_ventas_class("Tacos"));
-        itemsProductos.add(new Pro_ventas_class("Tortas"));
-        itemsProductos.add(new Pro_ventas_class("Quesadillas"));
-        itemsProductos.add(new Pro_ventas_class("Refrescos"));
-        itemsProductos.add(new Pro_ventas_class("Cervezas"));
-        itemsProductos.add(new Pro_ventas_class("Pizza"));
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
         onViewCreated(view, savedInstanceState);
+
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
 
-        pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
         DFhistorial=new Historial_DialogFragment(itemsHistorial);  ////enviamos el array con las compras al fragment de historial
 
         productos= view.findViewById(R.id.BtnProductos);
         historial= view.findViewById(R.id.BtnHistorial);
         escanear= view.findViewById(R.id.BtnEscanear);
         codigo=view.findViewById(R.id.ETcodigo);
+
+
+        fila=db.rawQuery("select nombre, ruta_imagen from Productos" ,null);
+
+        if(fila.moveToFirst()) {
+            while (fila.moveToNext()) {
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1)));
+            }
+        }
+        pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
 
         codigo.setInputType(InputType.TYPE_NULL);
 
@@ -95,8 +103,13 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2 && data != null) {
             //obtener resultados
-            itemsCobrar.add(new Cobrar_ventas_class(data.getStringExtra("BARCODE")));//obtenemos el cardview seleccionado y lo agregamos a items2
-            fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout frament por el del recycler de cobrar
+            fila2=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
+
+            if(fila2.moveToFirst()) {
+                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1), fila2.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout frament por el del recycler de cobrar
+            }
+            //itemsCobrar.add(new Cobrar_ventas_class(data.getStringExtra("BARCODE")));//obtenemos el cardview seleccionado y lo agregamos a items
         }
     }
 }
