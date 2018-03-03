@@ -42,7 +42,7 @@ public class AgregarProvedor extends DialogFragment {
         //evento de guardar nuevo
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
-                public void onClick(View view) {
+            public void onClick(View view) {
                 alta("proveedores");
                 Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
 

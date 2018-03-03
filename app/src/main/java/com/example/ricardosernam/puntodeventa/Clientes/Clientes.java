@@ -100,8 +100,6 @@ public class Clientes extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //hacer invisible la info
                 info.setVisibility(View.INVISIBLE);
-
-
             }
         });
 
@@ -131,12 +129,7 @@ public class Clientes extends Fragment {
             //configurar adapter
             SpinnerClientes.setAdapter(adapter);
         }else{
-            TVidCliente.setText("ID seleccionado: ");
-            ETClientesNombre.setText("");
-            ETClientesApellidos.setText("");
-            ETClienteAlias.setText("");
-            ETClienteTelefono.setText("");
-            ETClientesDireccion.setText("");
+            info.setVisibility(View.INVISIBLE);
         }
     }
 

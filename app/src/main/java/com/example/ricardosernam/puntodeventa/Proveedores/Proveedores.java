@@ -110,8 +110,6 @@ public class Proveedores extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //hacer invisible la info
                 info.setVisibility(View.INVISIBLE);
-
-
             }
         });
 
@@ -137,11 +135,7 @@ public class Proveedores extends Fragment {
             //configurar adapter
             Spinner.setAdapter(adapter);
         }else{
-            TV_idSeleccionado.setText("ID seleccionado: ");
-            ET_contaco.setText("");
-            ET_telefono.setText("");
-            ET_direccion.setText("");
-            ET_empresa.setText("");
+            info.setVisibility(View.INVISIBLE);
         }
     }
 
