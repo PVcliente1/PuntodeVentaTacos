@@ -56,7 +56,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de la tabla Miembros
 
-        sqLiteDatabase.execSQL("CREATE TABLE Miembros ( idmiembro INTEGER PRIMARY KEY , " +
+        sqLiteDatabase.execSQL("CREATE TABLE Miembros ( idmiembro INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "  `nombre` text, " +
                 " `telefono` text, " +
                 "  `correo` text, " +
