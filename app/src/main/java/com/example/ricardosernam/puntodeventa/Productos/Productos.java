@@ -56,7 +56,7 @@ public class Productos extends Fragment{
     private ImageView ponerImagen;
     private android.app.FragmentManager fm;
     private EditText codigo, nombre, unidad, precio;
-    private Integer idProductos;
+    private String producto;
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
@@ -107,7 +107,7 @@ public class Productos extends Fragment{
         }, new interfaz_OnClickImagen() {
             @Override
             public void onClick(View v, ImageView imagen) {
-                ponerImagen= imagen;
+                ponerImagen = imagen;
                 DialogFragment dialog = new traerImagen(new interfaz_SeleccionarImagen() {
                     @Override
                     public void onClick(Intent intent, int requestCode) {
@@ -118,25 +118,24 @@ public class Productos extends Fragment{
             }
         }, new interfaz_OnClickElementosProductos() {
             @Override
-            public void onClick(String productos, EditText codigo2, EditText nombre2, ImageView imagen, EditText unidad2, EditText precio2) {
-                ponerImagen= imagen;
+            public void onClick(String productos, EditText codigo2, EditText nombre2, ImageView imagen, EditText unidad2, EditText precio2) {///cuando presiona editar
+                producto=productos;
+                ponerImagen = imagen;
                 codigo = codigo2;
                 nombre = nombre2;
                 unidad = unidad2;
                 precio = precio2;
+            }
+        }, new interfaz_OnClick() {
+            @Override
+            public void onClick(View v) {
                 values.put("codigo_barras", String.valueOf(codigo.getText()));
                 values.put("nombre", String.valueOf(nombre.getText()));
-                values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap() , "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
+                values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                 values.put("unidad", String.valueOf(unidad.getText()));
                 values.put("precio_venta", String.valueOf(precio.getText()));
 
-                //fila2=db.rawQuery("select idproducto from Productos where nombre='"+ nombre2.getText() +"'",null);
-
-                //if(fila2.moveToFirst()) {
-                    //db.update("Productos", values, "idproducto='" + Integer.parseInt(fila2.getString(0)) + "'", null);
-                    //Toast.makeText(getContext(), fila2.getString(0), Toast.LENGTH_SHORT).show();
-                //}
-                db.update("Productos", values, "nombre='" + productos + "'", null);
+                db.update("Productos", values, "nombre='" + producto + "'", null);
                 db.close();
             }
         });

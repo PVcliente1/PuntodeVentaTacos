@@ -39,14 +39,15 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
     private interfaz_OnClick Interfaz4;
     private interfaz_OnClickElementosProductos Interfaz5;
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5) {  ///recibe el arrayProductos como parametro y la interface
+
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, interfaz_OnClick Interfaz4) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
         this.Interfaz2=Interfaz2;
         this.Interfaz3=Interfaz3;
-        this.Interfaz4=Interfaz4;
         this.Interfaz5=Interfaz5;
+        this.Interfaz4=Interfaz4;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
@@ -95,6 +96,8 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Interfaz5.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio);
+                holder.editar.setEnabled(false);
                 holder.codigo.setEnabled(true);
                 holder.nombreP.setEnabled(true);
                 holder.precio.setEnabled(true);
@@ -102,13 +105,11 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.botones.setVisibility(View.VISIBLE);
                 holder.traerImagen.setVisibility(View.VISIBLE);
                 holder.escanear.setVisibility(View.VISIBLE);
-
                 holder.aceptarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {////guardamos los cambios realizados
-                        //Interfaz4.onClick(view);
-                        Interfaz5.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio);
-
+                        Interfaz4.onClick(view);
+                        holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
                         holder.unidad.setEnabled(false);
@@ -122,6 +123,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
                         holder.codigo.setEnabled(false);
