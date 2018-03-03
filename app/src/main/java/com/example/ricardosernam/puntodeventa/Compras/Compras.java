@@ -63,7 +63,7 @@ public class Compras extends Fragment{
 
         ///layouts
         agregar=view.findViewById(R.id.LLagregarProductos);
-       existentes=view.findViewById(R.id.LLexistentes);
+        existentes=view.findViewById(R.id.LLexistentes);
         campos=view.findViewById(R.id.LLcamposDatos);
         foto=view.findViewById(R.id.LLfoto);
 
@@ -163,8 +163,6 @@ public class Compras extends Fragment{
         cantidadExistentes.setText(" ");
         nombre.setText(" ");
         totalCompra.setText(" ");
-
-
         agregaraproductos.setChecked(false);
         unidad.setSelection(0);
     }
