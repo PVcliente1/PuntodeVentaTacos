@@ -64,9 +64,13 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idturno` INTEGER NOT NULL, " +
                 "  `idpuesto` INTEGER NOT NULL, " +
                 "  `foto` text, " +
-                "  `apellido` text, " +
-                " FOREIGN KEY (idturno) REFERENCES Turnos(idturno), " +
-                " FOREIGN KEY (idpuesto)REFERENCES Puestos(idpuesto))");
+                "  `apellido` text)");
+
+
+        //        " FOREIGN KEY (idturno) REFERENCES Turnos(idturno), " +
+        //        " FOREIGN KEY (idpuesto)REFERENCES Puestos(idpuesto))");
+
+
 
         //Creación de la tabla Unidades_DialogFragment
 
@@ -94,8 +98,9 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `unidad` varchar(30),\n" +
                 "  `cantidad` INTEGER,\n" +
                 "  `precio_compra` INTEGER,\n" +
-                "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
-                "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
+                "  `idproveedorFK` INTEGER)");                //Llave foranea
+
+        //        "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 
 
 
@@ -110,7 +115,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Proveedores (\n" +
                 "  `idproveedor` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `contacto` VARCHAR(45),\n" +
-                "  `telefono` INTEGER,\n" +
+                "  `telefono` INT,\n" +
                 "  `direccion` VARCHAR(45),\n" +
                 "  `nombre_empresa` VARCHAR(45))");
 
@@ -121,7 +126,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellido` VARCHAR(45),\n" +
                 "  `alias` VARCHAR(45),\n" +
-                "  `telefono` INTEGER,\n" +
+                "  `telefono` INT ,\n" +
                 "  `direccion` VARCHAR(45))");
                 //"  PRIMARY KEY (`idcliente`))");
 
@@ -154,10 +159,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `tipo_cobro` VARCHAR(45),\n" +
                 "  `idmiembroFK` INTEGER ,\n" +
                 "  `idclienteFK` INTEGER,\n" +
-                "  `idcobro` INTEGER,\n" +
-                "    FOREIGN KEY (`idclienteFK`) REFERENCES Clientes (`idcliente`), " +
-                "    FOREIGN KEY (`idmiembroFK`) REFERENCES Miembros (`idmiembro`), " +
-                "    FOREIGN KEY (`idcobro`) REFERENCES Cobros (`idcobro`))");
+                "  `idcobro` INTEGER)");
+
+
+        //        "    FOREIGN KEY (`idclienteFK`) REFERENCES Clientes (`idcliente`), " +
+        //        "    FOREIGN KEY (`idmiembroFK`) REFERENCES Miembros (`idmiembro`), " +
+        //        "    FOREIGN KEY (`idcobro`) REFERENCES Cobros (`idcobro`))");
 
         //Creación de index para relacionar ventas con clientes         sqLiteDatabase.execSQL("CREATE INDEX `fk_ventas_clientes_idx` ON Ventas (`idclienteFK` ASC)");
 
@@ -192,10 +199,11 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `precio` INTEGER,\n" +
                 "  `idventaFK` INTEGER,\n" +
                 "  `idproductoFK` INTEGER,\n" +
-                "  `iddescuentos` INTEGER,\n" +
-                "    FOREIGN KEY (`idventaFK`) REFERENCES Ventas (`idventa`), " +
-                "    FOREIGN KEY (`idproductoFK`) REFERENCES Productos (`idproducto`), " +
-                "    FOREIGN KEY (`iddescuentos`) REFERENCES Descuentos (`iddescuento`))");
+                "  `iddescuentos` INTEGER)");
+
+         //       "    FOREIGN KEY (`idventaFK`) REFERENCES Ventas (`idventa`), " +
+         //       "    FOREIGN KEY (`idproductoFK`) REFERENCES Productos (`idproducto`), " +
+         //       "    FOREIGN KEY (`iddescuentos`) REFERENCES Descuentos (`iddescuento`))");
 
         //Creación de index para la relación de venta_Detalles con ventas           sqLiteDatabase.execSQL("CREATE INDEX `fk_venta_detalles_ventas1_idx` ON venta_detalles (`idventaFK` ASC)");
 

@@ -1,8 +1,13 @@
 package com.example.ricardosernam.puntodeventa.Compras;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Productos.Unidades_DialogFragment;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -30,6 +36,10 @@ public class Compras extends Fragment{
     private RadioGroup opciones;
     private CheckBox agregaraproductos;     //checkbox para agregar a productos
     private android.app.FragmentManager fm;
+    private ContentValues values;
+    private SQLiteDatabase db;
+    private Cursor fila;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,8 +66,6 @@ public class Compras extends Fragment{
         nombre= view.findViewById(R.id.TVnombreCompra);
         totalCompra= view.findViewById(R.id.TVtotalCompra);
 
-
-
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
         unidad=view.findViewById(R.id.ETunidad);
 
@@ -80,9 +88,17 @@ public class Compras extends Fragment{
         });
 
 
+        //creación de base de datos
+
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
+
+
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
                 switch (i){
                     case R.id.RBexistente:
                         nombre.setVisibility(View.VISIBLE);
@@ -92,6 +108,8 @@ public class Compras extends Fragment{
                         capturarProducto.setHint("Ingresa Nombre");
                         existentes.setVisibility(View.VISIBLE);
                         break;
+
+
                     case R.id.RBnuevo:
                         nombre.setVisibility(View.GONE);
                         nombreProducto.setVisibility(View.VISIBLE);

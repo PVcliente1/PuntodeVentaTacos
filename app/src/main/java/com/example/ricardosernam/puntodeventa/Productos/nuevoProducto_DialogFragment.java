@@ -63,6 +63,8 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         db=admin.getWritableDatabase();
         values = new ContentValues();
 
+
+
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
