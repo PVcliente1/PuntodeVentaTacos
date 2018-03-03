@@ -108,6 +108,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                     public void onClick(View view) {////guardamos los cambios realizados
                         //Interfaz4.onClick(view);
                         Interfaz5.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio);
+
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
                         holder.unidad.setEnabled(false);

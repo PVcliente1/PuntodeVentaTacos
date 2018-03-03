@@ -47,7 +47,7 @@ public class Productos extends Fragment{
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila;
+    private Cursor fila, fila2;
     private String rutaImagen;
     private Uri selectedImage;
     private SQLiteDatabase db;
@@ -82,13 +82,6 @@ public class Productos extends Fragment{
         values = new ContentValues();
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
-
-        //fila=db.rawQuery("select idproducto from Productos" ,null);
-        /*if(fila.moveToFirst()) {
-            while (fila.moveToNext()) {
-                Toast.makeText(getContext(), fila.getInt(0) , Toast.LENGTH_SHORT).show();
-            }
-        }*/
 
         if(fila.moveToFirst()) {
             while (fila.moveToNext()) {
@@ -137,11 +130,12 @@ public class Productos extends Fragment{
                 values.put("unidad", String.valueOf(unidad.getText()));
                 values.put("precio_venta", String.valueOf(precio.getText()));
 
-                //int id=0;
-                //db.execSQL("insert idproducto INTO '"+ idProductos + "' from Productos where nombre='"+productos+"'" ,null);
-                //Toast.makeText(getContext(), idProductos , Toast.LENGTH_SHORT).show();
+                //fila2=db.rawQuery("select idproducto from Productos where nombre='"+ nombre2.getText() +"'",null);
 
-                //db.update("Productos", values, "idproducto='" + idProductos + "'", null);
+                //if(fila2.moveToFirst()) {
+                    //db.update("Productos", values, "idproducto='" + Integer.parseInt(fila2.getString(0)) + "'", null);
+                    //Toast.makeText(getContext(), fila2.getString(0), Toast.LENGTH_SHORT).show();
+                //}
                 db.update("Productos", values, "nombre='" + productos + "'", null);
                 db.close();
             }
