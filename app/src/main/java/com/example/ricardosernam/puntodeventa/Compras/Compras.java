@@ -158,7 +158,7 @@ public class Compras extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,2);//inicializar el activity con RequestCode2
+                startActivityForResult(intent,3);//inicializar el activity con RequestCode2
             }
         });
 
