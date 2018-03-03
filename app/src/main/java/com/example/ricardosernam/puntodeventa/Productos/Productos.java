@@ -47,7 +47,7 @@ public class Productos extends Fragment{
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila, fila2;
+    private Cursor fila;
     private String rutaImagen;
     private Uri selectedImage;
     private SQLiteDatabase db;
