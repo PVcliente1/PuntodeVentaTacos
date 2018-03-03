@@ -27,7 +27,7 @@
 
             <Spinner
                 android:id="@+id/SpinnerClientes"
-                android:layout_width="85dp"
+                android:layout_width="154dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
@@ -38,12 +38,6 @@
                 android:layout_weight="1"
                 android:text="+" />
 
-            <Button
-                android:id="@+id/BTN_ClientesRefescar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Refrescar" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -152,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="phone" />
+                    android:inputType="textPersonName" />
             </LinearLayout>
 
             <LinearLayout
@@ -193,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="phone" />
             </LinearLayout>
 
             <LinearLayout

@@ -46,7 +46,7 @@ public class AgregarProvedor extends DialogFragment {
                 alta("proveedores");
                 Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
 
-                //todo este desmadre es para que se refresque
+                //todo este desmadre es para que se refresque xD
                 Proveedores frag = new Proveedores();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.LOprincipal, frag);

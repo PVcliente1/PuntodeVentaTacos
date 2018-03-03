@@ -4,13 +4,16 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
 
 
@@ -39,6 +42,16 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
             @Override
             public void onClick(View view) {
                 alta();//se llama al procedimiento de altas
+                Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+
+                //todo este desmadre es para que se refresque xD
+                Clientes frag = new Clientes();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
+
+                //cerrar el dialog
                 dismiss();
             }
         });
