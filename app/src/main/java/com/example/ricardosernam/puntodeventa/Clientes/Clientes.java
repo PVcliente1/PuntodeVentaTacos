@@ -35,7 +35,7 @@ public class Clientes extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clientes, container, false);
 
-        //Casting de botones
+        //Casting de los botones
         BTN_ClientesAgregarNuevo = view.findViewById(R.id.BTN_ClientesAgregarNuevo);
         BTN_ClienteEditarSel = view.findViewById(R.id.BTN_ClienteEditarSel);
         BTN_ClienteEliminarSel = view.findViewById(R.id.BTN_ClienteEliminarSel);
