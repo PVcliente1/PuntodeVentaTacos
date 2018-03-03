@@ -17,14 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 
 public class Clientes extends Fragment {
-    Button BTN_ClientesAgregarNuevo,BTN_ClienteEditarSel,BTN_ClienteEliminarSel;
-    LinearLayout info;
-    EditText ETClientesNombre, ETClientesApellidos, ETClienteAlias, ETClienteTelefono, ETClientesDireccion;
+    Button BTN_ClientesAgregarNuevo,BTN_ClienteEditarSel,BTN_ClienteEliminarSel,BTNBuscarCliente,BTNAceptarEditarClientes,BTNCancelarEditarClientes;
+    LinearLayout info,LayoutBotonesAceptarEditarClientes;
+    EditText ETClientesNombre, ETClientesApellidos, ETClienteAlias, ETClienteTelefono, ETClientesDireccion,ET_BuscarCliente;
     Spinner SpinnerClientes;
     TextView TVidCliente;
     int idSeleccionado = 1;
@@ -36,14 +37,18 @@ public class Clientes extends Fragment {
         View view = inflater.inflate(R.layout.fragment_clientes, container, false);
 
         //Casting de los botones
+        BTNBuscarCliente = view.findViewById(R.id.BTNBuscarCliente);
         BTN_ClientesAgregarNuevo = view.findViewById(R.id.BTN_ClientesAgregarNuevo);
         BTN_ClienteEditarSel = view.findViewById(R.id.BTN_ClienteEditarSel);
         BTN_ClienteEliminarSel = view.findViewById(R.id.BTN_ClienteEliminarSel);
+        BTNAceptarEditarClientes = view.findViewById(R.id.BTNAceptarEditarClientes);
+        BTNCancelarEditarClientes = view.findViewById(R.id.BTNCancelarEditarClientes);
 
         //casting de spinner
         SpinnerClientes = view.findViewById(R.id.SpinnerClientes);
 
         //Casting de EditText
+        ET_BuscarCliente = view.findViewById(R.id.ET_BuscarCliente);
         ETClientesNombre = view.findViewById(R.id.ETClientesNombre);
         ETClientesApellidos = view.findViewById(R.id.ETClientesApellidos);
         ETClienteAlias = view.findViewById(R.id.ETClienteAlias);
@@ -53,6 +58,7 @@ public class Clientes extends Fragment {
 
         //casting del layout de la info
         info = view.findViewById(R.id.LayoutClientesInfo);
+        LayoutBotonesAceptarEditarClientes = view.findViewById(R.id.LayoutBotonesAceptarEditarClientes);
 
         //evento de boton insertar nuevo
         BTN_ClientesAgregarNuevo.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +72,35 @@ public class Clientes extends Fragment {
         BTN_ClienteEditarSel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ETClienteAlias.setEnabled(true);
+                ETClientesApellidos.setEnabled(true);
+                ETClientesDireccion.setEnabled(true);
+                ETClientesNombre.setEnabled(true);
+                ETClienteTelefono.setEnabled(true);
+
+                LayoutBotonesAceptarEditarClientes.setVisibility(View.VISIBLE);
+            }
+        });
+        //evento aceptar editar
+        BTNAceptarEditarClientes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 modificar(idSeleccionado);
 
                 refrescar();
+            }
+        });
+        //evento cancelar editar
+        BTNCancelarEditarClientes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ETClienteAlias.setEnabled(false);
+                ETClientesApellidos.setEnabled(false);
+                ETClientesDireccion.setEnabled(false);
+                ETClientesNombre.setEnabled(false);
+                ETClienteTelefono.setEnabled(false);
+
+                LayoutBotonesAceptarEditarClientes.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -189,5 +221,26 @@ public class Clientes extends Fragment {
     void refrescar(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
+    }
+
+    void buscar(){
+        String nombre = String.valueOf(ET_BuscarCliente.getText());
+
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+
+        //cursor
+        Cursor c = db.rawQuery("select * from clientes where nombre = " + "'" +nombre + "'", null);
+        //inicializamos el cursor
+        c.moveToPosition(0);
+
+        if (c.getCount() > 0){
+            jalarDatos(c.getInt(0));
+            info.setVisibility(View.VISIBLE);
+            Toast.makeText(getContext(), c.getString(0), Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Ese cliente no existe", Toast.LENGTH_SHORT).show();
+        }
     }
 }

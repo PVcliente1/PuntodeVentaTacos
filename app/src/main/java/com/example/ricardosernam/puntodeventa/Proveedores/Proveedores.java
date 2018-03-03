@@ -28,11 +28,11 @@ import com.example.ricardosernam.puntodeventa.R;
 import java.util.ArrayList;
 
 public class Proveedores extends Fragment {
-    Button BTN_abrirFragmentAgregarNuevo, BTN_editarSeleccionado, BTN_eliminarSeleccionado;
-    EditText ET_contaco, ET_telefono, ET_direccion, ET_empresa;
+    Button BTN_abrirFragmentAgregarNuevo, BTN_editarSeleccionado, BTN_eliminarSeleccionado,BTNBuscarProveedores,BTNAceptarEditar,BTNCancelarEditar;
+    EditText ET_contaco, ET_telefono, ET_direccion, ET_empresa,ET_BuscarProveedor;
     TextView TV_idSeleccionado;
     Spinner Spinner;
-    LinearLayout info;
+    LinearLayout info,LayoutBotonesAceptarEditar;
     int idSeleccionado = 1;
 
     @Override
@@ -42,16 +42,20 @@ public class Proveedores extends Fragment {
 
         //Cast de componentes
         BTN_abrirFragmentAgregarNuevo = view.findViewById(R.id.BTN_ProveedoresAgregarNuevo);
-
+        BTNBuscarProveedores = view.findViewById(R.id.BTNBuscarProveedores);
         BTN_editarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEditarSel);
         BTN_eliminarSeleccionado = view.findViewById(R.id.BTN_ProveedoresEliminarSel);
+        BTNCancelarEditar = view.findViewById(R.id.BTNCancelarEditar);
+        BTNAceptarEditar = view.findViewById(R.id.BTNAceptarEditar);
         ET_contaco = view.findViewById(R.id.ETProveedoresContacto);
         ET_telefono = view.findViewById(R.id.ETProveedoresTelefono);
         ET_direccion = view.findViewById(R.id.ETProveedoresDireccion);
         ET_empresa = view.findViewById(R.id.ETProveedoresEmpresa);
+        ET_BuscarProveedor = view.findViewById(R.id.ET_BuscarProveedor);
         TV_idSeleccionado = view.findViewById(R.id.TVidProveedor);
         Spinner = view.findViewById(R.id.SpinnerProveedores);
         info = view.findViewById(R.id.LayoutProveedoresInfo);
+        LayoutBotonesAceptarEditar = view.findViewById(R.id.LayoutBotonesAceptarEditarProveedores);
 
         //Adapter para pasarle datos al spinner
         adapterSpinner();
@@ -71,11 +75,36 @@ public class Proveedores extends Fragment {
         BTN_editarSeleccionado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ET_contaco.setEnabled(true);
+                ET_telefono.setEnabled(true);
+                ET_direccion.setEnabled(true);
+                ET_empresa.setEnabled(true);
+
+                LayoutBotonesAceptarEditar.setVisibility(View.VISIBLE);
+            }
+        });
+        //evento aceptar editado
+        BTNAceptarEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 modificar(idSeleccionado);
                 Toast.makeText(getContext(), "Editado", Toast.LENGTH_SHORT).show();
                 refrescar();
             }
         });
+        //evento cancelar editado
+        BTNCancelarEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ET_contaco.setEnabled(false);
+                ET_telefono.setEnabled(false);
+                ET_direccion.setEnabled(false);
+                ET_empresa.setEnabled(false);
+
+                LayoutBotonesAceptarEditar.setVisibility(View.INVISIBLE);
+            }
+        });
+
         //Evento para eleminar el seleccionado
         BTN_eliminarSeleccionado.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +118,13 @@ public class Proveedores extends Fragment {
                 ET_direccion.setText("");
                 ET_empresa.setText("");
                 refrescar();
+            }
+        });
+        //Evento de boton buscar
+        BTNBuscarProveedores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buscar();
             }
         });
 
@@ -193,6 +229,27 @@ public class Proveedores extends Fragment {
     void refrescar(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
+    }
+
+    void buscar(){
+        String nombre = String.valueOf(ET_BuscarProveedor.getText());
+
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+
+        //cursor
+        Cursor c = db.rawQuery("select * from proveedores where contacto = " + "'" +nombre + "'", null);
+        //inicializamos el cursor
+        c.moveToPosition(0);
+
+        if (c.getCount() > 0){
+           jalarDatos(c.getInt(0));
+            info.setVisibility(View.VISIBLE);
+            Toast.makeText(getContext(), c.getString(0), Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Ese proveedor no existe", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
