@@ -115,13 +115,13 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                 db.insertOrThrow("Productos",null, values);
 
                 db.close();
-                Productos frag = new Productos();
-                getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Productos()).commit(); ///cambio de fragment
+                //Productos frag = new Productos();
+                //getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Productos()).commit(); ///cambio de fragment
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.LOprincipal, frag);
-                ft.addToBackStack(null);
-                ft.commit();
+                //FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //ft.replace(R.id.LOprincipal, frag);
+                //ft.addToBackStack(null);
+                //ft.commit();
 
             }
         });
