@@ -86,14 +86,19 @@ public class Clientes extends Fragment {
         SpinnerClientes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                //hacer visible la info
-                info.setVisibility(View.VISIBLE);
+                //checar si no es el anuncio de "seleccionar"
+                if (id != 1){
+                    //hacer visible la info
+                    info.setVisibility(View.VISIBLE);
 
-                //se modifica la variable que almacena el id seleccionado
-                idSeleccionado = (int)id;
+                    //se modifica la variable que almacena el id seleccionado
+                    idSeleccionado = (int)id;
 
-                //llenar los campos con el 'id' seleccionado
-                jalarDatos(idSeleccionado);
+                    //llenar los campos con el 'id' seleccionado
+                    jalarDatos(idSeleccionado);
+                }else{
+                    info.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -116,12 +121,12 @@ public class Clientes extends Fragment {
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        Cursor c = db.rawQuery("select idcliente AS _id, alias from Clientes", null);
+        Cursor c = db.rawQuery("select idcliente AS _id, nombre, alias from Clientes", null);
 
         if (c.getCount() > 0)
         {
             //adapter
-            String[] desde = new String[] {"alias"};
+            String[] desde = new String[] {"nombre","alias"};
             int[] para = new int[] {android.R.id.text1};
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
             //activar al layout del adapter

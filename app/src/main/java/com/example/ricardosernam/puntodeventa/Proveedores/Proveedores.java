@@ -96,14 +96,22 @@ public class Proveedores extends Fragment {
         Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                //hacer visible la info
-                info.setVisibility(View.VISIBLE);
+                //checar si no es el anuncio de "seleccionar"
+                if (id != 1)
+                {
+                    //hacer visible la info
+                    info.setVisibility(View.VISIBLE);
 
-                //se modifica la variable que almacena el id seleccionado
-                idSeleccionado = (int)id;
+                    //se modifica la variable que almacena el id seleccionado
+                    idSeleccionado = (int)id;
 
-                //llenar los campos con el 'id' seleccionado
-                jalarDatos(idSeleccionado);
+                    //llenar los campos con el 'id' seleccionado
+                    jalarDatos(idSeleccionado);
+                }
+                else
+                {
+                    info.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override

@@ -119,6 +119,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `direccion` VARCHAR(45),\n" +
                 "  `nombre_empresa` VARCHAR(45))");
 
+        sqLiteDatabase.execSQL("INSERT INTO Proveedores (idproveedor,contacto) VALUES (1, 'Seleccionar proveedor')");
+
         //Creación de la tabla clientes
 
         sqLiteDatabase.execSQL("CREATE TABLE Clientes (\n" +
@@ -130,6 +132,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `direccion` VARCHAR(45))");
                 //"  PRIMARY KEY (`idcliente`))");
 
+        sqLiteDatabase.execSQL("INSERT INTO Clientes (idcliente,nombre) VALUES (1, 'Seleccionar Cliente')");
 
 
         //Creamos el index para relacionar productos con proveedores        sqLiteDatabase.execSQL("CREATE INDEX `fk_productos_proveedores1_idx` ON Productos (`idproveedorFK` ASC)");
