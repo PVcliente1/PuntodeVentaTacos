@@ -140,7 +140,6 @@ public class Proveedores extends Fragment {
 
                     //se modifica la variable que almacena el id seleccionado
                     idSeleccionado = (int)id;
-
                     //llenar los campos con el 'id' seleccionado
                     jalarDatos(idSeleccionado);
                 }

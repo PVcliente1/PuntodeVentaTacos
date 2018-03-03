@@ -1,8 +1,12 @@
 package com.example.ricardosernam.puntodeventa;
 
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -16,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,7 @@ import com.example.ricardosernam.puntodeventa.Productos.Productos;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
 import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
+import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -41,6 +47,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_historial {
     ViewPager viewPager;
     TabLayout tabLayout;
+    ImageView logo;
+    private Cursor fila;
+    private SQLiteDatabase db;
+    private ContentValues values;
+    TextView nombreEmpresa;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     @Override
@@ -49,8 +60,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         AppBarLayout bar=findViewById(R.id.APLappBar);
         tabLayout =  findViewById(R.id.TLtabla);
+        logo=  findViewById(R.id.IVlogoEmpresa);
+        nombreEmpresa=  findViewById(R.id.TVnombreEmpresa);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
+
+        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
+
+        if(fila.moveToFirst()) {
+            //while (fila.moveToNext()) {
+                nombreEmpresa.setText(fila.getString(0));
+                logo.setImageURI(Uri.parse(fila.getString(1)));
+            //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+            //}
+        }
+
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
         /////comprobamos si es la primera vez que se abre
         if(appGetFirstTimeRun()==0 ){
@@ -67,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
