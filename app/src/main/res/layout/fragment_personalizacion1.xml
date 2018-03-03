@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/ImgImagen"
+                android:id="@+id/IVimagen"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:src="@mipmap/ic_launcher_round" />
@@ -53,12 +53,12 @@
         android:inputType="textCapWords" />
 
     <EditText
-            android:id="@+id/ETapellidosEmpresa"
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:hint="Dirección"
-            android:inputType="textEmailAddress" />
+        android:id="@+id/ETdireccionEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="Dirección"
+        android:inputType="textEmailAddress" />
         <EditText
             android:id="@+id/ETtelefonoEmpresa"
             android:layout_marginTop="5dp"
