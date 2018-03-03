@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,6 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +44,7 @@ import java.io.InputStream;
 public class Compras extends Fragment{
     private LinearLayout existentes,agregar, campos , foto;
     private TextView nombre, cantidadExistentes, totalCompra;
-    private Button escan,aceptar,cancelar, seleccionarImagen;
+    private Button escan,aceptar,cancelar, seleccionarImagen,BTNBuscarCompras;
     private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad;
     private RadioGroup opciones;
     private String rutaImagen;
@@ -52,7 +55,9 @@ public class Compras extends Fragment{
     private FragmentManager fm;
     private Cursor fila;
     private ImageView ponerImagen;
-
+    Spinner spinnerProveedores;
+    int idProveedor = 1;
+    boolean seleccionoProveedor = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +79,7 @@ public class Compras extends Fragment{
         cancelar=view.findViewById(R.id.BtnCancelarCompra);
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         seleccionarImagen = (Button)view.findViewById(R.id.BtnImagen);
+        BTNBuscarCompras = view.findViewById(R.id.BTNBuscarCompras);
 
         //textviews
         cantidadExistentes= view.findViewById(R.id.TVexistentes);
@@ -88,6 +94,9 @@ public class Compras extends Fragment{
         existentes=view.findViewById(R.id.LLexistentes);
         campos=view.findViewById(R.id.LLcamposDatos);
         foto=view.findViewById(R.id.LLfoto);
+        //spinner
+        spinnerProveedores = view.findViewById(R.id.SpnProvedor);
+
 
         ponerImagen=view.findViewById(R.id.IVimagenProducto);
 
@@ -110,7 +119,7 @@ public class Compras extends Fragment{
         db=admin.getWritableDatabase();
         values = new ContentValues();
 
-
+        //evento pa saber si es nuevo o existente
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -126,7 +135,6 @@ public class Compras extends Fragment{
                         existentes.setVisibility(View.VISIBLE);
                         break;
 
-
                     case R.id.RBnuevo:
                         nombre.setVisibility(View.GONE);
                         nombreProducto.setVisibility(View.VISIBLE);
@@ -141,6 +149,7 @@ public class Compras extends Fragment{
             }
         });
 
+        //checkbox agregar a productos
         agregaraproductos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -153,7 +162,7 @@ public class Compras extends Fragment{
         });
 
 
-
+        //evento scanner
         escan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +171,7 @@ public class Compras extends Fragment{
             }
         });
 
+        //seleccionar imagen
         seleccionarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,10 +185,12 @@ public class Compras extends Fragment{
             }
         });
 
+
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VaciarFormulario();
+                alta();
                 Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
             }
         });
@@ -189,8 +201,38 @@ public class Compras extends Fragment{
             }
         });
 
+        //evento boton buscar
+        BTNBuscarCompras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                campos.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //evento para cuando se selecciona un proveedor
+        spinnerProveedores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                //checar si no es el anuncio de "seleccionar"
+                if (id != 1)
+                {
+                    //se modifica la variable que almacena el id seleccionado
+                    idProveedor = (int)id;
+                    seleccionoProveedor = true;
+                }else{
+                    seleccionoProveedor = false;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //hacer invisible la info
+            }
+        });
+        adapterSpinner();
         return view;
     }
+
     public void VaciarFormulario(){
         capturarProducto.setText(" ");
         cantidad.setText(" ");
@@ -204,6 +246,7 @@ public class Compras extends Fragment{
         agregaraproductos.setChecked(false);
         unidad.setSelection(0);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -226,6 +269,7 @@ public class Compras extends Fragment{
                 }
             }
         }
+
         //2 Captura de foto
         if(requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
@@ -247,12 +291,56 @@ public class Compras extends Fragment{
                 }
             }
         }
+
         ///3 para escanear
         if (requestCode == 3 && data != null) {
             //obtener resultados
             capturarProducto.setText(data.getStringExtra("BARCODE"));
         }
+    }
+
+    //procedimiento para agregar datos al spinner
+    public void adapterSpinner(){
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+        //cursor
+        Cursor c = db.rawQuery("select idproveedor AS _id, contacto from proveedores", null);
+
+        //adapter
+        String[] desde = new String[] {"contacto"};
+        int[] para = new int[] {android.R.id.text1};
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
+        //activar al layout del adapter
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //configurar adapter
+        spinnerProveedores.setAdapter(adapter);
 
     }
 
+    //procedimiento para dar de alta
+    void alta()
+    {
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());
+        SQLiteDatabase db = admin.getWritableDatabase();
+
+        //nuevo registro
+        ContentValues nuevoRegistro = new ContentValues();
+
+        //agregar info al registro
+        nuevoRegistro.put("codigo_barras",capturarProducto.getText().toString());
+        nuevoRegistro.put("nombre",nombreProducto.getText().toString());
+        nuevoRegistro.put("precio_venta",precioVenta.getText().toString());
+        nuevoRegistro.put("unidad", unidad.getText().toString());
+        nuevoRegistro.put("cantidad",cantidad.getText().toString());
+        nuevoRegistro.put("precio_compra",precioCompra.getText().toString());
+        nuevoRegistro.put("ruta_imagen", String.valueOf(selectedImage));
+        nuevoRegistro.put("idproveedorFK",idProveedor);
+
+        //insertar el nuevo registro
+        db.insert("Productos",null, nuevoRegistro);
+
+        //cerrar la base de datos
+        db.close();
+    }
 }

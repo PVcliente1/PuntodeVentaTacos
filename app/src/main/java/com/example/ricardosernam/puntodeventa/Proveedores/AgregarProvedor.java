@@ -72,7 +72,7 @@ public class AgregarProvedor extends DialogFragment {
         return view;
     }
 
-    //funcion para dar de alta, si funciona regresa true, si no regresa un false
+    //procedimiento para dar de alta
     public void alta(String tabla)
     {
         BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());

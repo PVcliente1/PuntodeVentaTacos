@@ -62,27 +62,36 @@
 
             <EditText
                 android:id="@+id/ETCapturarProducto"
-                android:layout_width="200dp"
+                android:layout_width="146dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:hint="Buscar por Nombre"
                 android:inputType="text"
                 android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/BTNBuscarCompras"
+                android:layout_width="203dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Buscar" />
+
             <TextView
                 android:layout_width="wrap_content"
-                android:text="o"
-                android:layout_marginLeft="10dp"
-                android:textSize="15dp"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_marginLeft="10dp"
+                android:inputType="text"
+                android:text="o"
+                android:textSize="15dp" />
 
             <Button
                 android:id="@+id/BtnEscanearCodigo"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
                 android:text="Escanear" />
+
         </LinearLayout>
 <!--layout campos-->
         <LinearLayout
@@ -235,10 +244,10 @@
             <EditText
                 android:id="@+id/ETunidad"
                 android:layout_width="wrap_content"
-                android:focusable="false"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
+                android:focusable="false"
                 android:hint="Unidad"
                 android:inputType="number"
                 android:textAlignment="center" />
