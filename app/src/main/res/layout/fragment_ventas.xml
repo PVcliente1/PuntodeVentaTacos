@@ -37,7 +37,6 @@
                 android:id="@+id/BtnHistorial"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
                 android:drawableTop="@mipmap/ic_history_black_24dp"
                 android:text="Historial"
                 android:textSize="12dp" />

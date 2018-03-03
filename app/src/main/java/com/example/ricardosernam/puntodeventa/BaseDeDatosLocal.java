@@ -182,7 +182,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `nombre` VARCHAR(45),\n" +
                 "  `encargado` VARCHAR(45),\n" +
                 "  `direccion` VARCHAR(45),\n" +
-                "  `telefono` INTEGER,\n" +
+                "  `telefono` VARCHAR(45),\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `pagina` VARCHAR(45),\n" +
                 "  `logo` VARCHAR(45),\n" +
