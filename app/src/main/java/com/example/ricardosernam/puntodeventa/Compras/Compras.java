@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Productos.Unidades_DialogFragment;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -42,7 +44,7 @@ public class Compras extends Fragment{
     private LinearLayout existentes,agregar, campos , foto;
     private TextView nombre, cantidadExistentes, totalCompra;
     private Button escan,aceptar,cancelar, seleccionarImagen;
-    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad;
+    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad,proveedor;
     private RadioGroup opciones;
     private String rutaImagen;
     private Uri selectedImage;
@@ -69,6 +71,7 @@ public class Compras extends Fragment{
         precioCompra=view.findViewById(R.id.ETprecioCompra);
         precioVenta=view.findViewById(R.id.ETprecioVenta);
         nombreProducto=view.findViewById(R.id.ETnombreProducto);
+        proveedor=view.findViewById(R.id.ETproveedorCompra);
         ///botones
         aceptar=view.findViewById(R.id.BtnAceptarCompra);
         cancelar=view.findViewById(R.id.BtnCancelarCompra);
@@ -77,7 +80,7 @@ public class Compras extends Fragment{
 
         //textviews
         cantidadExistentes= view.findViewById(R.id.TVexistentes);
-        nombre= view.findViewById(R.id.TVnombreCompra);
+        //nombre= view.findViewById(R.id.TVnombreCompra);
         totalCompra= view.findViewById(R.id.TVtotalCompra);
 
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
@@ -106,9 +109,7 @@ public class Compras extends Fragment{
 
         //creación de base de datos
 
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
-        db=admin.getWritableDatabase();
-        values = new ContentValues();
+
 
 
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -117,7 +118,7 @@ public class Compras extends Fragment{
 
                 switch (i){
                     case R.id.RBexistente:
-                        nombre.setVisibility(View.VISIBLE);
+                        //nombre.setVisibility(View.VISIBLE);
                         nombreProducto.setVisibility(View.GONE);
                         foto.setVisibility(View.GONE);
                         ponerImagen.setVisibility(View.GONE);
@@ -128,7 +129,7 @@ public class Compras extends Fragment{
 
 
                     case R.id.RBnuevo:
-                        nombre.setVisibility(View.GONE);
+                        //nombre.setVisibility(View.GONE);
                         nombreProducto.setVisibility(View.VISIBLE);
                         foto.setVisibility(View.VISIBLE);
                         ponerImagen.setVisibility(View.VISIBLE);
@@ -179,7 +180,20 @@ public class Compras extends Fragment{
             @Override
             public void onClick(View view) {
                 VaciarFormulario();
-                Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
+                //alta("Productos");
+                Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+
+                //todo este desmadre es para que se refresque xD
+                /*Compras frag = new Compras();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
+*/
+                //cerrar el dialog
+                dismiss();
+
             }
         });
         cancelar.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +213,7 @@ public class Compras extends Fragment{
 
         //textviews
         cantidadExistentes.setText(" ");
-        nombre.setText(" ");
+//        nombre.setText(" ");
         totalCompra.setText(" ");
         agregaraproductos.setChecked(false);
         unidad.setSelection(0);
@@ -254,5 +268,62 @@ public class Compras extends Fragment{
         }
 
     }
+
+
+    //funcion para dar de alta, si funciona regresa true, si no regresa un false
+    public void alta(String tabla)
+    {
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());
+        SQLiteDatabase db = admin.getWritableDatabase();
+
+        //nuevo registro
+        ContentValues nuevoRegistro = new ContentValues();
+
+
+        /*
+                         "  `idproducto` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `codigo_barras` VARCHAR(45),\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `precio_venta` VARCHAR(45)," +
+                "  `ruta_imagen` VARCHAR(45)," +
+                "  `unidad` varchar(30),\n" +
+                "  `cantidad` INTEGER,\n" +
+                "  `precio_compra` INTEGER,\n" +
+                "  `idproveedorFK` VARCHAR(40))");                //Llave foranea
+
+        */
+
+        //agregar info al registro
+        nuevoRegistro.put("codigo_barras",capturarProducto.getText().toString());
+        nuevoRegistro.put("nombre",nombreProducto.getText().toString());
+        nuevoRegistro.put("precio_venta",precioVenta.getText().toString());
+        nuevoRegistro.put("ruta_imagen", "dsfdsfdsf");
+        nuevoRegistro.put("unidad",unidad.getText().toString());
+        nuevoRegistro.put("cantidad",Integer.parseInt(cantidad.getText().toString()));
+        nuevoRegistro.put("precio_compra",Integer.parseInt(precioCompra.getText().toString()));
+        nuevoRegistro.put("idproveedorFK",proveedor.getText().toString());
+
+/*
+        nuevoRegistro.put("codigo_barras","sdfdsfd");
+        nuevoRegistro.put("nombre","dsfdf");
+        nuevoRegistro.put("precio_venta",3534);
+        nuevoRegistro.put("ruta_imagen", "3333rf");
+        nuevoRegistro.put("unidad","afasds");
+        nuevoRegistro.put("cantidad",55);
+        nuevoRegistro.put("precio_compra",4345);
+        nuevoRegistro.put("idproveedorFK","PEPSI");
+
+        */
+        //insertar el nuevo registro
+        db.insert(tabla,null, nuevoRegistro);
+        Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+        //cerrar la base de datos
+        db.close();
+    }
+
+    private void dismiss() {
+
+    }
+
 
 }
