@@ -33,6 +33,7 @@
                     android:textSize="19dp"
                     android:text="Nombre: "/>
                 <TextView
+                    android:id="@+id/TVnombreMiembro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
@@ -51,6 +52,7 @@
                     android:textSize="19dp"
                     android:text="Apellidos: "/>
                 <TextView
+                    android:id="@+id/TVapellidosMiembro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
@@ -71,6 +73,7 @@
             android:textSize="19dp"
             android:text="Puesto: "/>
         <TextView
+            android:id="@+id/TVpuestoMiembro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
@@ -82,6 +85,7 @@
             android:textSize="19dp"
             android:text="Turno: "/>
         <TextView
+            android:id="@+id/TVturno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
@@ -99,6 +103,7 @@
             android:textSize="19dp"
             android:text="Teléfono: "/>
         <TextView
+            android:id="@+id/TVtelefonoMiembro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
@@ -115,7 +120,9 @@
             android:layout_height="wrap_content"
             android:textSize="19dp"
             android:text="Correo: "/>
+
         <TextView
+            android:id="@+id/TVcorreoMiembro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
