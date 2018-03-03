@@ -25,6 +25,7 @@ import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickCodigo;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 
 import java.io.FileNotFoundException;
@@ -70,7 +71,7 @@ public class Productos extends Fragment{
 
         if(fila.moveToFirst()) {
             while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3)));
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(3)));
             }
         }
 
@@ -85,9 +86,14 @@ public class Productos extends Fragment{
         }, new interfazUnidades_OnClickCodigo() {
             @Override
             public void onClick(View v, EditText codigo2) {
-                codigo= (EditText) codigo2;
+                codigo = (EditText) codigo2;
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,3);//inicializar el activity con RequestCode3
+                startActivityForResult(intent, 3);//inicializar el activity con RequestCode3
+            }
+        }, new interfazUnidades_OnClickImagen() {
+            @Override
+            public void onClick(View v, ImageView imagen) {
+
             }
         });
         recycler.setAdapter(adapter);
