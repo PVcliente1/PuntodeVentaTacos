@@ -27,6 +27,7 @@
             android:layout_marginBottom="43dp"
             android:background="@layout/solobordes"
             android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/LOcobrar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
