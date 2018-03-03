@@ -74,6 +74,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idunidad` INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
                 "  `nombre_unidad` VARCHAR(45))");
 
+
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (1,'Gramos')");
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (2,'Kilogramos')");
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (3,'Mililitros')");
@@ -81,6 +82,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (5,'Centimetros')");
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (6,'Metros')");//Creamos la tabla de productos
         sqLiteDatabase.execSQL("INSERT INTO Unidades (idunidad, nombre_unidad) values (7,'Piezas')");
+
 
         /////creacion de productos
         sqLiteDatabase.execSQL("CREATE TABLE Productos (\n" +
@@ -133,15 +135,17 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de la tabla cobros
 
-        /*sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Cobros (\n" +
-                "  `idcobro` INT PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre_cobro` VARCHAR(45),\n" +
-                "  PRIMARY KEY (`idcobro`))");
+        sqLiteDatabase.execSQL("CREATE TABLE Cobros (\n" +
+                "  `idcobro` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `nombre_cobro` VARCHAR(45))");
+
+
+//        sqLiteDatabase.execSQL("INSERT INTO Cobros (idcobro, nombre_cobro) values ('Piezas')");
 
         //Creación de tabla ventas
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Ventas (\n" +
-                "  `idventa` ,\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Ventas (\n" +
+                "  `idventa` INTEGER ,\n" +
                 "  `tipo` VARCHAR(45),\n" +
                 "  `fecha` DATETIME ,\n" +
                 "  `fecha_entrega` DATETIME ,\n" +
@@ -149,21 +153,11 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `descripcion` VARCHAR(45) ,\n" +
                 "  `tipo_cobro` VARCHAR(45),\n" +
                 "  `idmiembroFK` INTEGER ,\n" +
-                "  `idclienteFK` INT ,\n" +
-                "  `idcobro` INT NOT NULL,\n" +
-                "  PRIMARY KEY (`idventa`, `idmiembroFK`, `idclienteFK`, `idcobro`),\n" +
-                "  CONSTRAINT `fk_ventas_clientes`\n" +
-                "    FOREIGN KEY (`idclienteFK`)\n" +
-                "    REFERENCES Clientes (`idcliente`)\n" +
-                "    ON DELETE NO ACTION, \n" +
-                "  CONSTRAINT `fk_ventas_miembros1`\n" +
-                "    FOREIGN KEY (`idmiembroFK`)\n" +
-                "    REFERENCES Miembros (`idmiembro`)\n" +
-                "    ON DELETE NO ACTION , \n" +
-                "  CONSTRAINT `fk_ventas_cobros1`\n" +
-                "    FOREIGN KEY (`idcobro`)\n" +
-                "    REFERENCES Cobros (`idcobro`)\n" +
-                "    ON DELETE NO ACTION)");
+                "  `idclienteFK` INTEGER,\n" +
+                "  `idcobro` INTEGER,\n" +
+                "    FOREIGN KEY (`idclienteFK`) REFERENCES Clientes (`idcliente`), " +
+                "    FOREIGN KEY (`idmiembroFK`) REFERENCES Miembros (`idmiembro`), " +
+                "    FOREIGN KEY (`idcobro`) REFERENCES Cobros (`idcobro`))");
 
         //Creación de index para relacionar ventas con clientes         sqLiteDatabase.execSQL("CREATE INDEX `fk_ventas_clientes_idx` ON Ventas (`idclienteFK` ASC)");
 
@@ -173,54 +167,42 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de tabla datos_empresa
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS datos_empresa (\n" +
-                "  `idempresa` INT NOT NULL,\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Datos_Empresa (\n" +
+                "  `idempresa` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `nombre` VARCHAR(45),\n" +
                 "  `encargado` VARCHAR(45),\n" +
                 "  `direccion` VARCHAR(45),\n" +
-                "  `telefono` INT,\n" +
+                "  `telefono` INTEGER,\n" +
                 "  `correo` VARCHAR(45),\n" +
                 "  `pagina` VARCHAR(45),\n" +
                 "  `logo` VARCHAR(45),\n" +
-                "  `horario` VARCHAR(45),\n" +
-                "  PRIMARY KEY (`idempresa`))");
+                "  `horario` VARCHAR(45))");
 
         //Creación de tabla descuentos
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS Descuentos(\n" +
-                "  `iddescuento` INT NOT NULL,\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Descuentos(\n" +
+                "  `iddescuento` INTEGER,\n" +
                 "  `tipo_descuento` VARCHAR(45),\n" +
-                "  `porentaje` INT,\n" +
-                "  PRIMARY KEY (`iddescuento`))");
+                "  `porentaje` INTEGER)");
 
         //Creación de tabla venta_detalles
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS venta_detalles (\n" +
-                "  `cantidad` INT ,\n" +
-                "  `precio` INT ,\n" +
-                "  `idventaFK` INT NOT NULL,\n" +
-                "  `idproductoFK` INT NOT NULL,\n" +
-                "  `iddescuentos` INT NOT NULL,\n" +
-                "  PRIMARY KEY (`idventaFK`, `idproductoFK`, `iddescuentos`),\n" +
-                "  CONSTRAINT `fk_venta_detalles_ventas1`\n" +
-                "    FOREIGN KEY (`idventaFK`)\n" +
-                "    REFERENCES Ventas (`idventa`)\n" +
-                "    ON DELETE NO ACTION,\n" +
-                "  CONSTRAINT `fk_venta_detalles_productos1`\n" +
-                "    FOREIGN KEY (`idproductoFK`)\n" +
-                "    REFERENCES Productos (`idproducto`)\n" +
-                "    ON DELETE NO ACTION , \n" +
-                "  CONSTRAINT `fk_venta_detalles_descuentos1`\n" +
-                "    FOREIGN KEY (`iddescuentos`)\n" +
-                "    REFERENCES Descuentos (`iddescuento`)\n" +
-                "    ON DELETE NO ACTION)");
+        sqLiteDatabase.execSQL("CREATE TABLE venta_detalles (\n" +
+                "  `cantidad` INTEGER,\n" +
+                "  `precio` INTEGER,\n" +
+                "  `idventaFK` INTEGER,\n" +
+                "  `idproductoFK` INTEGER,\n" +
+                "  `iddescuentos` INTEGER,\n" +
+                "    FOREIGN KEY (`idventaFK`) REFERENCES Ventas (`idventa`), " +
+                "    FOREIGN KEY (`idproductoFK`) REFERENCES Productos (`idproducto`), " +
+                "    FOREIGN KEY (`iddescuentos`) REFERENCES Descuentos (`iddescuento`))");
 
         //Creación de index para la relación de venta_Detalles con ventas           sqLiteDatabase.execSQL("CREATE INDEX `fk_venta_detalles_ventas1_idx` ON venta_detalles (`idventaFK` ASC)");
 
         //Creación de index para la relación de venta_Detalles con productos        sqLiteDatabase.execSQL("CREATE INDEX `fk_venta_detalles_productos1_idx` ON venta_detalles(`idproductoFK` ASC)");
 
         //Creación de index para la relación de venta_Detalles con Descuentos       sqLiteDatabase.execSQL("CREATE INDEX `fk_venta_detalles_descuentos1_idx` ON venta_detalles(`iddescuentos` ASC)");
-*/
+
 
     }
 
