@@ -92,8 +92,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `precio_venta` VARCHAR(45)," +
                 "  `ruta_imagen` VARCHAR(45)," +
                 "  `unidad` varchar(30),\n" +
-                "  `cantidad` INT,\n" +
-                "  `precio_compra` INT,\n" +
+                "  `cantidad` INTEGER,\n" +
+                "  `precio_compra` INTEGER,\n" +
                 "  `idproveedorFK` INTEGER,\n" +                //Llave foranea
                 "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 
@@ -110,7 +110,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Proveedores (\n" +
                 "  `idproveedor` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `contacto` VARCHAR(45),\n" +
-                "  `telefono` INT,\n" +
+                "  `telefono` INTEGER,\n" +
                 "  `direccion` VARCHAR(45),\n" +
                 "  `nombre_empresa` VARCHAR(45))");
 
@@ -121,7 +121,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `nombre` VARCHAR(45),\n" +
                 "  `apellido` VARCHAR(45),\n" +
                 "  `alias` VARCHAR(45),\n" +
-                "  `telefono` INT ,\n" +
+                "  `telefono` INTEGER,\n" +
                 "  `direccion` VARCHAR(45))");
                 //"  PRIMARY KEY (`idcliente`))");
 
