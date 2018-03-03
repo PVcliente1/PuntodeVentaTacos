@@ -2,6 +2,8 @@ package com.example.ricardosernam.puntodeventa.Benvenida;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,9 +28,11 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.pagar_DialogFragment;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -40,6 +44,7 @@ public class Personalizacion1 extends Fragment {
     private String rutaImagen;
     private Uri selectedImage;
     private ContentValues values;
+    private FragmentManager fm;
     private SQLiteDatabase db;
     AppBarLayout bar;
 
@@ -67,6 +72,7 @@ public class Personalizacion1 extends Fragment {
       salidaTurno2=view.findViewById(R.id.ETsalidaTurno2);
       imagen = view.findViewById(R.id.BtnLogoEmpresa);
       ponerImagen = view.findViewById(R.id.IVimagen);
+      fm=getActivity().getFragmentManager();
       ///Botones///
       aceptar=view.findViewById(R.id.BtnAceptarPersonalización);
 
@@ -142,16 +148,18 @@ public class Personalizacion1 extends Fragment {
                 }).show(getFragmentManager(),"Entrada_Horario");
             }
         });
-        /*sqLiteDatabase.execSQL("CREATE TABLE Datos_Empresa (\n" +
-                "  `idempresa` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre` VARCHAR(45),\n" +
-                "  `encargado` VARCHAR(45),\n" +
-                "  `direccion` VARCHAR(45),\n" +
-                "  `telefono` INTEGER,\n" +
-                "  `correo` VARCHAR(45),\n" +
-                "  `pagina` VARCHAR(45),\n" +
-                "  `logo` VARCHAR(45),\n" +
-                "  `horario` VARCHAR(45))");*/
+        imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = new traerImagen(new interfaz_SeleccionarImagen() {
+                    @Override
+                    public void onClick(Intent intent, int requestCode) {
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
+                dialog.show(fm, "NoticeDialogFragment");
+            }
+        });
 
 
       aceptar.setOnClickListener(new View.OnClickListener() {
