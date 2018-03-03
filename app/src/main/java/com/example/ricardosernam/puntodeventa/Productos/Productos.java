@@ -2,13 +2,17 @@ package com.example.ricardosernam.puntodeventa.Productos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,10 +28,15 @@ import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickCodigo;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickImagen;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickImagen;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,22 +48,21 @@ public class Productos extends Fragment{
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private Cursor fila;
+    private String rutaImagen;
+    private Uri selectedImage;
     private SQLiteDatabase db;
+    private ContentValues values;
     private Button nuevoProducto;
+    private ImageView ponerImagen;
     private android.app.FragmentManager fm;
-    private EditText codigo;
+    private EditText codigo, nombre, unidad, precio;
+    private Integer idProductos;
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
     @SuppressLint("ValidFragment")
     public Productos(){
     }
-   /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        /////////////productos de ejemplo//////////////
-       itemsProductos.add(new Pro_ventas_class("09879241412", "Coca", "20"));
-    }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,16 +70,29 @@ public class Productos extends Fragment{
 
         nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
         fm=getActivity().getFragmentManager();
-        codigo= new EditText(getContext()) ;
+
+        ponerImagen = new ImageView(getContext());
+        codigo= new EditText(getContext());
+        nombre= new EditText(getContext());
+        unidad= new EditText(getContext());
+        precio= new EditText(getContext());
+        //comunicacion con DB
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
-        fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen from Productos" ,null);
+        values = new ContentValues();
 
+        fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
 
+        //fila=db.rawQuery("select idproducto from Productos" ,null);
+        /*if(fila.moveToFirst()) {
+            while (fila.moveToNext()) {
+                Toast.makeText(getContext(), fila.getInt(0) , Toast.LENGTH_SHORT).show();
+            }
+        }*/
 
         if(fila.moveToFirst()) {
             while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(3)));
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             }
         }
 
@@ -83,21 +104,49 @@ public class Productos extends Fragment{
             public void onClick(View v, String nombre) {
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
             }
-        }, new interfazUnidades_OnClickCodigo() {
+        }, new interfaz_OnClickCodigo() {
             @Override
             public void onClick(View v, EditText codigo2) {
-                codigo = (EditText) codigo2;
+                codigo = codigo2;
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
                 startActivityForResult(intent, 3);//inicializar el activity con RequestCode3
             }
-        }, new interfazUnidades_OnClickImagen() {
+        }, new interfaz_OnClickImagen() {
             @Override
             public void onClick(View v, ImageView imagen) {
+                ponerImagen= imagen;
+                DialogFragment dialog = new traerImagen(new interfaz_SeleccionarImagen() {
+                    @Override
+                    public void onClick(Intent intent, int requestCode) {
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
+                dialog.show(fm, "NoticeDialogFragment");
+            }
+        }, new interfaz_OnClickElementosProductos() {
+            @Override
+            public void onClick(String productos, EditText codigo2, EditText nombre2, ImageView imagen, EditText unidad2, EditText precio2) {
+                ponerImagen= imagen;
+                codigo = codigo2;
+                nombre = nombre2;
+                unidad = unidad2;
+                precio = precio2;
+                values.put("codigo_barras", String.valueOf(codigo.getText()));
+                values.put("nombre", String.valueOf(nombre.getText()));
+                values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap() , "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
+                values.put("unidad", String.valueOf(unidad.getText()));
+                values.put("precio_venta", String.valueOf(precio.getText()));
 
+                //int id=0;
+                //db.execSQL("insert idproducto INTO '"+ idProductos + "' from Productos where nombre='"+productos+"'" ,null);
+                //Toast.makeText(getContext(), idProductos , Toast.LENGTH_SHORT).show();
+
+                //db.update("Productos", values, "idproducto='" + idProductos + "'", null);
+                db.update("Productos", values, "nombre='" + productos + "'", null);
+                db.close();
             }
         });
         recycler.setAdapter(adapter);
-
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,40 +160,49 @@ public class Productos extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
         ////1 para entrar a galeria y tomar una foto
         if (requestCode == 1) {
-            Uri selectedImage;
+            //Uri selectedImage;///uri es la ruta
             if (resultCode == Activity.RESULT_OK) {
-                selectedImage = data.getData();
-                String selectedPath=selectedImage.getPath();
-                if (requestCode == 1) {
+                selectedImage = data.getData();////data.get data es como mi file
+                assert selectedImage != null;
+                rutaImagen=selectedImage.getPath();///ruta de la imagen
 
-                    if (selectedPath != null) {
-                        InputStream imageStream = null;
-                        try {
-                            imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                        // Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                        Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-
-                        // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        ImageView mImg = (ImageView) getView().findViewById(R.id.ImgImagen);
-                        mImg.setImageBitmap(bmp);
-                        Toast.makeText(getActivity(), selectedPath, Toast.LENGTH_LONG).show();
-
+                if (rutaImagen != null) {
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
+                    //ponerImagen.setImageURI(selectedImage);
+                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                    ponerImagen.setImageBitmap(bmp);
+
+                    //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                   // bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+                    //String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bmp, "Title", null);
                 }
             }
-
         }
         //2 Captura de foto
         if(requestCode == 2) {
-            if(data != null) {
-                ImageView imagen = getView().findViewById(R.id.ImgImagen);
-                imagen.setImageBitmap((Bitmap) data.getParcelableExtra("data"));
-            }
-            else{
+            if (resultCode == Activity.RESULT_OK) {
+                selectedImage = data.getData();////data.get data es como mi file
+                assert selectedImage != null;
+                rutaImagen=selectedImage.getPath();///ruta de la imagen
+
+                if (rutaImagen != null) {
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //ponerImagen.setImageURI(selectedImage);
+                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                    ponerImagen.setImageBitmap(bmp);
+                }
             }
         }
         ///3 para escanear
@@ -154,5 +212,4 @@ public class Productos extends Fragment{
         }
 
     }
-
 }

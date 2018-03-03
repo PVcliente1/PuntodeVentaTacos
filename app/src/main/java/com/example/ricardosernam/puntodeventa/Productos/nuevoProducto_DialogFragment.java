@@ -24,13 +24,14 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class nuevoProducto_DialogFragment extends DialogFragment implements traerImagen.requestCode {
+public class nuevoProducto_DialogFragment extends DialogFragment {
     private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
@@ -84,31 +85,13 @@ public class nuevoProducto_DialogFragment extends DialogFragment implements trae
         imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = new traerImagen();
+                DialogFragment dialog = new traerImagen(new interfaz_SeleccionarImagen() {
+                    @Override
+                    public void onClick(Intent intent, int requestCode) {
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
                 dialog.show(getFragmentManager(), "NoticeDialogFragment");
-
-                /*final AlertDialog.Builder imagenProducto= new AlertDialog.Builder(getActivity());
-                imagenProducto.setTitle("Imagen");
-                imagenProducto.setMessage("Seleccion como quieres traer tu imagen");
-                imagenProducto.setCancelable(false);
-
-                imagenProducto.setPositiveButton("Desde galeria...", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface tipoDescuento, int id) {
-                       Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                        gallery.setType("image/*");
-                        startActivityForResult(Intent.createChooser(gallery, "Seleccione una imagen"), 1);
-                        tipoDescuento.dismiss();
-                    }
-                });
-                imagenProducto.setNegativeButton("Tomar foto", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface tipoDescuento, int id) {
-                        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(i, 2);
-                        tipoDescuento.dismiss();
-                    }
-                });
-                imagenProducto.show();*/
-
             }
         });
         aceptarM.setOnClickListener(new View.OnClickListener() {
@@ -135,10 +118,6 @@ public class nuevoProducto_DialogFragment extends DialogFragment implements trae
         getDialog().setTitle("Nuevo Producto");
         return rootView;
     }
-    @Override
-    public void onDialogPositiveClick(Intent data, int requestCode) {
-        startActivityForResult(data, requestCode);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -159,11 +138,6 @@ public class nuevoProducto_DialogFragment extends DialogFragment implements trae
                             e.printStackTrace();
                         }
                         ponerImagen.setImageURI(selectedImage);
-                         //Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                        /*Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-
-                        // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        ponerImagen.setImageBitmap(bmp);*/
                     }
             }
         }
@@ -183,10 +157,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment implements trae
                     }
                     ponerImagen.setImageURI(selectedImage);
 
-                    //Transformamos la URI de la imagen a inputStream y este a un Bitmap
                     /*Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-
-                    // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
                     ponerImagen.setImageBitmap(bmp);*/
                 }
             }

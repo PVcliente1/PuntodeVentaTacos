@@ -3,10 +3,11 @@ package com.example.ricardosernam.puntodeventa.Productos;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,28 +19,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickCodigo;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClickImagen;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickImagen;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
     private Context context;
     private interfazUnidades_OnClick Interfaz;
-    private interfazUnidades_OnClickCodigo Interfaz2;
-    private interfazUnidades_OnClickImagen Interfaz3;
+    private interfaz_OnClickCodigo Interfaz2;
+    private interfaz_OnClickImagen Interfaz3;
+    private interfaz_OnClick Interfaz4;
+    private interfaz_OnClickElementosProductos Interfaz5;
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfazUnidades_OnClickCodigo Interfaz2, interfazUnidades_OnClickImagen Interfaz3) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
         this.Interfaz2=Interfaz2;
         this.Interfaz3=Interfaz3;
+        this.Interfaz4=Interfaz4;
+        this.Interfaz5=Interfaz5;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
@@ -82,6 +89,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.codigo.setText(itemsProductos.get(position).getCodigo());
         holder.nombreP.setText(itemsProductos.get(position).getNombre());
         holder.precio.setText(itemsProductos.get(position).getPrecio());
+        holder.unidad.setText(itemsProductos.get(position).getUnidad());
         holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
 
         holder.editar.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +106,12 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.aceptarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {////guardamos los cambios realizados
+                        //Interfaz4.onClick(view);
+                        Interfaz5.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
                         holder.unidad.setEnabled(false);
+                        holder.codigo.setEnabled(false);
                         holder.botones.setVisibility(View.GONE);
                         holder.escanear.setVisibility(View.GONE);
                         holder.traerImagen.setVisibility(View.GONE);
