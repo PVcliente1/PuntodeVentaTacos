@@ -143,7 +143,7 @@ public class Productos extends Fragment{
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new nuevoProducto_DialogFragment().show(fm, "nuevoProducto");
+                new nuevoProducto_DialogFragment().show(getFragmentManager(), "nuevoProducto");
             }
         });
        return view;

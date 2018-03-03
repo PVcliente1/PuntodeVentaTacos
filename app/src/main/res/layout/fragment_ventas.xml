@@ -32,21 +32,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
-                android:layout_marginLeft="8dp"
-                android:text="Vendedor" />
-
-            <Spinner
-                android:id="@+id/SpnVendedor"
-                android:layout_width="150dp"
-                android:layout_marginLeft="-60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"/>
-
             <Button
                 android:id="@+id/BtnHistorial"
                 android:layout_width="90dp"

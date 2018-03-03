@@ -3,6 +3,7 @@ package com.example.ricardosernam.puntodeventa.Productos;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
+import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
@@ -31,13 +36,13 @@ import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class nuevoProducto_DialogFragment extends DialogFragment {
+public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogFragment {
     private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
     private String rutaImagen;
     private Uri selectedImage;
-    private FragmentActivity fm=(FragmentActivity) getActivity();
+    private FragmentManager fm;
     private ContentValues values;
     private SQLiteDatabase db;
     @Override
@@ -62,6 +67,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
         values = new ContentValues();
+        fm=getActivity().getFragmentManager();
 
 
 
@@ -81,7 +87,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                     public void onClick(View v, String unidadSeleccionada) {
                         unidad.setText(unidadSeleccionada);
                     }
-                }).show(getFragmentManager(), "Unidades_DialogFragment");
+                }).show(fm, "Unidades_DialogFragment");
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +99,7 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                         startActivityForResult(intent, requestCode);
                     }
                 });
-                dialog.show(getFragmentManager(), "NoticeDialogFragment");
+                dialog.show(fm, "NoticeDialogFragment");
             }
         });
         aceptarM.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +115,14 @@ public class nuevoProducto_DialogFragment extends DialogFragment {
                 db.insertOrThrow("Productos",null, values);
 
                 db.close();
+                Productos frag = new Productos();
+                getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Productos()).commit(); ///cambio de fragment
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
+
             }
         });
         cancelarM.setOnClickListener(new View.OnClickListener() {
