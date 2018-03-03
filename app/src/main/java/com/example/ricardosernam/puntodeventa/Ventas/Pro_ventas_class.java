@@ -14,6 +14,10 @@ public class Pro_ventas_class {  ///clase para obtener productos para cobrar
         this.foto = foto;
         this.unidad = unidad;
     }
+    public Pro_ventas_class(String nombre, String foto) {   ///se manda desde el arrayProductos
+        this.nombre = nombre;
+        this.foto = foto;
+    }
     public Pro_ventas_class(String nombre) {   ///se manda desde el arrayProductos
         this.nombre = nombre;
     }

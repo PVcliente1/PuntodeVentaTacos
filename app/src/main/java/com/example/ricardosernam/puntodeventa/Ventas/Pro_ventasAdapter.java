@@ -1,9 +1,11 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.R;
@@ -26,9 +28,11 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
         public TextView nombreP;
+        public ImageView imagen;
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             nombreP = v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
+            imagen = v.findViewById(R.id.IVimagenProducto);
             v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
                 @Override
                 public void onClick(View view) {
@@ -52,5 +56,6 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
     @Override
     public void onBindViewHolder(Productos_ventasViewHolder holder, int position) {
         holder.nombreP.setText(itemsProductos.get(position).getNombre());
+        holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
     }
 }
