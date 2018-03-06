@@ -99,13 +99,14 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `cantidad` VARCHAR(45),\n" +
                 "  `precio_compra` VARCHAR(45),\n" +
                 "  `idproveedorFK` VARCHAR(45))");                //Llave foranea
+        sqLiteDatabase.execSQL("INSERT INTO Productos(idproducto, nombre) VALUES (1, 'Ejemplo')");
 
         //        "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 
 
 
 
-        //Creación el INDEX para la relación de la tabla de miembros con la tabla de puestos      sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_puestos1_idx` ON Miembros (`idpuesto` ASC)");
+        //Creación el INDEX para la  relación de la tabla de miembros con la tabla de puestos      sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_puestos1_idx` ON Miembros (`idpuesto` ASC)");
 
 
         //Creación el INDEX para la relación de la tabla de miembros con la tabla de turnos    sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_turnos1_idx` ON Miembros(`idturno` ASC)");

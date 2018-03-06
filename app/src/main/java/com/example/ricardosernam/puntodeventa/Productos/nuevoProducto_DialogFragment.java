@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,7 @@ import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -41,6 +43,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
     private String rutaImagen;
+    private Cursor fila;
     private Uri selectedImage;
     private FragmentManager fm;
     private ContentValues values;
@@ -68,8 +71,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         db=admin.getWritableDatabase();
         values = new ContentValues();
         fm=getActivity().getFragmentManager();
-
-
+        fila=db.rawQuery("select nombre from Productos" ,null);
 
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,6 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
             @Override
             public void onClick(View view) {////aceptamos agregar el producto
                  if(validate()){
-                    dismiss();
                     Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
                     values.put("codigo_barras", String.valueOf(codigo.getText()));
                     values.put("nombre", String.valueOf(nombreP.getText()));
@@ -114,12 +115,19 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                     values.put("ruta_imagen", String.valueOf(selectedImage));
                     values.put("unidad", String.valueOf(unidad.getText()));
                     db.insertOrThrow("Productos", null, values);
-
                     db.close();
+
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.LOprincipal, new Productos());
                     ft.addToBackStack(null);
                     ft.commit();
+                     dismiss();
+                     /*if(fila.moveToFirst()) {
+                         //while (fila.moveToNext()) {
+                             //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                         Toast.makeText(getActivity(), "Se guardo"+ fila.getString(0), Toast.LENGTH_SHORT).show();
+                             //}
+                     }*/
                 }
 
             }
