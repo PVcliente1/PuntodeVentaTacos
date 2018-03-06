@@ -104,24 +104,23 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         });
         aceptarM.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                dismiss();
-                Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
-                values.put("codigo_barras", String.valueOf(codigo.getText()));
-                values.put("nombre", String.valueOf(nombreP.getText()));
-                values.put("precio_venta", String.valueOf(precio.getText()));
-                values.put("ruta_imagen", String.valueOf(selectedImage));
-                values.put("unidad", String.valueOf(unidad.getText()));
-                db.insertOrThrow("Productos",null, values);
+            public void onClick(View view) {////aceptamos agregar el producto
+                 if(validate()){
+                    dismiss();
+                    Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
+                    values.put("codigo_barras", String.valueOf(codigo.getText()));
+                    values.put("nombre", String.valueOf(nombreP.getText()));
+                    values.put("precio_venta", String.valueOf(precio.getText()));
+                    values.put("ruta_imagen", String.valueOf(selectedImage));
+                    values.put("unidad", String.valueOf(unidad.getText()));
+                    db.insertOrThrow("Productos", null, values);
 
-                db.close();
-                Productos frag = new Productos();
-                //getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Productos()).commit(); ///cambio de fragment
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.LOprincipal, frag);
-                ft.addToBackStack(null);
-                ft.commit();
+                    db.close();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.LOprincipal, new Productos());
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
 
             }
         });
@@ -134,7 +133,38 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         getDialog().setTitle("Nuevo Producto");
         return rootView;
     }
+    public boolean validate() {  ///validamos que los campos cumplan los requisitos
+        boolean valid = true;
+        String name = nombreP.getText().toString();
+        String unity = unidad.getText().toString();
+        String price = precio.getText().toString();
+        if (name.isEmpty()) {
+            nombreP.setError("Campo obligatorio");
+            valid = false;
+        } else {
+            nombreP.setError(null);
+        }
 
+        if (unity.isEmpty()) {
+            unidad.setError("Campo obligatorio");
+            valid = false;
+        } else {
+            unidad.setError(null);
+        }
+
+        if (price.isEmpty()) {
+            precio.setError("Campo obligatorio");
+            valid = false;
+        }
+        else if(price.length()>7){
+            precio.setError("No puedes exceder 7 dígitos");
+            valid = false;
+        } else{
+            unidad.setError(null);
+        }
+
+        return valid;
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

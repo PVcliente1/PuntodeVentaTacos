@@ -124,14 +124,6 @@ public class Registro_inicial extends Fragment {
         }
 
         }
-
-
-    public void onSignupSuccess() {  ///es correcto
-        registrarse.setEnabled(true);
-        bar.setVisibility(View.VISIBLE);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
-    }
-
     public void onSignupFailed() {  //es incorrecto
         Toast.makeText(getContext(), "Registro fallido", Toast.LENGTH_LONG).show();
 

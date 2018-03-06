@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/ETcodigoNuevo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:enabled="false"
             android:hint="Código (Opcional)" />
         <Button
             android:id="@+id/BtnEscanearNuevo"
@@ -38,6 +40,7 @@
             android:textSize="18dp" />
 
         <EditText
+            android:inputType="textCapSentences"
             android:id="@+id/ETnombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +124,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:hint="Precio" />
+                    android:hint="Precio"
+                    android:inputType="none|number" />
             </LinearLayout>
 
             <LinearLayout

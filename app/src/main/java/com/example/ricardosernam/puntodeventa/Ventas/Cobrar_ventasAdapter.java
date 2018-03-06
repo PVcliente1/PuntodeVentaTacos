@@ -64,6 +64,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.unidad.setText(itemsCobrar.get(position).getUnidad());
         holder.nombreP.setText(itemsCobrar.get(position).getNombre());
         holder.precio.setText(itemsCobrar.get(position).getPrecio());
+        //holder.subtotal.setText(Integer.parseInt(String.valueOf(holder.cantidad.getText()))*Integer.parseInt(String.valueOf(holder.precio)));
         final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
