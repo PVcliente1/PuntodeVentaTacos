@@ -38,9 +38,10 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
     private interfaz_OnClickImagen Interfaz3;
     private interfaz_OnClick Interfaz4;
     private interfaz_OnClickElementosProductos Interfaz5;
+    private interfaz_OnClick Interfaz6;
 
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, interfaz_OnClick Interfaz4) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, interfaz_OnClick Interfaz4, interfaz_OnClick Interfaz6) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
@@ -48,9 +49,10 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         this.Interfaz3=Interfaz3;
         this.Interfaz5=Interfaz5;
         this.Interfaz4=Interfaz4;
+        this.Interfaz6=Interfaz6;
     }
 
-    public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
+    public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardvie
         // Campos respectivos de un item
         public EditText codigo, nombreP, precio, unidad;
         public ImageView imagen;
@@ -124,6 +126,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Interfaz6.onClick(view);
                         holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
@@ -132,6 +135,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                         holder.traerImagen.setVisibility(View.GONE);
                         holder.escanear.setVisibility(View.GONE);
                         holder.botones.setVisibility(View.GONE);
+                        Toast.makeText(context, "Se han cancelado los cambios", Toast.LENGTH_SHORT).show();
                     }
                 });
 

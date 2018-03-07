@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,9 +61,6 @@ public class Productos extends Fragment{
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
-    @SuppressLint("ValidFragment")
-    public Productos(){
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -120,14 +118,14 @@ public class Productos extends Fragment{
         }, new interfaz_OnClickElementosProductos() {
             @Override
             public void onClick(String productos, EditText codigo2, EditText nombre2, ImageView imagen, EditText unidad2, EditText precio2) {///cuando presiona editar
-                producto=productos;
+                producto = productos;
                 ponerImagen = imagen;
                 codigo = codigo2;
                 nombre = nombre2;
                 unidad = unidad2;
                 precio = precio2;
             }
-        }, new interfaz_OnClick() {
+        }, new interfaz_OnClick() { ////cuando  presionamos aceptar cambios
             @Override
             public void onClick(View v) {
                 values.put("codigo_barras", String.valueOf(codigo.getText()));
@@ -138,6 +136,12 @@ public class Productos extends Fragment{
                 Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
                 db.close();
+                refrescar();
+            }
+        }, new interfaz_OnClick() {////cancelamos cambios
+            @Override
+            public void onClick(View v) {
+                refrescar();
             }
         });
         recycler.setAdapter(adapter);
@@ -148,6 +152,12 @@ public class Productos extends Fragment{
             }
         });
        return view;
+    }
+    void refrescar(){   ///se cierra en automatico
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.LOprincipal, new Productos());
+        ft.addToBackStack(null);
+        ft.commit();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
