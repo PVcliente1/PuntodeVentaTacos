@@ -54,7 +54,6 @@ public class Inicio_sesion extends Fragment {
         SQLiteDatabase db=admin.getWritableDatabase();
         usuario=nombreUsuario.getText().toString();
         contraseña=contraseñaUsuario.getText().toString();
-        //Toast.makeText(getContext(), "esta"+ usuario+" y "+contraseña, Toast.LENGTH_SHORT).show();
         fila=db.rawQuery("select nombre, contrasena from Miembros where nombre='"+usuario+"' and contrasena='"+contraseña+"'",null);
         //preguntamos si el cursor tiene algun valor almacenado
 

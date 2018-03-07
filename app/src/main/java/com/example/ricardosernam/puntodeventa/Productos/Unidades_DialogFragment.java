@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -55,7 +56,7 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view2 = inflater.inflate(R.layout.dialog_fragment_unidades, container, false);
-        getDialog().setTitle("Unidades_DialogFragment");
+        getDialog().setTitle("Unidades");
         ////programamos lo botones del dialog
         agregarNuevaUnidad=view2.findViewById(R.id.BtnNuevaUnidad);
         cancelar=view2.findViewById(R.id.BtnCancelar);
@@ -68,8 +69,11 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
 
         fila=db.rawQuery("select nombre_unidad from Unidades" ,null);
 
-        while (fila.moveToNext()){
+        if(fila.moveToFirst()) {///si hay un elemento
             itemsUnidades.add(new Unidades_class(fila.getString(0)));
+            while (fila.moveToNext()){
+                itemsUnidades.add(new Unidades_class(fila.getString(0)));
+            }
         }
         //mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter = new UnidadesAdapter(view2.getContext(), itemsUnidades, new interfazUnidades_OnClick() {
@@ -103,15 +107,19 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
                     Toast.makeText(getActivity(), "Ingresa la unidad a agregar", Toast.LENGTH_LONG).show();
                 }
                 else {///agregamos la nueva unidad
-                    Toast.makeText(getActivity(), "Se ha agregado a Unidades", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Agregado, vuelve a ingresar para visualizarlo", Toast.LENGTH_LONG).show();
                     values.put("nombre_unidad", String.valueOf(capturarNuevaUnidad.getText()));
                     db.insertOrThrow("Unidades",null, values);
-
                     db.close();
                     capturarNuevaUnidad.setText(" ");
+                    refrescar();
                 }
             }
         });
         return view2;
+    }
+    void refrescar(){   ///se cierra en automatico
+        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 }

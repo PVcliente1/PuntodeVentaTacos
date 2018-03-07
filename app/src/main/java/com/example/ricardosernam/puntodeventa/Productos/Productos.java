@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,9 +61,6 @@ public class Productos extends Fragment{
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
-    @SuppressLint("ValidFragment")
-    public Productos(){
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -83,7 +81,8 @@ public class Productos extends Fragment{
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
 
-        if(fila.moveToFirst()) {
+        if(fila.moveToFirst()) {///si hay un elemento
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             while (fila.moveToNext()) {
                 itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             }
@@ -94,7 +93,7 @@ public class Productos extends Fragment{
         recycler.setLayoutManager(lManager);
         adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
             @Override
-            public void onClick(View v, String nombre) {
+            public void onClick(View v, String nombre) {////eliminamos el producto deseado
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
             }
         }, new interfaz_OnClickCodigo() {
@@ -119,14 +118,14 @@ public class Productos extends Fragment{
         }, new interfaz_OnClickElementosProductos() {
             @Override
             public void onClick(String productos, EditText codigo2, EditText nombre2, ImageView imagen, EditText unidad2, EditText precio2) {///cuando presiona editar
-                producto=productos;
+                producto = productos;
                 ponerImagen = imagen;
                 codigo = codigo2;
                 nombre = nombre2;
                 unidad = unidad2;
                 precio = precio2;
             }
-        }, new interfaz_OnClick() {
+        }, new interfaz_OnClick() { ////cuando  presionamos aceptar cambios
             @Override
             public void onClick(View v) {
                 values.put("codigo_barras", String.valueOf(codigo.getText()));
@@ -134,9 +133,15 @@ public class Productos extends Fragment{
                 values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                 values.put("unidad", String.valueOf(unidad.getText()));
                 values.put("precio_venta", String.valueOf(precio.getText()));
-
+                Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
                 db.close();
+                refrescar();
+            }
+        }, new interfaz_OnClick() {////cancelamos cambios
+            @Override
+            public void onClick(View v) {
+                refrescar();
             }
         });
         recycler.setAdapter(adapter);
@@ -147,6 +152,12 @@ public class Productos extends Fragment{
             }
         });
        return view;
+    }
+    void refrescar(){   ///se cierra en automatico
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.LOprincipal, new Productos());
+        ft.addToBackStack(null);
+        ft.commit();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

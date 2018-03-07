@@ -7,9 +7,11 @@ import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +30,7 @@ import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -41,6 +44,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
     private String rutaImagen;
+    private Cursor fila;
     private Uri selectedImage;
     private FragmentManager fm;
     private ContentValues values;
@@ -68,8 +72,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         db=admin.getWritableDatabase();
         values = new ContentValues();
         fm=getActivity().getFragmentManager();
-
-
+        fila=db.rawQuery("select nombre from Productos" ,null);
 
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,24 +107,20 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         });
         aceptarM.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                dismiss();
-                Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
-                values.put("codigo_barras", String.valueOf(codigo.getText()));
-                values.put("nombre", String.valueOf(nombreP.getText()));
-                values.put("precio_venta", String.valueOf(precio.getText()));
-                values.put("ruta_imagen", String.valueOf(selectedImage));
-                values.put("unidad", String.valueOf(unidad.getText()));
-                db.insertOrThrow("Productos",null, values);
-
-                db.close();
-                Productos frag = new Productos();
-                //getFragmentManager().beginTransaction().replace(R.id.LOprincipal, new Productos()).commit(); ///cambio de fragment
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.LOprincipal, frag);
-                ft.addToBackStack(null);
-                ft.commit();
+            public void onClick(View view) {////aceptamos agregar el producto
+                 if(validate()){
+                    Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
+                    values.put("codigo_barras", String.valueOf(codigo.getText()));
+                    values.put("nombre", String.valueOf(nombreP.getText()));
+                    values.put("precio_venta", String.valueOf(precio.getText()));
+                     values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
+                    values.put("unidad", String.valueOf(unidad.getText()));
+                    db.insertOrThrow("Productos", null, values);
+                    db.close();
+                    ////refrescamos nuestro recylcer
+                    refrescar();
+                     dismiss();
+                }
 
             }
         });
@@ -134,7 +133,44 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         getDialog().setTitle("Nuevo Producto");
         return rootView;
     }
+    void refrescar(){   ///se cierra en automatico
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.LOprincipal, new Productos());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+    public boolean validate() {  ///validamos que los campos cumplan los requisitos
+        boolean valid = true;
+        String name = nombreP.getText().toString();
+        String unity = unidad.getText().toString();
+        String price = precio.getText().toString();
+        if (name.isEmpty()) {
+            nombreP.setError("Campo obligatorio");
+            valid = false;
+        } else {
+            nombreP.setError(null);
+        }
 
+        if (unity.isEmpty()) {
+            unidad.setError("Campo obligatorio");
+            valid = false;
+        } else {
+            unidad.setError(null);
+        }
+
+        if (price.isEmpty()) {
+            precio.setError("Campo obligatorio");
+            valid = false;
+        }
+        else if(price.length()>7){
+            precio.setError("No puedes exceder 7 dígitos");
+            valid = false;
+        } else{
+            unidad.setError(null);
+        }
+
+        return valid;
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
