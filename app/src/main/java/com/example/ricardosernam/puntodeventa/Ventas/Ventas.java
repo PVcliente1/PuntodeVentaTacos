@@ -65,10 +65,11 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
 
         fila=db.rawQuery("select nombre, ruta_imagen from Productos" ,null);
 
-        if(fila.moveToFirst()) {
-            while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1)));
-            }
+        if(fila.moveToFirst()) {///si hay un elemento
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1)));
+                while (fila.moveToNext()) {
+                    itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1)));
+                }
         }
         pro =new Pro_DialogFragment(itemsProductos, itemsCobrar);
 

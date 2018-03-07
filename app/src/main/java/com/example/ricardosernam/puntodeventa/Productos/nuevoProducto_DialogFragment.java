@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -112,22 +113,13 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                     values.put("codigo_barras", String.valueOf(codigo.getText()));
                     values.put("nombre", String.valueOf(nombreP.getText()));
                     values.put("precio_venta", String.valueOf(precio.getText()));
-                    values.put("ruta_imagen", String.valueOf(selectedImage));
+                     values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                     values.put("unidad", String.valueOf(unidad.getText()));
                     db.insertOrThrow("Productos", null, values);
                     db.close();
-
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.LOprincipal, new Productos());
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    ////refrescamos nuestro recylcer
+                    refrescar();
                      dismiss();
-                     /*if(fila.moveToFirst()) {
-                         //while (fila.moveToNext()) {
-                             //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
-                         Toast.makeText(getActivity(), "Se guardo"+ fila.getString(0), Toast.LENGTH_SHORT).show();
-                             //}
-                     }*/
                 }
 
             }
@@ -140,6 +132,12 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         });
         getDialog().setTitle("Nuevo Producto");
         return rootView;
+    }
+    void refrescar(){   ///se cierra en automatico
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.LOprincipal, new Productos());
+        ft.addToBackStack(null);
+        ft.commit();
     }
     public boolean validate() {  ///validamos que los campos cumplan los requisitos
         boolean valid = true;

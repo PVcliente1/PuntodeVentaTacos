@@ -83,7 +83,8 @@ public class Productos extends Fragment{
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
 
-        if(fila.moveToFirst()) {
+        if(fila.moveToFirst()) {///si hay un elemento
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             while (fila.moveToNext()) {
                 itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             }
@@ -94,7 +95,7 @@ public class Productos extends Fragment{
         recycler.setLayoutManager(lManager);
         adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
             @Override
-            public void onClick(View v, String nombre) {
+            public void onClick(View v, String nombre) {////eliminamos el producto deseado
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
             }
         }, new interfaz_OnClickCodigo() {
@@ -134,7 +135,7 @@ public class Productos extends Fragment{
                 values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                 values.put("unidad", String.valueOf(unidad.getText()));
                 values.put("precio_venta", String.valueOf(precio.getText()));
-
+                Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
                 db.close();
             }

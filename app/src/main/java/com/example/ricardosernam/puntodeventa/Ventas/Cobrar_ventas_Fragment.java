@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
 import com.example.ricardosernam.puntodeventa.R;
@@ -39,7 +40,7 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
     private RecyclerView.LayoutManager lManager;
     private RadioButton pagarAhora,vender;
     private RadioGroup opcionVentas, opcionCobrar;
-    private LinearLayout pagar, fechaHora, tipoDescuento;
+    private LinearLayout pagar, fechaHora, tipoDescuento, cobro;
     private Button eliminarCompra,aceptarCompra;
     private EditText cliente, descripcion, hora, fecha;
     interfaz_historial Interface_historial;
@@ -71,6 +72,7 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
         View view2 = inflater.inflate(R.layout.recyclercobrar, container, false);
         pagarAhora = view2.findViewById(R.id.RBpagarAhora);
         fechaHora=view2.findViewById(R.id.LOedittext);
+        cobro=view2.findViewById(R.id.LLcobro);
         vender=view2.findViewById(R.id.RBvender);
         hora=view2.findViewById(R.id.EThora);
         fecha=view2.findViewById(R.id.ETfecha);
@@ -152,7 +154,11 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
                         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();
-                        //aceptar();
+                        for(int i = 0; i<itemsCobrar.size(); i++ ){
+                            itemsCobrar.remove(i);
+                            adapter.notifyItemRemoved(i);
+                            adapter.notifyItemRangeChanged(i,itemsCobrar.size());
+                        }
                     }
                 });
                 cancelarCompra.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

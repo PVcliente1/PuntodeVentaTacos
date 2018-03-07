@@ -91,8 +91,9 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.nombreP.setText(itemsProductos.get(position).getNombre());
         holder.precio.setText(itemsProductos.get(position).getPrecio());
         holder.unidad.setText(itemsProductos.get(position).getUnidad());
-        holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
-
+        //if(itemsProductos.get(position).getFoto()!=null){
+            holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
+        //}
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +139,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         });
         holder.eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View view) {
+            public void onClick(final View view) {////eliminamos un producto
                 AlertDialog.Builder eliminarProducto = new AlertDialog.Builder(context);
                 eliminarProducto .setTitle("Cuidado");
                 eliminarProducto .setMessage("¿Seguro que quieres eliminar este producto?");

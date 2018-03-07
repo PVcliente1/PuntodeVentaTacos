@@ -61,11 +61,11 @@
             <EditText
                 android:id="@+id/ETcodigo"
                 android:layout_width="wrap_content"
-                android:enabled="false"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:hint="Código" />
+                android:enabled="false"
+                android:hint="Sin código" />
             <Button
                 android:id="@+id/BtnEscanear"
                 android:visibility="gone"

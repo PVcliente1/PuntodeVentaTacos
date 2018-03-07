@@ -69,8 +69,11 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
 
         fila=db.rawQuery("select nombre_unidad from Unidades" ,null);
 
-        while (fila.moveToNext()){
+        if(fila.moveToFirst()) {///si hay un elemento
             itemsUnidades.add(new Unidades_class(fila.getString(0)));
+            while (fila.moveToNext()){
+                itemsUnidades.add(new Unidades_class(fila.getString(0)));
+            }
         }
         //mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
         adapter = new UnidadesAdapter(view2.getContext(), itemsUnidades, new interfazUnidades_OnClick() {

@@ -2,6 +2,7 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +14,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,6 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         this.itemsCobrar=itemsCobrar;
         this.context=context;
     }
-
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder {    ////clase donde van los elementos del cardview
         public TextView nombreP, tipoD, unidad;
         public EditText cantidad, precio;
@@ -68,17 +72,17 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {  ///eliminamos un articulo comprado
                 itemsCobrar.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsCobrar.size());
-                if(itemsCobrar.isEmpty()){
-                    manager.beginTransaction().remove(manager.findFragmentById(R.id.LOcobrar)).commit();
+                if(itemsCobrar.isEmpty()){////ocultamos por completo el fragment donde se agregan
+                    LinearLayout cobro=((Activity) context).findViewById(R.id.LLcobro);
+                    cobro.setVisibility(View.GONE);
                 }
             }
         });
-        //if(holder.descuento.isChecked()) {
-            holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                    if(b) {
