@@ -65,7 +65,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idpuesto` INTEGER NOT NULL, " +
                 "  `foto` text, " +
                 "  `apellido` text)");
-
+        sqLiteDatabase.execSQL("INSERT INTO Miembros(idmiembro, nombre,telefono,correo,contrasena,idturno,idpuesto,foto,apellido) "+
+                        "values (1,'Seleccionar',' ',' ',' ',1,1,' ',' ')");
 
         //        " FOREIGN KEY (idturno) REFERENCES Turnos(idturno), " +
         //        " FOREIGN KEY (idpuesto)REFERENCES Puestos(idpuesto))");

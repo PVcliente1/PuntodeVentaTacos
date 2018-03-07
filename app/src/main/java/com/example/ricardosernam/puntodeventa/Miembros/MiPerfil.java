@@ -53,7 +53,7 @@ public class MiPerfil extends Fragment {
         db=admin.getWritableDatabase();
         values = new ContentValues();
 
-        fila=db.rawQuery("select nombre, apellido, telefono,correo from Miembros" ,null);
+        fila=db.rawQuery("select nombre, apellido, telefono,correo from Miembros where idmiembro=2" ,null);
 
         if(fila.moveToFirst()) {
             //Toast.makeText(getContext(),fila.getString(1),Toast.LENGTH_LONG).show();
@@ -65,20 +65,6 @@ public class MiPerfil extends Fragment {
                correo.setText(fila.getString(3));
 
         }
-
-/*
-        values.put("codigo_barras", String.valueOf(codigo.getText()));
-        values.put("nombre", String.valueOf(nombre.getText()));
-        values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
-        values.put("unidad", String.valueOf(unidad.getText()));
-        values.put("precio_venta", String.valueOf(precio.getText()));
-
-        db.update("Productos", values, "nombre='" + producto + "'", null);
-        db.close();
-*/
-
-
-
         return view;
     }
 }

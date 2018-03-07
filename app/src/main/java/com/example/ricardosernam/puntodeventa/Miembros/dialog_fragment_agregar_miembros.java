@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
+import com.example.ricardosernam.puntodeventa.Compras.Compras;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
@@ -39,6 +42,8 @@ public class dialog_fragment_agregar_miembros extends DialogFragment {
     String[] turnos;
     String puesto;
     String turno;
+    int puestoid;
+    int turnoid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +99,13 @@ public class dialog_fragment_agregar_miembros extends DialogFragment {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alta("Miembros");
                 Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+                Miembros frag = new Miembros();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
                 dismiss();
             }
         });
@@ -158,33 +169,33 @@ public class dialog_fragment_agregar_miembros extends DialogFragment {
     {
         BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
-
-
-        /*
-        idmiembro INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "  `nombre` text, " +
-                " `telefono` text, " +
-                "  `correo` text, " +
-                "  `contrasena` text, " +
-                "  `idturno` INTEGER NOT NULL, " +
-                "  `idpuesto` INTEGER NOT NULL, " +
-                "  `foto` text, " +
-                "  `apellido` text)");
-
-
-         */
         //nuevo registro
         ContentValues nuevoRegistro = new ContentValues();
         puesto=SPpuestos.getSelectedItem().toString();
         turno=SPturnos.getSelectedItem().toString();
+        if (puesto=="Administrador"){
+            puestoid=1;
+        }else if (puesto=="Supervisor"){
+            puestoid=2;
+        }else if(puesto=="Vendedor"){
+            puestoid=3;
+        }
+        turno=SPturnos.getSelectedItem().toString();
+
+        if (turno=="1"){
+            turnoid=1;
+        }else if (turno=="2"){
+            turnoid=2;
+        };
+
         //agregar info al registro
         nuevoRegistro.put("nombre",EtNombre.getText().toString());
         nuevoRegistro.put("apellido",EtApellido.getText().toString());
         nuevoRegistro.put("telefono",EtTelefono.getText().toString());
         nuevoRegistro.put("correo", ETcorreo.getText().toString());
         nuevoRegistro.put("contrasena", ETcontraseñaAdministrador.getText().toString());
-        nuevoRegistro.put("idturno", turno);
-        nuevoRegistro.put("idpuesto", puesto);
+        nuevoRegistro.put("idturno", turnoid);
+        nuevoRegistro.put("idpuesto", puestoid);
         nuevoRegistro.put("foto", String.valueOf(selectedImage));
 
         //insertar el nuevo registro
@@ -192,6 +203,17 @@ public class dialog_fragment_agregar_miembros extends DialogFragment {
 
         //cerrar la base de datos
         db.close();
+        Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+
+        //todo este desmadre es para que se refresque xD
+        Compras frag = new Compras();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        //ft.replace(R.id.LOprincipal, frag);
+        ft.addToBackStack(null);
+        ft.commit();
+
+        //cerrar el dialog
+        dismiss();
     }
 
 }
