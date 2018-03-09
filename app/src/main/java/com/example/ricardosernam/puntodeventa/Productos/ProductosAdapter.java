@@ -2,6 +2,7 @@ package com.example.ricardosernam.puntodeventa.Productos;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,9 +23,11 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickImagen;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 
@@ -33,22 +36,24 @@ import java.util.ArrayList;
 public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
     private Context context;
+    private android.support.v4.app.Fragment fragment;
     private interfazUnidades_OnClick Interfaz;
     private interfaz_OnClickCodigo Interfaz2;
     private interfaz_OnClickImagen Interfaz3;
-    private interfaz_OnClick Interfaz4;
+    private actualizado actualizarModificación;
     private interfaz_OnClickElementosProductos Interfaz5;
     private interfaz_OnClick Interfaz6;
 
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, interfaz_OnClick Interfaz4, interfaz_OnClick Interfaz6) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(android.support.v4.app.Fragment fragment, Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, actualizado actualizarModificación, interfaz_OnClick Interfaz6) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
+        this.fragment=fragment;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
         this.Interfaz2=Interfaz2;
         this.Interfaz3=Interfaz3;
         this.Interfaz5=Interfaz5;
-        this.Interfaz4=Interfaz4;
+        this.actualizarModificación=actualizarModificación;
         this.Interfaz6=Interfaz6;
     }
 
@@ -58,6 +63,8 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         public ImageView imagen;
         public Button editar, eliminar, aceptarM, cancelarM, traerImagen, escanear;
         public LinearLayout botones;
+        public actualizado Interfaz10;
+
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             codigo = v.findViewById(R.id.ETcodigo);  ////Textview donde se coloca el nombre del producto
@@ -72,6 +79,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
             escanear=v.findViewById(R.id.BtnEscanear);
             botones=v.findViewById(R.id.LObotones);
             imagen=v.findViewById(R.id.IVimagenProducto);
+            Interfaz10=(actualizado) fragment;
         }
     }
     @Override
@@ -111,7 +119,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.aceptarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {////guardamos los cambios realizados
-                        Interfaz4.onClick(view);
+                        actualizarModificación.actualizar(position, (String.valueOf(holder.nombreP.getText())));
                         holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
@@ -120,7 +128,6 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                         holder.botones.setVisibility(View.GONE);
                         holder.escanear.setVisibility(View.GONE);
                         holder.traerImagen.setVisibility(View.GONE);
-                        Toast.makeText(context, "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                     }
                 });
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {

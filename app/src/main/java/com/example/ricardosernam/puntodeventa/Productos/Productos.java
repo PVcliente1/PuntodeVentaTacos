@@ -31,10 +31,12 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickImagen;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
@@ -53,7 +55,7 @@ public class Productos extends Fragment implements agregado {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila, ultimaFila;
+    private Cursor fila, ultimaFila, filaActualizar;
     private String rutaImagen;
     private Uri selectedImage;
     private SQLiteDatabase db;
@@ -62,19 +64,11 @@ public class Productos extends Fragment implements agregado {
     private ImageView ponerImagen;
     private android.app.FragmentManager fm;
     private EditText codigo, nombre, unidad, precio;
-    private String producto;
-    private View view;
-    //private LayoutInflater inflater=getLayoutInflater();
-    //private ViewGroup container= (ViewGroup) getView();
+    private String producto, producto2;
+
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
-    /*@Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //reciclador(getView());
-        Toast.makeText(getContext(), "Entre a onCreate", Toast.LENGTH_SHORT).show();
-    }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -105,7 +99,7 @@ public class Productos extends Fragment implements agregado {
        recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
+        adapter = new ProductosAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
             @Override
             public void onClick(View v, String nombre) {////eliminamos el producto deseado
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
@@ -139,9 +133,9 @@ public class Productos extends Fragment implements agregado {
                 unidad = unidad2;
                 precio = precio2;
             }
-        }, new interfaz_OnClick() { ////cuando  presionamos aceptar cambios
+        }, new actualizado () { ////cuando  presionamos aceptar cambios
             @Override
-            public void onClick(View v) {
+            public void actualizar(int position, String producto) {
                 values.put("codigo_barras", String.valueOf(codigo.getText()));
                 values.put("nombre", String.valueOf(nombre.getText()));
                 values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
@@ -149,10 +143,12 @@ public class Productos extends Fragment implements agregado {
                 values.put("precio_venta", String.valueOf(precio.getText()));
                 Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
-                //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
-                //adapter.notifyDataSetChanged();
-                db.close();
-                //refrescar();  ////sino refresco me tira error cuando quiero agregar otro  ///refrescando y regresando se encima
+                //int i=position;
+                filaActualizar=db.rawQuery("select nombre, codigo_barras, precio_venta, ruta_imagen, unidad from Productos where nombre='"+producto+"'",null);
+                if(filaActualizar.moveToFirst()) {
+                    itemsProductos.set(position, new Pro_ventas_class(filaActualizar.getString(0), filaActualizar.getString(1), filaActualizar.getString(2), filaActualizar.getString(3), filaActualizar.getString(4)));
+                    adapter.notifyDataSetChanged();
+                }
             }
         }, new interfaz_OnClick() {////cancelamos cambios
             @Override
@@ -191,7 +187,7 @@ public class Productos extends Fragment implements agregado {
             if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data.getData();////data.get data es como mi file
                 assert selectedImage != null;
-                rutaImagen=selectedImage.getPath();///ruta de la imagen
+                rutaImagen = selectedImage.getPath();///ruta de la imagen
 
                 if (rutaImagen != null) {
                     InputStream imageStream = null;
@@ -212,11 +208,11 @@ public class Productos extends Fragment implements agregado {
             }
         }
         //2 Captura de foto
-        if(requestCode == 2) {
+        if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data.getData();////data.get data es como mi file
                 assert selectedImage != null;
-                rutaImagen=selectedImage.getPath();///ruta de la imagen
+                rutaImagen = selectedImage.getPath();///ruta de la imagen
 
                 if (rutaImagen != null) {
                     InputStream imageStream = null;
