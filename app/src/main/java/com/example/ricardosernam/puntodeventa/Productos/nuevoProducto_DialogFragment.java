@@ -1,10 +1,13 @@
 package com.example.ricardosernam.puntodeventa.Productos;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,9 +18,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +37,7 @@ import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -39,25 +46,31 @@ import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+@SuppressLint("ValidFragment")
 public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogFragment {
     private EditText nombreP, precio, codigo, unidad;
     private Button aceptarM, cancelarM, imagen, escanear;
     private ImageView ponerImagen;
     private String rutaImagen;
-    private Cursor fila;
     private Uri selectedImage;
     private FragmentManager fm;
     private ContentValues values;
     private SQLiteDatabase db;
+    private agregado Interfaz;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            Interfaz = (agregado) getParentFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling fragment must implement Callback interface");
+        }
     }
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView=inflater.inflate(R.layout.dialog_fragment_nuevo_producto,container);
-
         nombreP = rootView.findViewById(R.id.ETnombre);  ////Textview donde se coloca el nombre del producto
         precio=rootView.findViewById(R.id.ETprecio);
         codigo=rootView.findViewById(R.id.ETcodigoNuevo);
@@ -72,7 +85,6 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         db=admin.getWritableDatabase();
         values = new ContentValues();
         fm=getActivity().getFragmentManager();
-        fila=db.rawQuery("select nombre from Productos" ,null);
 
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +96,6 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         unidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new Unidades_DialogFragment().show(getFragmentManager(), "Unidades_DialogFragment");
                 new Unidades_DialogFragment(new interfazUnidades_OnClick() {
                     @Override
                     public void onClick(View v, String unidadSeleccionada) {
@@ -108,18 +119,19 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         aceptarM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {////aceptamos agregar el producto
-                 if(validate()){
+                if(validate()){
                     Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
                     values.put("codigo_barras", String.valueOf(codigo.getText()));
                     values.put("nombre", String.valueOf(nombreP.getText()));
                     values.put("precio_venta", String.valueOf(precio.getText()));
-                     values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
+                    values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                     values.put("unidad", String.valueOf(unidad.getText()));
                     db.insertOrThrow("Productos", null, values);
                     db.close();
-                    ////refrescamos nuestro recylcer
-                    refrescar();
-                     dismiss();
+                    dismiss();
+                    if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el recyclerview
+                        Interfaz.agregar();
+                    }
                 }
 
             }

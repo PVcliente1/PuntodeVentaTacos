@@ -125,7 +125,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 });
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View view) {  ////cancelamos los cambios realizados
                         Interfaz6.onClick(view);
                         holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);

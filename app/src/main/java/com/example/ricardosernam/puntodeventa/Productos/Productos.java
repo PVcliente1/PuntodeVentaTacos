@@ -9,10 +9,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
@@ -39,16 +43,17 @@ import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Productos extends Fragment{
+public class Productos extends Fragment implements agregado {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila;
+    private Cursor fila, ultimaFila;
     private String rutaImagen;
     private Uri selectedImage;
     private SQLiteDatabase db;
@@ -58,14 +63,23 @@ public class Productos extends Fragment{
     private android.app.FragmentManager fm;
     private EditText codigo, nombre, unidad, precio;
     private String producto;
+    private View view;
+    //private LayoutInflater inflater=getLayoutInflater();
+    //private ViewGroup container= (ViewGroup) getView();
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
 
+    /*@Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //reciclador(getView());
+        Toast.makeText(getContext(), "Entre a onCreate", Toast.LENGTH_SHORT).show();
+    }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
        View view=inflater.inflate(R.layout.fragment_productos, container, false);
-
+        //Toast.makeText(getContext(), "Estoy en onCreate", Toast.LENGTH_SHORT).show();
         nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
         fm=getActivity().getFragmentManager();
 
@@ -88,7 +102,7 @@ public class Productos extends Fragment{
             }
         }
 
-        recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
+       recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
         adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
@@ -103,7 +117,7 @@ public class Productos extends Fragment{
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
                 startActivityForResult(intent, 3);//inicializar el activity con RequestCode3
             }
-        }, new interfaz_OnClickImagen() {
+        }, new interfaz_OnClickImagen() { ////modificar imagen
             @Override
             public void onClick(View v, ImageView imagen) {
                 ponerImagen = imagen;
@@ -135,8 +149,10 @@ public class Productos extends Fragment{
                 values.put("precio_venta", String.valueOf(precio.getText()));
                 Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
+                //itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                //adapter.notifyDataSetChanged();
                 db.close();
-                refrescar();
+                //refrescar();  ////sino refresco me tira error cuando quiero agregar otro  ///refrescando y regresando se encima
             }
         }, new interfaz_OnClick() {////cancelamos cambios
             @Override
@@ -147,8 +163,8 @@ public class Productos extends Fragment{
         recycler.setAdapter(adapter);
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                new nuevoProducto_DialogFragment().show(getFragmentManager(), "nuevoProducto");
+            public void onClick(View view) {////para agregar un nuevo producto
+                new nuevoProducto_DialogFragment().show(getChildFragmentManager(), "nuevoProducto");
             }
         });
        return view;
@@ -159,10 +175,17 @@ public class Productos extends Fragment{
         ft.addToBackStack(null);
         ft.commit();
     }
-    @Override
+    @Override  ////interfaz  para actualizar mi recyclerview
+    public void agregar() {
+        ultimaFila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos",null);
+        ultimaFila.moveToLast();
+        itemsProductos.add(new Pro_ventas_class(ultimaFila.getString(0), ultimaFila.getString(1), ultimaFila.getString(2), ultimaFila.getString(3), ultimaFila.getString(4)));;
+        adapter.notifyDataSetChanged();
+    }
+    @Override  ///acciones de camara
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ////1 para entrar a galeria y tomar una foto
+        ////1 para entrar a galeria
         if (requestCode == 1) {
             //Uri selectedImage;///uri es la ruta
             if (resultCode == Activity.RESULT_OK) {
@@ -179,12 +202,11 @@ public class Productos extends Fragment{
                     }
                     //ponerImagen.setImageURI(selectedImage);
                     Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-                    ponerImagen.setImageBitmap(bmp);
 
                     //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
-                   // bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
+                    //bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    ponerImagen.setImageBitmap(bmp);
                     //String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bmp, "Title", null);
                 }
             }
@@ -204,7 +226,12 @@ public class Productos extends Fragment{
                         e.printStackTrace();
                     }
                     //ponerImagen.setImageURI(selectedImage);
-                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);////obtenemos el bitmap
+
+                    //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                    //bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
                     ponerImagen.setImageBitmap(bmp);
                 }
             }
@@ -214,6 +241,5 @@ public class Productos extends Fragment{
             //obtener resultados
             codigo.setText(data.getStringExtra("BARCODE"));
         }
-
     }
 }

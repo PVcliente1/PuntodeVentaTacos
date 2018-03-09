@@ -40,11 +40,10 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
     public Ventas(ArrayList tipo) {
         this.itemsHistorial=tipo;   /////viene del mainActivity (Mediante Interface)
     }
-
     @SuppressLint("ValidFragment")
     public Ventas() {
-    }
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
@@ -110,7 +109,6 @@ public class Ventas extends Fragment{     /////Fragment de categoria ventas
                 itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1), fila2.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
                 fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout frament por el del recycler de cobrar
             }
-            //itemsCobrar.add(new Cobrar_ventas_class(data.getStringExtra("BARCODE")));//obtenemos el cardview seleccionado y lo agregamos a items
         }
     }
 }

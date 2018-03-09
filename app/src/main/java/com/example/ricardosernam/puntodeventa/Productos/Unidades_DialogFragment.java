@@ -37,7 +37,7 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila;
+    private Cursor fila, ultimaFila;
     private Button agregarNuevaUnidad, cancelar;
     private EditText capturarNuevaUnidad;
     private interfazUnidades_OnClick Interfaz;
@@ -107,19 +107,18 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
                     Toast.makeText(getActivity(), "Ingresa la unidad a agregar", Toast.LENGTH_LONG).show();
                 }
                 else {///agregamos la nueva unidad
-                    Toast.makeText(getActivity(), "Agregado, vuelve a ingresar para visualizarlo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Se ha agregado la nueva unidad", Toast.LENGTH_LONG).show();
                     values.put("nombre_unidad", String.valueOf(capturarNuevaUnidad.getText()));
                     db.insertOrThrow("Unidades",null, values);
-                    db.close();
                     capturarNuevaUnidad.setText(" ");
-                    refrescar();
+                    ultimaFila=db.rawQuery("select nombre_unidad from Unidades" ,null);//aqui esta el error
+                    ultimaFila.moveToLast();
+                    itemsUnidades.add(new Unidades_class(ultimaFila.getString(0)));
+                    adapter.notifyDataSetChanged();
+                    db.close();
                 }
             }
         });
         return view2;
-    }
-    void refrescar(){   ///se cierra en automatico
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
     }
 }
