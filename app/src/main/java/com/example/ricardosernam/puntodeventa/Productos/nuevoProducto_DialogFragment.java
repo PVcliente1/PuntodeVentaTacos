@@ -123,7 +123,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                     Toast.makeText(getActivity(), "Se han guardado el producto", Toast.LENGTH_SHORT).show();
                     values.put("codigo_barras", String.valueOf(codigo.getText()));
                     values.put("nombre", String.valueOf(nombreP.getText()));
-                    values.put("precio_venta", String.valueOf(precio.getText()));
+                    values.put("precio_venta", String.valueOf(precio.getText())); //
                     values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                     values.put("unidad", String.valueOf(unidad.getText()));
                     db.insertOrThrow("Productos", null, values);
@@ -144,12 +144,6 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         });
         getDialog().setTitle("Nuevo Producto");
         return rootView;
-    }
-    void refrescar(){   ///se cierra en automatico
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.LOprincipal, new Productos());
-        ft.addToBackStack(null);
-        ft.commit();
     }
     public boolean validate() {  ///validamos que los campos cumplan los requisitos
         boolean valid = true;

@@ -64,7 +64,7 @@ public class Productos extends Fragment implements agregado {
     private ImageView ponerImagen;
     private android.app.FragmentManager fm;
     private EditText codigo, nombre, unidad, precio;
-    private String producto, producto2;
+    private String producto;
 
 
     private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos///
@@ -73,7 +73,6 @@ public class Productos extends Fragment implements agregado {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
        View view=inflater.inflate(R.layout.fragment_productos, container, false);
-        //Toast.makeText(getContext(), "Estoy en onCreate", Toast.LENGTH_SHORT).show();
         nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
         fm=getActivity().getFragmentManager();
 
@@ -99,7 +98,7 @@ public class Productos extends Fragment implements agregado {
        recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new ProductosAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
+        adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
             @Override
             public void onClick(View v, String nombre) {////eliminamos el producto deseado
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
@@ -135,7 +134,7 @@ public class Productos extends Fragment implements agregado {
             }
         }, new actualizado () { ////cuando  presionamos aceptar cambios
             @Override
-            public void actualizar(int position, String producto) {
+            public void actualizar(int position, String productos) {
                 values.put("codigo_barras", String.valueOf(codigo.getText()));
                 values.put("nombre", String.valueOf(nombre.getText()));
                 values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
@@ -143,8 +142,7 @@ public class Productos extends Fragment implements agregado {
                 values.put("precio_venta", String.valueOf(precio.getText()));
                 Toast.makeText(getContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
                 db.update("Productos", values, "nombre='" + producto + "'", null);
-                //int i=position;
-                filaActualizar=db.rawQuery("select nombre, codigo_barras, precio_venta, ruta_imagen, unidad from Productos where nombre='"+producto+"'",null);
+                filaActualizar=db.rawQuery("select nombre, codigo_barras, precio_venta, ruta_imagen, unidad from Productos where nombre='"+productos+"'",null);
                 if(filaActualizar.moveToFirst()) {
                     itemsProductos.set(position, new Pro_ventas_class(filaActualizar.getString(0), filaActualizar.getString(1), filaActualizar.getString(2), filaActualizar.getString(3), filaActualizar.getString(4)));
                     adapter.notifyDataSetChanged();
@@ -152,8 +150,15 @@ public class Productos extends Fragment implements agregado {
             }
         }, new interfaz_OnClick() {////cancelamos cambios
             @Override
-            public void onClick(View v) {
-                refrescar();
+            public void onClick(View v) {   ////vaciamos el array y lo volvemos a llenar porque se escribe
+                itemsProductos.removeAll(itemsProductos);
+                if(fila.moveToFirst()) {///si hay un elemento
+                    itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                    while (fila.moveToNext()) {
+                        itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
         });
         recycler.setAdapter(adapter);
@@ -164,12 +169,6 @@ public class Productos extends Fragment implements agregado {
             }
         });
        return view;
-    }
-    void refrescar(){   ///se cierra en automatico
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.LOprincipal, new Productos());
-        ft.addToBackStack(null);
-        ft.commit();
     }
     @Override  ////interfaz  para actualizar mi recyclerview
     public void agregar() {

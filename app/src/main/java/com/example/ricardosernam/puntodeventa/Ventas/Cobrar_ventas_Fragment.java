@@ -154,11 +154,12 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
                         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();
-                        for(int i = 0; i<itemsCobrar.size(); i++ ){
+                        /*for(int i = 0; i<itemsCobrar.size(); i++ ){
                             itemsCobrar.remove(i);
                             adapter.notifyItemRemoved(i);
                             adapter.notifyItemRangeChanged(i,itemsCobrar.size());
-                        }
+                        }*/
+                        itemsCobrar.removeAll(itemsCobrar);
                     }
                 });
                 cancelarCompra.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

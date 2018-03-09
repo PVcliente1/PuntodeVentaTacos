@@ -36,25 +36,23 @@ import java.util.ArrayList;
 public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
     private Context context;
-    private android.support.v4.app.Fragment fragment;
     private interfazUnidades_OnClick Interfaz;
     private interfaz_OnClickCodigo Interfaz2;
     private interfaz_OnClickImagen Interfaz3;
     private actualizado actualizarModificación;
     private interfaz_OnClickElementosProductos Interfaz5;
-    private interfaz_OnClick Interfaz6;
+    private interfaz_OnClick aceptarModificacion;
 
 
-    public ProductosAdapter(android.support.v4.app.Fragment fragment, Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, actualizado actualizarModificación, interfaz_OnClick Interfaz6) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, actualizado actualizarModificación, interfaz_OnClick aceptarModificacion) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
-        this.fragment=fragment;
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
         this.Interfaz2=Interfaz2;
         this.Interfaz3=Interfaz3;
         this.Interfaz5=Interfaz5;
         this.actualizarModificación=actualizarModificación;
-        this.Interfaz6=Interfaz6;
+        this.aceptarModificacion=aceptarModificacion;
     }
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardvie
@@ -63,7 +61,6 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         public ImageView imagen;
         public Button editar, eliminar, aceptarM, cancelarM, traerImagen, escanear;
         public LinearLayout botones;
-        public actualizado Interfaz10;
 
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
@@ -79,7 +76,6 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
             escanear=v.findViewById(R.id.BtnEscanear);
             botones=v.findViewById(R.id.LObotones);
             imagen=v.findViewById(R.id.IVimagenProducto);
-            Interfaz10=(actualizado) fragment;
         }
     }
     @Override
@@ -133,7 +129,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {  ////cancelamos los cambios realizados
-                        Interfaz6.onClick(view);
+                        aceptarModificacion.onClick(view);
                         holder.editar.setEnabled(true);
                         holder.nombreP.setEnabled(false);
                         holder.precio.setEnabled(false);
