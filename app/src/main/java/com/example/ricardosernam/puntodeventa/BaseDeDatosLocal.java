@@ -65,7 +65,8 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idpuesto` INTEGER NOT NULL, " +
                 "  `foto` text, " +
                 "  `apellido` text)");
-
+        sqLiteDatabase.execSQL("INSERT INTO Miembros(idmiembro, nombre,telefono,correo,contrasena,idturno,idpuesto,foto,apellido) "+
+                        "values (1,'Seleccionar',' ',' ',' ',1,1,' ',' ')");
 
         //        " FOREIGN KEY (idturno) REFERENCES Turnos(idturno), " +
         //        " FOREIGN KEY (idpuesto)REFERENCES Puestos(idpuesto))");
@@ -96,9 +97,9 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `precio_venta` VARCHAR(45)," +
                 "  `ruta_imagen` VARCHAR(45)," +
                 "  `unidad` varchar(30),\n" +
-                "  `cantidad` VARCHAR(45),\n" +
-                "  `precio_compra` VARCHAR(45),\n" +
-                "  `idproveedorFK` VARCHAR(45))");                //Llave foranea
+                "  `cantidad` INTEGER,\n" +
+                "  `precio_compra` INTEGER,\n" +
+                "  `idproveedorFK` VARCHAR(40))");                //Llave foranea
 
         //        "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 

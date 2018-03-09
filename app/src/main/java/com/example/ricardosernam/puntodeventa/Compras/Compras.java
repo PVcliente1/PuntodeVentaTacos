@@ -13,10 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -24,13 +24,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Productos.Unidades_DialogFragment;
+import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
@@ -44,8 +43,8 @@ import java.io.InputStream;
 public class Compras extends Fragment{
     private LinearLayout existentes,agregar, campos , foto;
     private TextView nombre, cantidadExistentes, totalCompra;
-    private Button escan,aceptar,cancelar, seleccionarImagen,BTNBuscarCompras;
-    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad;
+    private Button escan,aceptar,cancelar, seleccionarImagen;
+    private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad,proveedor;
     private RadioGroup opciones;
     private String rutaImagen;
     private Uri selectedImage;
@@ -55,9 +54,7 @@ public class Compras extends Fragment{
     private FragmentManager fm;
     private Cursor fila;
     private ImageView ponerImagen;
-    Spinner spinnerProveedores;
-    int idProveedor = 1;
-    boolean seleccionoProveedor = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,16 +71,16 @@ public class Compras extends Fragment{
         precioCompra=view.findViewById(R.id.ETprecioCompra);
         precioVenta=view.findViewById(R.id.ETprecioVenta);
         nombreProducto=view.findViewById(R.id.ETnombreProducto);
+        proveedor=view.findViewById(R.id.ETproveedorCompra);
         ///botones
         aceptar=view.findViewById(R.id.BtnAceptarCompra);
         cancelar=view.findViewById(R.id.BtnCancelarCompra);
         escan = (Button)view.findViewById(R.id.BtnEscanearCodigo);
         seleccionarImagen = (Button)view.findViewById(R.id.BtnImagen);
-        BTNBuscarCompras = view.findViewById(R.id.BTNBuscarCompras);
 
         //textviews
         cantidadExistentes= view.findViewById(R.id.TVexistentes);
-        nombre= view.findViewById(R.id.TVnombreCompra);
+        //nombre= view.findViewById(R.id.TVnombreCompra);
         totalCompra= view.findViewById(R.id.TVtotalCompra);
 
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
@@ -94,9 +91,6 @@ public class Compras extends Fragment{
         existentes=view.findViewById(R.id.LLexistentes);
         campos=view.findViewById(R.id.LLcamposDatos);
         foto=view.findViewById(R.id.LLfoto);
-        //spinner
-        spinnerProveedores = view.findViewById(R.id.SpnProvedor);
-
 
         ponerImagen=view.findViewById(R.id.IVimagenProducto);
 
@@ -115,18 +109,16 @@ public class Compras extends Fragment{
 
         //creación de base de datos
 
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
-        db=admin.getWritableDatabase();
-        values = new ContentValues();
 
-        //evento pa saber si es nuevo o existente
+
+
         opciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
                 switch (i){
                     case R.id.RBexistente:
-                        nombre.setVisibility(View.VISIBLE);
+                        //nombre.setVisibility(View.VISIBLE);
                         nombreProducto.setVisibility(View.GONE);
                         foto.setVisibility(View.GONE);
                         ponerImagen.setVisibility(View.GONE);
@@ -135,8 +127,9 @@ public class Compras extends Fragment{
                         existentes.setVisibility(View.VISIBLE);
                         break;
 
+
                     case R.id.RBnuevo:
-                        nombre.setVisibility(View.GONE);
+                        //nombre.setVisibility(View.GONE);
                         nombreProducto.setVisibility(View.VISIBLE);
                         foto.setVisibility(View.VISIBLE);
                         ponerImagen.setVisibility(View.VISIBLE);
@@ -149,7 +142,6 @@ public class Compras extends Fragment{
             }
         });
 
-        //checkbox agregar a productos
         agregaraproductos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -162,7 +154,7 @@ public class Compras extends Fragment{
         });
 
 
-        //evento scanner
+
         escan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +163,6 @@ public class Compras extends Fragment{
             }
         });
 
-        //seleccionar imagen
         seleccionarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,13 +176,24 @@ public class Compras extends Fragment{
             }
         });
 
-
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VaciarFormulario();
-                alta();
-                Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Se ha guardado tu Compra", Toast.LENGTH_LONG).show();
+                //alta("Productos");
+                Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+
+                //todo este desmadre es para que se refresque xD
+                /*Compras frag = new Compras();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.LOprincipal, frag);
+                ft.addToBackStack(null);
+                ft.commit();
+*/
+                //cerrar el dialog
+                dismiss();
+
             }
         });
         cancelar.setOnClickListener(new View.OnClickListener() {
@@ -201,38 +203,8 @@ public class Compras extends Fragment{
             }
         });
 
-        //evento boton buscar
-        BTNBuscarCompras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                campos.setVisibility(View.VISIBLE);
-            }
-        });
-
-        //evento para cuando se selecciona un proveedor
-        spinnerProveedores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                //checar si no es el anuncio de "seleccionar"
-                if (id != 1)
-                {
-                    //se modifica la variable que almacena el id seleccionado
-                    idProveedor = (int)id;
-                    seleccionoProveedor = true;
-                }else{
-                    seleccionoProveedor = false;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //hacer invisible la info
-            }
-        });
-        adapterSpinner();
         return view;
     }
-
     public void VaciarFormulario(){
         capturarProducto.setText(" ");
         cantidad.setText(" ");
@@ -241,12 +213,11 @@ public class Compras extends Fragment{
 
         //textviews
         cantidadExistentes.setText(" ");
-        nombre.setText(" ");
+//        nombre.setText(" ");
         totalCompra.setText(" ");
         agregaraproductos.setChecked(false);
         unidad.setSelection(0);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -269,7 +240,6 @@ public class Compras extends Fragment{
                 }
             }
         }
-
         //2 Captura de foto
         if(requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
@@ -291,35 +261,17 @@ public class Compras extends Fragment{
                 }
             }
         }
-
         ///3 para escanear
         if (requestCode == 3 && data != null) {
             //obtener resultados
             capturarProducto.setText(data.getStringExtra("BARCODE"));
         }
-    }
-
-    //procedimiento para agregar datos al spinner
-    public void adapterSpinner(){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getReadableDatabase();
-
-        //cursor
-        Cursor c = db.rawQuery("select idproveedor AS _id, contacto from proveedores", null);
-
-        //adapter
-        String[] desde = new String[] {"contacto"};
-        int[] para = new int[] {android.R.id.text1};
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
-        //activar al layout del adapter
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //configurar adapter
-        spinnerProveedores.setAdapter(adapter);
 
     }
 
-    //procedimiento para dar de alta
-    void alta()
+
+    //funcion para dar de alta, si funciona regresa true, si no regresa un false
+    public void alta(String tabla)
     {
         BaseDeDatosLocal admin = new BaseDeDatosLocal(this.getContext());
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -327,20 +279,51 @@ public class Compras extends Fragment{
         //nuevo registro
         ContentValues nuevoRegistro = new ContentValues();
 
+
+        /*
+                         "  `idproducto` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  `codigo_barras` VARCHAR(45),\n" +
+                "  `nombre` VARCHAR(45),\n" +
+                "  `precio_venta` VARCHAR(45)," +
+                "  `ruta_imagen` VARCHAR(45)," +
+                "  `unidad` varchar(30),\n" +
+                "  `cantidad` INTEGER,\n" +
+                "  `precio_compra` INTEGER,\n" +
+                "  `idproveedorFK` VARCHAR(40))");                //Llave foranea
+
+        */
+
         //agregar info al registro
         nuevoRegistro.put("codigo_barras",capturarProducto.getText().toString());
         nuevoRegistro.put("nombre",nombreProducto.getText().toString());
         nuevoRegistro.put("precio_venta",precioVenta.getText().toString());
-        nuevoRegistro.put("unidad", unidad.getText().toString());
-        nuevoRegistro.put("cantidad",cantidad.getText().toString());
-        nuevoRegistro.put("precio_compra",precioCompra.getText().toString());
-        nuevoRegistro.put("ruta_imagen", String.valueOf(selectedImage));
-        nuevoRegistro.put("idproveedorFK",idProveedor);
+        nuevoRegistro.put("ruta_imagen", "dsfdsfdsf");
+        nuevoRegistro.put("unidad",unidad.getText().toString());
+        nuevoRegistro.put("cantidad",Integer.parseInt(cantidad.getText().toString()));
+        nuevoRegistro.put("precio_compra",Integer.parseInt(precioCompra.getText().toString()));
+        nuevoRegistro.put("idproveedorFK",proveedor.getText().toString());
 
+/*
+        nuevoRegistro.put("codigo_barras","sdfdsfd");
+        nuevoRegistro.put("nombre","dsfdf");
+        nuevoRegistro.put("precio_venta",3534);
+        nuevoRegistro.put("ruta_imagen", "3333rf");
+        nuevoRegistro.put("unidad","afasds");
+        nuevoRegistro.put("cantidad",55);
+        nuevoRegistro.put("precio_compra",4345);
+        nuevoRegistro.put("idproveedorFK","PEPSI");
+
+        */
         //insertar el nuevo registro
-        db.insert("Productos",null, nuevoRegistro);
-
+        db.insert(tabla,null, nuevoRegistro);
+        Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
         //cerrar la base de datos
         db.close();
     }
+
+    private void dismiss() {
+
+    }
+
+
 }
