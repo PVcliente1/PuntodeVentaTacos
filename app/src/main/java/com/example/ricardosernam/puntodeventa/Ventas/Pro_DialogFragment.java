@@ -31,21 +31,12 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
     private RecyclerView.LayoutManager lManager;
     private SQLiteDatabase db;
     private ContentValues values;
-    private Cursor fila, datosSeleccionado;
+    private Cursor fila;
     private ArrayList<Pro_ventas_class> itemsProductos;
-    private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
     private agregado Interfaz;
 
-    /*public Pro_DialogFragment(ArrayList itemsCobrar){
-        //this.itemsProductos=itemsProductos;
-        //this.itemsCobrar=itemsCobrar;
-
-    }*/
     public interface agregado {
         void agregar(String seleccionado);
-
-        ///agregar nuevo producto
-        //void agregar(String unidad, String nombre, String precio);
     }
 
     @Override
@@ -78,7 +69,6 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
         }
 
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
-        //final FragmentManager fm= getFragmentManager();
         final android.support.v4.app.FragmentManager fm= getFragmentManager();
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
@@ -87,17 +77,9 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
             @Override
             public void onClick(View v) {  ////cuando se presione un Cardview...
                 dismiss(); ////cerramos la ventana
-                ////consulta para obtener los datos del producto seleccionado
-                //datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre()+"'" ,null);
-
-                //if(datosSeleccionado.moveToFirst()) {
-                    //itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0), datosSeleccionado.getString(1), datosSeleccionado.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
-                    if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el recyclerview
-                        //Interfaz.agregar(datosSeleccionado.getString(0), datosSeleccionado.getString(1), datosSeleccionado.getString(2));
+                if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el recyclerview
                         Interfaz.agregar(itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre());
                     }
-                //}
-                //fm.beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment(itemsCobrar)).commit(); ///sustituimos el layout fragment por el del recycler de cobrar
             }
         });
         recycler.setAdapter(adapter);

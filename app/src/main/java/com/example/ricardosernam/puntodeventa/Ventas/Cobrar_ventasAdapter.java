@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,15 +31,10 @@ import java.util.ArrayList;
 public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAdapter.Productos_ventasViewHolder> {  ///adaptador para la seccion de cobrar
     private ArrayList<Cobrar_ventas_class> itemsCobrar;
     private Context context;
-    private TextView total;
 
-    public Cobrar_ventasAdapter(Context context, ArrayList<Cobrar_ventas_class> itemsCobrar, TextView total) {  ///recibe el arrayCobrar como parametro
+    public Cobrar_ventasAdapter(Context context, ArrayList<Cobrar_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
         this.itemsCobrar = itemsCobrar;
         this.context = context;
-        this.total = total;
-    }
-    public Cobrar_ventasAdapter(ArrayList<Cobrar_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
-        this.itemsCobrar = itemsCobrar;
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
@@ -108,6 +104,8 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.nombreP.setText(itemsCobrar.get(position).getNombre());
         holder.precio.setText(itemsCobrar.get(position).getPrecio());
         ///calculamos los subtotales y la suma de los mismos
+        TextView total=((Activity) context).findViewById(R.id.TVtotal);
+
         holder.cantidad.addTextChangedListener(new MyTextWatcher(holder.cantidad, holder.precio, holder.subtotal, total));
         holder.precio.addTextChangedListener(new MyTextWatcher(holder.cantidad, holder.precio, holder.subtotal, total));
         ///
@@ -117,9 +115,12 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 itemsCobrar.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsCobrar.size());
+
                 if(itemsCobrar.isEmpty()){////ocultamos por completo el fragment donde se agregan
-                    LinearLayout cobro=((Activity) context).findViewById(R.id.LLcobro);
+                    CardView cobro=((Activity) context).findViewById(R.id.CVcobrar);
+                    LinearLayout opcionDeVenta=((Activity) context).findViewById(R.id.LLopcionDeVenta);
                     cobro.setVisibility(View.GONE);
+                    opcionDeVenta.setVisibility(View.GONE);
                 }
             }
         });

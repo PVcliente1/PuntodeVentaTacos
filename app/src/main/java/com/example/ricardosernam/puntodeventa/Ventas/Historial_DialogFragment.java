@@ -37,7 +37,7 @@ public class Historial_DialogFragment extends android.support.v4.app.DialogFragm
                   @Override
                   public void onClick(View v) {
                       dismiss();
-                      getFragmentManager().beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment()).commit();
+                      //getFragmentManager().beginTransaction().replace(R.id.LOcobrar, new Cobrar_ventas_Fragment()).commit();
                   }
               });///llamamos al adaptador y le enviamos el array como parametro
                 recycler = view2.findViewById(R.id.RVrecicladorHistorial);///declaramos el recycler
