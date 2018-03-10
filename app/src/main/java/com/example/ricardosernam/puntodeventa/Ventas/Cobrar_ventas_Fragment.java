@@ -47,7 +47,7 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
     private RadioButton seleccionado, seleccionado2;
     private LinearLayout editsApartado;
     public CheckBox descuento;
-    public TextView tipoD;
+    public TextView tipoD, total;
     FragmentActivity context= (FragmentActivity) getActivity();
 
     ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();   ///array para productos seleccionados
@@ -76,11 +76,12 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
         vender=view2.findViewById(R.id.RBvender);
         hora=view2.findViewById(R.id.EThora);
         fecha=view2.findViewById(R.id.ETfecha);
+        total=view2.findViewById(R.id.TVtotal);
         vender.setChecked(true);
         pagarAhora.setChecked(true);
         fechaHora.setVisibility(View.INVISIBLE);
         ////mandamos llamar al adaptador del recycerview para acomodarlo en este el DialogFragment/////
-        adapter = new Cobrar_ventasAdapter(view2.getContext(), this.getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
+        adapter = new Cobrar_ventasAdapter(view2.getContext(), itemsCobrar, total);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view2.findViewById(R.id.RVrecicladorCobrar);///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
         recycler.setLayoutManager(lManager);
@@ -154,11 +155,6 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
                         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();
-                        /*for(int i = 0; i<itemsCobrar.size(); i++ ){
-                            itemsCobrar.remove(i);
-                            adapter.notifyItemRemoved(i);
-                            adapter.notifyItemRangeChanged(i,itemsCobrar.size());
-                        }*/
                         itemsCobrar.removeAll(itemsCobrar);
                     }
                 });
@@ -183,7 +179,7 @@ public class Cobrar_ventas_Fragment extends android.support.v4.app.Fragment{   /
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         hora.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Hora_apartado");

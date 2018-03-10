@@ -83,12 +83,12 @@
                         android:text="Total $" />
 
                     <TextView
-                        android:id="@+id/total"
+                        android:id="@+id/TVtotal"
+                        android:gravity="center"
                         android:layout_width="70dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/bordes_grosor"
-                        android:gravity="left"
+                        android:background="@drawable/solo_grosor"
                         android:text=" " />
 
                     <LinearLayout

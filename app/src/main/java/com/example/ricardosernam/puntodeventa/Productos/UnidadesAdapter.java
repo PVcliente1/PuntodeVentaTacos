@@ -43,7 +43,7 @@ public class UnidadesAdapter extends RecyclerView.Adapter <UnidadesAdapter.Produ
         public Productos_ventasViewHolder(View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             nombre = v.findViewById(R.id.TVnombreUnidad);  ////Textview donde se coloca el nombre del producto
-            eliminar = v.findViewById(R.id.BtnEliminarUnidad);  ////Textview donde se coloca el nombre del producto
+            eliminar = v.findViewById(R.id.BtnEliminarUnidad);
             v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
                 @Override
                 public void onClick(View view) {
@@ -69,10 +69,10 @@ public class UnidadesAdapter extends RecyclerView.Adapter <UnidadesAdapter.Produ
         holder.eliminar.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
             @Override
             public void onClick(View view) {
+                Interfaz2.onClick(view, (String) holder.nombre.getText());
                 itemsUnidades.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsUnidades.size());
-                Interfaz2.onClick(view, (String) holder.nombre.getText());
             }
         });
     }

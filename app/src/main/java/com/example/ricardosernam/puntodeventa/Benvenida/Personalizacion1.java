@@ -22,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
@@ -85,7 +86,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         entradaHorario.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
@@ -96,7 +97,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         salidaHorario.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
@@ -108,7 +109,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         entradaTurno1.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
@@ -119,7 +120,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         salidaTurno1.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
@@ -131,7 +132,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         entradaTurno2.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");
@@ -142,7 +143,7 @@ public class Personalizacion1 extends Fragment {
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
-                    public void onClick(View v, int i, int i1) {
+                    public void onClick(int i, int i1) {
                         salidaTurno2.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Entrada_Horario");

@@ -80,9 +80,9 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
             @Override
             public void onClick(View v, String unidad) {
                 dismiss();
-                Interfaz.onClick(v, unidad);
+                Interfaz.onClick(v, unidad);  //mandamos la unidad seleccionada al dialogFragment de nuevoProducto
             }
-        }, new interfazUnidades_OnClick() {
+        }, new interfazUnidades_OnClick() {   ///si se presiona eliminar en la tarjeta
             @Override
             public void onClick(View v, String unidad) { //si se requiere eliminar una unidad.
                 db.delete(" Unidades ","nombre_unidad='"+unidad+"'", null);
@@ -115,7 +115,6 @@ public class Unidades_DialogFragment extends android.app.DialogFragment {
                     ultimaFila.moveToLast();
                     itemsUnidades.add(new Unidades_class(ultimaFila.getString(0)));
                     adapter.notifyDataSetChanged();
-                    db.close();
                 }
             }
         });

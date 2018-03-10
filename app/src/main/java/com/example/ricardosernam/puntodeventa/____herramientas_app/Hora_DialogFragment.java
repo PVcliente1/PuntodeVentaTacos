@@ -42,7 +42,7 @@ public class Hora_DialogFragment extends android.support.v4.app.DialogFragment {
                 aceptar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Interface.onClick(view, i, i1);   ///enviamos los datos a ventas
+                        Interface.onClick(i, i1);   ///enviamos los datos a ventas
                         dismiss();
                     }
                 });

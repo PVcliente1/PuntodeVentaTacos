@@ -95,7 +95,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         });
         unidad.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {///traemos la unidad seleccionada
                 new Unidades_DialogFragment(new interfazUnidades_OnClick() {
                     @Override
                     public void onClick(View v, String unidadSeleccionada) {
