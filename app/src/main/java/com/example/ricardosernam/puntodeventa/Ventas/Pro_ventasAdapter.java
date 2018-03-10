@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
     }
-    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos) {  ///recibe el arrayProductos como parametro y la interface
+    /*public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, interfaz_OnClick interfaz_onClick) {  ///recibe el arrayProductos como parametro y la interface
         this.itemsProductos = itemsProductos;
-    }
+    }*/
 
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
@@ -33,7 +34,7 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
             super(v);
             nombreP = v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
             imagen = v.findViewById(R.id.IVimagenProducto);
-            v.setOnClickListener(new View.OnClickListener() {  ///usamos desde aqui la interface(ya que aqui no podemos cerrar el Fragmentdialog y lo cerraremos en ventas
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Interfaz.onClick(view);

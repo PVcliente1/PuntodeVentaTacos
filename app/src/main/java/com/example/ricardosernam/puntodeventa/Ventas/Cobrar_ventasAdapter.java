@@ -37,6 +37,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         this.context = context;
         this.total = total;
     }
+    public Cobrar_ventasAdapter(ArrayList<Cobrar_ventas_class> itemsCobrar) {  ///recibe el arrayCobrar como parametro
+        this.itemsCobrar = itemsCobrar;
+    }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         public TextView nombreP, tipoD, unidad;

@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
     public void mandarHistorial(String tipo, String pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
         itemsHistorial.add(new Historial_ventas_class(tipo, pagar));  ///tipo viene de fragment_cobrar
-        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas(itemsHistorial)).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
+        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
 
     }
     private int appGetFirstTimeRun() {  ///comprobamos si es la primera vez que se abre la app
