@@ -79,7 +79,6 @@
             <EditText
                 android:id="@+id/ETcantidad"
                 android:gravity="center"
-                android:text="1"
                 android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

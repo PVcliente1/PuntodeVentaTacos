@@ -42,7 +42,7 @@ import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Ventas extends Fragment implements Pro_DialogFragment.agregado {     /////Fragment de categoria ventas
+public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cobrar_ventasAdapter.actualizado {     /////Fragment de categoria ventas
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
@@ -90,7 +90,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
         cobro=view.findViewById(R.id.CVcobrar);
         opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
 
-        adapter = new Cobrar_ventasAdapter(getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
+        adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
         recycler.setLayoutManager(lManager);
@@ -125,14 +125,26 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
         return view;
     }
     @Override
-    public void agregar(String seleccionado) {
+    public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
         if(datosSeleccionado.moveToFirst()) {
-            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0), datosSeleccionado.getString(1), datosSeleccionado.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                                                    //String unidad, String nombre, int cantidad, String precioVenta,  int subTotal
+            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getString(2), Integer.parseInt(datosSeleccionado.getString(2))));//obtenemos el cardview seleccionado y lo agregamos a items2
             cobro.setVisibility(View.VISIBLE);
             opcionDeVenta.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
         }
+    }
+    @Override
+    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal) {
+        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal));
+        //adapter.notifyDataSetChanged();
+
+        /*int suma=0;
+        for(int i=0; i<itemsCobrar.size(); i++){
+            suma=suma+itemsCobrar.get(i).getSubTotal();
+        }
+        Toast.makeText(getContext(), "Suma "+ suma , Toast.LENGTH_LONG).show();*/
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -198,7 +210,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
                 cancelarCompra.setCancelable(false);
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
-                        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.LOcobrar)).commit();
                         cobro.setVisibility(View.GONE);
                         opcionDeVenta.setVisibility(View.GONE);
                         itemsCobrar.removeAll(itemsCobrar);
@@ -277,7 +288,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
             //obtener resultados
             fila2=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(fila2.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1), fila2.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1),1, fila2.getString(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
                 cobro.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
             }

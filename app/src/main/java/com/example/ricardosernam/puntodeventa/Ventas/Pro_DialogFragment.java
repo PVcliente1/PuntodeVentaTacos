@@ -30,7 +30,6 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private SQLiteDatabase db;
-    private ContentValues values;
     private Cursor fila;
     private ArrayList<Pro_ventas_class> itemsProductos;
     private agregado Interfaz;
@@ -56,7 +55,6 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
 
         db=admin.getWritableDatabase();
-        values = new ContentValues();
         itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
