@@ -50,7 +50,8 @@
             android:layout_width="227dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:hint="Buscar..." />
+            android:hint="Buscar..."
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/BTNBuscarProveedores"

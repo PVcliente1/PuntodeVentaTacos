@@ -50,14 +50,15 @@
             android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:hint="Buscar..." />
+            android:hint="Buscar..."
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/BTNBuscarCliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Buscar" />
     </LinearLayout>
 
     <LinearLayout
@@ -220,7 +221,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:enabled="false"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPostalAddress" />
 
             </LinearLayout>
 

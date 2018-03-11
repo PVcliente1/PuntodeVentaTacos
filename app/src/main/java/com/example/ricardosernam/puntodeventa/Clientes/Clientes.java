@@ -103,6 +103,12 @@ public class Clientes extends Fragment {
                 LayoutBotonesAceptarEditarClientes.setVisibility(View.INVISIBLE);
             }
         });
+        BTNBuscarCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buscar();
+            }
+        });
 
         //evento de boton eliminar
         BTN_ClienteEliminarSel.setOnClickListener(new View.OnClickListener() {
