@@ -46,7 +46,8 @@
                 android:id="@+id/ET_clienteNombreNuevo"
                 android:layout_width="223dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginLeft="8dp"
+                android:inputType="textPersonName" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,7 +64,8 @@
             <EditText
                 android:id="@+id/ET_clienteApellidosNuevo"
                 android:layout_width="222dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -80,7 +82,8 @@
             <EditText
                 android:id="@+id/ET_clienteAliasNuevo"
                 android:layout_width="222dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
 
@@ -120,7 +123,7 @@
                 android:layout_width="222dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-1dp"
-                android:inputType="text" />
+                android:inputType="textPostalAddress" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="305dp"
