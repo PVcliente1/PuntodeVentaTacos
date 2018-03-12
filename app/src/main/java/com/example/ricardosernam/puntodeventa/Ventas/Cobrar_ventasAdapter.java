@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -82,14 +83,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             this.Interfaz=Interfaz;
             this.position=position;
         }
-
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            /*if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
-                subtotal.setText(String.valueOf(Integer.parseInt(String.valueOf((cantidad.getText()))) * Integer.parseInt(String.valueOf((precio.getText())))));
 
-                //Interfaz.actualizar(unidad, nombre, Integer.parseInt(String.valueOf((cantidad.getText()))), String.valueOf((precio.getText())), position, Integer.parseInt(String.valueOf(subtotal.getText())));
-            }*/
         }
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -100,7 +96,8 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         }
         @Override
         public void afterTextChanged(Editable editable) {
-
+            //cantidad.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
+            //precio.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
         }
     }
     @Override
@@ -122,9 +119,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.cantidad.setText(String.valueOf(itemsCobrar.get(position).getCantidad()));
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
 
-        holder.cantidad.addTextChangedListener(new MyTextWatcher( String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.Interfaz, position));
-        holder.precio.addTextChangedListener(new MyTextWatcher(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.Interfaz, position));
-
+        MyTextWatcher watcher=new MyTextWatcher( String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.Interfaz, position);
+        holder.cantidad.addTextChangedListener(watcher);
+        holder.precio.addTextChangedListener(watcher);
 
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +129,8 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 itemsCobrar.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,itemsCobrar.size());
-
-                if(itemsCobrar.isEmpty()){////ocultamos por completo el fragment donde se agregan
+                notifyDataSetChanged();
+                if(itemsCobrar.isEmpty()){////ocultamos por completo el fragment donde se agregan   ///aqui esta el error
                     CardView cobro=((Activity) context).findViewById(R.id.CVcobrar);
                     LinearLayout opcionDeVenta=((Activity) context).findViewById(R.id.LLopcionDeVenta);
                     cobro.setVisibility(View.GONE);

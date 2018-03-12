@@ -9,7 +9,7 @@ public class Cobrar_ventas_class {   ///clase para obtener productos para cobrar
     private String precioVenta;
     private int subTotal, cantidad;
 
-    public Cobrar_ventas_class(String unidad, String nombre, int cantidad, String precioVenta,  int subTotal) {  ///se manda desde el arrayProductos
+    Cobrar_ventas_class(String unidad, String nombre, int cantidad, String precioVenta,  int subTotal) {  ///se manda desde el arrayProductos
         this.unidad=unidad;
         this.nombre=nombre;
         this.cantidad=cantidad;
@@ -22,13 +22,13 @@ public class Cobrar_ventas_class {   ///clase para obtener productos para cobrar
     public String getNombre(){
         return nombre;
     }
-    public int getCantidad(){
+    int getCantidad(){
         return cantidad;
     }
     public String getPrecio(){
         return precioVenta;
     }
-    public int getSubTotal(){
+    int getSubTotal(){
         return subTotal;
     }
 

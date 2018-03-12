@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;;
+import android.renderscript.Sampler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,8 +57,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private RadioButton seleccionado, seleccionado2;
     private LinearLayout editsApartado, opcionDeVenta;
     private CardView cobro;
-    public CheckBox descuento;
-    public TextView tipoD, total;
+    private CheckBox descuento;
+    private TextView tipoD, total;
 
     private Button productos, escanear, historial;
     private EditText codigo;
@@ -75,7 +76,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
-        total=view.findViewById(R.id.TVtotal);
         //DFhistorial=new Historial_DialogFragment(itemsHistorial);  ////enviamos el array con las compras al fragment de historial
 
         productos= view.findViewById(R.id.BtnProductos);
@@ -96,9 +96,9 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         recycler.setLayoutManager(lManager);
         recycler.setAdapter(adapter);
 
-        pro =new Pro_DialogFragment();
+        pro =new Pro_DialogFragment();  //abrimos el menu de productos
 
-        codigo.setInputType(InputType.TYPE_NULL);
+        codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,23 +128,21 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
         if(datosSeleccionado.moveToFirst()) {
-                                                    //String unidad, String nombre, int cantidad, String precioVenta,  int subTotal
             itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getString(2), Integer.parseInt(datosSeleccionado.getString(2))));//obtenemos el cardview seleccionado y lo agregamos a items2
             cobro.setVisibility(View.VISIBLE);
             opcionDeVenta.setVisibility(View.VISIBLE);
+            total.setText(datosSeleccionado.getString(2));
             adapter.notifyDataSetChanged();
         }
     }
     @Override
-    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal) {
-        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal));
-        //adapter.notifyDataSetChanged();
-
-        /*int suma=0;
+    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal) {  ///al modificar la compra de un producto
+        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal));  //si actualiza correctamente
+        int suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
             suma=suma+itemsCobrar.get(i).getSubTotal();
+            total.setText(String.valueOf(suma));
         }
-        Toast.makeText(getContext(), "Suma "+ suma , Toast.LENGTH_LONG).show();*/
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
