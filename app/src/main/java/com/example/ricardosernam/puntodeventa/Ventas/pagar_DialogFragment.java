@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
 
 @SuppressLint("ValidFragment")
@@ -22,18 +24,19 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
     private TextView total,cambio;
     private EditText cantidad;
     private int totalPagar;
-    interfaz_descuento Interface_historial;
+    private interfaz_OnClick aceptarCompra;
 
      @SuppressLint("ValidFragment")
-     public pagar_DialogFragment(int totalPagar){
+     public pagar_DialogFragment(int totalPagar, interfaz_OnClick aceptarCompra){
          this.totalPagar=totalPagar;
+         this.aceptarCompra=aceptarCompra;
      }
 
     @Override
     public View onCreateView (final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView=inflater.inflate(R.layout.pagar_dialog_fragment,container);
-        Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
+        //Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
         this.getDialog().setTitle("Cobrar");///cambiamos titulo del DialogFragment
         total=rootView.findViewById(R.id.TVtotalCompra);
         cambio=rootView.findViewById(R.id.TVcambio);
@@ -62,11 +65,9 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validar(Integer.parseInt(String.valueOf(cantidad.getText())),totalPagar)) {
+                if(validar(totalPagar)){
                     dismiss();
-                }
-                else{
-
+                    aceptarCompra.onClick(view);
                 }
             }
         });
@@ -78,12 +79,18 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         });
         return rootView;
     }
-    public Boolean validar(int pago, int total){
+    public Boolean validar(int total){
          Boolean validado=true;
-        if(pago<total || String.valueOf(pago).isEmpty()){
-          validado=false;
-          cantidad.setError("Ingresa una cantidad válida");
-         }
+        if(((TextUtils.isEmpty(cantidad.getText())))) {  /// es vacio
+            validado=false;
+            cantidad.setError("Ingresa una cantidad válida");
+        }
+        else{  ///hay algo
+            if((Integer.parseInt(String.valueOf(cantidad.getText()))<total)){
+                validado=false;
+                cantidad.setError("Ingresa una cantidad válida");
+            }
+        }
         return validado;
     }
 

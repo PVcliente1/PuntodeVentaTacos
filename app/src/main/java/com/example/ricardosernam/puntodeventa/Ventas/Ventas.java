@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
@@ -214,9 +215,11 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 cancelarCompra.setCancelable(false);
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
-                        cobro.setVisibility(View.GONE);
-                        opcionDeVenta.setVisibility(View.GONE);
-                        itemsCobrar.removeAll(itemsCobrar);
+                        //cobro.setVisibility(View.GONE);
+                        //opcionDeVenta.setVisibility(View.GONE);
+                        //itemsCobrar.removeAll(itemsCobrar);
+                        cerrar_compra();
+
                     }
                 });
                 cancelarCompra.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -232,7 +235,13 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             public void onClick(View view) {
                 seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
                 seleccionado2=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
-                new pagar_DialogFragment(Integer.parseInt(String.valueOf(total.getText()))).show(getFragmentManager(),"pagarDiaogFragment");
+                new pagar_DialogFragment(Integer.parseInt(String.valueOf(total.getText())), new interfaz_OnClick() {
+                    @Override
+                    public void onClick(View v) {////ocultamos y guardamos los datos
+                        Toast.makeText(getContext(), "Se ha guardado la compra", Toast.LENGTH_LONG).show();
+                        cerrar_compra();
+                    }
+                }).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
         hora.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +293,11 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 }
             }
         });
+    }
+    public void cerrar_compra(){
+        cobro.setVisibility(View.GONE);
+        opcionDeVenta.setVisibility(View.GONE);
+        itemsCobrar.removeAll(itemsCobrar);
     }
     //metodo para obtener resultados DEL ESCANER
     @Override
