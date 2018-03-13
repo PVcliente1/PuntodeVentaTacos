@@ -194,7 +194,10 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Descuentos(\n" +
                 "  `iddescuento` INTEGER,\n" +
                 "  `tipo_descuento` VARCHAR(45),\n" +
-                "  `porentaje` INTEGER)");
+                "  `porcentaje` INTEGER)");
+
+        sqLiteDatabase.execSQL("INSERT INTO Descuentos (iddescuento, tipo_descuento, porcentaje) values (1,'Normal',5)");
+        sqLiteDatabase.execSQL("INSERT INTO Descuentos (iddescuento, tipo_descuento, porcentaje) values (2,'Especial',10)");
 
         //Creación de tabla venta_detalles
 

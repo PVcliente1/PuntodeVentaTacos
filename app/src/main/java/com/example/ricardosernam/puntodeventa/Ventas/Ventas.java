@@ -1,16 +1,12 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;;
-import android.renderscript.Sampler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,10 +27,9 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
@@ -53,17 +48,18 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private LinearLayout pagar, fechaHora, tipoDescuento;
     private Button eliminarCompra,aceptarCompra;
     private EditText cliente, descripcion, hora, fecha;
-    interfaz_historial Interface_historial;
+    interfaz_descuento Interface_historial;
     private RadioButton seleccionado, seleccionado2;
     private LinearLayout editsApartado, opcionDeVenta;
     private CardView cobro;
     private CheckBox descuento;
     private TextView tipoD, total;
+    private String normal, especial;
 
     private Button productos, escanear, historial;
     private EditText codigo;
     private SQLiteDatabase db;
-    private Cursor fila2, datosSeleccionado;
+    private Cursor fila2, datosSeleccionado, descuentoNormal, descuentoEspecial;
     private Pro_DialogFragment pro;
     private Historial_DialogFragment DFhistorial;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
@@ -89,6 +85,18 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
         opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
+
+        ///obtenemos los descuentos
+        descuentoNormal=db.rawQuery("select porcentaje from Descuentos where tipo_descuento='Normal'" ,null);
+        descuentoEspecial=db.rawQuery("select porcentaje from Descuentos where tipo_descuento='Especial'" ,null);
+
+        if(descuentoNormal.moveToFirst()){
+            normal=descuentoNormal.getString(0);
+        }
+        if(descuentoEspecial.moveToFirst()){
+            especial=descuentoEspecial.getString(0);
+        }
+
 
         adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
@@ -128,7 +136,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
         if(datosSeleccionado.moveToFirst()) {
-            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getString(2), Integer.parseInt(datosSeleccionado.getString(2))));//obtenemos el cardview seleccionado y lo agregamos a items2
+            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getString(2), Integer.parseInt(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
             cobro.setVisibility(View.VISIBLE);
             opcionDeVenta.setVisibility(View.VISIBLE);
             total.setText(datosSeleccionado.getString(2));
@@ -136,8 +144,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         }
     }
     @Override
-    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal) {  ///al modificar la compra de un producto
-        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal));  //si actualiza correctamente
+    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal, int descuento) {  ///al modificar la compra de un producto
+        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
         int suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
             suma=suma+itemsCobrar.get(i).getSubTotal();
@@ -148,8 +156,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Interface_historial =(interfaz_historial) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
-
+        Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
@@ -167,7 +174,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 switch (i) {
                     case R.id.RBcotizar:
                         pagar.setVisibility(View.GONE);
-                        //editsApartado.setEnabled(false);
                         editsApartado.setVisibility(View.GONE);
                         aceptarCompra.setVisibility(View.GONE);
                         cliente.setVisibility(View.GONE);
@@ -286,9 +292,10 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             //obtener resultados
             fila2=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(fila2.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1),1, fila2.getString(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1),1, fila2.getString(2), Integer.parseInt(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
                 cobro.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
+                total.setText(datosSeleccionado.getString(2));
             }
             else{
                 Toast.makeText(getContext(), "Este producto no esta registrado", Toast.LENGTH_SHORT).show();

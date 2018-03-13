@@ -1,37 +1,26 @@
 package com.example.ricardosernam.puntodeventa.Benvenida;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa.Ventas.pagar_DialogFragment;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 

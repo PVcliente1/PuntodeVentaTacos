@@ -4,9 +4,9 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 public class Historial_ventas_class {
     private String tipo;
-    private String pagar;
+    private int pagar;
 
-    public Historial_ventas_class(String tipo, String pagar) {   ///se manda desde el arrayProductos
+    public Historial_ventas_class(String tipo, int pagar) {   ///se manda desde el arrayProductos
         this.tipo= tipo;
         this.pagar=pagar;
     }
@@ -14,7 +14,7 @@ public class Historial_ventas_class {
     public String getTipo() {
         return tipo;
     }
-    public String getPagar() {
+    public int getPagar() {
         return pagar;
     }
 }

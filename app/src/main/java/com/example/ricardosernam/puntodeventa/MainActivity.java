@@ -1,12 +1,9 @@
 package com.example.ricardosernam.puntodeventa;
 
-import android.app.FragmentManager;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -24,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Benvenida.Personalizacion1;
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Clientes.Clientes;
 import com.example.ricardosernam.puntodeventa.Compras.Compras;
@@ -37,14 +33,12 @@ import com.example.ricardosernam.puntodeventa.Productos.Productos;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
 import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
-import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_historial;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_historial {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_descuento {
     ViewPager viewPager;
     TabLayout tabLayout;
     ImageView logo;
@@ -180,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
-    public void mandarHistorial(String tipo, String pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
+    public void descontar(String tipo, int pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
         itemsHistorial.add(new Historial_ventas_class(tipo, pagar));  ///tipo viene de fragment_cobrar
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
 

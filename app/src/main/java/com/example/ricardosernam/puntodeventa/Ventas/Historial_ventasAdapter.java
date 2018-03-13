@@ -64,7 +64,7 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
     public void onBindViewHolder(HistorialVentasViewHolder holder, final int position) {
         holder.tipo.setText(itemsHistorial.get(position).getTipo());
         holder.pagar.setText(itemsHistorial.get(position).getPagar());
-        if(itemsHistorial.get(position).getPagar().equals("Pagar ahora")){
+        /*if(itemsHistorial.get(position).getPagar().equals("Pagar ahora")){
             holder.pagar.setText("Pagado");
             holder.estatus.setBackgroundColor(Color.GREEN);
             holder.itemView.setFocusable(false);
@@ -78,7 +78,7 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
                     Interfaz.onClick(view);
                 }
             });
-        }
+        }*/
         if(itemsHistorial.get(position).getTipo().equals("Venta")){
             holder.itemView.setBackgroundColor(Color.GRAY);
             holder.fechaEntrega.setVisibility(View.INVISIBLE);
