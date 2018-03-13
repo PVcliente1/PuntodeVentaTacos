@@ -17,30 +17,34 @@
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:text="Total $" />
+
         <TextView
+            android:id="@+id/TVtotalCompra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
             android:layout_marginLeft="10dp"
-            android:text="Total" />
+            android:text="Total"
+            android:textSize="20dp" />
     </LinearLayout>
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
         android:layout_gravity="center"
-        android:text="Cantidad $"/>
+        android:text="Pagar con...$"
+        android:textSize="20dp" />
+
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/ETcantidadPago"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="10"
         android:background="@drawable/edittexts"
-        android:inputType="textPersonName"
-        android:text="Ingresa una cantidad" />
+        android:ems="10"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:hint="Ingresa una cantidad"
+        android:inputType="number" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,12 +53,13 @@
         android:text="Cambio $"/>
     <TextView
         android:id="@+id/TVcambio"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:background="@drawable/edittexts"
         android:layout_gravity="center"
-        android:text="Cambio"/>
+        android:gravity="center"
+        android:text="0"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -232,7 +232,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             public void onClick(View view) {
                 seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
                 seleccionado2=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
-                new pagar_DialogFragment(seleccionado.getText().toString(),seleccionado2.getText().toString()).show(getFragmentManager(),"pagarDiaogFragment");
+                new pagar_DialogFragment(Integer.parseInt(String.valueOf(total.getText()))).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
         hora.setOnClickListener(new View.OnClickListener() {
