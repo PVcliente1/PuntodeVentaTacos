@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -66,7 +67,8 @@ public class Productos extends Fragment implements agregado {
     private Button nuevoProducto, escanear;
     private ImageView ponerImagen;
     private android.app.FragmentManager fm;
-    private EditText codigo, nombre, unidad, precio, nombreCodigo;
+    private EditText codigo, nombre, unidad, precio;
+    private SearchView nombreCodigo;
     private String producto;
 
 
@@ -110,12 +112,12 @@ public class Productos extends Fragment implements agregado {
             public void onClick(View v, String nombre) {////eliminamos el producto deseado
                 db.delete(" Productos ", "nombre='" + nombre + "'", null);
             }
-        }, new interfaz_OnClickCodigo() {
+        }, new interfaz_OnClickCodigo() {  ///modificar código
             @Override
             public void onClick(View v, EditText codigo2) {
                 codigo = codigo2;
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent, 3);//inicializar el activity con RequestCode3
+                startActivityForResult(intent, 4);//inicializar el activity con RequestCode3
             }
         }, new interfaz_OnClickImagen() { ////modificar imagen
             @Override
@@ -163,36 +165,35 @@ public class Productos extends Fragment implements agregado {
         });
         recycler.setAdapter(adapter);
         ////si buscamos el producto escribiendo su nombre
-        nombreCodigo.addTextChangedListener(new TextWatcher() {
+        nombreCodigo.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!(TextUtils.isEmpty(nombreCodigo.getText()))) {
-                    if ((TextUtils.isDigitsOnly(nombreCodigo.getText()))) {  ///si el campo tiene tan solo numeros es un codigo
-                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where codigo_barras='" + String.valueOf(nombreCodigo.getText()) + "'", null);
-                        }
-                        else{  ///sino es un nombre
-                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where nombre='" + String.valueOf(nombreCodigo.getText()) + "'", null);
-                        }
-                        if (filaBusqueda.moveToFirst()) {///si hay un elemento
-                            itemsProductos.removeAll(itemsProductos);
-                            itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
-                            while (filaBusqueda.moveToNext()) {
-                                itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
-                            }
-
-                        }
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        rellenado_total();
+            public boolean onQueryTextChange(String newText) {
+                if(!(TextUtils.isEmpty(newText))) {   ///el campo tiene algo
+                    if ((TextUtils.isDigitsOnly(newText))) {  ///si el campo tiene tan solo numeros es un codigo
+                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where codigo_barras='" + newText + "'", null);
+                    } else {  ///sino es un nombre
+                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where nombre='" + newText + "'", null);
                     }
+                    if (filaBusqueda.moveToFirst()) { ///si hay un elemento
+                        itemsProductos.removeAll(itemsProductos);
+                        itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                        while (filaBusqueda.moveToNext()) {
+                            itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                        }
+                    }
+                    else{ ///El producto no existe
+                        Toast.makeText(getContext(), "Producto inexistente", Toast.LENGTH_SHORT).show();
+                    }
+                }  ////esta vacio
+                else {
+                    rellenado_total();
                 }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+                adapter.notifyDataSetChanged();
+                return false;
             }
         });
         escanear.setOnClickListener(new View.OnClickListener() {  ///buscamos un producto mediante el escaner
@@ -283,9 +284,11 @@ public class Productos extends Fragment implements agregado {
             }
         }
         ///3 para escanear
-        if (requestCode == 3 && data != null) {
-            //obtener resultados
-            nombreCodigo.setText(data.getStringExtra("BARCODE"));
+        if (requestCode == 3 && data != null) {   ///escaner de busqueda
+            nombreCodigo.setQuery(data.getStringExtra("BARCODE"), false);
+        }
+        if (requestCode == 4 && data != null) {  ///modificar código de producto
+            codigo.setText(data.getStringExtra("BARCODE"));
         }
     }
 }

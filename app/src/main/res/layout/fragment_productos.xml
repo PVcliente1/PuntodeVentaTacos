@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
+        <!--<EditText
             android:id="@+id/ETnombreProducto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,14 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Ingresa el nombre"
-            android:inputType="textCapSentences|textPersonName" />
+            android:inputType="textCapSentences|textPersonName" />-->
+        <android.support.v7.widget.SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ETnombreProducto"
+            android:hint="Ingresa el nombre o código"
+            android:layout_weight="1"
+            android:inputType="textCapSentences"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
