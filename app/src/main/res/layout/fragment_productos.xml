@@ -33,21 +33,24 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/ETnombreProducto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="10"
             android:hint="Ingresa el nombre"
-            android:inputType="textPersonName" />
-
-        <Button
-            android:id="@+id/button4"
+            android:inputType="textCapSentences|textPersonName" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Escanear"
-            />
+            android:text="o"/>
+
+        <Button
+            android:id="@+id/BtnEscanearProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Escanear" />
         <!--android:drawableTop="@android:drawable/ic_search_category_default" />-->
     </LinearLayout>
     <TextView

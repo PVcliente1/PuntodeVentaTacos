@@ -215,6 +215,7 @@
 
                         <EditText
                             android:id="@+id/ETcliente"
+                            android:focusable="false"
                             android:layout_width="200dp"
                             android:layout_height="30dp"
                             android:layout_gravity="right"
@@ -222,7 +223,7 @@
                             android:background="@drawable/edittexts"
                             android:ems="10"
                             android:hint="Cliente (Opcional)"
-                            android:inputType="number"
+                            android:inputType="textPersonName"
                             android:textSize="14sp" />
 
                         <EditText

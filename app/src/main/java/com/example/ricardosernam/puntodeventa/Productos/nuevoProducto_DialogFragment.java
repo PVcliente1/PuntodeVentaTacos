@@ -101,7 +101,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                     public void onClick(View v, String unidadSeleccionada) {
                         unidad.setText(unidadSeleccionada);
                     }
-                }).show(fm, "Unidades_DialogFragment");
+                }).show(fm, "Clientes_DialogFragment");
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {

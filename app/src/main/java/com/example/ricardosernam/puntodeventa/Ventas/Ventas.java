@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
@@ -60,7 +61,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private Button productos, escanear, historial;
     private EditText codigo;
     private SQLiteDatabase db;
-    private Cursor fila2, datosSeleccionado, descuentoNormal, descuentoEspecial;
+    private Cursor fila2, datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial;
     private Pro_DialogFragment pro;
     private Historial_DialogFragment DFhistorial;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
@@ -215,9 +216,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 cancelarCompra.setCancelable(false);
                 cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
-                        //cobro.setVisibility(View.GONE);
-                        //opcionDeVenta.setVisibility(View.GONE);
-                        //itemsCobrar.removeAll(itemsCobrar);
                         cerrar_compra();
 
                     }
@@ -266,6 +264,17 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 }).show(getFragmentManager(),"Fecha_apartado");
             }
         });
+        cliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Clientes_DialogFragment(new interfazUnidades_OnClick() {
+                    @Override
+                    public void onClick(View v, String clienteSeleccionado) {
+                        cliente.setText(clienteSeleccionado);
+                    }
+                }).show(fm, "Clientes DialogFragment");
+            }
+        });
         descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -304,12 +313,13 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2 && data != null) {
             //obtener resultados
-            fila2=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
-            if(fila2.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(fila2.getString(0), fila2.getString(1),1, fila2.getString(2), Integer.parseInt(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+            datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
+            if(datosEscaneado.moveToFirst()) {
+                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getString(2), Integer.parseInt(datosEscaneado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
                 cobro.setVisibility(View.VISIBLE);
+                opcionDeVenta.setVisibility(View.VISIBLE);
+                total.setText(datosEscaneado.getString(2));
                 adapter.notifyDataSetChanged();
-                total.setText(datosSeleccionado.getString(2));
             }
             else{
                 Toast.makeText(getContext(), "Este producto no esta registrado", Toast.LENGTH_SHORT).show();

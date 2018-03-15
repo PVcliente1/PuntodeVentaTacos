@@ -73,7 +73,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
 
 
-        //Creación de la tabla Unidades_DialogFragment
+        //Creación de la tabla Clientes_DialogFragment
 
         sqLiteDatabase.execSQL("CREATE TABLE Unidades (\n" +
                 "  `idunidad` INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +

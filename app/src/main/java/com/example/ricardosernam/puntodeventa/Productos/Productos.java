@@ -20,6 +20,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,15 +58,15 @@ public class Productos extends Fragment implements agregado {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private Cursor fila, ultimaFila, filaActualizar;
+    private Cursor fila, filaBusqueda, ultimaFila, filaActualizar;
     private String rutaImagen;
     private Uri selectedImage;
     private SQLiteDatabase db;
     private ContentValues values;
-    private Button nuevoProducto;
+    private Button nuevoProducto, escanear;
     private ImageView ponerImagen;
     private android.app.FragmentManager fm;
-    private EditText codigo, nombre, unidad, precio;
+    private EditText codigo, nombre, unidad, precio, nombreCodigo;
     private String producto;
 
 
@@ -74,7 +77,11 @@ public class Productos extends Fragment implements agregado {
 
        View view=inflater.inflate(R.layout.fragment_productos, container, false);
         nuevoProducto=view.findViewById(R.id.BtnNuevoProducto);
+        escanear=view.findViewById(R.id.BtnEscanearProducto);
+        nombreCodigo=view.findViewById(R.id.ETnombreProducto);
         fm=getActivity().getFragmentManager();
+
+
 
         ponerImagen = new ImageView(getContext());
         codigo= new EditText(getContext());
@@ -87,15 +94,15 @@ public class Productos extends Fragment implements agregado {
         values = new ContentValues();
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
-
         if(fila.moveToFirst()) {///si hay un elemento
             itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             while (fila.moveToNext()) {
                 itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
             }
         }
+        //consulta_total();
 
-       recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
+        recycler = view.findViewById(R.id.RVproductos); ///declaramos el recycler
         lManager = new LinearLayoutManager(this.getActivity());  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
         adapter = new ProductosAdapter(getActivity(), itemsProductos, new interfazUnidades_OnClick() {///adaptador del recycler
@@ -151,17 +158,50 @@ public class Productos extends Fragment implements agregado {
         }, new interfaz_OnClick() {////cancelamos cambios
             @Override
             public void onClick(View v) {   ////vaciamos el array y lo volvemos a llenar porque se escribe
-                itemsProductos.removeAll(itemsProductos);
-                if(fila.moveToFirst()) {///si hay un elemento
-                    itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
-                    while (fila.moveToNext()) {
-                        itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
-                    }
-                }
-                adapter.notifyDataSetChanged();
+                rellenado_total();
             }
         });
         recycler.setAdapter(adapter);
+        ////si buscamos el producto escribiendo su nombre
+        nombreCodigo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!(TextUtils.isEmpty(nombreCodigo.getText()))) {
+                    if ((TextUtils.isDigitsOnly(nombreCodigo.getText()))) {  ///si el campo tiene tan solo numeros es un codigo
+                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where codigo_barras='" + String.valueOf(nombreCodigo.getText()) + "'", null);
+                        }
+                        else{  ///sino es un nombre
+                        filaBusqueda = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where nombre='" + String.valueOf(nombreCodigo.getText()) + "'", null);
+                        }
+                        if (filaBusqueda.moveToFirst()) {///si hay un elemento
+                            itemsProductos.removeAll(itemsProductos);
+                            itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                            while (filaBusqueda.moveToNext()) {
+                                itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                            }
+
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        rellenado_total();
+                    }
+                }
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        escanear.setOnClickListener(new View.OnClickListener() {  ///buscamos un producto mediante el escaner
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
+                startActivityForResult(intent,3);//inicializar el activity con RequestCode2
+            }
+        });
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {////para agregar un nuevo producto
@@ -169,6 +209,17 @@ public class Productos extends Fragment implements agregado {
             }
         });
        return view;
+    }
+    public void rellenado_total(){
+        fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
+        if(fila.moveToFirst()) {///si hay un elemento
+            itemsProductos.removeAll(itemsProductos);
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+            while (fila.moveToNext()) {
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
     @Override  ////interfaz  para actualizar mi recyclerview
     public void agregar() {
@@ -234,7 +285,7 @@ public class Productos extends Fragment implements agregado {
         ///3 para escanear
         if (requestCode == 3 && data != null) {
             //obtener resultados
-            codigo.setText(data.getStringExtra("BARCODE"));
+            nombreCodigo.setText(data.getStringExtra("BARCODE"));
         }
     }
 }

@@ -174,7 +174,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                     public void onClick(View v, String unidadSeleccionada) {
                         holder.unidad.setText(unidadSeleccionada);
                     }
-                }).show(manager, "Unidades_DialogFragment");
+                }).show(manager, "Clientes_DialogFragment");
             }
         });
         holder.escanear.setOnClickListener(new View.OnClickListener() {
