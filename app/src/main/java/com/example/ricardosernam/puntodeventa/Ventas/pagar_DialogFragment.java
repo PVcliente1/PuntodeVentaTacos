@@ -23,11 +23,11 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
     private String pagar;
     private TextView total,cambio;
     private EditText cantidad;
-    private int totalPagar;
+    private float totalPagar;
     private interfaz_OnClick aceptarCompra;
 
      @SuppressLint("ValidFragment")
-     public pagar_DialogFragment(int totalPagar, interfaz_OnClick aceptarCompra){
+     public pagar_DialogFragment(float totalPagar, interfaz_OnClick aceptarCompra){
          this.totalPagar=totalPagar;
          this.aceptarCompra=aceptarCompra;
      }
@@ -54,7 +54,7 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!(TextUtils.isEmpty(cantidad.getText()))) {
-                    cambio.setText(String.valueOf((Integer.parseInt(String.valueOf(cantidad.getText())))-totalPagar));
+                    cambio.setText(String.valueOf((Float.parseFloat(String.valueOf(cantidad.getText())))-totalPagar));
                 }
             }
             @Override
@@ -79,14 +79,14 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         });
         return rootView;
     }
-    public Boolean validar(int total){
+    public Boolean validar(float total){
          Boolean validado=true;
         if(((TextUtils.isEmpty(cantidad.getText())))) {  /// es vacio
             validado=false;
             cantidad.setError("Ingresa una cantidad válida");
         }
         else{  ///hay algo
-            if((Integer.parseInt(String.valueOf(cantidad.getText()))<total)){
+            if((Float.parseFloat(String.valueOf(cantidad.getText()))<total)){
                 validado=false;
                 cantidad.setError("Ingresa una cantidad válida");
             }

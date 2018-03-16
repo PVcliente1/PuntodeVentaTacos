@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -34,11 +35,12 @@ import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
 import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_descuento {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_descuento , interfaz_OnClick {
     ViewPager viewPager;
     TabLayout tabLayout;
     ImageView logo;
@@ -81,16 +83,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
         db=admin.getWritableDatabase();
         values = new ContentValues();
-
-        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
-
-        if(fila.moveToFirst()) {
-            //Toast.makeText(getApplicationContext(), fila.getString(0), Toast.LENGTH_LONG).show();
-            //Toast.makeText(getApplicationContext(), fila.getString(1), Toast.LENGTH_LONG).show();
-            //nombreEmpresa.setText(fila.getString(0));
-            //logo.setImageURI(Uri.parse(fila.getString(1)));
-        }
+        datosEmpresa();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+    public void datosEmpresa(){   ////obtenemos el logo y nombre de la empresa y los colocamos
+        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
+        if(fila.moveToFirst()) {
+            nombreEmpresa.setText(fila.getString(0));
+            logo.setImageURI(Uri.parse(fila.getString(1)));
+        }
+    }
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getApplicationContext(), "caca ", Toast.LENGTH_LONG).show();
+        datosEmpresa();
     }
 
     @Override

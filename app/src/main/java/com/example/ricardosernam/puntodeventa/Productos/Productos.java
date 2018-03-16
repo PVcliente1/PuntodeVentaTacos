@@ -273,6 +273,10 @@ public class Productos extends Fragment implements agregado {
             nombre.setError("Nombre existente, ingresa otro");
             valid = false;
         }
+        else  if ((TextUtils.isDigitsOnly(nombre.getText()))){
+            nombre.setError("Ingresa mínimo una letra");
+            valid = false;
+        }
         else
         {
             nombre.setError(null);

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
@@ -36,12 +39,17 @@ public class Personalizacion1 extends Fragment {
     private ContentValues values;
     private FragmentManager fm;
     private SQLiteDatabase db;
+    private interfaz_OnClick datosSeleccionados;
     AppBarLayout bar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        try {
+            datosSeleccionados = (interfaz_OnClick) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling fragment must implement Callback interface");
+        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -167,6 +175,7 @@ public class Personalizacion1 extends Fragment {
               db.close();
               getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
               bar.setVisibility(View.VISIBLE);
+              datosSeleccionados.onClick(view);
           }
       });
         return view;

@@ -181,6 +181,10 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
             nombreP.setError("Nombre existente, ingresa otro");
             valid = false;
         }
+        else  if ((TextUtils.isDigitsOnly(nombreP.getText()))){
+            nombreP.setError("Ingresa mínimo una letra");
+            valid = false;
+        }
         else
         {
             nombreP.setError(null);

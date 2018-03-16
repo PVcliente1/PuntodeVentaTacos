@@ -125,7 +125,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             }
         });
         historial.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 DFhistorial.show(fm, "Historial_DialogFragment");
@@ -138,7 +137,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
         if(datosSeleccionado.moveToFirst()) {                                                                                        ///precioVenta
-            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), Float.parseFloat(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), datosSeleccionado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
             cobro.setVisibility(View.VISIBLE);
             opcionDeVenta.setVisibility(View.VISIBLE);
             total.setText(datosSeleccionado.getString(2));
@@ -233,7 +232,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             public void onClick(View view) {
                 seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
                 seleccionado2=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
-                new pagar_DialogFragment(Integer.parseInt(String.valueOf(total.getText())), new interfaz_OnClick() {
+                new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
                     @Override
                     public void onClick(View v) {////ocultamos y guardamos los datos
                         Toast.makeText(getContext(), "Se ha guardado la compra", Toast.LENGTH_LONG).show();
@@ -315,7 +314,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             //obtener resultados
             datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(datosEscaneado.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), Integer.parseInt(datosEscaneado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), datosEscaneado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
                 cobro.setVisibility(View.VISIBLE);
                 opcionDeVenta.setVisibility(View.VISIBLE);
                 total.setText(datosEscaneado.getString(2));
