@@ -24,6 +24,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +56,12 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
     private ImageView ponerImagen;
     private String rutaImagen;
     private Uri selectedImage;
+    private Cursor nombreR, codigoR;
     private FragmentManager fm;
     private ContentValues values;
     private SQLiteDatabase db;
     private agregado Interfaz;
+    private boolean rp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,6 +150,24 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         getDialog().setTitle("Nuevo Producto");
         return rootView;
     }
+    public boolean nombreRepetido(){
+        rp=false;
+        nombreR=db.rawQuery("select nombre from Productos where nombre='"+nombreP.getText()+"'" ,null);
+        if(nombreR.moveToFirst()) {///si hay un elemento
+            rp=true;
+        }
+        return rp;
+    }
+    public boolean codigoRepetido() {
+        rp = false;
+        if (!(TextUtils.isEmpty(codigo.getText()))) {  ///si no esta vacio lo comprobamos
+            codigoR = db.rawQuery("select codigo_barras from Productos where codigo_barras='" + codigo.getText() + "'", null);
+            if (codigoR.moveToFirst()) {///si hay un elemento
+                rp = true;
+            }
+        }
+        return rp;
+    }
     public boolean validate() {  ///validamos que los campos cumplan los requisitos
         boolean valid = true;
         String name = nombreP.getText().toString();
@@ -153,10 +176,19 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         if (name.isEmpty()) {
             nombreP.setError("Campo obligatorio");
             valid = false;
-        } else {
+        }
+        else if(nombreRepetido()){
+            nombreP.setError("Nombre existente, ingresa otro");
+            valid = false;
+        }
+        else
+        {
             nombreP.setError(null);
         }
-
+        if(codigoRepetido()){
+            codigo.setError("Código existente, ingresa otro");
+            valid = false;
+        }
         if (unity.isEmpty()) {
             unidad.setError("Campo obligatorio");
             valid = false;

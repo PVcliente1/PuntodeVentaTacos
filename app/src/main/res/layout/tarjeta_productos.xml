@@ -27,6 +27,7 @@
 
             <EditText
                 android:id="@+id/ETnombre"
+                android:inputType="textCapSentences"
                 android:layout_width="wrap_content"
                 android:enabled="false"
                 android:layout_height="wrap_content"

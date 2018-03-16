@@ -36,21 +36,21 @@ import java.util.ArrayList;
 public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
     private Context context;
-    private interfazUnidades_OnClick Interfaz;
-    private interfaz_OnClickCodigo Interfaz2;
-    private interfaz_OnClickImagen Interfaz3;
+    private interfazUnidades_OnClick elimnarProducto;
+    private interfaz_OnClickCodigo modificarCodigo;
+    private interfaz_OnClickImagen modificarImagen;
     private actualizado actualizarModificación;
-    private interfaz_OnClickElementosProductos Interfaz5;
+    private interfaz_OnClickElementosProductos elementosProductos;
     private interfaz_OnClick aceptarModificacion;
 
 
-    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo Interfaz2, interfaz_OnClickImagen Interfaz3, interfaz_OnClickElementosProductos Interfaz5, actualizado actualizarModificación, interfaz_OnClick aceptarModificacion) {  ///recibe el arrayProductos como parametro y la interface
+    public ProductosAdapter(Context context, ArrayList<Pro_ventas_class> itemsProductos, interfazUnidades_OnClick Interfaz, interfaz_OnClickCodigo modificarCodigo, interfaz_OnClickImagen modificarImagen, interfaz_OnClickElementosProductos elementosProductos, actualizado actualizarModificación, interfaz_OnClick aceptarModificacion) {  ///recibe el arrayProductos como parametro y la interface
         this.context=context;
         this.itemsProductos = itemsProductos;
-        this.Interfaz=Interfaz;
-        this.Interfaz2=Interfaz2;
-        this.Interfaz3=Interfaz3;
-        this.Interfaz5=Interfaz5;
+        this.elimnarProducto=Interfaz;
+        this.modificarCodigo=modificarCodigo;
+        this.modificarImagen=modificarImagen;
+        this.elementosProductos=elementosProductos;
         this.actualizarModificación=actualizarModificación;
         this.aceptarModificacion=aceptarModificacion;
     }
@@ -101,7 +101,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Interfaz5.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio);
+                elementosProductos.onClick(String.valueOf(holder.nombreP.getText()), holder.codigo, holder.nombreP, holder.imagen, holder.unidad, holder.precio, holder.editar, holder.escanear, holder.traerImagen, holder.botones);
                 holder.editar.setEnabled(false);
                 holder.codigo.setEnabled(true);
                 holder.nombreP.setEnabled(true);
@@ -114,14 +114,6 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                     @Override
                     public void onClick(View view) {////guardamos los cambios realizados
                         actualizarModificación.actualizar(position, (String.valueOf(holder.nombreP.getText())));
-                        holder.editar.setEnabled(true);
-                        holder.nombreP.setEnabled(false);
-                        holder.precio.setEnabled(false);
-                        holder.unidad.setEnabled(false);
-                        holder.codigo.setEnabled(false);
-                        holder.botones.setVisibility(View.GONE);
-                        holder.escanear.setVisibility(View.GONE);
-                        holder.traerImagen.setVisibility(View.GONE);
                     }
                 });
                 holder.cancelarM.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +146,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                         itemsProductos.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position,itemsProductos.size());
-                        Interfaz.onClick(view, String.valueOf(holder.nombreP.getText()));
+                        elimnarProducto.onClick(view, String.valueOf(holder.nombreP.getText()));
                         eliminarProducto.dismiss();
                     }
                 });
@@ -180,13 +172,13 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         holder.escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Interfaz2.onClick(view, holder.codigo);
+                modificarCodigo.onClick(view, holder.codigo);
             }
         });
         holder.traerImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Interfaz3.onClick(view, holder.imagen);
+                modificarImagen.onClick(view, holder.imagen);
             }
         });
     }
