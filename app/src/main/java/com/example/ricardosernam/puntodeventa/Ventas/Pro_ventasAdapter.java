@@ -22,10 +22,6 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
     }
-    /*public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, interfaz_OnClick interfaz_onClick) {  ///recibe el arrayProductos como parametro y la interface
-        this.itemsProductos = itemsProductos;
-    }*/
-
     public  class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         // Campos respectivos de un item
         public TextView nombreP;

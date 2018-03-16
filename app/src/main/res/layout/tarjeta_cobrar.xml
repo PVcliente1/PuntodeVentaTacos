@@ -79,23 +79,23 @@
 
             <EditText
                 android:id="@+id/ETcantidad"
-                android:gravity="center"
                 android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:ems="10"
-                android:inputType="number" />
+                android:gravity="center"
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/ETprecio"
-                android:gravity="center"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="2dp"
                 android:ems="10"
-                android:inputType="number"
+                android:gravity="center"
+                android:inputType="numberDecimal"
                 android:visibility="visible" />
             <LinearLayout
                 android:layout_width="wrap_content"

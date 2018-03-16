@@ -137,18 +137,18 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     @Override
     public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
-        if(datosSeleccionado.moveToFirst()) {
-            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getString(2), Integer.parseInt(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+        if(datosSeleccionado.moveToFirst()) {                                                                                        ///precioVenta
+            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), Float.parseFloat(datosSeleccionado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
             cobro.setVisibility(View.VISIBLE);
             opcionDeVenta.setVisibility(View.VISIBLE);
             total.setText(datosSeleccionado.getString(2));
             adapter.notifyDataSetChanged();
         }
     }
-    @Override
-    public void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal, int descuento) {  ///al modificar la compra de un producto
+    @Override   ///modificamos los datos de una compra
+    public void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento) {  ///al modificar la compra de un producto
         itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
-        int suma=0;
+        float suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
             suma=suma+itemsCobrar.get(i).getSubTotal();
             total.setText(String.valueOf(suma));
@@ -315,7 +315,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             //obtener resultados
             datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(datosEscaneado.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getString(2), Integer.parseInt(datosEscaneado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), Integer.parseInt(datosEscaneado.getString(2)), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
                 cobro.setVisibility(View.VISIBLE);
                 opcionDeVenta.setVisibility(View.VISIBLE);
                 total.setText(datosEscaneado.getString(2));

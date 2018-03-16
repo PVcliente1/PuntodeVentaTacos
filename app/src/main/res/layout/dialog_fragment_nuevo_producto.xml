@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:hint="Precio"
-                    android:inputType="none|number" />
+                    android:inputType="numberDecimal" />
             </LinearLayout>
 
             <LinearLayout

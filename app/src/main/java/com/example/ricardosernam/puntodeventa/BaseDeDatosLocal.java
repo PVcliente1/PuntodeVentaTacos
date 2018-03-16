@@ -94,11 +94,11 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `idproducto` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "  `codigo_barras` VARCHAR(45),\n" +
                 "  `nombre` VARCHAR(45),\n" +
-                "  `precio_venta` VARCHAR(45)," +
+                "  `precio_venta` float(45)," +
                 "  `ruta_imagen` VARCHAR(45)," +
                 "  `unidad` varchar(30),\n" +
-                "  `cantidad` INTEGER,\n" +
-                "  `precio_compra` INTEGER,\n" +
+                "  `cantidad` float,\n" +
+                "  `precio_compra` float,\n" +
                 "  `idproveedorFK` VARCHAR(40))");                //Llave foranea
 
         //        "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");

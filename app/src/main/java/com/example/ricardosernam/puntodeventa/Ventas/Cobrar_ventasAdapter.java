@@ -43,7 +43,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         this.context = context;
     }
     public interface actualizado {
-        void actualizar(String unidad, String nombre, int cantidad, String precio, int position, int subTotal, int descuento);
+        void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento);
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
@@ -95,9 +95,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
-                int totalParcial=Integer.parseInt(String.valueOf((cantidad.getText()))) * Integer.parseInt(String.valueOf((precio.getText())));
-                subtotal.setText(String.valueOf(totalParcial-(Integer.parseInt(String.valueOf(porcentajeD.getText()))*totalParcial)/100));
-                Interfaz.actualizar(unidad, nombre, Integer.parseInt(String.valueOf((cantidad.getText()))), String.valueOf((precio.getText())), position, Integer.parseInt(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
+                float totalParcial=Float.parseFloat(String.valueOf((cantidad.getText()))) * Float.parseFloat(String.valueOf((precio.getText())));
+                subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));
+                Interfaz.actualizar(unidad, nombre, Float.parseFloat(String.valueOf((cantidad.getText()))), Float.parseFloat(String.valueOf((precio.getText()))), position, Float.parseFloat(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
             }
         }
         @Override
@@ -123,11 +123,11 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
 
         holder.unidad.setText(itemsCobrar.get(position).getUnidad());
         holder.nombreP.setText(itemsCobrar.get(position).getNombre());
-        holder.precio.setText(itemsCobrar.get(position).getPrecio());
+        holder.precio.setText(String.valueOf(itemsCobrar.get(position).getPrecio()));
         holder.cantidad.setText(String.valueOf(itemsCobrar.get(position).getCantidad()));
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
         holder.porcentajeD.setText(String.valueOf(itemsCobrar.get(position).getDescuento()));
-
+        ///llamamos al escuchador de cambios en los editText
         MyTextWatcher watcher = new MyTextWatcher(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar,holder.porcentajeD,  position);
         holder.cantidad.addTextChangedListener(watcher);
         holder.precio.addTextChangedListener(watcher);
