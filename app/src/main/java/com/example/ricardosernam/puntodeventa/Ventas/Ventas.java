@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +42,7 @@ import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -51,20 +55,19 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private RadioGroup opcionVentas, opcionCobrar;
     private LinearLayout pagar, fechaHora, tipoDescuento;
     private Button eliminarCompra,aceptarCompra;
-    private EditText cliente, descripcion, hora, fecha;
     interfaz_descuento Interface_historial;
     private ContentValues values;
-    private RadioButton seleccionado, seleccionado2;
+    private RadioButton seleccionadoCobrar;
     private LinearLayout editsApartado, opcionDeVenta;
     private CardView cobro;
     private CheckBox descuento;
     private TextView tipoD, total;
-    private String normal, especial, RBseleccionado;
+    private String normal, especial, RBseleccionadoTipo, RBseleccionadoCobrar;
 
     private Button productos, escanear, historial;
-    private EditText codigo;
+    private EditText codigo, cliente, descripcion, horaEntrega, fechaEntrega;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial;
+    private Cursor datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial, ejemplo;
     private Pro_DialogFragment pro;
     private Historial_DialogFragment DFhistorial;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
@@ -86,8 +89,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         values = new ContentValues();
 
         fechaHora=view.findViewById(R.id.LOedittext);
-        hora=view.findViewById(R.id.EThora);
-        fecha=view.findViewById(R.id.ETfecha);
+        horaEntrega=view.findViewById(R.id.EThora);
+        fechaEntrega=view.findViewById(R.id.ETfecha);
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
         opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
@@ -186,7 +189,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.GONE);
                         fechaHora.setVisibility(View.GONE);
                         tipoDescuento.setVisibility(View.GONE);
-                        RBseleccionado="Cotizar";
+                        RBseleccionadoTipo="Cotizar";
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
@@ -197,7 +200,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.VISIBLE);
                         tipoDescuento.setVisibility(View.VISIBLE);
-                        RBseleccionado="Apartar";
+                        RBseleccionadoTipo="Apartar";
                         break;
                     case R.id.RBvender:
                         pagar.setVisibility(View.VISIBLE);
@@ -208,7 +211,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.INVISIBLE);
                         tipoDescuento.setVisibility(View.VISIBLE);
-                        RBseleccionado="Vender";
+                        RBseleccionadoTipo="Vender";
                         break;
 
                 }
@@ -238,41 +241,50 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
-                seleccionado2=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
+                //seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
+                seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
+                RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());
                 new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {////ocultamos y guardamos los datos
-                        values.put("tipo", RBseleccionado);
-                        //values.put("fecha", nombreP.getText();
-                        //values.put("precio_venta", String.valueOf(precio.getText())); //
-                        //values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
-                        //values.put("unidad", String.valueOf(unidad.getText()));
-                        db.insertOrThrow("Productos", null, values);
-                        Toast.makeText(getContext(), "Se ha guardado la compra", Toast.LENGTH_LONG).show();
+                        /////obtener fecha actual
+                        java.util.Calendar c = java.util.Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                        String formattedDate = df.format(c.getTime());
+                        values.put("tipo", RBseleccionadoTipo);
+                        values.put("fecha", formattedDate);
+                        values.put("fecha_entrega", String.valueOf(fechaEntrega.getText())+" "+(horaEntrega.getText())); //
+                        values.put("descripcion", String.valueOf(descripcion.getText()));
+                        values.put("tipo_cobro", RBseleccionadoCobrar);
+                        db.insertOrThrow("Ventas", null, values);
+                        ejemplo=db.rawQuery("select tipo, fecha, fecha_entrega, descripcion, tipo_cobro from Ventas" ,null);
+                        if(ejemplo.moveToLast()){
+                            Toast.makeText(getContext(), ejemplo.getString(1)+ "-- "+ejemplo.getString(2)+ "-- "+ejemplo.getString(3)+ "-- "+ejemplo.getString(4), Toast.LENGTH_LONG).show();
+                        }
                         cerrar_compra();
                     }
                 }).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
-        hora.setOnClickListener(new View.OnClickListener() {
+        horaEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {   ///abrimos el dialogo de TimePicker
                 new Hora_DialogFragment(new interfaz_OnClickHora() {
                     @Override
                     public void onClick(int i, int i1) {
-                        hora.setText(i + ":" + i1);
+                        horaEntrega.setText(i + ":" + i1);
                     }
                 }).show(getFragmentManager(),"Hora_apartado");
             }
         });
-        fecha.setOnClickListener(new View.OnClickListener() {
+        fechaEntrega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {   ///abrimos el dialogo de DatePicker
                 new Fecha_DialogFragment(new interfaz_OnClickFecha() {
                     @Override
                     public void onClick(View v, int i, int i1, int i2) {
-                        fecha.setText(i2 + "/" + i1+1 + "/" + i);
+                        fechaEntrega.setText(i2+"-"+ i1 +"-"+ i);
                     }
                 }).show(getFragmentManager(),"Fecha_apartado");
             }

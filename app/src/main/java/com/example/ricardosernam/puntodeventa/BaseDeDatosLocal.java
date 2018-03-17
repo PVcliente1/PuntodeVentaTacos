@@ -158,7 +158,6 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `tipo` VARCHAR(45),\n" +
                 "  `fecha` DATETIME ,\n" +
                 "  `fecha_entrega` DATETIME ,\n" +
-                "  `hora_entrega` DATETIME ,\n" +
                 "  `descripcion` VARCHAR(45) ,\n" +
                 "  `tipo_cobro` VARCHAR(45),\n" +
                 "  `idmiembroFK` INTEGER ,\n" +

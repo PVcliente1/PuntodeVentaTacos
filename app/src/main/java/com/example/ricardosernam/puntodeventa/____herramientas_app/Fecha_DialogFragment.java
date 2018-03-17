@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
@@ -42,7 +43,7 @@ public class Fecha_DialogFragment extends android.support.v4.app.DialogFragment{
                         aceptar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Interface.onClick(view, i, i1, i2); ///interfaz para comunicar con ventas
+                                Interface.onClick(view, i, i1+1, i2); ///interfaz para comunicar con ventas
                                 dismiss();
                             }
                         });

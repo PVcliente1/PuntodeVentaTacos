@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     @Override
     public void onClick(View v) {
-        Toast.makeText(getApplicationContext(), "caca ", Toast.LENGTH_LONG).show();
         datosEmpresa();
     }
 
