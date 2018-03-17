@@ -133,7 +133,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `direccion` VARCHAR(45))");
                 //"  PRIMARY KEY (`idcliente`))");
 
-        sqLiteDatabase.execSQL("INSERT INTO Clientes (idcliente,nombre) VALUES (1, 'Seleccionar Cliente')");
+        sqLiteDatabase.execSQL("INSERT INTO Clientes (idcliente,nombre) VALUES (1, 'Cliente')");
 
 
         //Creamos el index para relacionar productos con proveedores        sqLiteDatabase.execSQL("CREATE INDEX `fk_productos_proveedores1_idx` ON Productos (`idproveedorFK` ASC)");

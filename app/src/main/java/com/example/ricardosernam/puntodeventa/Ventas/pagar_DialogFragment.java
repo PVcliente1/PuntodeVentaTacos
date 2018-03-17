@@ -1,7 +1,11 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
@@ -23,6 +28,8 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
     private String pagar;
     private TextView total,cambio;
     private EditText cantidad;
+    private ContentValues values;
+    private SQLiteDatabase db;
     private float totalPagar;
     private interfaz_OnClick aceptarCompra;
 
@@ -43,6 +50,10 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         cantidad=rootView.findViewById(R.id.ETcantidadPago);
         aceptar=rootView.findViewById(R.id.BtnAceptarPago);
         cancelar=rootView.findViewById(R.id.BtnCancelarPago);
+
+        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
+        db=admin.getWritableDatabase();
+        values = new ContentValues();
 
         total.setText(String.valueOf(totalPagar));
         cantidad.setText(String.valueOf(totalPagar));
