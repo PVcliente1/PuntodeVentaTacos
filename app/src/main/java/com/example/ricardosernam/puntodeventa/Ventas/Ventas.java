@@ -98,13 +98,14 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         if(descuentoEspecial.moveToFirst()){
             especial=descuentoEspecial.getString(0);
         }
-
-
-        adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
-        lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
-        recycler.setLayoutManager(lManager);
-        recycler.setAdapter(adapter);
+        /*if(!(itemsCobrar.isEmpty())) {
+            adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
+            recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
+            lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
+            recycler.setLayoutManager(lManager);
+            recycler.setAdapter(adapter);
+        }*/
 
         pro =new Pro_DialogFragment();  //abrimos el menu de productos
 
@@ -133,14 +134,21 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
 
         return view;
     }
+    public void relleno(){    ///llamamos el adapter del recycler
+        adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
+        lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
+        recycler.setLayoutManager(lManager);
+        recycler.setAdapter(adapter);
+    }
     @Override
     public void agregar(String seleccionado) {    ///agregarNuevaCompra
         datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
-        if(datosSeleccionado.moveToFirst()) {                                                                                        ///precioVenta
+        if(datosSeleccionado.moveToFirst()) {
             itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), datosSeleccionado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+            relleno();
             cobro.setVisibility(View.VISIBLE);
-            opcionDeVenta.setVisibility(View.VISIBLE);
-            total.setText(datosSeleccionado.getString(2));
+            opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
+            actualizar(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), itemsCobrar.size()-1, datosSeleccionado.getFloat(2), 0);
             adapter.notifyDataSetChanged();
         }
     }

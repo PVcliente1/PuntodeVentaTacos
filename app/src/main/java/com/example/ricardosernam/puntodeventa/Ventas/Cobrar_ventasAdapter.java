@@ -77,7 +77,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         private String unidad, nombre;
         private int position;
 
-        public MyTextWatcher(String unidad, String nombre,  EditText cantidad, EditText precio, TextView subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
+        MyTextWatcher(String unidad, String nombre,  EditText cantidad, EditText precio, TextView subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
             this.unidad=unidad;
             this.nombre=nombre;
             this.cantidad = cantidad;
@@ -96,7 +96,8 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
                 float totalParcial=Float.parseFloat(String.valueOf((cantidad.getText()))) * Float.parseFloat(String.valueOf((precio.getText())));
-                subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));
+                subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
+                                    //(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento);
                 Interfaz.actualizar(unidad, nombre, Float.parseFloat(String.valueOf((cantidad.getText()))), Float.parseFloat(String.valueOf((precio.getText()))), position, Float.parseFloat(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
             }
         }
@@ -128,7 +129,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
         holder.porcentajeD.setText(String.valueOf(itemsCobrar.get(position).getDescuento()));
         ///llamamos al escuchador de cambios en los editText
-        MyTextWatcher watcher = new MyTextWatcher(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar,holder.porcentajeD,  position);
+        MyTextWatcher watcher = new MyTextWatcher(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar, holder.porcentajeD, position);
         holder.cantidad.addTextChangedListener(watcher);
         holder.precio.addTextChangedListener(watcher);
         holder.porcentajeD.addTextChangedListener(watcher);
