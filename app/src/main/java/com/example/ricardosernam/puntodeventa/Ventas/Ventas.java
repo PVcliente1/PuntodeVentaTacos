@@ -323,9 +323,10 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(datosEscaneado.moveToFirst()) {
                 itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), datosEscaneado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+                relleno();
                 cobro.setVisibility(View.VISIBLE);
-                opcionDeVenta.setVisibility(View.VISIBLE);
-                total.setText(datosEscaneado.getString(2));
+                opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
+                actualizar(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), itemsCobrar.size()-1, datosEscaneado.getFloat(2), 0);
                 adapter.notifyDataSetChanged();
             }
             else{
