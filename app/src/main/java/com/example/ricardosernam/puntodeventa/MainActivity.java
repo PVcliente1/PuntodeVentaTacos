@@ -40,7 +40,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_descuento , interfaz_OnClick {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_OnClick {
     ViewPager viewPager;
     TabLayout tabLayout;
     ImageView logo;
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ContentValues values;
     TextView nombreEmpresa;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
-    private ArrayList<Historial_ventas_class> itemsHistorial = new ArrayList<>();   ///array para productos seleccionados
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,14 +174,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
-    public void descontar(String tipo, int pagar) {  ////metodo de la interface (debo puentearla forzosamente con el activity que las contiene)
-        itemsHistorial.add(new Historial_ventas_class(tipo, pagar));  ///tipo viene de fragment_cobrar
-        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment (Le envio a ventas el array que ira a Historial)
-
     }
     private int appGetFirstTimeRun() {  ///comprobamos si es la primera vez que se abre la app
         //Check if App Start First Time

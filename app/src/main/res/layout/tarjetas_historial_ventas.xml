@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:background="@color/viewfinder_border">
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -28,15 +28,15 @@
             <TextView
                 android:id="@+id/TVtipoHistorial"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Apartado" />
+                android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LOestatus"
+                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0">
+                android:layout_weight="1">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,26 +46,33 @@
                 <TextView
                     android:id="@+id/TVestatusHistorial"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Por Cobrar" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cliente"
-                android:layout_weight="0"/>
+                android:text="Cliente" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:text="Sin nombre" />
-
+                android:layout_marginLeft="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,76 +83,86 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Sin telefono"
                 android:layout_weight="0"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/TVFechaTipo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha de transacción" />
+            android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Fecha" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/TVFechaTipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de transacción" />
+
+                <TextView
+                    android:id="@+id/TVfechaHistorial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/LOfechaEntrega"
+                android:layout_weight="1"
+                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" Fecha de entrega " />
+
                 <TextView
-                    android:id="@+id/TVFechaApartadoHistorial"
+                    android:id="@+id/TVfechaApartadoHistorial"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text=" Fecha" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No. de articulos:"
-                android:layout_weight="0"/>
+                android:text="No. de articulos:" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:text="1234567" />
+                android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_weight="1">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descuento:" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Descuento:"
-                android:layout_weight="0"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=" Especial"
-                android:layout_weight="0"/>
+                android:layout_marginLeft="5dp" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,7 +170,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <TextView
@@ -163,14 +179,13 @@
                 <TextView
                     android:id="@+id/TVtotal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Total" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         <LinearLayout
             android:id="@+id/LOdeuda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
@@ -180,10 +195,8 @@
             <TextView
                 android:id="@+id/TVDeuda"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Deuda" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

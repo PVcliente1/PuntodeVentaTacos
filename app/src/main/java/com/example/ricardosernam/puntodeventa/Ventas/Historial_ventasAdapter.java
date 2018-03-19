@@ -29,24 +29,27 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
     }
 
     public class HistorialVentasViewHolder extends RecyclerView.ViewHolder {
-        public TextView tipo,pagar;
+        public TextView tipoVenta,tipoCobro, fechaTransaccion, fechaApartado;
         public LinearLayout estatus, fechaEntrega, deuda;
         public FragmentManager manager;
 
         public HistorialVentasViewHolder(View itemView) {
             super(itemView);
-            tipo=itemView.findViewById(R.id.TVtipoHistorial);
-            pagar=itemView.findViewById(R.id.TVestatusHistorial);
+            tipoVenta=itemView.findViewById(R.id.TVtipoHistorial);
+            tipoCobro=itemView.findViewById(R.id.TVestatusHistorial);
+            fechaTransaccion=itemView.findViewById(R.id.TVfechaHistorial);
+            fechaApartado=itemView.findViewById(R.id.TVfechaApartadoHistorial);
+
             estatus=itemView.findViewById(R.id.LOestatus);
             fechaEntrega=itemView.findViewById(R.id.LOfechaEntrega);
             manager = ((Activity) context).getFragmentManager();
             deuda=itemView.findViewById(R.id.LOdeuda);
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Interfaz.onClick(view);
                 }
-            });*/
+            });
         }
 
     }
@@ -62,29 +65,27 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
     }
     @Override
     public void onBindViewHolder(HistorialVentasViewHolder holder, final int position) {
-        holder.tipo.setText(itemsHistorial.get(position).getTipo());
-        holder.pagar.setText(itemsHistorial.get(position).getPagar());
-        /*if(itemsHistorial.get(position).getPagar().equals("Pagar ahora")){
-            holder.pagar.setText("Pagado");
+        holder.tipoVenta.setText(itemsHistorial.get(position).getTipo_venta());
+        holder.tipoCobro.setText(itemsHistorial.get(position).getTipo_cobro());
+        holder.fechaTransaccion.setText(itemsHistorial.get(position).getFecha());
+        holder.fechaApartado.setText(itemsHistorial.get(position).getFecha_entrega());
+        if(itemsHistorial.get(position).getTipo_cobro().equals("Pagar ahora")){  ///SI ESATA PAGADA LA COMPRA
+            holder.tipoCobro.setText("Pagado");
             holder.estatus.setBackgroundColor(Color.GREEN);
-            holder.itemView.setFocusable(false);
-            holder.deuda.setVisibility(View.INVISIBLE);
+            holder.itemView.setEnabled(false);  ///no abrir
+            holder.deuda.setVisibility(View.GONE);
         }
         else{
-            holder.estatus.setBackgroundColor(Color.RED);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.estatus.setBackgroundColor(Color.RED);    ///SI NO SE HA PAGADO
+            holder.itemView.setOnClickListener(new View.OnClickListener() {   ///si se presiona una carta, mandamos la instrucción al fragment
                 @Override
                 public void onClick(View view) {
                     Interfaz.onClick(view);
                 }
             });
-        }*/
-        if(itemsHistorial.get(position).getTipo().equals("Venta")){
-            holder.itemView.setBackgroundColor(Color.GRAY);
-            holder.fechaEntrega.setVisibility(View.INVISIBLE);
         }
-        else if(itemsHistorial.get(position).getTipo().equals("Apartado")){
-            holder.itemView.setBackgroundColor(Color.CYAN);
+        if(itemsHistorial.get(position).getTipo_venta().equals("Venta")){
+            holder.fechaEntrega.setVisibility(View.GONE);
         }
     }
 

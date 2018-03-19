@@ -134,7 +134,7 @@
                         android:layout_gravity="center" />
                 </LinearLayout>
             </LinearLayout>
-            <TextView
+            <EditText
                 android:id="@+id/TVsubtotal"
                 android:gravity="center"
                 android:textSize="18dp"

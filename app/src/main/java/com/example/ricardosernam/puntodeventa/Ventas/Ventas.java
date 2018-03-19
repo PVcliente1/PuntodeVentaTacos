@@ -55,9 +55,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private RadioGroup opcionVentas, opcionCobrar;
     private LinearLayout pagar, fechaHora, tipoDescuento;
     private Button eliminarCompra,aceptarCompra;
-    interfaz_descuento Interface_historial;
     private ContentValues values;
-    private RadioButton seleccionadoCobrar;
+    private RadioButton seleccionadoCobrar, seleccionadoTipo;
     private LinearLayout editsApartado, opcionDeVenta;
     private CardView cobro;
     private CheckBox descuento;
@@ -67,9 +66,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private Button productos, escanear, historial;
     private EditText codigo, cliente, descripcion, horaEntrega, fechaEntrega;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial, ejemplo;
-    private Pro_DialogFragment pro;
-    private Historial_DialogFragment DFhistorial;
+    private Cursor datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
     @Override
@@ -80,8 +77,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
-        //DFhistorial=new Historial_DialogFragment(itemsHistorial);  ////enviamos el array con las compras al fragment de historial
-
         productos= view.findViewById(R.id.BtnProductos);
         historial= view.findViewById(R.id.BtnHistorial);
         escanear= view.findViewById(R.id.BtnEscanear);
@@ -106,9 +101,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             especial=descuentoEspecial.getString(0);
         }
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
-
-        pro =new Pro_DialogFragment();  //abrimos el menu de productos
-
         codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
         escanear.setOnClickListener(new View.OnClickListener() {
@@ -122,13 +114,14 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         productos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {///mandamos llamar el DialogFragment
-                pro.show(getChildFragmentManager(), "Pro_DialogFragment");
+                new Pro_DialogFragment().show(getChildFragmentManager(), "Pro_DialogFragment");
             }
         });
-        historial.setOnClickListener(new View.OnClickListener() {
+
+        historial.setOnClickListener(new View.OnClickListener() {  ///abrimos el historial de ventas
             @Override
             public void onClick(View view) {
-                DFhistorial.show(fm, "Historial_DialogFragment");
+                new Historial_DialogFragment().show(fm, "Historial_DialogFragment");
             }
         });
 
@@ -165,7 +158,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
+        //Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
@@ -189,7 +182,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.GONE);
                         fechaHora.setVisibility(View.GONE);
                         tipoDescuento.setVisibility(View.GONE);
-                        RBseleccionadoTipo="Cotizar";
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
@@ -200,7 +192,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.VISIBLE);
                         tipoDescuento.setVisibility(View.VISIBLE);
-                        RBseleccionadoTipo="Apartar";
                         break;
                     case R.id.RBvender:
                         pagar.setVisibility(View.VISIBLE);
@@ -211,7 +202,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.INVISIBLE);
                         tipoDescuento.setVisibility(View.VISIBLE);
-                        RBseleccionadoTipo="Vender";
                         break;
 
                 }
@@ -241,28 +231,28 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //seleccionado= getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());  ////obtenemos el RadioButton seleccionado
                 seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
                 RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());
+
+                seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
+                RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());
                 new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
-                    public void onClick(View v) {////ocultamos y guardamos los datos
+                    public void onClick(View v) {////ocultamos y guardamos los datos de la compra
                         /////obtener fecha actual
                         java.util.Calendar c = java.util.Calendar.getInstance();
                         SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                         String formattedDate = df.format(c.getTime());
+                        /////
                         values.put("tipo", RBseleccionadoTipo);
                         values.put("fecha", formattedDate);
                         values.put("fecha_entrega", String.valueOf(fechaEntrega.getText())+" "+(horaEntrega.getText())); //
                         values.put("descripcion", String.valueOf(descripcion.getText()));
                         values.put("tipo_cobro", RBseleccionadoCobrar);
                         db.insertOrThrow("Ventas", null, values);
-                        ejemplo=db.rawQuery("select tipo, fecha, fecha_entrega, descripcion, tipo_cobro from Ventas" ,null);
-                        if(ejemplo.moveToLast()){
-                            Toast.makeText(getContext(), ejemplo.getString(1)+ "-- "+ejemplo.getString(2)+ "-- "+ejemplo.getString(3)+ "-- "+ejemplo.getString(4), Toast.LENGTH_LONG).show();
-                        }
                         cerrar_compra();
+                        Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }
                 }).show(getFragmentManager(),"pagarDiaogFragment");
             }

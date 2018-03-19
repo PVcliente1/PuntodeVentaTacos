@@ -3,18 +3,29 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 
 public class Historial_ventas_class {
-    private String tipo;
-    private int pagar;
+    private String tipo_venta, fecha, fecha_entrega, descripcion, tipo_cobro;
 
-    public Historial_ventas_class(String tipo, int pagar) {   ///se manda desde el arrayProductos
-        this.tipo= tipo;
-        this.pagar=pagar;
+    public Historial_ventas_class(String tipo_venta, String fecha, String fecha_entrega, String descripcion, String tipo_cobro) {   ///se manda desde el arrayProductos
+        this.tipo_venta= tipo_venta;
+        this.fecha= fecha;
+        this.fecha_entrega= fecha_entrega;
+        this.descripcion= descripcion;
+        this.tipo_cobro= tipo_cobro;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipo_venta() {
+        return tipo_venta;
     }
-    public int getPagar() {
-        return pagar;
+    public String getFecha() {
+        return fecha;
+    }
+    public String getFecha_entrega() {
+        return fecha_entrega;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public String getTipo_cobro() {
+        return tipo_cobro;
     }
 }

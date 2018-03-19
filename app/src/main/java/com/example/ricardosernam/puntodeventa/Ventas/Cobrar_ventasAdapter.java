@@ -48,8 +48,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
         public TextView nombreP, tipoD, porcentajeD, unidad;
-        public EditText cantidad, precio;
-        public TextView subtotal;
+        public EditText cantidad, precio, subtotal;
         public Button eliminarArt, eliminarCompra;
         public CheckBox descuento;
         public actualizado actualizar;
@@ -70,14 +69,13 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         }
     }
     public static class MyTextWatcher implements TextWatcher{   ///detecta cambios en los editText
-        private EditText cantidad;
-        private EditText precio;
-        private TextView subtotal, porcentajeD;
+        private EditText cantidad,precio, subtotal;
+        private TextView porcentajeD;
         private actualizado Interfaz;
         private String unidad, nombre;
         private int position;
 
-        MyTextWatcher(String unidad, String nombre,  EditText cantidad, EditText precio, TextView subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
+        MyTextWatcher(String unidad, String nombre,  EditText cantidad, EditText precio, EditText subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
             this.unidad=unidad;
             this.nombre=nombre;
             this.cantidad = cantidad;
@@ -97,7 +95,6 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
                 float totalParcial=Float.parseFloat(String.valueOf((cantidad.getText()))) * Float.parseFloat(String.valueOf((precio.getText())));
                 subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
-                                    //(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento);
                 Interfaz.actualizar(unidad, nombre, Float.parseFloat(String.valueOf((cantidad.getText()))), Float.parseFloat(String.valueOf((precio.getText()))), position, Float.parseFloat(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
             }
         }

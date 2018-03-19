@@ -46,7 +46,6 @@ public class Descuentos extends DialogFragment {
             especial=descuentoEspecial.getString(0);
         }
         final TextView tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
-        final TextView porcentajeD=getActivity().findViewById(R.id.TVporcentajeDescuento);
         final AlertDialog.Builder tipoDescuento= new AlertDialog.Builder(getActivity());
         tipoDescuento.setTitle("Descuentos");
         tipoDescuento.setMessage("Seleccion un tipo de descuento");
@@ -54,7 +53,6 @@ public class Descuentos extends DialogFragment {
         tipoDescuento.setPositiveButton("Normal: "+ normal +"%", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface tipoDescuento, int id) {
                 tipoD.setText("Normal %: ");  ///marcamos que se selecciono normal
-                //porcentajeD.setText(normal);  ///marcamos que se selecciono normal
                 Interfaz.descontar("Normal %: ", descuentoNormal.getInt(0));
                 tipoDescuento.dismiss();
             }
@@ -62,7 +60,6 @@ public class Descuentos extends DialogFragment {
         tipoDescuento.setNegativeButton("Especial: "+ especial +"%", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface tipoDescuento, int id) {
                 tipoD.setText("Especial %: "); ///marcamos que se selecciono especial
-                //porcentajeD.setText(especial);  ///marcamos que se selecciono normal
                 Interfaz.descontar("Especial %: ", descuentoEspecial.getInt(0));
                 tipoDescuento.dismiss();
             }

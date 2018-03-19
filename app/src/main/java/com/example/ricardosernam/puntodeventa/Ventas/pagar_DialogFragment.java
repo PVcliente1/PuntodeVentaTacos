@@ -25,11 +25,8 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento
 @SuppressLint("ValidFragment")
 public class pagar_DialogFragment extends android.support.v4.app.DialogFragment {
     private Button aceptar,cancelar;
-    private String pagar;
     private TextView total,cambio;
     private EditText cantidad;
-    private ContentValues values;
-    private SQLiteDatabase db;
     private float totalPagar;
     private interfaz_OnClick aceptarCompra;
 
@@ -50,10 +47,6 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         cantidad=rootView.findViewById(R.id.ETcantidadPago);
         aceptar=rootView.findViewById(R.id.BtnAceptarPago);
         cancelar=rootView.findViewById(R.id.BtnCancelarPago);
-
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
-        db=admin.getWritableDatabase();
-        values = new ContentValues();
 
         total.setText(String.valueOf(totalPagar));
         cantidad.setText(String.valueOf(totalPagar));
@@ -78,7 +71,7 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
             public void onClick(View view) {
                 if(validar(totalPagar)){
                     dismiss();
-                    aceptarCompra.onClick(view);
+                    aceptarCompra.onClick(view);////guardamos los datos de la compra pero en ventas
                 }
             }
         });
