@@ -64,7 +64,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private Button eliminarCompra,aceptarCompra;
     private ContentValues values;
     private RadioButton seleccionadoCobrar, seleccionadoTipo;
-    private LinearLayout editsApartado, opcionDeVenta;
+    private LinearLayout opcionDeVenta;
     private CardView cobro;
     private CheckBox descuento;
     private TextView tipoD, porcentajeD, total;
@@ -91,7 +91,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         codigo=view.findViewById(R.id.ETcodigo);
         values = new ContentValues();
 
-        fechaHora=view.findViewById(R.id.LOedittext);
+        fechaHora=view.findViewById(R.id.LObotones_edittext);
         horaEntrega=view.findViewById(R.id.EThora);
         fechaEntrega=view.findViewById(R.id.ETfecha);
         total=view.findViewById(R.id.TVtotal);
@@ -159,8 +159,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //Interface_historial =(interfaz_descuento) getActivity();//ESTO SOLO ES POSIBLE SI MainActivity es una subclase de Comunicador por lo tanto implementa Comunicator: Polimorfismo
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
         opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
@@ -168,7 +166,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         pagar = getActivity().findViewById(R.id.LOpagar);
         cliente=getActivity().findViewById(R.id.ETcliente);
         descripcion=getActivity().findViewById(R.id.ETdescripcion);
-        editsApartado=getActivity().findViewById(R.id.LOedittext);
         descuento=getActivity().findViewById(R.id.CBDescuento);
         tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
         porcentajeD = getActivity().findViewById(R.id.TVporcentajeDescuento);
@@ -179,7 +176,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 switch (i) {
                     case R.id.RBcotizar:
                         pagar.setVisibility(View.GONE);
-                        editsApartado.setVisibility(View.GONE);
                         aceptarCompra.setVisibility(View.GONE);
                         cliente.setVisibility(View.GONE);
                         descripcion.setVisibility(View.GONE);
@@ -188,9 +184,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         break;
                     case R.id.RBapartar:
                         pagar.setVisibility(View.VISIBLE);
-                        editsApartado.setVisibility(View.VISIBLE);
                         aceptarCompra.setVisibility(View.VISIBLE);
-                        cliente.setText("Cliente (Obligatorio)");
+                        cliente.setHint("Cliente (obligatorio)");
                         cliente.setVisibility(View.VISIBLE);
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.VISIBLE);
@@ -198,9 +193,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         break;
                     case R.id.RBvender:
                         pagar.setVisibility(View.VISIBLE);
-                        editsApartado.setVisibility(View.VISIBLE);
                         aceptarCompra.setVisibility(View.VISIBLE);
-                        cliente.setText("Cliente (Opcional)");
+                        cliente.setHint("Cliente (opcional)");
                         cliente.setVisibility(View.VISIBLE);
                         descripcion.setVisibility(View.VISIBLE);
                         fechaHora.setVisibility(View.INVISIBLE);
@@ -318,14 +312,14 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         new Descuentos(new interfaz_descuento() {
                             @Override
                             public void descontar(String tipo, final int porcentaje) {
-                                //tipoD.setText(tipo);
-                                //tipoD.setVisibility(View.VISIBLE);
+                                tipoD.setText(tipo);
+                                tipoD.setVisibility(View.VISIBLE);
                                 porcentajeD.setText(String.valueOf(porcentaje));
                                 porcentajeD.setVisibility(View.VISIBLE);
                             }
                         }).show(fm2, "Descuentos");
                     }
-                    else {
+                    else {   ///hay otro descuento selccionado
                         Toast.makeText(getContext(), "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
                         descuento.setChecked(false);
                     }

@@ -25,14 +25,16 @@ public class Reportes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_reportes, container, false);
         manager= getFragmentManager();
-        //manager2=getChildFragmentManager();
         reportes=view.findViewById(R.id.TLreportes);
-            for(int i=0; i<reportes.getChildCount();i++){  ///me dara 4
-                final TableRow row = (TableRow) reportes.getChildAt(i); ///me dara 2
-                for(int j=0;j<row.getChildCount();j++){
+
+        ///asignamos un el metodo Onclick a todas las cartas
+        for(int i=0; i<reportes.getChildCount();i++){  ///me dara 4 filas
+                final TableRow row = (TableRow) reportes.getChildAt(i);
+                for(int j=0;j<row.getChildCount();j++){  ///me dara 2 columnas
                     LinearLayout Card = (LinearLayout) row.getChildAt(j);
+
                     Card.setOnClickListener(new View.OnClickListener() {
-                @Override
+                        @Override
                 public void onClick(View view) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.SVreportes, new formatoReportes_Fragments()).commit(); ///sustituimos el layout fragment por el del recycler de cobra
                 }
