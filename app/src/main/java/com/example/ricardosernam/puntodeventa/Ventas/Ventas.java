@@ -240,11 +240,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         /////obtener fecha actual
                         seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());   ///obtenemos los radioButtons seleccionados
                         seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
-
-                        RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());
-                        RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());
-                        Toast.makeText(getContext(), RBseleccionadoCobrar, Toast.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), RBseleccionadoTipo, Toast.LENGTH_LONG).show();
+                        RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());  ///tipo de cobro
+                        RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());   ////tipo de movimiento
 
                         java.util.Calendar c = java.util.Calendar.getInstance();
                             SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
@@ -340,14 +337,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 }
             }
         });
-    }
-    public boolean validate() {  ///validamos que los campos cumplan los requisitos
-        boolean valid = true;
-        if (!(RBseleccionadoCobrar.isEmpty())&!(RBseleccionadoTipo.isEmpty())) {
-            Toast.makeText(getContext(), "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
-            valid = false;
-        }
-        return valid;
     }
     public void cerrar_compra(){
         cobro.setVisibility(View.GONE);

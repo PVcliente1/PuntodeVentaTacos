@@ -21,6 +21,7 @@ import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.Productos.UnidadesAdapter;
 import com.example.ricardosernam.puntodeventa.Productos.Unidades_class;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.dialog_fragment_agregar_cliente;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * Created by Ricardo Serna M on 27/02/2018.
  */
 @SuppressLint("ValidFragment")
-public class Clientes_DialogFragment extends android.support.v4.app.DialogFragment {
+public class Clientes_DialogFragment extends android.support.v4.app.DialogFragment implements agregado {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
@@ -38,7 +39,6 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
     private Button agregarNuevoCliente, cancelar;
     private interfazUnidades_OnClick Interfaz;
     private SQLiteDatabase db;
-    private FragmentManager fm;
     private ArrayList<clientes_ventas_class> itemsClientes;
     private View view2;
 
@@ -51,7 +51,7 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view2 = inflater.inflate(R.layout.dialog_fragment_unidades, container, false);
+        view2 = inflater.inflate(R.layout.dialog_fragment_clientes, container, false);
         getDialog().setTitle("Clientes");
         ////programamos lo botones del dialog
         agregarNuevoCliente=view2.findViewById(R.id.BtnNuevaUnidad);
@@ -99,9 +99,18 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
         agregarNuevoCliente.setOnClickListener(new View.OnClickListener() {   ////si queremos agregar un nuevo cliente
             @Override
             public void onClick(View view) {
-                new dialog_fragment_agregar_cliente().show(getFragmentManager(), "nuevo_cliente");
+                new dialog_fragment_agregar_cliente().show(getChildFragmentManager(), "nuevo_cliente");
             }
         });
         return view2;
+    }
+
+    @Override
+    public void agregar() {
+        ultimaFila=db.rawQuery("select nombre from Clientes" ,null);//aqui esta el error
+        ultimaFila.moveToLast();
+        itemsClientes.add(new clientes_ventas_class(ultimaFila.getString(0)));
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
     }
 }

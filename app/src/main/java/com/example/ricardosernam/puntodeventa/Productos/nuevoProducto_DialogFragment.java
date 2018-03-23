@@ -67,7 +67,7 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            Interfaz = (agregado) getParentFragment();
+            Interfaz = (agregado) getParentFragment();  ///interfaz para notificar el nuevo producto agregado
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling fragment must implement Callback interface");
         }

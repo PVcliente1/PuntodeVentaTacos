@@ -20,14 +20,19 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.dialog_fragment_agregar_cliente;
 
-public class Clientes extends Fragment {
+public class Clientes extends Fragment implements agregado {
     Button BTN_ClientesAgregarNuevo,BTN_ClienteEditarSel,BTN_ClienteEliminarSel,BTNBuscarCliente,BTNAceptarEditarClientes,BTNCancelarEditarClientes;
     LinearLayout info,LayoutBotonesAceptarEditarClientes;
     EditText ETClientesNombre, ETClientesApellidos, ETClienteAlias, ETClienteTelefono, ETClientesDireccion,ET_BuscarCliente;
     Spinner SpinnerClientes;
+    Cursor c;
     TextView TVidCliente;
+    SQLiteDatabase db;
+    SimpleCursorAdapter adapter;
     int idSeleccionado = 1;
 
     @Override
@@ -43,6 +48,8 @@ public class Clientes extends Fragment {
         BTN_ClienteEliminarSel = view.findViewById(R.id.BTN_ClienteEliminarSel);
         BTNAceptarEditarClientes = view.findViewById(R.id.BTNAceptarEditarClientes);
         BTNCancelarEditarClientes = view.findViewById(R.id.BTNCancelarEditarClientes);
+        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
+        db = admin.getReadableDatabase();
 
         //casting de spinner
         SpinnerClientes = view.findViewById(R.id.SpinnerClientes);
@@ -64,7 +71,8 @@ public class Clientes extends Fragment {
         BTN_ClientesAgregarNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new dialog_fragment_agregar_cliente().show(getFragmentManager(),"dialog_fragment_agregar_cliente");
+                //new dialog_fragment_agregar_cliente().show(getFragmentManager(),"dialog_fragment_agregar_cliente");
+                new dialog_fragment_agregar_cliente().show(getChildFragmentManager(),"dialog_fragment_agregar_cliente");
             }
         });
 
@@ -115,7 +123,6 @@ public class Clientes extends Fragment {
             @Override
             public void onClick(View view) {
                 baja(idSeleccionado);
-
                 refrescar();
             }
         });
@@ -145,28 +152,23 @@ public class Clientes extends Fragment {
                 info.setVisibility(View.INVISIBLE);
             }
         });
-
         //procedimiento para llenar el spinner con datos de la db
         adapterSpinner();
-
         return view;
     }
 
 
     //procedimiento para agregar datos al spinner
     public void adapterSpinner(){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getReadableDatabase();
-
         //cursor
-        Cursor c = db.rawQuery("select idcliente AS _id, nombre, alias from Clientes", null);
+       c = db.rawQuery("select idcliente AS _id, nombre, alias from Clientes", null);
 
         if (c.getCount() > 0)
         {
             //adapter
             String[] desde = new String[] {"nombre","alias"};
             int[] para = new int[] {android.R.id.text1};
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
+            adapter = new SimpleCursorAdapter(getContext(), android.R.layout.simple_spinner_item, c, desde, para);
             //activar al layout del adapter
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //configurar adapter
@@ -178,11 +180,8 @@ public class Clientes extends Fragment {
 
     //Procedimiento para extraer datos de X id y mostrarlos para su manejo
     public void jalarDatos(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getReadableDatabase();
-
         //cursor
-        Cursor c = db.rawQuery("select * from clientes where idcliente = " + id, null);
+        c = db.rawQuery("select * from clientes where idcliente = " + id, null);
         //inicializamos el cursor
         c.moveToPosition(0);
 
@@ -197,8 +196,6 @@ public class Clientes extends Fragment {
 
     //procedimiento para modificar
     public void modificar(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getWritableDatabase();
 
         //creamos nuevo registro
         ContentValues registro = new ContentValues();
@@ -216,9 +213,6 @@ public class Clientes extends Fragment {
 
     //procedimiento para eliminar
     public void baja(int id){
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getWritableDatabase();
-
         //Se borra el registro que contenga el id seleccionado
         db.delete("clientes", "idcliente = "+  id, null);
     }
@@ -231,13 +225,8 @@ public class Clientes extends Fragment {
 
     void buscar(){
         String nombre = String.valueOf(ET_BuscarCliente.getText());
-
-        BaseDeDatosLocal admin = new BaseDeDatosLocal(getContext());
-        SQLiteDatabase db = admin.getReadableDatabase();
-
-
         //cursor
-        Cursor c = db.rawQuery("select * from clientes where nombre = " + "'" +nombre + "'", null);
+        c = db.rawQuery("select * from clientes where nombre = " + "'" +nombre + "'", null);
         //inicializamos el cursor
         c.moveToPosition(0);
 
@@ -248,5 +237,11 @@ public class Clientes extends Fragment {
         }else{
             Toast.makeText(getContext(), "Ese cliente no existe", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override  ////sabemos cuando se agregado un nuevo cliente, ACTUALIZAMOS EL SPINNER
+    public void agregar() {
+         Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
+        adapterSpinner();
     }
 }

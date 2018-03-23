@@ -22,9 +22,21 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_O
 
 
 public class dialog_fragment_agregar_cliente extends DialogFragment {
-    Button guardar_cliente, cancelar_cliente;
-    EditText ET_clienteNombreNuevo, ET_clienteApellidosNuevo,ET_clienteAliasNuevo,ET_clienteTelefonoNuevo,ET_clienteDireccionNueva;
+    private Button guardar_cliente, cancelar_cliente;
+    private EditText ET_clienteNombreNuevo, ET_clienteApellidosNuevo,ET_clienteAliasNuevo,ET_clienteTelefonoNuevo,ET_clienteDireccionNueva;
+    //private interfazUnidades_OnClick Interfaz;
+    private agregado Interfaz;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            //Interfaz = (interfazUnidades_OnClick) getParentFragment();  ///obtenemos
+            Interfaz = (agregado) getParentFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling fragment must implement Callback interface");
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,18 +57,11 @@ public class dialog_fragment_agregar_cliente extends DialogFragment {
         guardar_cliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alta();//se llama al procedimiento de altas
-                Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_LONG).show();
-
-                //todo este desmadre es para que se refresque xD
-                Clientes frag = new Clientes();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.LOprincipal, frag);
-                ft.addToBackStack(null);
-                ft.commit();
-
-                //cerrar el dialog
+                alta();
                 dismiss();
+                if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el SPINNER EN CLIENTES
+                    Interfaz.agregar();
+                }
             }
         });
         cancelar_cliente.setOnClickListener(new View.OnClickListener() {

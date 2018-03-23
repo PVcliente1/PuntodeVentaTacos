@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Cursor fila;
     private SQLiteDatabase db;
     private ContentValues values;
-    TextView nombreEmpresa;
+    private Toolbar toolbar;
+    private TextView nombreEmpresa;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         AppBarLayout bar=findViewById(R.id.APLappBar);
         tabLayout =  findViewById(R.id.TLtabla);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
@@ -70,13 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(appGetFirstTimeRun()==2){
             Toast.makeText(getApplicationContext(), "Es una actualización", Toast.LENGTH_LONG).show();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);//editamos el navigationheader
         View hView = navigationView.getHeaderView(0);
+        /////vistas necesarias para modificar los datos del negocio
         logo=  hView.findViewById(R.id.IVlogoEmpresa);
         nombreEmpresa=  hView.findViewById(R.id.TVnombreEmpresa);
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
         if(fila.moveToFirst()) {
             nombreEmpresa.setText(fila.getString(0));
+            getSupportActionBar().setTitle(fila.getString(0));
             logo.setImageURI(Uri.parse(fila.getString(1)));
         }
     }
