@@ -1,8 +1,9 @@
-package com.example.ricardosernam.puntodeventa.Clientes;
+package com.example.ricardosernam.puntodeventa.____herramientas_app;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
+import com.example.ricardosernam.puntodeventa.Clientes.Clientes;
 import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 
 
 public class dialog_fragment_agregar_cliente extends DialogFragment {

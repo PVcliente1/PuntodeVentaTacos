@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             unidad = v.findViewById(R.id.TVunidadProductoCobrar);
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
             eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
-            descuento = v.findViewById(R.id.CBDescuento);
+            descuento = v.findViewById(R.id.CBdescuentoProducto);
             tipoD = v.findViewById(R.id.TVtipoDescuento);
             porcentajeD = v.findViewById(R.id.TVporcentajeDescuento);
             precio = v.findViewById(R.id.ETprecio);
@@ -68,14 +69,14 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             actualizar=(actualizado) fragment;
         }
     }
-    public static class MyTextWatcher implements TextWatcher{   ///detecta cambios en los editText
+    public static class watcherCalculo1 implements TextWatcher{   ///detecta cambios en los editText
         private EditText cantidad,precio, subtotal;
         private TextView porcentajeD;
         private actualizado Interfaz;
         private String unidad, nombre;
         private int position;
 
-        MyTextWatcher(String unidad, String nombre,  EditText cantidad, EditText precio, EditText subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
+       watcherCalculo1(String unidad, String nombre,  EditText cantidad, EditText precio, EditText subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
             this.unidad=unidad;
             this.nombre=nombre;
             this.cantidad = cantidad;
@@ -95,14 +96,15 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
             if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
                 float totalParcial=Float.parseFloat(String.valueOf((cantidad.getText()))) * Float.parseFloat(String.valueOf((precio.getText())));
                 subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
+
                 Interfaz.actualizar(unidad, nombre, Float.parseFloat(String.valueOf((cantidad.getText()))), Float.parseFloat(String.valueOf((precio.getText()))), position, Float.parseFloat(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
             }
         }
         @Override
         public void afterTextChanged(Editable editable) {
-
         }
     }
+
     @Override
     public int getItemCount() {
         return itemsCobrar.size();
@@ -126,10 +128,10 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
         holder.porcentajeD.setText(String.valueOf(itemsCobrar.get(position).getDescuento()));
         ///llamamos al escuchador de cambios en los editText
-        MyTextWatcher watcher = new MyTextWatcher(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar, holder.porcentajeD, position);
-        holder.cantidad.addTextChangedListener(watcher);
-        holder.precio.addTextChangedListener(watcher);
-        holder.porcentajeD.addTextChangedListener(watcher);
+        watcherCalculo1 watcher1 = new watcherCalculo1(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar, holder.porcentajeD, position);
+        holder.cantidad.addTextChangedListener(watcher1);
+        holder.precio.addTextChangedListener(watcher1);
+        holder.porcentajeD.addTextChangedListener(watcher1);
 
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,19 +148,26 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 }
             }
         });
+        final CheckBox descuentoTotal=((Activity) context).findViewById(R.id.CBDescuento);   ///chekBox del descuentoTotal
         holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                    if(b) {
-                       new Descuentos(new interfaz_descuento() {
-                           @Override
-                           public void descontar(String tipo, int porcentaje) {
-                               holder.tipoD.setText(tipo);
-                               holder.tipoD.setVisibility(View.VISIBLE);
-                               holder.porcentajeD.setText(String.valueOf(porcentaje));
-                               holder.porcentajeD.setVisibility(View.VISIBLE);
-                           }
-                       }).show(manager, "Descuentos");
+                       if(!(descuentoTotal.isChecked())) {   ////si aquel no esta checado
+                           new Descuentos(new interfaz_descuento() {
+                               @Override
+                               public void descontar(String tipo, int porcentaje) {
+                                   holder.tipoD.setText(tipo);
+                                   holder.tipoD.setVisibility(View.VISIBLE);
+                                   holder.porcentajeD.setText(String.valueOf(porcentaje));
+                                   holder.porcentajeD.setVisibility(View.VISIBLE);
+                               }
+                           }).show(manager, "Descuentos");
+                       }
+                       else{
+                           Toast.makeText(context, "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
+                           holder.descuento.setChecked(false);
+                       }
                    }
                    else{
                        holder.tipoD.setText(" ");

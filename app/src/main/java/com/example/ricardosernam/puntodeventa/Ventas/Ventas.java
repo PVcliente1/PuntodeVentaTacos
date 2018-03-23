@@ -2,6 +2,7 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +18,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +42,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.Descuentos;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
@@ -52,6 +57,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private android.support.v4.app.FragmentManager fm;
+    private FragmentManager fm2;
     private RadioGroup opcionVentas, opcionCobrar;
     private LinearLayout pagar, fechaHora, tipoDescuento;
     private Button eliminarCompra,aceptarCompra;
@@ -60,9 +66,9 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private LinearLayout editsApartado, opcionDeVenta;
     private CardView cobro;
     private CheckBox descuento;
-    private TextView tipoD, total;
-    private String normal, especial, RBseleccionadoTipo, RBseleccionadoCobrar;
-
+    private TextView tipoD, porcentajeD, total;
+    private String RBseleccionadoTipo, RBseleccionadoCobrar;
+    private int  descuentoProducto;
     private Button productos, escanear, historial;
     private EditText codigo, cliente, descripcion, horaEntrega, fechaEntrega;
     private SQLiteDatabase db;
@@ -77,6 +83,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
+        fm2= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
         productos= view.findViewById(R.id.BtnProductos);
         historial= view.findViewById(R.id.BtnHistorial);
         escanear= view.findViewById(R.id.BtnEscanear);
@@ -90,16 +97,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         cobro=view.findViewById(R.id.CVcobrar);
         opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
 
-        ///obtenemos los descuentos
-        descuentoNormal=db.rawQuery("select porcentaje from Descuentos where tipo_descuento='Normal'" ,null);
-        descuentoEspecial=db.rawQuery("select porcentaje from Descuentos where tipo_descuento='Especial'" ,null);
-
-        if(descuentoNormal.moveToFirst()){
-            normal=descuentoNormal.getString(0);
-        }
-        if(descuentoEspecial.moveToFirst()){
-            especial=descuentoEspecial.getString(0);
-        }
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
         codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
@@ -148,6 +145,10 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     @Override   ///modificamos los datos de una compra
     public void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento) {  ///al modificar la compra de un producto
         itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
+        descuentoProducto=descuento;
+        calcularTotal();
+    }
+    public void calcularTotal(){
         float suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
             suma=suma+itemsCobrar.get(i).getSubTotal();
@@ -169,6 +170,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         editsApartado=getActivity().findViewById(R.id.LOedittext);
         descuento=getActivity().findViewById(R.id.CBDescuento);
         tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
+        porcentajeD = getActivity().findViewById(R.id.TVporcentajeDescuento);
         tipoDescuento=getActivity().findViewById(R.id.LOdescuento);
         opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
             @Override
@@ -231,28 +233,31 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());
-                RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());
-
-                seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
-                RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());
                 new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {////ocultamos y guardamos los datos de la compra
                         /////obtener fecha actual
+                        seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());   ///obtenemos los radioButtons seleccionados
+                        seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
+
+                        RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());
+                        RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());
+                        Toast.makeText(getContext(), RBseleccionadoCobrar, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), RBseleccionadoTipo, Toast.LENGTH_LONG).show();
+
                         java.util.Calendar c = java.util.Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
-                        String formattedDate = df.format(c.getTime());
-                        /////
-                        values.put("tipo", RBseleccionadoTipo);
-                        values.put("fecha", formattedDate);
-                        values.put("fecha_entrega", String.valueOf(fechaEntrega.getText())+" "+(horaEntrega.getText())); //
-                        values.put("descripcion", String.valueOf(descripcion.getText()));
-                        values.put("tipo_cobro", RBseleccionadoCobrar);
-                        db.insertOrThrow("Ventas", null, values);
-                        cerrar_compra();
-                        Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
+                            SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                            String formattedDate = df.format(c.getTime());
+                            /////
+                            values.put("tipo", RBseleccionadoTipo);
+                            values.put("fecha", formattedDate);
+                            values.put("fecha_entrega", String.valueOf(fechaEntrega.getText()) + " " + (horaEntrega.getText())); //
+                            values.put("descripcion", String.valueOf(descripcion.getText()));
+                            values.put("tipo_cobro", RBseleccionadoCobrar);
+                            db.insertOrThrow("Ventas", null, values);
+                            cerrar_compra();
+                            Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }
                 }).show(getFragmentManager(),"pagarDiaogFragment");
             }
@@ -290,33 +295,59 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                 }).show(fm, "Clientes DialogFragment");
             }
         });
+        porcentajeD.addTextChangedListener(new TextWatcher() {  ///calculamos el porcentaje aplicado
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!(TextUtils.isEmpty(porcentajeD.getText()))) {
+                    calcularTotal();
+                    float totalParcial=Float.parseFloat(String.valueOf((total.getText())));
+                    total.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    final AlertDialog.Builder tipoDescuento= new AlertDialog.Builder(getActivity());
-                    tipoDescuento.setTitle("Descuentos");
-                    tipoDescuento.setMessage("Seleccion un tipo de descuento");
-                    tipoDescuento.setCancelable(false);
-                    tipoDescuento.setPositiveButton("Normal  (%)", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface tipoDescuento, int id) {
-                            tipoD.setText("Normal (%)");
-                            tipoDescuento.dismiss();
-                        }
-                    });
-                    tipoDescuento.setNegativeButton("Especial (%)", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface tipoDescuento, int id) {
-                            tipoD.setText("Especial (%)");
-                            tipoDescuento.dismiss();
-                        }
-                    });
-                    tipoDescuento.show();
+                if (b) {
+                    if (descuentoProducto==0) {   ////si aquel no esta checado
+                        new Descuentos(new interfaz_descuento() {
+                            @Override
+                            public void descontar(String tipo, final int porcentaje) {
+                                //tipoD.setText(tipo);
+                                //tipoD.setVisibility(View.VISIBLE);
+                                porcentajeD.setText(String.valueOf(porcentaje));
+                                porcentajeD.setVisibility(View.VISIBLE);
+                            }
+                        }).show(fm2, "Descuentos");
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
+                        descuento.setChecked(false);
+                    }
                 }
                 else{
                     tipoD.setText(" ");
+                    porcentajeD.setText("0");
+                    porcentajeD.setVisibility(View.INVISIBLE);
                 }
             }
         });
+    }
+    public boolean validate() {  ///validamos que los campos cumplan los requisitos
+        boolean valid = true;
+        if (!(RBseleccionadoCobrar.isEmpty())&!(RBseleccionadoTipo.isEmpty())) {
+            Toast.makeText(getContext(), "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        return valid;
     }
     public void cerrar_compra(){
         cobro.setVisibility(View.GONE);

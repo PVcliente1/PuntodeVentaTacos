@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.Productos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
             tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Miembros) {
+        } else if (id == R.id.Perfiles) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Perfiles()).commit();
             //tabLayout.setVisibility(View.VISIBLE);
         } else if (id == R.id.Provedores) {

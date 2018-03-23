@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.dialog_fragment_agregar_cliente;
 
 public class Clientes extends Fragment {
     Button BTN_ClientesAgregarNuevo,BTN_ClienteEditarSel,BTN_ClienteEliminarSel,BTNBuscarCliente,BTNAceptarEditarClientes,BTNCancelarEditarClientes;

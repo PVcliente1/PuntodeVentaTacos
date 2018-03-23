@@ -46,12 +46,6 @@ public class Registro_inicial extends Fragment {
     private Integer idpuesto=1;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //AppBarLayout bar=findViewById(R.id.APLappBar);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_registro, container, false);
         bar=getActivity().findViewById(R.id.APLappBar);

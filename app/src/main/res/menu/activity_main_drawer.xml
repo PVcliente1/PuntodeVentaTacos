@@ -22,9 +22,9 @@
     <item android:title="Administrar...">
         <menu>
             <item
-                android:id="@+id/Miembros"
+                android:id="@+id/Perfiles"
                 android:icon="@mipmap/ic_supervisor_account_black_24dp"
-                android:title="Miembros" />
+                android:title="Perfiles" />
             <item
                 android:id="@+id/Provedores"
                 android:icon="@mipmap/ic_assignment_ind_black_24dp"

@@ -2,6 +2,7 @@ package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,7 @@ import com.example.ricardosernam.puntodeventa.Productos.UnidadesAdapter;
 import com.example.ricardosernam.puntodeventa.Productos.Unidades_class;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
+import com.example.ricardosernam.puntodeventa.____herramientas_app.dialog_fragment_agregar_cliente;
 
 import java.util.ArrayList;
 
@@ -33,11 +35,10 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private Cursor fila, ultimaFila;
-    private Button agregarNuevaUnidad, cancelar;
-    private EditText capturarNuevaUnidad;
+    private Button agregarNuevoCliente, cancelar;
     private interfazUnidades_OnClick Interfaz;
-    private ContentValues values;
     private SQLiteDatabase db;
+    private FragmentManager fm;
     private ArrayList<clientes_ventas_class> itemsClientes;
     private View view2;
 
@@ -51,16 +52,16 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view2 = inflater.inflate(R.layout.dialog_fragment_unidades, container, false);
-        getDialog().setTitle("Unidades");
+        getDialog().setTitle("Clientes");
         ////programamos lo botones del dialog
-        agregarNuevaUnidad=view2.findViewById(R.id.BtnNuevaUnidad);
+        agregarNuevoCliente=view2.findViewById(R.id.BtnNuevaUnidad);
         cancelar=view2.findViewById(R.id.BtnCancelar);
-        capturarNuevaUnidad=view2.findViewById(R.id.ETnuevaUnidad);
+        //fm=view2.getParentFragment();
+        //fm=
         ////llenamos el fragment con las unidades disponibles
         itemsClientes=new ArrayList<>() ;
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
-        values = new ContentValues();
 
         fila=db.rawQuery("select nombre from Clientes where idcliente!=1" ,null);
 
@@ -95,22 +96,10 @@ public class Clientes_DialogFragment extends android.support.v4.app.DialogFragme
                 dismiss();
             }
         });
-        agregarNuevaUnidad.setOnClickListener(new View.OnClickListener() {
+        agregarNuevoCliente.setOnClickListener(new View.OnClickListener() {   ////si queremos agregar un nuevo cliente
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(capturarNuevaUnidad.getText())){
-                    Toast.makeText(getActivity(), "Ingresa la unidad a agregar", Toast.LENGTH_LONG).show();
-                }
-                else {///agregamos la nueva unidad
-                    Toast.makeText(getActivity(), "Se ha agregado la nueva unidad", Toast.LENGTH_LONG).show();
-                    values.put("nombre_unidad", String.valueOf(capturarNuevaUnidad.getText()));
-                    db.insertOrThrow("Unidades",null, values);
-                    capturarNuevaUnidad.setText(" ");
-                    ultimaFila=db.rawQuery("select nombre_unidad from Unidades" ,null);//aqui esta el error
-                    ultimaFila.moveToLast();
-                    itemsClientes.add(new clientes_ventas_class(ultimaFila.getString(0)));
-                    adapter.notifyDataSetChanged();
-                }
+                new dialog_fragment_agregar_cliente().show(getFragmentManager(), "nuevo_cliente");
             }
         });
         return view2;

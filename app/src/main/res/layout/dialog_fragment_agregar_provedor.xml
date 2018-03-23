@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context="com.example.ricardosernam.puntodeventa.Clientes.dialog_fragment_agregar_cliente">
+    tools:context="com.example.ricardosernam.puntodeventa.____herramientas_app.dialog_fragment_agregar_cliente">
 
     <LinearLayout
         android:layout_width="match_parent"

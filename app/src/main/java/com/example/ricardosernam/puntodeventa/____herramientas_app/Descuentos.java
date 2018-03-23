@@ -52,14 +52,12 @@ public class Descuentos extends DialogFragment {
         tipoDescuento.setCancelable(false);
         tipoDescuento.setPositiveButton("Normal: "+ normal +"%", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface tipoDescuento, int id) {
-                tipoD.setText("Normal %: ");  ///marcamos que se selecciono normal
                 Interfaz.descontar("Normal %: ", descuentoNormal.getInt(0));
                 tipoDescuento.dismiss();
             }
         });
         tipoDescuento.setNegativeButton("Especial: "+ especial +"%", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface tipoDescuento, int id) {
-                tipoD.setText("Especial %: "); ///marcamos que se selecciono especial
                 Interfaz.descontar("Especial %: ", descuentoEspecial.getInt(0));
                 tipoDescuento.dismiss();
             }

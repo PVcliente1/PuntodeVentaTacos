@@ -109,7 +109,7 @@
                     android:textSize="12dp"
                     android:text="Descuento"/>
                 <CheckBox
-                    android:id="@+id/CBDescuento"
+                    android:id="@+id/CBdescuentoProducto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -134,15 +134,17 @@
                         android:layout_gravity="center" />
                 </LinearLayout>
             </LinearLayout>
+
             <EditText
                 android:id="@+id/TVsubtotal"
-                android:gravity="center"
-                android:textSize="18dp"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bordes_grosor"
-                android:text=" " />
+                android:gravity="center"
+                android:inputType="number"
+                android:text=" "
+                android:textSize="18dp" />
             <Button
                 android:id="@+id/BtnInfo"
                 android:layout_width="42dp"

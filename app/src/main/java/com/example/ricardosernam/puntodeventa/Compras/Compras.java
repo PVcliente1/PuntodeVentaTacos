@@ -42,7 +42,7 @@ import java.io.InputStream;
 
 public class Compras extends Fragment{
     private LinearLayout existentes,agregar, campos , foto;
-    private TextView nombre, cantidadExistentes, totalCompra;
+    private TextView nombre, cantidadExistentes, totalCompra, o;
     private Button escan,aceptar,cancelar, seleccionarImagen;
     private EditText capturarProducto,cantidad,precioCompra, precioVenta, nombreProducto, unidad,proveedor;
     private RadioGroup opciones;
@@ -82,6 +82,7 @@ public class Compras extends Fragment{
         cantidadExistentes= view.findViewById(R.id.TVexistentes);
         //nombre= view.findViewById(R.id.TVnombreCompra);
         totalCompra= view.findViewById(R.id.TVtotalCompra);
+        o=view.findViewById(R.id.TVo);
 
         agregaraproductos=view.findViewById(R.id.CBagregarProductos);
         unidad=view.findViewById(R.id.ETunidad);
@@ -125,11 +126,13 @@ public class Compras extends Fragment{
                         campos.setVisibility(View.GONE);
                         capturarProducto.setHint("Ingresa Nombre");
                         existentes.setVisibility(View.VISIBLE);
+                        o.setVisibility(View.VISIBLE);
                         break;
 
 
                     case R.id.RBnuevo:
                         //nombre.setVisibility(View.GONE);
+                        o.setVisibility(View.GONE);
                         nombreProducto.setVisibility(View.VISIBLE);
                         foto.setVisibility(View.VISIBLE);
                         ponerImagen.setVisibility(View.VISIBLE);

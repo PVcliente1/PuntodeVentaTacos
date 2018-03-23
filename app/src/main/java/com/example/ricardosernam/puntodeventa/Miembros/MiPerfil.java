@@ -4,12 +4,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ public class MiPerfil extends Fragment {
 
 
     private TextView nombre, apellidos, puesto, turno, telefono, correo;
+    private ImageView foto;
     private Cursor fila;
     private SQLiteDatabase db;
     private ContentValues values;
@@ -47,13 +50,13 @@ public class MiPerfil extends Fragment {
         turno=view.findViewById(R.id.TVturno);
         telefono=view.findViewById(R.id.TVtelefonoMiembro);
         correo=view.findViewById(R.id.TVcorreoMiembro);
-
+        foto=view.findViewById(R.id.IVfotoMiembro);
 
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
         db=admin.getWritableDatabase();
         values = new ContentValues();
 
-        fila=db.rawQuery("select nombre, apellido, telefono,correo from Miembros where idmiembro=2" ,null);
+        fila=db.rawQuery("select nombre, apellido, telefono,correo, foto from Miembros where idmiembro=2" ,null);
 
         if(fila.moveToFirst()) {
             //Toast.makeText(getContext(),fila.getString(1),Toast.LENGTH_LONG).show();
@@ -63,6 +66,7 @@ public class MiPerfil extends Fragment {
                turno.setText("Sin turno");
                telefono.setText(fila.getString(2));
                correo.setText(fila.getString(3));
+               foto.setImageURI(Uri.parse(fila.getString(4)));
 
         }
         return view;
