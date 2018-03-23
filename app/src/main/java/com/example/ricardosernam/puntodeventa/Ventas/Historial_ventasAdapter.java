@@ -73,9 +73,13 @@ public class Historial_ventasAdapter extends RecyclerView.Adapter<Historial_vent
         }
         else{
             holder.tipoCobro.setBackgroundColor(Color.RED);    ///SI NO SE HA PAGADO
+            holder.deuda.setVisibility(View.VISIBLE);
         }
         if(itemsHistorial.get(position).getTipo_venta().equals("Venta")){
             holder.fechaEntrega.setVisibility(View.GONE);
+        }
+        else{
+            holder.fechaEntrega.setVisibility(View.VISIBLE);
         }
     }
 

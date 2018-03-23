@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
@@ -233,16 +234,15 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
+                seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());   ///obtenemos los radioButtons seleccionados
+                seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
+                RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());  ///tipo de cobro
+                RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());   ////tipo de movimiento
+                new pagar_DialogFragment(RBseleccionadoCobrar, Float.parseFloat(String.valueOf(total.getText())), new actualizado() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
-                    public void onClick(View v) {////ocultamos y guardamos los datos de la compra
+                    public void actualizar(int i, String tipoCobro) {////ocultamos y guardamos los datos de la compra
                         /////obtener fecha actual
-                        seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());   ///obtenemos los radioButtons seleccionados
-                        seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
-                        RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());  ///tipo de cobro
-                        RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());   ////tipo de movimiento
-
                         java.util.Calendar c = java.util.Calendar.getInstance();
                             SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                             String formattedDate = df.format(c.getTime());
@@ -251,7 +251,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                             values.put("fecha", formattedDate);
                             values.put("fecha_entrega", String.valueOf(fechaEntrega.getText()) + " " + (horaEntrega.getText())); //
                             values.put("descripcion", String.valueOf(descripcion.getText()));
-                            values.put("tipo_cobro", RBseleccionadoCobrar);
+                            values.put("tipo_cobro", tipoCobro);
                             db.insertOrThrow("Ventas", null, values);
                             cerrar_compra();
                             Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
