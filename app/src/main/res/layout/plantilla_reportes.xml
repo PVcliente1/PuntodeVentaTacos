@@ -84,6 +84,13 @@
             </LinearLayout>
 
         </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/LLreportes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

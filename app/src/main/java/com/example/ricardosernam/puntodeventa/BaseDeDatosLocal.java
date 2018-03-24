@@ -161,8 +161,7 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
                 "  `descripcion` VARCHAR(45) ,\n" +
                 "  `tipo_cobro` VARCHAR(45),\n" +
                 "  `idmiembroFK` INTEGER ,\n" +
-                "  `idclienteFK` INTEGER,\n" +
-                "  `idcobro` INTEGER)");
+                "  `idclienteFK` INTEGER)");
 
 
         //        "    FOREIGN KEY (`idclienteFK`) REFERENCES Clientes (`idcliente`), " +
@@ -200,12 +199,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //Creación de tabla venta_detalles
 
-        sqLiteDatabase.execSQL("CREATE TABLE venta_detalles (\n" +
-                "  `cantidad` INTEGER,\n" +
-                "  `precio` INTEGER,\n" +
+        sqLiteDatabase.execSQL("CREATE TABLE Venta_detalles (\n" +
+                "  `cantidad` float,\n" +
+                "  `precio` float,\n" +
                 "  `idventaFK` INTEGER,\n" +
                 "  `idproductoFK` INTEGER,\n" +
-                "  `iddescuentos` INTEGER)");
+                "  `iddescuentoFK` INTEGER)");
 
          //       "    FOREIGN KEY (`idventaFK`) REFERENCES Ventas (`idventa`), " +
          //       "    FOREIGN KEY (`idproductoFK`) REFERENCES Productos (`idproducto`), " +

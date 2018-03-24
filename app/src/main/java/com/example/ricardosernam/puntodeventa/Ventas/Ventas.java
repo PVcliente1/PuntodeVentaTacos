@@ -73,7 +73,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     private Button productos, escanear, historial;
     private EditText codigo, cliente, descripcion, horaEntrega, fechaEntrega;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, datosEscaneado, descuentoNormal, descuentoEspecial;
+    private Cursor datosSeleccionado, datosEscaneado, consultaIdCliente, consultaIdProducto, consultaIdDescuento, consultaIdVentas;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
 
     @Override
@@ -240,13 +240,36 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                         java.util.Calendar c = java.util.Calendar.getInstance();
                             SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                             String formattedDate = df.format(c.getTime());
-                            /////
+                            /////DATOS DE LA VENTA
+                        consultaIdCliente=db.rawQuery("select idcliente from Clientes where nombre='"+String.valueOf(cliente.getText())+"'" ,null);
                             values.put("tipo", RBseleccionadoTipo);
                             values.put("fecha", formattedDate);
                             values.put("fecha_entrega", String.valueOf(fechaEntrega.getText()) + " " + (horaEntrega.getText())); //
                             values.put("descripcion", String.valueOf(descripcion.getText()));
                             values.put("tipo_cobro", tipoCobro);
+                            if(consultaIdCliente.moveToFirst()) {
+                                values.put("idclienteFK", consultaIdCliente.getInt(0));
+                            }
+                            values.put("idmiembroFK", 1);
                             db.insertOrThrow("Ventas", null, values);
+
+                            ////DATOS DE VENTA_DETALLE
+                        for(int j=0; i<itemsCobrar.size(); i++){
+                            consultaIdVentas=db.rawQuery("select idventa from Productos" ,null);
+                            consultaIdVentas.moveToLast();
+                            values.put("idventaFK", consultaIdDescuento.getInt(0));
+                            consultaIdProducto=db.rawQuery("select idproducto from Productos where nombre='"+itemsCobrar.get(i).getNombre()+"'" ,null);
+                            if(consultaIdProducto.moveToFirst()){
+                                values.put("idproductoFK", consultaIdProducto.getInt(0));
+                            }
+                            consultaIdDescuento=db.rawQuery("select iddescuento from Descuentos where porcentaje='"+itemsCobrar.get(i).getDescuento()+"'" ,null);
+                            if(consultaIdDescuento.moveToFirst()){
+                                values.put("iddescuentoFK", consultaIdDescuento.getInt(0));
+                            }
+                            values.put("cantidad", itemsCobrar.get(i).getCantidad());
+                            values.put("precio", itemsCobrar.get(i).getPrecio());
+                            db.insertOrThrow("Venta_detalles", null, values);
+                        }
                             cerrar_compra();
                             Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }

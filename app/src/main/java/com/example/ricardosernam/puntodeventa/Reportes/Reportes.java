@@ -3,12 +3,15 @@ package com.example.ricardosernam.puntodeventa.Reportes;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 
@@ -26,22 +29,21 @@ public class Reportes extends Fragment {
         View view=inflater.inflate(R.layout.fragment_reportes, container, false);
         manager= getFragmentManager();
         reportes=view.findViewById(R.id.TLreportes);
-
         ///asignamos un el metodo Onclick a todas las cartas
-        for(int i=0; i<reportes.getChildCount();i++){  ///me dara 4 filas
+        for(int i=0; i<reportes.getChildCount();i++){  ///me dara 5 filas
                 final TableRow row = (TableRow) reportes.getChildAt(i);
                 for(int j=0;j<row.getChildCount();j++){  ///me dara 2 columnas
-                    LinearLayout Card = (LinearLayout) row.getChildAt(j);
-
-                    Card.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                public void onClick(View view) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.SVreportes, new formatoReportes_Fragments()).commit(); ///sustituimos el layout fragment por el del recycler de cobra
+                    LinearLayout card = (LinearLayout) row.getChildAt(j);
+                    LinearLayout card2 = (LinearLayout) card.getChildAt(0);
+                    final TextView tipo = (TextView) card2.getChildAt(0);
+                    card.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.SVreportes, new formatoReportes_Fragments(String.valueOf(tipo.getText()))).commit(); ///sustituimos el layout fragment por el del recycler de cobra
+                            }
+                        });
+                    }
                 }
-                });
-                }
-            }
-
         return view;
     }
 }
