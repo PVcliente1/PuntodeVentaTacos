@@ -253,11 +253,15 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                             values.put("idmiembroFK", 1);
                             db.insertOrThrow("Ventas", null, values);
 
-                            ////DATOS DE VENTA_DETALLE
-                        for(int j=0; i<itemsCobrar.size(); i++){
-                            consultaIdVentas=db.rawQuery("select idventa from Productos" ,null);
+                            /*consultaIdVentas=db.rawQuery("select idventa from Ventas" ,null);
                             consultaIdVentas.moveToLast();
-                            values.put("idventaFK", consultaIdDescuento.getInt(0));
+                            Toast.makeText(getContext(), consultaIdVentas.getInt(0), Toast.LENGTH_LONG).show();*/
+                            ////DATOS DE VENTA_DETALLE
+                        /*for(int j=0; i<itemsCobrar.size(); i++){
+                            consultaIdVentas=db.rawQuery("select idventa from Ventas" ,null);
+                            consultaIdVentas.moveToLast();
+                            values.put("idventaFK", consultaIdVentas.getInt(0));
+
                             consultaIdProducto=db.rawQuery("select idproducto from Productos where nombre='"+itemsCobrar.get(i).getNombre()+"'" ,null);
                             if(consultaIdProducto.moveToFirst()){
                                 values.put("idproductoFK", consultaIdProducto.getInt(0));
@@ -269,7 +273,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                             values.put("cantidad", itemsCobrar.get(i).getCantidad());
                             values.put("precio", itemsCobrar.get(i).getPrecio());
                             db.insertOrThrow("Venta_detalles", null, values);
-                        }
+                        }*/
                             cerrar_compra();
                             Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }
