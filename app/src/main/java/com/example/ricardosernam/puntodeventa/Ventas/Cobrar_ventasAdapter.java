@@ -48,8 +48,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
-        public TextView nombreP, tipoD, porcentajeD, unidad;
-        public EditText cantidad, precio, subtotal;
+        public TextView nombreP, tipoD, porcentajeD, unidad, subtotal, precio, cantidad;
         public Button eliminarArt, eliminarCompra;
         public CheckBox descuento;
         public actualizado actualizar;
@@ -57,10 +56,8 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         public Productos_ventasViewHolder(View v) {
             super(v);
             nombreP = v.findViewById(R.id.TVnombreProductoCobrar);  ///cardviews donde va el nombre del producto
-            unidad = v.findViewById(R.id.TVunidadProductoCobrar);
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
             eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
-            descuento = v.findViewById(R.id.CBdescuentoProducto);
             tipoD = v.findViewById(R.id.TVtipoDescuento);
             porcentajeD = v.findViewById(R.id.TVporcentajeDescuento);
             precio = v.findViewById(R.id.ETprecio);
@@ -70,13 +67,12 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         }
     }
     public static class watcherCalculo1 implements TextWatcher{   ///detecta cambios en los editText
-        private EditText cantidad,precio, subtotal;
-        private TextView porcentajeD;
+        private TextView porcentajeD, cantidad,precio, subtotal;
         private actualizado Interfaz;
         private String unidad, nombre;
         private int position;
 
-       watcherCalculo1(String unidad, String nombre,  EditText cantidad, EditText precio, EditText subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
+       watcherCalculo1(String unidad, String nombre,  TextView cantidad, TextView precio, TextView subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
             this.unidad=unidad;
             this.nombre=nombre;
             this.cantidad = cantidad;
