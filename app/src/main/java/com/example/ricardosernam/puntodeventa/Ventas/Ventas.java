@@ -97,7 +97,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
         opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
-
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
         codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
