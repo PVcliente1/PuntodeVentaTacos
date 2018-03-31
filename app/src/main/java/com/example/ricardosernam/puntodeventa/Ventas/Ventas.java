@@ -132,22 +132,19 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         recycler.setAdapter(adapter);
     }
     @Override
-    public void agregar(String seleccionado) {    ///agregarNuevaCompra
-        datosSeleccionado=db.rawQuery("select unidad, nombre, precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
-        if(datosSeleccionado.moveToFirst()) {
-            itemsCobrar.add(new Cobrar_ventas_class(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), datosSeleccionado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
-            relleno();
-            cobro.setVisibility(View.VISIBLE);
-            opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
-            actualizar(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),1, datosSeleccionado.getFloat(2), itemsCobrar.size()-1, datosSeleccionado.getFloat(2), 0);
-            adapter.notifyDataSetChanged();
-        }
+    public void agregar(ArrayList<Cobrar_ventas_class> itemsCobrar) {    ///agregarNuevaCompra
+        this.itemsCobrar = itemsCobrar;
+        relleno();
+        cobro.setVisibility(View.VISIBLE);
+        opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
+        //actualizar(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),cantidad, datosSeleccionado.getFloat(2), itemsCobrar.size()-1, datosSeleccionado.getFloat(2), 0);
+        adapter.notifyDataSetChanged();
     }
     @Override   ///modificamos los datos de una compra
     public void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento) {  ///al modificar la compra de un producto
-        itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
+        /*itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
         descuentoProducto=descuento;
-        calcularTotal();
+        calcularTotal();*/
     }
     public void calcularTotal(){
         float suma=0;
@@ -367,7 +364,7 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
     //metodo para obtener resultados DEL ESCANER
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2 && data != null) {
+        /*if (requestCode == 2 && data != null) {
             //obtener resultados
             datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(datosEscaneado.moveToFirst()) {
@@ -381,6 +378,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
             else{
                 Toast.makeText(getContext(), "Este producto no esta registrado", Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
     }
 }

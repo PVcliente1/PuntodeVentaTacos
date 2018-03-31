@@ -14,14 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_agregarProductos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 @SuppressLint("ValidFragment")
@@ -31,11 +36,14 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
     private RecyclerView.LayoutManager lManager;
     private SQLiteDatabase db;
     private Cursor fila;
+    private Button aceptarOrden;
+    private Cursor datosSeleccionado;
     private ArrayList<Pro_ventas_class> itemsProductos;
+    private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
     private agregado Interfaz;
 
     public interface agregado {
-        void agregar(String seleccionado);
+        void agregar(ArrayList<Cobrar_ventas_class> itemsCobrar);
     }
 
     @Override
@@ -53,7 +61,7 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
         super.onCreate(savedInstanceState);
         View rootView=inflater.inflate(R.layout.recyclerpro,container);
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getActivity());
-
+        aceptarOrden=rootView.findViewById(R.id.BtnAceptarOrden);
         db=admin.getWritableDatabase();
         itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
 
@@ -71,13 +79,42 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new Pro_ventasAdapter(itemsProductos, new interfaz_OnClick() { ///llamamos al adaptador y le enviamos el array y la interface  como parametro (la interface es un onclick)
+        adapter = new Pro_ventasAdapter(itemsProductos, new interfaz_agregarProductos() {  ///obtenemos los datos capturados para cada producto
             @Override
-            public void onClick(View v) {  ////cuando se presione un Cardview...
-                dismiss(); ////cerramos la ventana
-                if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el recyclerview
-                        Interfaz.agregar(itemsProductos.get(recycler.getChildAdapterPosition(v)).getNombre());
-                    }
+            public void onClick(String seleccionado, int cantidad, int postition) {
+                datosSeleccionado=db.rawQuery("select precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
+                if(datosSeleccionado.moveToFirst()) {
+                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                }
+                ///comprobamos si se repite
+                for(int i=0; i<itemsCobrar.size(); i++) {
+                    String dato=itemsCobrar.get(i).getNombre();
+                        for(int j=i+1; j<itemsCobrar.size(); j++) {
+                            if(dato.equals(itemsCobrar.get(j).getNombre())){  ///si se repite
+                                if(itemsCobrar.get(j).getCantidad()==0){  ///si es cero, lo eliminamos de la lista
+                                    itemsCobrar.remove(j);   ////eliminamos el previamente agregado
+                                    itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                                }
+                                else {
+                                    itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                                }
+                            }
+                        }
+                }
+                if(itemsCobrar.isEmpty()){
+                    aceptarOrden.setEnabled(false);
+                }
+                else{
+                    aceptarOrden.setEnabled(true);
+                }
+            }
+        });
+        ////cuando se acepta la ordn previamnete definida
+        aceptarOrden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                Interfaz.agregar(itemsCobrar);
             }
         });
         recycler.setAdapter(adapter);

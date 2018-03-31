@@ -121,12 +121,10 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
     public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {  ////mencionamos que se hara con los elementos del cardview
         final FragmentManager manager = ((Activity) context).getFragmentManager();
 
-        holder.unidad.setText(itemsCobrar.get(position).getUnidad());
         holder.nombreP.setText(itemsCobrar.get(position).getNombre());
         holder.precio.setText(String.valueOf(itemsCobrar.get(position).getPrecio()));
         holder.cantidad.setText(String.valueOf(itemsCobrar.get(position).getCantidad()));
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
-        holder.porcentajeD.setText(String.valueOf(itemsCobrar.get(position).getDescuento()));
         ///llamamos al escuchador de cambios en los editText
         watcherCalculo1 watcher1 = new watcherCalculo1(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar, holder.porcentajeD, position);
         holder.cantidad.addTextChangedListener(watcher1);
