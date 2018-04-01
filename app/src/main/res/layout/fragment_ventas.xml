@@ -84,45 +84,6 @@
                 android:textSize="13dp" />
 
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/LLopcionDeVenta"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:id="@+id/RGopcionesVenta"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/RBcotizar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Cotización" />
-
-                <RadioButton
-                    android:id="@+id/RBapartar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="Apartado" />
-
-                <RadioButton
-                    android:id="@+id/RBvender"
-                    android:layout_width="wrap_content"
-                    android:checked="true"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="Venta" />
-            </RadioGroup>
-        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -157,11 +118,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                        android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -183,174 +140,29 @@
                             android:background="@drawable/solo_grosor"
                             android:gravity="center"
                             android:text=" " />
-
-                        <LinearLayout
-                            android:id="@+id/LOdescuento"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="Descuento"
-                                android:textSize="12dp" />
-
-                            <CheckBox
-                                android:id="@+id/CBDescuento"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:backgroundTint="@color/ic_launcher_background"
-                                android:textSize="10sp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:id="@+id/TVtipoDescuento"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text=" "/>
-
-                                <TextView
-                                    android:id="@+id/TVporcentajeDescuento"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center" />
-                            </LinearLayout>
-                        </LinearLayout>  <!--se cierran los de descuento-->
-                        </LinearLayout>  <!---cerramo la seccion de la izquierda-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:orientation="vertical">
-                            <EditText
-                                android:id="@+id/ETcliente"
-                                android:layout_width="200dp"
-                                android:layout_height="30dp"
-                                android:gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/edittexts"
-                                android:ems="10"
-                                android:hint="Cliente (opcional)"
-                                android:textSize="16sp"
-                                android:focusable="false"
-                                android:maxLength="72"
-                                android:scrollbars="vertical"
-                                android:inputType="textCapSentences|textMultiLine"/>
-                        <EditText
-                            android:id="@+id/ETdescripcion"
-                            android:layout_width="200dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/edittexts"
-                            android:ems="10"
-                            android:hint="Descripción venta (opcional)"
-                            android:textSize="16sp"
-                            android:maxLength="72"
-                            android:scrollbars="vertical"
-                            android:inputType="textCapSentences|textMultiLine"/>
-                        <LinearLayout
-                            android:id="@+id/LOpagar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:orientation="horizontal">
-
-                            <RadioGroup
-                                android:id="@+id/RGopcionCobrar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <RadioButton
-                                    android:id="@+id/RBpagarAhora"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Pagar ahora" />
-
-                                <RadioButton
-                                    android:id="@+id/RBporCobrar"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:checked="true"
-                                    android:text="Por pagar" />
-
-                            </RadioGroup>
-                        </LinearLayout>
-                        </LinearLayout>
                     </LinearLayout>
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-                            <LinearLayout
-                                android:id="@+id/LObotones_edittext"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:layout_marginTop="0dp"
-                                android:visibility="invisible"
-                                android:orientation="horizontal">
-                                <EditText
-                                    android:id="@+id/ETfecha"
-                                    android:layout_width="100dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="center_vertical"
-                                    android:background="@drawable/edittexts"
-                                    android:ems="10"
-                                    android:focusable="false"
-                                    android:gravity="center"
-                                    android:hint="Fecha"
-                                    android:inputType="number"
-                                    android:textSize="14sp" />
-
-                                <EditText
-                                    android:id="@+id/EThora"
-                                    android:layout_width="100dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="center_vertical"
-                                    android:background="@drawable/edittexts"
-                                    android:ems="10"
-                                    android:focusable="false"
-                                    android:gravity="center"
-                                    android:hint="Hora (Opcional)"
-                                    android:inputType="number"
-                                    android:textSize="14sp"
-                                    android:visibility="visible" />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <Button
+                                android:id="@+id/BtnEliminarCompra"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:backgroundTint="@android:color/background_light"
+                                android:drawableTint="@color/cardview_dark_background"
+                                android:drawableTop="@mipmap/ic_delete_forever_black_24dp"
+                                android:visibility="visible" />
+                            <Button
+                                android:id="@+id/BtnAceptarCompra"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_gravity="right"
-                                android:orientation="horizontal">
-                                <Button
-                                    android:id="@+id/BtnEliminarCompra"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:backgroundTint="@android:color/background_light"
-                                    android:drawableTint="@color/cardview_dark_background"
-                                    android:drawableTop="@mipmap/ic_delete_forever_black_24dp"
-                                    android:visibility="visible" />
-                                <Button
-                                    android:id="@+id/BtnAceptarCompra"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="right"
-                                    android:backgroundTint="@android:color/background_light"
-                                    android:drawableTop="@mipmap/ic_check_circle_black_24dp"
-                                    android:visibility="visible" />
-                            </LinearLayout>
+                                android:backgroundTint="@android:color/background_light"
+                                android:drawableTop="@mipmap/ic_check_circle_black_24dp"
+                                android:visibility="visible" />
                         </LinearLayout>
-
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>

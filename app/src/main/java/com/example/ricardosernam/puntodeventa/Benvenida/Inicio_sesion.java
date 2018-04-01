@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 
 public class Inicio_sesion extends Fragment {
     private Button iniciarSesion;
@@ -47,7 +48,7 @@ public class Inicio_sesion extends Fragment {
     }
     public void onSignupSuccess() {  ///es correcto
         //iniciarSesion.setEnabled(true);
-        getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Personalizacion1()).commit();
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.CLcontenedorTotal)).commit();
     }
     public void ingresar(){
         BaseDeDatosLocal admin=new BaseDeDatosLocal(getContext());

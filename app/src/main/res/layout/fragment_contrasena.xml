@@ -2,13 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ricardosernam.puntodeventa.Reportes.Fragment_Top_Productos">
+    tools:context="com.example.ricardosernam.puntodeventa.Inventario.Inventario">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Top Productos" />
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

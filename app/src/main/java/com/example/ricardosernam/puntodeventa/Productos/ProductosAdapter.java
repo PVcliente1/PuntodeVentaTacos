@@ -158,17 +158,6 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
                 eliminarProducto .show();
             }
         });
-        holder.unidad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Unidades_DialogFragment(new interfazUnidades_OnClick() {
-                    @Override
-                    public void onClick(View v, String unidadSeleccionada) {
-                        holder.unidad.setText(unidadSeleccionada);
-                    }
-                }).show(manager, "Clientes_DialogFragment");
-            }
-        });
         holder.escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,16 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
-import com.example.ricardosernam.puntodeventa.Clientes.Clientes;
-import com.example.ricardosernam.puntodeventa.Compras.Compras;
-import com.example.ricardosernam.puntodeventa.Configurar.Configurar;
 import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
+import com.example.ricardosernam.puntodeventa.Contrasenas.Contrasena;
 import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
-import com.example.ricardosernam.puntodeventa.Miembros.Perfiles;
-import com.example.ricardosernam.puntodeventa.Personalizar.Personalizar;
 import com.example.ricardosernam.puntodeventa.Productos.Productos;
-import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
-import com.example.ricardosernam.puntodeventa.Reportes.Reportes;
+import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
 import com.example.ricardosernam.puntodeventa.Ventas.Historial_ventas_class;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
@@ -41,9 +36,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_OnClick {
-    ViewPager viewPager;
-    TabLayout tabLayout;
-    ImageView logo;
+    private ImageView logo;
     private Cursor fila;
     private SQLiteDatabase db;
     private ContentValues values;
@@ -55,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppBarLayout bar=findViewById(R.id.APLappBar);
-        tabLayout =  findViewById(R.id.TLtabla);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -142,37 +134,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragAbierto.setText(item.getTitle());
         if (id == R.id.Ventas) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Compras) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Compras()).commit();
-            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Productos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Perfiles) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Perfiles()).commit();
-            //tabLayout.setVisibility(View.VISIBLE);
-        } else if (id == R.id.Provedores) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Proveedores()).commit();
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Clientes) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Clientes()).commit();
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Reportes) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Reportes()).commit();
-            tabLayout.setVisibility(View.GONE);
+        } else if (id == R.id.Contrasena) {
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Contrasena()).commit();
         } else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Personalizar) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Personalizar()).commit();
-            tabLayout.setVisibility(View.GONE);
-        } else if (id == R.id.Configurar) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Configurar()).commit();
-            tabLayout.setVisibility(View.GONE);
         } else if (id == R.id.Contáctanos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();
-            tabLayout.setVisibility(View.GONE);
+        } else if (id == R.id.Terminos) {
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Terminos()).commit();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,35 +1,20 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Descuentos;
 
 import java.util.ArrayList;
 
@@ -43,44 +28,30 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         this.itemsCobrar = itemsCobrar;
         this.context = context;
     }
-    public interface actualizado {
-        void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento);
-    }
 
     public class Productos_ventasViewHolder extends RecyclerView.ViewHolder{    ////clase donde van los elementos del cardview
-        public TextView nombreP, tipoD, porcentajeD, unidad, subtotal, precio, cantidad;
-        public Button eliminarArt, eliminarCompra;
-        public CheckBox descuento;
-        public actualizado actualizar;
+        public TextView nombreP, unidad, subtotal, precio, cantidad;
+        public Button eliminarArt;
 
         public Productos_ventasViewHolder(View v) {
             super(v);
             nombreP = v.findViewById(R.id.TVnombreProductoCobrar);  ///cardviews donde va el nombre del producto
             eliminarArt = v.findViewById(R.id.BtnEliminarArt);
-            eliminarCompra = v.findViewById(R.id.BtnEliminarCompra);
-            tipoD = v.findViewById(R.id.TVtipoDescuento);
-            porcentajeD = v.findViewById(R.id.TVporcentajeDescuento);
             precio = v.findViewById(R.id.ETprecio);
             cantidad = v.findViewById(R.id.ETcantidad);
             subtotal = v.findViewById(R.id.TVsubtotal);
-            actualizar=(actualizado) fragment;
         }
     }
     public static class watcherCalculo1 implements TextWatcher{   ///detecta cambios en los editText
-        private TextView porcentajeD, cantidad,precio, subtotal;
-        private actualizado Interfaz;
-        private String unidad, nombre;
+        private TextView cantidad,precio, subtotal;
+        private String nombre;
         private int position;
 
-       watcherCalculo1(String unidad, String nombre,  TextView cantidad, TextView precio, TextView subtotal, actualizado Interfaz, TextView porcentajeD, int position) {
-            this.unidad=unidad;
+       watcherCalculo1(String nombre,  TextView cantidad, TextView precio, TextView subtotal) {
             this.nombre=nombre;
             this.cantidad = cantidad;
             this.precio = precio;
             this.subtotal = subtotal;
-            this.Interfaz=Interfaz;
-            this.position=position;
-            this.porcentajeD=porcentajeD;
         }
 
         @Override
@@ -91,9 +62,7 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             if (!(TextUtils.isEmpty(cantidad.getText()))&!(TextUtils.isEmpty(precio.getText()))) {
                 float totalParcial=Float.parseFloat(String.valueOf((cantidad.getText()))) * Float.parseFloat(String.valueOf((precio.getText())));
-                subtotal.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
-
-                Interfaz.actualizar(unidad, nombre, Float.parseFloat(String.valueOf((cantidad.getText()))), Float.parseFloat(String.valueOf((precio.getText()))), position, Float.parseFloat(String.valueOf(subtotal.getText())), Integer.parseInt(String.valueOf(porcentajeD.getText())));
+                subtotal.setText(String.valueOf(totalParcial));  ////hacemos el descuento
             }
         }
         @Override
@@ -122,10 +91,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
         holder.cantidad.setText(String.valueOf(itemsCobrar.get(position).getCantidad()));
         holder.subtotal.setText(String.valueOf(itemsCobrar.get(position).getSubTotal()));
         ///llamamos al escuchador de cambios en los editText
-        watcherCalculo1 watcher1 = new watcherCalculo1(String.valueOf(holder.unidad.getText()), String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal, holder.actualizar, holder.porcentajeD, position);
+        watcherCalculo1 watcher1 = new watcherCalculo1(String.valueOf(holder.nombreP.getText()), holder.cantidad, holder.precio, holder.subtotal);
         holder.cantidad.addTextChangedListener(watcher1);
         holder.precio.addTextChangedListener(watcher1);
-        holder.porcentajeD.addTextChangedListener(watcher1);
 
         holder.eliminarArt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,39 +104,9 @@ public class Cobrar_ventasAdapter extends RecyclerView.Adapter <Cobrar_ventasAda
                 notifyDataSetChanged();
                 if(itemsCobrar.isEmpty()){////ocultamos por completo el fragment donde se agregan   ///aqui esta el error
                     CardView cobro=((Activity) context).findViewById(R.id.CVcobrar);
-                    LinearLayout opcionDeVenta=((Activity) context).findViewById(R.id.LLopcionDeVenta);
                     cobro.setVisibility(View.GONE);
-                    opcionDeVenta.setVisibility(View.GONE);
                 }
             }
         });
-        final CheckBox descuentoTotal=((Activity) context).findViewById(R.id.CBDescuento);   ///chekBox del descuentoTotal
-        holder.descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-               @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                   if(b) {
-                       if(!(descuentoTotal.isChecked())) {   ////si aquel no esta checado
-                           new Descuentos(new interfaz_descuento() {
-                               @Override
-                               public void descontar(String tipo, int porcentaje) {
-                                   holder.tipoD.setText(tipo);
-                                   holder.tipoD.setVisibility(View.VISIBLE);
-                                   holder.porcentajeD.setText(String.valueOf(porcentaje));
-                                   holder.porcentajeD.setVisibility(View.VISIBLE);
-                               }
-                           }).show(manager, "Descuentos");
-                       }
-                       else{
-                           Toast.makeText(context, "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
-                           holder.descuento.setChecked(false);
-                       }
-                   }
-                   else{
-                       holder.tipoD.setText(" ");
-                       holder.porcentajeD.setText("0");
-                       holder.porcentajeD.setVisibility(View.INVISIBLE);
-                   }
-                }
-            });
     }
 }

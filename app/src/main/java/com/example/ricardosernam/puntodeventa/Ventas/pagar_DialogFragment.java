@@ -20,16 +20,13 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 @SuppressLint("ValidFragment")
 public class pagar_DialogFragment extends android.support.v4.app.DialogFragment {
     private Button aceptar,cancelar;
-    private TextView total,cambio, deuda, abono;
+    private TextView total,cambio;
     private EditText cantidad;
     private float totalPagar;
-    private actualizado aceptarCompra;
-    private String tipoCobro;
-
+    private interfaz_OnClick aceptarCompra;
 
      @SuppressLint("ValidFragment")
-     public pagar_DialogFragment(String tipoCobro, float totalPagar, actualizado aceptarCompra){
-         this.tipoCobro=tipoCobro;
+     public pagar_DialogFragment(float totalPagar, interfaz_OnClick aceptarCompra){
          this.totalPagar=totalPagar;
          this.aceptarCompra=aceptarCompra;
      }
@@ -42,8 +39,7 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         total=rootView.findViewById(R.id.TVtotalCompra);
         cambio=rootView.findViewById(R.id.TVcambio);
 
-        abono=rootView.findViewById(R.id.TVpagoAbono);
-        deuda=rootView.findViewById(R.id.TVdeuda);
+
         cantidad=rootView.findViewById(R.id.ETcantidadPago);
         aceptar=rootView.findViewById(R.id.BtnAceptarPago);
         cancelar=rootView.findViewById(R.id.BtnCancelarPago);
@@ -51,9 +47,6 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
         total.setText(String.valueOf(totalPagar));
         cantidad.setText("0.0");
 
-        if(tipoCobro.equals("Por pagar")){
-            abono.setText("Abonar... $");
-        }
         cantidad.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -86,13 +79,9 @@ public class pagar_DialogFragment extends android.support.v4.app.DialogFragment 
             @Override
             public void onClick(View view) {
                 if(validar(totalPagar)){   /////si  ya se pago todo bien
-                    tipoCobro="Pagar ahora";
                     dismiss();
-                    aceptarCompra.actualizar(0, tipoCobro);
-                }
-                else if(!(validar(totalPagar))&tipoCobro.equals("Por pagar")){
-                    dismiss();
-                    aceptarCompra.actualizar(0, tipoCobro);
+                    aceptarCompra.onClick(view);
+
                 }
             }
         });

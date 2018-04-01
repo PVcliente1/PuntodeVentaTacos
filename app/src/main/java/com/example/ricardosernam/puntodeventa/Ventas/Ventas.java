@@ -8,70 +8,45 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.BitmapDrawable;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;;
-import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Descuentos;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Fecha_DialogFragment;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Hora_DialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cobrar_ventasAdapter.actualizado {     /////Fragment de categoria ventas
+public class Ventas extends Fragment implements Pro_DialogFragment.agregado {     /////Fragment de categoria ventas
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
     private android.support.v4.app.FragmentManager fm;
     private FragmentManager fm2;
-    private RadioGroup opcionVentas, opcionCobrar;
-    private LinearLayout pagar, fechaHora, tipoDescuento;
     private Button eliminarCompra,aceptarCompra;
     private ContentValues values;
-    private RadioButton seleccionadoCobrar, seleccionadoTipo;
-    private LinearLayout opcionDeVenta;
     private CardView cobro;
-    private CheckBox descuento;
-    private TextView tipoD, porcentajeD, total;
-    private String RBseleccionadoTipo, RBseleccionadoCobrar;
-    private int  descuentoProducto;
+    private TextView total;
     private Button productos, escanear, historial;
-    private EditText codigo, cliente, descripcion, horaEntrega, fechaEntrega;
+    private EditText codigo;
     private SQLiteDatabase db;
     private Cursor datosSeleccionado, datosEscaneado, consultaIdCliente, consultaIdProducto, consultaIdDescuento, consultaIdVentas;
     private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
@@ -91,12 +66,8 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         codigo=view.findViewById(R.id.ETcodigo);
         values = new ContentValues();
 
-        fechaHora=view.findViewById(R.id.LObotones_edittext);
-        horaEntrega=view.findViewById(R.id.EThora);
-        fechaEntrega=view.findViewById(R.id.ETfecha);
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
-        opcionDeVenta=view.findViewById(R.id.LLopcionDeVenta);
         recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
         codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
@@ -135,16 +106,10 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         this.itemsCobrar = itemsCobrar;
         relleno();
         cobro.setVisibility(View.VISIBLE);
-        opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
-        //actualizar(datosSeleccionado.getString(0),  datosSeleccionado.getString(1),cantidad, datosSeleccionado.getFloat(2), itemsCobrar.size()-1, datosSeleccionado.getFloat(2), 0);
+        calcularTotal();
         adapter.notifyDataSetChanged();
     }
-    @Override   ///modificamos los datos de una compra
-    public void actualizar(String unidad, String nombre, float cantidad, float precio, int position, float subTotal, int descuento) {  ///al modificar la compra de un producto
-        /*itemsCobrar.set(position, new Cobrar_ventas_class(unidad, nombre, cantidad, precio, subTotal, descuento));  //si actualiza correctamente
-        descuentoProducto=descuento;
-        calcularTotal();*/
-    }
+
     public void calcularTotal(){
         float suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
@@ -157,49 +122,6 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         super.onActivityCreated(savedInstanceState);
         eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
-        opcionVentas = getActivity().findViewById(R.id.RGopcionesVenta);
-        opcionCobrar= getActivity().findViewById(R.id.RGopcionCobrar);
-        pagar = getActivity().findViewById(R.id.LOpagar);
-        cliente=getActivity().findViewById(R.id.ETcliente);
-        descripcion=getActivity().findViewById(R.id.ETdescripcion);
-        descuento=getActivity().findViewById(R.id.CBDescuento);
-        tipoD=getActivity().findViewById(R.id.TVtipoDescuento);
-        porcentajeD = getActivity().findViewById(R.id.TVporcentajeDescuento);
-        tipoDescuento=getActivity().findViewById(R.id.LOdescuento);
-        opcionVentas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {  ///programamamos las opciones de ventas (RadioGroup)
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.RBcotizar:
-                        pagar.setVisibility(View.GONE);
-                        aceptarCompra.setVisibility(View.GONE);
-                        cliente.setVisibility(View.GONE);
-                        descripcion.setVisibility(View.GONE);
-                        fechaHora.setVisibility(View.GONE);
-                        tipoDescuento.setVisibility(View.GONE);
-                        break;
-                    case R.id.RBapartar:
-                        pagar.setVisibility(View.VISIBLE);
-                        aceptarCompra.setVisibility(View.VISIBLE);
-                        cliente.setHint("Cliente (obligatorio)");
-                        cliente.setVisibility(View.VISIBLE);
-                        descripcion.setVisibility(View.VISIBLE);
-                        fechaHora.setVisibility(View.VISIBLE);
-                        tipoDescuento.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.RBvender:
-                        pagar.setVisibility(View.VISIBLE);
-                        aceptarCompra.setVisibility(View.VISIBLE);
-                        cliente.setHint("Cliente (opcional)");
-                        cliente.setVisibility(View.VISIBLE);
-                        descripcion.setVisibility(View.VISIBLE);
-                        fechaHora.setVisibility(View.INVISIBLE);
-                        tipoDescuento.setVisibility(View.VISIBLE);
-                        break;
-
-                }
-            }
-        });
         eliminarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {  ///al eliminar compra mostramos un AlertDialog
@@ -224,20 +146,17 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
         aceptarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seleccionadoCobrar=getActivity().findViewById(opcionCobrar.getCheckedRadioButtonId());   ///obtenemos los radioButtons seleccionados
-                seleccionadoTipo=getActivity().findViewById(opcionVentas.getCheckedRadioButtonId());
-                RBseleccionadoCobrar= String.valueOf(seleccionadoCobrar.getText());  ///tipo de cobro
-                RBseleccionadoTipo= String.valueOf(seleccionadoTipo.getText());   ////tipo de movimiento
-                new pagar_DialogFragment(RBseleccionadoCobrar, Float.parseFloat(String.valueOf(total.getText())), new actualizado() {
+                new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
-                    public void actualizar(int i, String tipoCobro) {////ocultamos y guardamos los datos de la compra
+                    public void onClick(View view) {////ocultamos y guardamos los datos de la compra
                         /////obtener fecha actual
-                        java.util.Calendar c = java.util.Calendar.getInstance();
+                        /*java.util.Calendar c = java.util.Calendar.getInstance();
                             SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
-                            String formattedDate = df.format(c.getTime());
+                            String formattedDate = df.format(c.getTime());*/
+
                             /////DATOS DE LA VENTA
-                        consultaIdCliente=db.rawQuery("select idcliente from Clientes where nombre='"+String.valueOf(cliente.getText())+"'" ,null);
+                        /*consultaIdCliente=db.rawQuery("select idcliente from Clientes where nombre='"+String.valueOf(cliente.getText())+"'" ,null);
                             values.put("tipo", RBseleccionadoTipo);
                             values.put("fecha", formattedDate);
                             values.put("fecha_entrega", String.valueOf(fechaEntrega.getText()) + " " + (horaEntrega.getText())); //
@@ -247,136 +166,33 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado, Cob
                                 values.put("idclienteFK", consultaIdCliente.getInt(0));
                             }
                             values.put("idmiembroFK", 1);
-                            db.insertOrThrow("Ventas", null, values);
-
-                            /*consultaIdVentas=db.rawQuery("select idventa from Ventas" ,null);
-                            consultaIdVentas.moveToLast();
-                            Toast.makeText(getContext(), consultaIdVentas.getInt(0), Toast.LENGTH_LONG).show();*/
-                            ////DATOS DE VENTA_DETALLE
-                        /*for(int j=0; i<itemsCobrar.size(); i++){
-                            consultaIdVentas=db.rawQuery("select idventa from Ventas" ,null);
-                            consultaIdVentas.moveToLast();
-                            values.put("idventaFK", consultaIdVentas.getInt(0));
-
-                            consultaIdProducto=db.rawQuery("select idproducto from Productos where nombre='"+itemsCobrar.get(i).getNombre()+"'" ,null);
-                            if(consultaIdProducto.moveToFirst()){
-                                values.put("idproductoFK", consultaIdProducto.getInt(0));
-                            }
-                            consultaIdDescuento=db.rawQuery("select iddescuento from Descuentos where porcentaje='"+itemsCobrar.get(i).getDescuento()+"'" ,null);
-                            if(consultaIdDescuento.moveToFirst()){
-                                values.put("iddescuentoFK", consultaIdDescuento.getInt(0));
-                            }
-                            values.put("cantidad", itemsCobrar.get(i).getCantidad());
-                            values.put("precio", itemsCobrar.get(i).getPrecio());
-                            db.insertOrThrow("Venta_detalles", null, values);
-                        }*/
+                            db.insertOrThrow("Ventas", null, values);*/
                             cerrar_compra();
                             Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }
                 }).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
-        horaEntrega.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {   ///abrimos el dialogo de TimePicker
-                new Hora_DialogFragment(new interfaz_OnClickHora() {
-                    @Override
-                    public void onClick(int i, int i1) {
-                        horaEntrega.setText(i + ":" + i1);
-                    }
-                }).show(getFragmentManager(),"Hora_apartado");
-            }
-        });
-        fechaEntrega.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {   ///abrimos el dialogo de DatePicker
-                new Fecha_DialogFragment(new interfaz_OnClickFecha() {
-                    @Override
-                    public void onClick(View v, int i, int i1, int i2) {
-                        fechaEntrega.setText(i2+"-"+ i1 +"-"+ i);
-                    }
-                }).show(getFragmentManager(),"Fecha_apartado");
-            }
-        });
-        cliente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Clientes_DialogFragment(new interfazUnidades_OnClick() {
-                    @Override
-                    public void onClick(View v, String clienteSeleccionado) {
-                        cliente.setText(clienteSeleccionado);
-                    }
-                }).show(fm, "Clientes DialogFragment");
-            }
-        });
-        porcentajeD.addTextChangedListener(new TextWatcher() {  ///calculamos el porcentaje aplicado
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!(TextUtils.isEmpty(porcentajeD.getText()))) {
-                    calcularTotal();
-                    float totalParcial=Float.parseFloat(String.valueOf((total.getText())));
-                    total.setText(String.valueOf(totalParcial-(Float.parseFloat(String.valueOf(porcentajeD.getText()))*totalParcial)/100));  ////hacemos el descuento
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        descuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    if (descuentoProducto==0) {   ////si aquel no esta checado
-                        new Descuentos(new interfaz_descuento() {
-                            @Override
-                            public void descontar(String tipo, final int porcentaje) {
-                                tipoD.setText(tipo);
-                                tipoD.setVisibility(View.VISIBLE);
-                                porcentajeD.setText(String.valueOf(porcentaje));
-                                porcentajeD.setVisibility(View.VISIBLE);
-                            }
-                        }).show(fm2, "Descuentos");
-                    }
-                    else {   ///hay otro descuento selccionado
-                        Toast.makeText(getContext(), "Selecciona un descuento tan solo a productos o a la compra total", Toast.LENGTH_LONG).show();
-                        descuento.setChecked(false);
-                    }
-                }
-                else{
-                    tipoD.setText(" ");
-                    porcentajeD.setText("0");
-                    porcentajeD.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
     }
     public void cerrar_compra(){
         cobro.setVisibility(View.GONE);
-        opcionDeVenta.setVisibility(View.GONE);
         itemsCobrar.removeAll(itemsCobrar);
     }
     //metodo para obtener resultados DEL ESCANER
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == 2 && data != null) {
+        if (requestCode == 2 && data != null) {
             //obtener resultados
-            datosEscaneado=db.rawQuery("select unidad, nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
+            datosEscaneado=db.rawQuery("select nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
             if(datosEscaneado.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), datosEscaneado.getFloat(2), 0));//obtenemos el cardview seleccionado y lo agregamos a items2
+                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0), 1, datosEscaneado.getFloat(1), datosEscaneado.getFloat(1)));//obtenemos el cardview seleccionado y lo agregamos a items2
                 relleno();
                 cobro.setVisibility(View.VISIBLE);
-                opcionDeVenta.setVisibility(View.VISIBLE);  ////actualizamos para calcular el total
-                actualizar(datosEscaneado.getString(0),  datosEscaneado.getString(1),1, datosEscaneado.getFloat(2), itemsCobrar.size()-1, datosEscaneado.getFloat(2), 0);
                 adapter.notifyDataSetChanged();
             }
             else{
                 Toast.makeText(getContext(), "Este producto no esta registrado", Toast.LENGTH_SHORT).show();
             }
-        }*/
+        }
     }
 }

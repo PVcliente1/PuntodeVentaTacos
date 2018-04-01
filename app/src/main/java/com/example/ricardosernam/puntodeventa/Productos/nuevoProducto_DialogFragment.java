@@ -36,10 +36,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
-import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
-import com.example.ricardosernam.puntodeventa.Proveedores.Proveedores;
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa.Ventas.Pro_ventas_class;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
@@ -96,17 +93,6 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
                 startActivityForResult(intent,3);//inicializar el activity con RequestCode3
-            }
-        });
-        unidad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {///traemos la unidad seleccionada
-                new Unidades_DialogFragment(new interfazUnidades_OnClick() {
-                    @Override
-                    public void onClick(View v, String unidadSeleccionada) {
-                        unidad.setText(unidadSeleccionada);
-                    }
-                }).show(fm, "Clientes_DialogFragment");
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {

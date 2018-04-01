@@ -22,15 +22,14 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_agregarProductos;
 
 import java.util.ArrayList;
 
 public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
-    private interfaz_agregarProductos Interfaz;
+    private actualizado Interfaz;
 
-    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, interfaz_agregarProductos Interfaz) {  ///recibe el arrayProductos como parametro y la interface
+    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, actualizado Interfaz) {  ///recibe el arrayProductos como parametro y la interface
         this.itemsProductos = itemsProductos;
         this.Interfaz=Interfaz;
     }
@@ -51,15 +50,13 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
     }
     public static class watcherCalculo1 implements TextWatcher {   ///detecta cambios en los editText
         private TextView cantidad;
-        private interfaz_agregarProductos Interfaz;
+        private actualizado Interfaz;
         private String  nombre;
-        private int position;
 
-        watcherCalculo1(String nombre, TextView cantidad, interfaz_agregarProductos Interfaz, int position) {
+        watcherCalculo1(String nombre, TextView cantidad, actualizado Interfaz) {
             this.nombre=nombre;
             this.cantidad = cantidad;
             this.Interfaz=Interfaz;
-            this.position=position;
         }
 
         @Override
@@ -69,7 +66,7 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             if (!(TextUtils.isEmpty(cantidad.getText()))) {
-                Interfaz.onClick(nombre, Integer.parseInt(String.valueOf((cantidad.getText()))), position);
+                Interfaz.actualizar(Integer.parseInt(String.valueOf((cantidad.getText()))), nombre);
             }
         }
         @Override
@@ -107,6 +104,6 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
                 }
             }
         });
-        holder.cuenta.addTextChangedListener(new watcherCalculo1(String.valueOf(holder.nombreP.getText()), holder.cuenta, Interfaz, position));
+        holder.cuenta.addTextChangedListener(new watcherCalculo1(String.valueOf(holder.nombreP.getText()), holder.cuenta, Interfaz));
     }
 }

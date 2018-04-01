@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -10,10 +9,6 @@
             android:icon="@mipmap/ic_shopping_cart_black_24dp"
             android:title="Ventas" />
         <item
-            android:id="@+id/Compras"
-            android:icon="@mipmap/ic_shopping_basket_black_24dp"
-            android:title="Compras" />
-        <item
             android:id="@+id/Productos"
             android:icon="@mipmap/ic_toc_black_24dp"
             android:title="Productos" />
@@ -22,37 +17,17 @@
     <item android:title="Administrar...">
         <menu>
             <item
-                android:id="@+id/Perfiles"
-                android:icon="@mipmap/ic_supervisor_account_black_24dp"
-                android:title="Perfiles" />
-            <item
-                android:id="@+id/Provedores"
-                android:icon="@mipmap/ic_assignment_ind_black_24dp"
-                android:title="Provedores" />
-            <item
-                android:id="@+id/Clientes"
-                android:icon="@mipmap/ic_account_circle_black_24dp"
-                android:title="Clientes" />
-            <item
-                android:id="@+id/Reportes"
-                android:icon="@mipmap/ic_assignment_black_24dp"
-                android:title="Reportes" />
-            <item
                 android:id="@+id/Inventario"
                 android:icon="@mipmap/ic_description_black_24dp"
                 android:title="Inventario" />
+            <item
+                android:id="@+id/Contrasena"
+                android:icon="@mipmap/ic_supervisor_account_black_24dp"
+                android:title="Contraseña" />
         </menu>
     </item>
     <item android:title="Más...">
         <menu>
-            <item
-                android:id="@+id/Personalizar"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Personalizar" />
-            <item
-                android:id="@+id/Configurar"
-                android:icon="@mipmap/ic_settings_black_24dp"
-                android:title="Configurar" />
             <item
                 android:id="@+id/Contáctanos"
                 android:icon="@mipmap/ic_perm_phone_msg_black_24dp"

@@ -23,8 +23,6 @@ import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_agregarProductos;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -79,9 +77,9 @@ public class Pro_DialogFragment extends android.support.v4.app.DialogFragment { 
         recycler = rootView.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new Pro_ventasAdapter(itemsProductos, new interfaz_agregarProductos() {  ///obtenemos los datos capturados para cada producto
+        adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
             @Override
-            public void onClick(String seleccionado, int cantidad, int postition) {
+            public void actualizar(int cantidad, String seleccionado) {
                 datosSeleccionado=db.rawQuery("select precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
                 if(datosSeleccionado.moveToFirst()) {
                     itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0)));//obtenemos el cardview seleccionado y lo agregamos a items2
