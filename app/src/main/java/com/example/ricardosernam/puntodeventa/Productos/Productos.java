@@ -9,21 +9,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,16 +35,12 @@ import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickCodigo;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickElementosProductos;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickHora;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickImagen;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -105,9 +95,9 @@ public class Productos extends Fragment implements agregado {
 
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
         if(fila.moveToFirst()) {///si hay un elemento
-            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getFloat(2), fila.getString(3), fila.getString(4)));
             while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getFloat(2), fila.getString(3), fila.getString(4)));
             }
         }
         //consulta_total();
@@ -124,8 +114,8 @@ public class Productos extends Fragment implements agregado {
             @Override
             public void onClick(View v, EditText codigo2) {
                 codigo = codigo2;
-                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent, 4);//inicializar el activity con RequestCode3
+                //Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
+                //startActivityForResult(intent, 4);//inicializar el activity con RequestCode3
             }
         }, new interfaz_OnClickImagen() { ////modificar imagen
             @Override
@@ -173,7 +163,7 @@ public class Productos extends Fragment implements agregado {
                     ///actualizamos el recycler
                     filaActualizar = db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos where nombre='" + productos + "'", null);
                     if (filaActualizar.moveToFirst()) {
-                        itemsProductos.set(position, new Pro_ventas_class(filaActualizar.getString(0), filaActualizar.getString(1), filaActualizar.getString(2), filaActualizar.getString(3), filaActualizar.getString(4)));
+                        itemsProductos.set(position, new Pro_ventas_class(filaActualizar.getString(0), filaActualizar.getString(1), filaActualizar.getFloat(2), filaActualizar.getString(3), filaActualizar.getString(4)));
                         adapter.notifyDataSetChanged();
                     }
                     ///ocultamos lo inecesario
@@ -210,9 +200,9 @@ public class Productos extends Fragment implements agregado {
                     }
                     if (filaBusqueda.moveToFirst()) { ///si hay un elemento
                         itemsProductos.removeAll(itemsProductos);
-                        itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                        itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getFloat(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
                         while (filaBusqueda.moveToNext()) {
-                            itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getString(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
+                            itemsProductos.add(new Pro_ventas_class(filaBusqueda.getString(0), filaBusqueda.getString(1), filaBusqueda.getFloat(2), filaBusqueda.getString(3), filaBusqueda.getString(4)));
                         }
                     }
                     else{ ///El producto no existe
@@ -229,8 +219,8 @@ public class Productos extends Fragment implements agregado {
         escanear.setOnClickListener(new View.OnClickListener() {  ///buscamos un producto mediante el escaner
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,3);//inicializar el activity con RequestCode2
+                //Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
+                //startActivityForResult(intent,3);//inicializar el activity con RequestCode2
             }
         });
         nuevoProducto.setOnClickListener(new View.OnClickListener() {
@@ -308,9 +298,9 @@ public class Productos extends Fragment implements agregado {
         fila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos" ,null);
         if(fila.moveToFirst()) {///si hay un elemento
             itemsProductos.removeAll(itemsProductos);
-            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getFloat(2), fila.getString(3), fila.getString(4)));
             while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getString(2), fila.getString(3), fila.getString(4)));
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getString(1), fila.getFloat(2), fila.getString(3), fila.getString(4)));
             }
         }
         adapter.notifyDataSetChanged();
@@ -319,7 +309,7 @@ public class Productos extends Fragment implements agregado {
     public void agregar() {
         ultimaFila=db.rawQuery("select codigo_barras, nombre, precio_venta, ruta_imagen, unidad from Productos",null);
         ultimaFila.moveToLast();
-        itemsProductos.add(new Pro_ventas_class(ultimaFila.getString(0), ultimaFila.getString(1), ultimaFila.getString(2), ultimaFila.getString(3), ultimaFila.getString(4)));;
+        itemsProductos.add(new Pro_ventas_class(ultimaFila.getString(0), ultimaFila.getString(1), ultimaFila.getFloat(2), ultimaFila.getString(3), ultimaFila.getString(4)));;
         adapter.notifyDataSetChanged();
     }
     @Override  ///acciones de camara

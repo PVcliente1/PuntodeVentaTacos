@@ -1,41 +1,31 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Ventas extends Fragment implements Pro_DialogFragment.agregado {     /////Fragment de categoria ventas
+//public class Ventas extends Fragment implements Pro_DialogFragment.agregado {     /////Fragment de categoria ventas
+public class Ventas extends Fragment {     /////Fragment de categoria ventas
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
@@ -45,12 +35,12 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
     private ContentValues values;
     private CardView cobro;
     private TextView total;
-    private Button productos, escanear, historial;
-    private EditText codigo;
+    private Button historial;
     private SQLiteDatabase db;
     private Cursor datosSeleccionado, datosEscaneado, consultaIdCliente, consultaIdProducto, consultaIdDescuento, consultaIdVentas;
-    private ArrayList<Cobrar_ventas_class> itemsCobrar = new ArrayList<>();  ///Arraylist que contiene los cardviews seleccionados de productos
-
+    private Cursor fila;
+    private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>();
+    private ArrayList<Cobrar_ventas_class> itemsCobrar= new ArrayList <>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
@@ -60,56 +50,74 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
         db=admin.getWritableDatabase();
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
         fm2= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
-        productos= view.findViewById(R.id.BtnProductos);
-        historial= view.findViewById(R.id.BtnHistorial);
-        escanear= view.findViewById(R.id.BtnEscanear);
-        codigo=view.findViewById(R.id.ETcodigo);
+        //historial= view.findViewById(R.id.BtnHistorial);
+
         values = new ContentValues();
 
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
-        recycler = view.findViewById(R.id.RVproductosSeleccionados);///declaramos el recycler
-        codigo.setInputType(InputType.TYPE_NULL);  ///cerramos el teclado
 
-        escanear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,2);//inicializar el activity con RequestCode2
+        eliminarCompra = view.findViewById(R.id.BtnEliminarCompra);
+        aceptarCompra = view.findViewById(R.id.BtnAceptarCompra);
+
+
+        fila=db.rawQuery("select nombre, precio_venta from Productos" ,null);
+
+        if(fila.moveToFirst()) {///si hay un elemento
+            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getFloat(1)));
+            while (fila.moveToNext()) {
+                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getFloat(1)));
+            }
+        }
+
+        recycler = view.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
+        lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
+        recycler.setLayoutManager(lManager);
+        adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
+        @Override
+            public void actualizar(int cantidad, String seleccionado) {
+                datosSeleccionado=db.rawQuery("select precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
+                if(datosSeleccionado.moveToFirst()) {
+                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                }
+                ///comprobamos si se repite
+                for(int i=0; i<itemsCobrar.size(); i++) {
+                    String dato=itemsCobrar.get(i).getNombre();
+                    for(int j=i+1; j<itemsCobrar.size(); j++) {
+                        if(dato.equals(itemsCobrar.get(j).getNombre())){  ///si se repite
+                            if(itemsCobrar.get(j).getCantidad()==0){  ///si es cero, lo eliminamos de la lista
+                                itemsCobrar.remove(j);   ////eliminamos el previamente agregado
+                                itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                            }
+                            else {
+                                itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                            }
+                        }
+                    }
+                }
+                calcularTotal();
+                if(itemsCobrar.isEmpty()){
+                    total.setText("0.0");
+                    eliminarCompra.setVisibility(View.INVISIBLE);
+                    aceptarCompra.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    eliminarCompra.setVisibility(View.VISIBLE);
+                    aceptarCompra.setVisibility(View.VISIBLE);
+                }
             }
         });
+        recycler.setAdapter(adapter);
 
-        productos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {///mandamos llamar el DialogFragment
-                new Pro_DialogFragment().show(getChildFragmentManager(), "Pro_DialogFragment");
-            }
-        });
-
-        historial.setOnClickListener(new View.OnClickListener() {  ///abrimos el historial de ventas
+        /*historial.setOnClickListener(new View.OnClickListener() {  ///abrimos el historial de ventas
             @Override
             public void onClick(View view) {
                 new Historial_DialogFragment().show(fm, "Historial_DialogFragment");
             }
-        });
+        });*/
 
         return view;
     }
-    public void relleno(){    ///llamamos el adapter del recycler
-        adapter = new Cobrar_ventasAdapter(getFragmentManager().findFragmentById(R.id.LOprincipal), getActivity(), itemsCobrar);///llamamos al adaptador y le enviamos el array como parametro
-        lManager = new LinearLayoutManager(this.getActivity());  //declaramos el layoutmanager
-        recycler.setLayoutManager(lManager);
-        recycler.setAdapter(adapter);
-    }
-    @Override
-    public void agregar(ArrayList<Cobrar_ventas_class> itemsCobrar) {    ///agregarNuevaCompra
-        this.itemsCobrar = itemsCobrar;
-        relleno();
-        cobro.setVisibility(View.VISIBLE);
-        calcularTotal();
-        adapter.notifyDataSetChanged();
-    }
-
     public void calcularTotal(){
         float suma=0;
         for(int i=0; i<itemsCobrar.size(); i++){
@@ -117,11 +125,10 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
             total.setText(String.valueOf(suma));
         }
     }
-    @Override
+    /*@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        eliminarCompra = getActivity().findViewById(R.id.BtnEliminarCompra);
-        aceptarCompra = getActivity().findViewById(R.id.BtnAceptarCompra);
+
         eliminarCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {  ///al eliminar compra mostramos un AlertDialog
@@ -166,33 +173,16 @@ public class Ventas extends Fragment implements Pro_DialogFragment.agregado {   
                                 values.put("idclienteFK", consultaIdCliente.getInt(0));
                             }
                             values.put("idmiembroFK", 1);
-                            db.insertOrThrow("Ventas", null, values);*/
+                            db.insertOrThrow("Ventas", null, values);     ///cerrrar aqui
                             cerrar_compra();
                             Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
                     }
                 }).show(getFragmentManager(),"pagarDiaogFragment");
             }
         });
-    }
-    public void cerrar_compra(){
+    }*/
+    /*public void cerrar_compra(){
         cobro.setVisibility(View.GONE);
         itemsCobrar.removeAll(itemsCobrar);
-    }
-    //metodo para obtener resultados DEL ESCANER
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2 && data != null) {
-            //obtener resultados
-            datosEscaneado=db.rawQuery("select nombre, precio_venta from Productos where codigo_barras='"+data.getStringExtra("BARCODE")+"'" ,null);
-            if(datosEscaneado.moveToFirst()) {
-                itemsCobrar.add(new Cobrar_ventas_class(datosEscaneado.getString(0), 1, datosEscaneado.getFloat(1), datosEscaneado.getFloat(1)));//obtenemos el cardview seleccionado y lo agregamos a items2
-                relleno();
-                cobro.setVisibility(View.VISIBLE);
-                adapter.notifyDataSetChanged();
-            }
-            else{
-                Toast.makeText(getContext(), "Este producto no esta registrado", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+    }*/
 }

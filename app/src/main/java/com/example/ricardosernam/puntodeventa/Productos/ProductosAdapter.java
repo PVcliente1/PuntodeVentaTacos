@@ -95,7 +95,7 @@ public class ProductosAdapter extends RecyclerView.Adapter <ProductosAdapter.Pro
         final FragmentManager manager = ((Activity) context).getFragmentManager();
         holder.codigo.setText(itemsProductos.get(position).getCodigo());
         holder.nombreP.setText(itemsProductos.get(position).getNombre());
-        holder.precio.setText(itemsProductos.get(position).getPrecio());
+        holder.precio.setText(String.valueOf(itemsProductos.get(position).getPrecio()));
         holder.unidad.setText(itemsProductos.get(position).getUnidad());
         holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
         holder.editar.setOnClickListener(new View.OnClickListener() {

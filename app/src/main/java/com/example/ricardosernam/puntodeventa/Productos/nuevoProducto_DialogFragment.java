@@ -2,31 +2,18 @@ package com.example.ricardosernam.puntodeventa.Productos;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +25,7 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfazUnidades_OnClick;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_SeleccionarImagen;
-import com.example.ricardosernam.puntodeventa.____herramientas_app.Escanner;
 import com.example.ricardosernam.puntodeventa.____herramientas_app.traerImagen;
 
 import java.io.FileNotFoundException;
@@ -91,8 +76,8 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
         escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
-                startActivityForResult(intent,3);//inicializar el activity con RequestCode3
+                //Intent intent = new Intent(getActivity(), Escanner.class);//intanciando el activity del scanner
+                //startActivityForResult(intent,3);//inicializar el activity con RequestCode3
             }
         });
         imagen.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +102,8 @@ public class nuevoProducto_DialogFragment extends android.support.v4.app.DialogF
                     values.put("precio_venta", String.valueOf(precio.getText())); //
                     values.put("ruta_imagen", MediaStore.Images.Media.insertImage(getContext().getContentResolver(), ((BitmapDrawable) ponerImagen.getDrawable()).getBitmap(), "Title", null));////obtenemos el uri de la imagen que esta actualmente seleccionada
                     values.put("unidad", String.valueOf(unidad.getText()));
-                    db.insertOrThrow("Productos", null, values);
+                    db.insert("Productos", null, values);
+                    //db.insertOrThrow("Productos", null, values);
                     db.close();
                     dismiss();
                     if(Interfaz!=null){  ///notificamos al fragment que se agrego para actualizar el recyclerview

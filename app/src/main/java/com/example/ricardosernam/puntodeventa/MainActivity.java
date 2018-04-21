@@ -22,9 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Benvenida.Registro_inicial;
 import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
-import com.example.ricardosernam.puntodeventa.Contrasenas.Contrasena;
 import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
 import com.example.ricardosernam.puntodeventa.Productos.Productos;
 import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
@@ -35,7 +33,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_descuento
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, interfaz_OnClick {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ImageView logo;
     private Cursor fila;
     private SQLiteDatabase db;
@@ -52,17 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-        /////comprobamos si es la primera vez que se abre
-        if(appGetFirstTimeRun()==0 ){
-            manejador.beginTransaction().replace(R.id.CLcontenedorTotal, new Registro_inicial()).commit(); ///cambio de fragment
-            bar.setVisibility(View.INVISIBLE);
-        }
-        else if(appGetFirstTimeRun()==1){
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
-        }
-        else if(appGetFirstTimeRun()==2){
-            Toast.makeText(getApplicationContext(), "Es una actualización", Toast.LENGTH_LONG).show();
-        }
+
+        manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -70,27 +60,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);//editamos el navigationheader
         View hView = navigationView.getHeaderView(0);
-        /////vistas necesarias para modificar los datos del negocio
-        logo=  hView.findViewById(R.id.IVlogoEmpresa);
-        nombreEmpresa=  hView.findViewById(R.id.TVnombreEmpresa);
-        BaseDeDatosLocal admin=new BaseDeDatosLocal(getApplicationContext());
-        db=admin.getWritableDatabase();
-        values = new ContentValues();
-        datosEmpresa();
+
         navigationView.setNavigationItemSelectedListener(this);
     }
-    public void datosEmpresa(){   ////obtenemos el logo y nombre de la empresa y los colocamos
-        fila=db.rawQuery("select nombre, logo from Datos_Empresa" ,null);
-        if(fila.moveToFirst()) {
-            nombreEmpresa.setText(fila.getString(0));
-            getSupportActionBar().setTitle(fila.getString(0));
-            logo.setImageURI(Uri.parse(fila.getString(1)));
-        }
-    }
-    @Override
-    public void onClick(View v) {
-        datosEmpresa();
-    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -136,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
         } else if (id == R.id.Productos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
-        } else if (id == R.id.Contrasena) {
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Contrasena()).commit();
-        } else if (id == R.id.Inventario) {
+        }  else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
         } else if (id == R.id.Contáctanos) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();

@@ -39,13 +39,15 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         public ImageView imagen;
         public Button restar;
         public Button aceptar;
-        public TextView cuenta;
+        public TextView cuenta, precio;
         public Productos_ventasViewHolder(final View v) {   ////lo que se programe aqui es para cuando se le de clic a un item del recycler
             super(v);
             nombreP = v.findViewById(R.id.TVnombreProductos);  ////Textview donde se coloca el nombre del producto
-            imagen = v.findViewById(R.id.IVimagenProducto);
+            //imagen = v.findViewById(R.id.IVimagenProducto);
             restar=v.findViewById(R.id.BtnRestar);
             cuenta=v.findViewById(R.id.TVcuenta);
+            precio = v.findViewById(R.id.TVprecio);  ////Textview donde se coloca el nombre del producto
+
         }
     }
     public static class watcherCalculo1 implements TextWatcher {   ///detecta cambios en los editText
@@ -88,7 +90,8 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
     @Override
     public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {
         holder.nombreP.setText(itemsProductos.get(position).getNombre());
-        holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
+        holder.precio.setText(String.valueOf(itemsProductos.get(position).getPrecio()));
+        //holder.imagen.setImageURI(Uri.parse(itemsProductos.get(position).getFoto()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,5 +108,6 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
             }
         });
         holder.cuenta.addTextChangedListener(new watcherCalculo1(String.valueOf(holder.nombreP.getText()), holder.cuenta, Interfaz));
+
     }
 }

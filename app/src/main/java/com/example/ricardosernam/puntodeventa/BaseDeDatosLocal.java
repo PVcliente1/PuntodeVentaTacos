@@ -103,7 +103,12 @@ public class BaseDeDatosLocal extends SQLiteOpenHelper {
 
         //        "    FOREIGN KEY (`idproveedorFK`) REFERENCES Proveedores (`idproveedor`))");
 
-
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (1,'Tacos-pastor', 8.0,'no')");
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (2,'Tacos-bistec', 8.0,'no')");
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (3,'Tacos-frijoles', 8.0,'no')");
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (4,'Tortas-pastor', 18.0,'no')");
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (5,'Tortas-bistec', 18.0,'no')");
+        sqLiteDatabase.execSQL("INSERT INTO Productos (idproducto, nombre, precio_venta, unidad) values (6,'Refresco', 12.0,'no')");
 
 
         //Creación el INDEX para la  relación de la tabla de miembros con la tabla de puestos      sqLiteDatabase.execSQL("CREATE INDEX `fk_miembros_puestos1_idx` ON Miembros (`idpuesto` ASC)");
