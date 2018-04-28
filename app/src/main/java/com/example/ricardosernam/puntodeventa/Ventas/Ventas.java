@@ -1,20 +1,24 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.BaseDeDatosLocal;
 import com.example.ricardosernam.puntodeventa.R;
@@ -69,8 +73,8 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
                 itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getFloat(1)));
             }
         }
-
         recycler = view.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
+        /*recycler = view.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
         adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
@@ -107,15 +111,8 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
                 }
             }
         });
-        recycler.setAdapter(adapter);
-
-        /*historial.setOnClickListener(new View.OnClickListener() {  ///abrimos el historial de ventas
-            @Override
-            public void onClick(View view) {
-                new Historial_DialogFragment().show(fm, "Historial_DialogFragment");
-            }
-        });*/
-
+        recycler.setAdapter(adapter);*/
+        relleno();
         return view;
     }
     public void calcularTotal(){
@@ -124,6 +121,45 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
             suma=suma+itemsCobrar.get(i).getSubTotal();
             total.setText(String.valueOf(suma));
         }
+    }
+    public void relleno(){    ///llamamos el adapter del recycler
+        lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
+        recycler.setLayoutManager(lManager);
+        adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
+            @Override
+            public void actualizar(int cantidad, String seleccionado) {
+                datosSeleccionado=db.rawQuery("select precio_venta from Productos where nombre='"+seleccionado+"'" ,null);
+                if(datosSeleccionado.moveToFirst()) {
+                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                }
+                ///comprobamos si se repite
+                for(int i=0; i<itemsCobrar.size(); i++) {
+                    String dato=itemsCobrar.get(i).getNombre();
+                    for(int j=i+1; j<itemsCobrar.size(); j++) {
+                        if(dato.equals(itemsCobrar.get(j).getNombre())){  ///si se repite
+                            if(itemsCobrar.get(j).getCantidad()==0){  ///si es cero, lo eliminamos de la lista
+                                itemsCobrar.remove(j);   ////eliminamos el previamente agregado
+                                itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                            }
+                            else {
+                                itemsCobrar.remove(i);   ////eliminamos el previamente agregado
+                            }
+                        }
+                    }
+                }
+                calcularTotal();
+                if(itemsCobrar.isEmpty()){
+                    total.setText("0.0");
+                    eliminarCompra.setVisibility(View.INVISIBLE);
+                    aceptarCompra.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    eliminarCompra.setVisibility(View.VISIBLE);
+                    aceptarCompra.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        recycler.setAdapter(adapter);
     }
     /*@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -181,6 +217,60 @@ public class Ventas extends Fragment {     /////Fragment de categoria ventas
             }
         });
     }*/
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        eliminarCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {  ///al eliminar compra mostramos un AlertDialog
+                AlertDialog.Builder cancelarVenta = new AlertDialog.Builder(getActivity());
+                cancelarVenta.setTitle("Cuidado");
+                cancelarVenta.setMessage("¿Cancelar venta?");
+                cancelarVenta.setCancelable(false);
+                cancelarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface cancelarCompra, int id) {
+                        itemsCobrar.removeAll(itemsCobrar);
+                        relleno();
+                        eliminarCompra.setVisibility(View.INVISIBLE);
+                        aceptarCompra.setVisibility(View.INVISIBLE);
+                        total.setText("0.0");
+                    }
+                });
+                cancelarVenta.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface cancelarCompra, int id) {
+                        cancelarCompra.dismiss();
+                    }
+                });
+                cancelarVenta.show();
+            }
+        });
+        aceptarCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder aceptarVenta = new AlertDialog.Builder(getActivity());
+                aceptarVenta.setTitle("Cuidado");
+                aceptarVenta.setMessage("¿Aceptar venta?");
+                aceptarVenta.setCancelable(false);
+                aceptarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface cancelarCompra, int id) {
+                        Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();
+                        itemsCobrar.removeAll(itemsCobrar);
+                        relleno();
+                        eliminarCompra.setVisibility(View.INVISIBLE);
+                        aceptarCompra.setVisibility(View.INVISIBLE);
+                        total.setText("0.0");
+                    }
+                });
+                aceptarVenta.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface cancelarCompra, int id) {
+                        cancelarCompra.dismiss();
+                    }
+                });
+                aceptarVenta.show();
+            }
+        });
+    }
     /*public void cerrar_compra(){
         cobro.setVisibility(View.GONE);
         itemsCobrar.removeAll(itemsCobrar);

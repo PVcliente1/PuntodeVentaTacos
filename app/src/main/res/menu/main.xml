@@ -2,8 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_user"
-        android:icon="@mipmap/ic_supervisor_account_black_24dp"
-        android:title="@string/action_users"
+        android:id="@+id/importar"
+        android:title="Importar"
+        android:visible="false"
+        android:enabled="true"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/exportar"
+        android:title="Exportar"
+        android:visible="false"
+        android:enabled="false"
+        android:orderInCategory="1"
         app:showAsAction="ifRoom" />
 </menu>

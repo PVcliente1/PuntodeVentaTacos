@@ -44,6 +44,7 @@
             android:authorities="@string/provider_authority"
             android:exported="false"
             android:syncable="true" />
+
         <!-- SERVICIO DE AUTENTICACIÓN -->
         <service android:name=".sync.AuthenticationService">
             <intent-filter>
@@ -66,6 +67,7 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
+
     </application>
 
 </manifest>
