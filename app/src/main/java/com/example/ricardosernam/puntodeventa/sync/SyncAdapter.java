@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -136,6 +137,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     break;
                 case Constantes.FAILED: // FALLIDO
                     String mensaje = response.getString(Constantes.MENSAJE);
+
                     Log.i(TAG, mensaje);
                     break;
             }
