@@ -19,15 +19,18 @@ public class Constantes {
     /**
      * URLs del Web Service
      */
-    public static final String GET_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/obtener_gastos.php";
-    public static final String INSERT_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/insertar_gasto.php";
+    //public static final String GET_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/obtener_gastos.php";
+    //public static final String INSERT_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/insertar_gasto.php";
+
+    public static final String GET_URL = IP + PUERTO_HOST + "/Servicios%20Web/web/obtener_productos.php";
+    public static final String INSERT_URL = IP + PUERTO_HOST + "/Servicios%20Web/web/insertar_producto.php";
 
     /**
      * Campos de las respuestas Json
      */
-    public static final String ID_GASTO = "idGasto";
+    public static final String ID_GASTO = "idproducto";
     public static final String ESTADO = "estado";
-    public static final String GASTOS = "gastos";
+    public static final String GASTOS = "producto";
     public static final String MENSAJE = "mensaje";
 
 

@@ -17,7 +17,9 @@ public class ProviderDeGastos extends ContentProvider {
     /**
      * Nombre de la base de datos
      */
-    private static final String DATABASE_NAME = "crunch_expenses.db";
+    //private static final String DATABASE_NAME = "crunch_expenses.db";
+    private static final String DATABASE_NAME = "db_tacos.db";
+
     /**
      * Versión actual de la base de datos
      */

@@ -35,7 +35,6 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
 
     public AdaptadorDeGastos(Context context) {
         this.context= context;
-
     }
 
     @Override
@@ -47,8 +46,7 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_layout, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_layout, viewGroup, false);
         return new ViewHolder(v);
     }
 

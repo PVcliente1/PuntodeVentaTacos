@@ -16,7 +16,8 @@ public class ContractParaGastos {
     /**
      * Representación de la tabla a consultar
      */
-    public static final String GASTO = "gasto";
+    //public static final String GASTO = "gasto";
+    public static final String GASTO = "productos";
     /**
      * Tipo MIME que retorna la consulta de una sola fila
      */
@@ -65,10 +66,10 @@ public class ContractParaGastos {
             // Sin instancias
         }
 
-        public final static String MONTO = "monto";
-        public final static String ETIQUETA = "etiqueta";
-        public final static String FECHA = "fecha";
-        public final static String DESCRIPCION = "descripcion";
+        public final static String MONTO = "nombre";
+        public final static String ETIQUETA = "precio";
+        public final static String FECHA = "porcion";
+        public final static String DESCRIPCION = "existente";
 
         public static final String ESTADO = "estado";
         public static final String ID_REMOTA = "idRemota";
