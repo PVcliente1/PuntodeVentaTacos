@@ -26,7 +26,6 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaGastos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeGastos;
-import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import com.example.ricardosernam.puntodeventa.provider.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 
@@ -73,15 +72,6 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
         eliminarCompra = view.findViewById(R.id.BtnEliminarCompra);
         aceptarCompra = view.findViewById(R.id.BtnAceptarCompra);
 
-
-        /*fila=db.rawQuery("select nombre, precio_venta from Productos" ,null);
-
-        if(fila.moveToFirst()) {///si hay un elemento
-            itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getFloat(1)));
-            while (fila.moveToNext()) {
-                itemsProductos.add(new Pro_ventas_class(fila.getString(0), fila.getFloat(1)));
-            }
-        }*/
 
         recycler = view.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         relleno();
