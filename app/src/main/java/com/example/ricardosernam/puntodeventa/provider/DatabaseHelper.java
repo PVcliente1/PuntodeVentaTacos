@@ -9,10 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Clase envoltura para el gestor de Bases de datos
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public DatabaseHelper(Context context,
-                          String name,
-                          SQLiteDatabase.CursorFactory factory,
-                          int version) {
+    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

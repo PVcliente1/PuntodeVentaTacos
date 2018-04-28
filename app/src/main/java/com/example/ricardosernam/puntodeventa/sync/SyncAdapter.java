@@ -130,7 +130,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             // Obtener atributo "estado"
             String estado = response.getString(Constantes.ESTADO);
-
+            Toast.makeText(getContext(), estado, Toast.LENGTH_LONG).show();
             switch (estado) {
                 case Constantes.SUCCESS: // EXITO
                     actualizarDatosLocales(response, syncResult);

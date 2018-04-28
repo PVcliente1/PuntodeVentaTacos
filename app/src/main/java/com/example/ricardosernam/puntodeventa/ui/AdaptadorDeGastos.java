@@ -17,6 +17,10 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
     private Cursor cursor;
     private Context context;
 
+    public AdaptadorDeGastos(Context context) {
+        this.context= context;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
         public TextView monto;
@@ -31,10 +35,6 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
             fecha = (TextView) v.findViewById(R.id.fecha);
 
         }
-    }
-
-    public AdaptadorDeGastos(Context context) {
-        this.context= context;
     }
 
     @Override

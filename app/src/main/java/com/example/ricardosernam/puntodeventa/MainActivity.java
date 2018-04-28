@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
 import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
-import com.example.ricardosernam.puntodeventa.Productos.Productos;
 import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
@@ -91,11 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             importar.setVisible(false);
             exportar.setVisible(false);
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
-        } else if (id == R.id.Productos) {
-            importar.setVisible(false);
-            exportar.setVisible(false);
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Productos()).commit();
-        } else if (id == R.id.Inventario) {
+        }  else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
             importar.setVisible(true);
             exportar.setVisible(true);
