@@ -1,4 +1,4 @@
-package com.example.ricardosernam.puntodeventa.ui;
+package com.example.ricardosernam.puntodeventa.Inventario;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,26 +13,26 @@ import com.example.ricardosernam.puntodeventa.R;
 /**
  * Adaptador del recycler view
  */
-public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.ViewHolder> {
+public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventario.ViewHolder> {
     private Cursor cursor;
     private Context context;
 
-    public AdaptadorDeGastos(Context context) {
+    public AdaptadorInventario(Context context) {
         this.context= context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
-        public TextView monto;
-        public TextView etiqueta;
-        public TextView fecha;
+        public TextView nombre;
+        public TextView precio;
+        public TextView porcion;
 
 
         public ViewHolder(View v) {
             super(v);
-            monto = (TextView) v.findViewById(R.id.monto);
-            etiqueta = (TextView) v.findViewById(R.id.etiqueta);
-            fecha = (TextView) v.findViewById(R.id.fecha);
+            nombre =  v.findViewById(R.id.monto);
+            precio =  v.findViewById(R.id.etiqueta);
+            porcion = v.findViewById(R.id.fecha);
 
         }
     }
@@ -46,7 +46,7 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_layout, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tarjeta_productos_inventario, viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -54,17 +54,17 @@ public class AdaptadorDeGastos extends RecyclerView.Adapter<AdaptadorDeGastos.Vi
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         cursor.moveToPosition(i);
 
-        String monto;
-        String etiqueta;
-        String fecha;
+        String nombre;
+        String precio;
+        String porcion;
 
-        monto = cursor.getString(1);
-        etiqueta = cursor.getString(2);
-        fecha = cursor.getString(3);
+        nombre = cursor.getString(1);
+        precio = cursor.getString(2);
+        porcion = cursor.getString(3);
 
-        viewHolder.monto.setText("$"+monto);
-        viewHolder.etiqueta.setText(etiqueta);
-        viewHolder.fecha.setText(fecha);
+        viewHolder.nombre.setText("$"+nombre);
+        viewHolder.precio.setText(precio);
+        viewHolder.porcion.setText(porcion);
     }
 
     public void swapCursor(Cursor newCursor) {

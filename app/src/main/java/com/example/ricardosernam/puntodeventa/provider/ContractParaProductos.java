@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 /**
  * Contract Class entre el provider y las aplicaciones
  */
-public class ContractParaGastos {
+public class ContractParaProductos {
     /**
      * Autoridad del Content Provider
      */
@@ -16,21 +16,19 @@ public class ContractParaGastos {
     /**
      * Representación de la tabla a consultar
      */
-    //public static final String GASTO = "gasto";
-    public static final String GASTO = "productos";
+    public static final String PRODUCTO = "productos";
     /**
      * Tipo MIME que retorna la consulta de una sola fila
      */
     public final static String SINGLE_MIME =
-            "vnd.android.cursor.item/vnd." + AUTHORITY + GASTO;
+            "vnd.android.cursor.item/vnd." + AUTHORITY + PRODUCTO;
 
     public final static String MULTIPLE_MIME =
-            "vnd.android.cursor.dir/vnd." + AUTHORITY + GASTO;
+            "vnd.android.cursor.dir/vnd." + AUTHORITY + PRODUCTO;
     /**
      * URI de contenido principal
      */
-    public final static Uri CONTENT_URI =
-            Uri.parse("content://" + AUTHORITY + "/" + GASTO);
+    public final static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PRODUCTO);
     /**
      * Comparador de URIs de contenido
      */
@@ -48,8 +46,8 @@ public class ContractParaGastos {
     // Asignación de URIs
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, GASTO, ALLROWS);
-        uriMatcher.addURI(AUTHORITY, GASTO + "/#", SINGLE_ROW);
+        uriMatcher.addURI(AUTHORITY, PRODUCTO, ALLROWS);
+        uriMatcher.addURI(AUTHORITY, PRODUCTO + "/#", SINGLE_ROW);
     }
 
     // Valores para la columna ESTADO
@@ -66,10 +64,10 @@ public class ContractParaGastos {
             // Sin instancias
         }
 
-        public final static String MONTO = "nombre";
-        public final static String ETIQUETA = "precio";
-        public final static String FECHA = "porcion";
-        public final static String DESCRIPCION = "existente";
+        public final static String NOMBRE = "nombre";
+        public final static String PRECIO = "precio";
+        public final static String PORCION = "porcion";
+
 
         public static final String ESTADO = "estado";
         public static final String ID_REMOTA = "idRemota";

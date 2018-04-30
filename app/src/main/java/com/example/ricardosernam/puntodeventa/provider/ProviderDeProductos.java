@@ -10,10 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.example.ricardosernam.puntodeventa.DatabaseHelper;
+
 /**
  * Content Provider personalizado para los gastos
  */
-public class ProviderDeGastos extends ContentProvider {
+public class ProviderDeProductos extends ContentProvider {
     /**
      * Nombre de la base de datos
      */
@@ -54,29 +56,29 @@ public class ProviderDeGastos extends ContentProvider {
         // Obtener base de datos
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Comparar Uri
-        int match = ContractParaGastos.uriMatcher.match(uri);
+        int match = ContractParaProductos.uriMatcher.match(uri);
 
         Cursor c;
 
         switch (match) {
-            case ContractParaGastos.ALLROWS:
+            case ContractParaProductos.ALLROWS:
                 // Consultando todos los registros
-                c = db.query(ContractParaGastos.GASTO, projection,
+                c = db.query(ContractParaProductos.PRODUCTO, projection,
                         selection, selectionArgs,
                         null, null, sortOrder);
                 c.setNotificationUri(
                         resolver,
-                        ContractParaGastos.CONTENT_URI);
+                        ContractParaProductos.CONTENT_URI);
                 break;
-            case ContractParaGastos.SINGLE_ROW:
+            case ContractParaProductos.SINGLE_ROW:
                 // Consultando un solo registro basado en el Id del Uri
                 long idGasto = ContentUris.parseId(uri);
-                c = db.query(ContractParaGastos.GASTO, projection,
-                        ContractParaGastos.Columnas._ID + " = " + idGasto,
+                c = db.query(ContractParaProductos.PRODUCTO, projection,
+                        ContractParaProductos.Columnas._ID + " = " + idGasto,
                         selectionArgs, null, null, sortOrder);
                 c.setNotificationUri(
                         resolver,
-                        ContractParaGastos.CONTENT_URI);
+                        ContractParaProductos.CONTENT_URI);
                 break;
             default:
                 throw new IllegalArgumentException("URI no soportada: " + uri);
@@ -87,11 +89,11 @@ public class ProviderDeGastos extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        switch (ContractParaGastos.uriMatcher.match(uri)) {
-            case ContractParaGastos.ALLROWS:
-                return ContractParaGastos.MULTIPLE_MIME;
-            case ContractParaGastos.SINGLE_ROW:
-                return ContractParaGastos.SINGLE_MIME;
+        switch (ContractParaProductos.uriMatcher.match(uri)) {
+            case ContractParaProductos.ALLROWS:
+                return ContractParaProductos.MULTIPLE_MIME;
+            case ContractParaProductos.SINGLE_ROW:
+                return ContractParaProductos.SINGLE_MIME;
             default:
                 throw new IllegalArgumentException("Tipo de gasto desconocido: " + uri);
         }
@@ -100,7 +102,7 @@ public class ProviderDeGastos extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         // Validar la uri
-        if (ContractParaGastos.uriMatcher.match(uri) != ContractParaGastos.ALLROWS) {
+        if (ContractParaProductos.uriMatcher.match(uri) != ContractParaProductos.ALLROWS) {
             throw new IllegalArgumentException("URI desconocida : " + uri);
         }
         ContentValues contentValues;
@@ -112,10 +114,10 @@ public class ProviderDeGastos extends ContentProvider {
 
         // Inserción de nueva fila
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        long rowId = db.insert(ContractParaGastos.GASTO, null, contentValues);
+        long rowId = db.insert(ContractParaProductos.PRODUCTO, null, contentValues);
         if (rowId > 0) {
             Uri uri_gasto = ContentUris.withAppendedId(
-                    ContractParaGastos.CONTENT_URI, rowId);
+                    ContractParaProductos.CONTENT_URI, rowId);
             resolver.notifyChange(uri_gasto, null, false);
             return uri_gasto;
         }
@@ -127,19 +129,19 @@ public class ProviderDeGastos extends ContentProvider {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        int match = ContractParaGastos.uriMatcher.match(uri);
+        int match = ContractParaProductos.uriMatcher.match(uri);
         int affected;
 
         switch (match) {
-            case ContractParaGastos.ALLROWS:
-                affected = db.delete(ContractParaGastos.GASTO,
+            case ContractParaProductos.ALLROWS:
+                affected = db.delete(ContractParaProductos.PRODUCTO,
                         selection,
                         selectionArgs);
                 break;
-            case ContractParaGastos.SINGLE_ROW:
+            case ContractParaProductos.SINGLE_ROW:
                 long idGasto = ContentUris.parseId(uri);
-                affected = db.delete(ContractParaGastos.GASTO,
-                        ContractParaGastos.Columnas.ID_REMOTA + "=" + idGasto
+                affected = db.delete(ContractParaProductos.PRODUCTO,
+                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
@@ -159,15 +161,15 @@ public class ProviderDeGastos extends ContentProvider {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int affected;
-        switch (ContractParaGastos.uriMatcher.match(uri)) {
-            case ContractParaGastos.ALLROWS:
-                affected = db.update(ContractParaGastos.GASTO, values,
+        switch (ContractParaProductos.uriMatcher.match(uri)) {
+            case ContractParaProductos.ALLROWS:
+                affected = db.update(ContractParaProductos.PRODUCTO, values,
                         selection, selectionArgs);
                 break;
-            case ContractParaGastos.SINGLE_ROW:
+            case ContractParaProductos.SINGLE_ROW:
                 String idGasto = uri.getPathSegments().get(1);
-                affected = db.update(ContractParaGastos.GASTO, values,
-                        ContractParaGastos.Columnas.ID_REMOTA + "=" + idGasto
+                affected = db.update(ContractParaProductos.PRODUCTO, values,
+                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);

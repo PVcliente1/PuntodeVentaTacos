@@ -24,19 +24,17 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
-import com.example.ricardosernam.puntodeventa.provider.ContractParaGastos;
-import com.example.ricardosernam.puntodeventa.provider.ProviderDeGastos;
-import com.example.ricardosernam.puntodeventa.provider.DatabaseHelper;
+import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
+import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
+import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-//public class Ventas extends Fragment implements Pro_DialogFragment.agregado {     /////Fragment de categoria ventas
 public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {     /////Fragment de categoria ventas
     private RecyclerView recycler;
-    //private RecyclerView.Adapter adapter;
     private Pro_ventasAdapter adapter;
     private LoaderManager lm;
     private RecyclerView.LayoutManager lManager;
@@ -46,7 +44,6 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
     private ContentValues values;
     private CardView cobro;
     private TextView total;
-    private Button historial;
     private SQLiteDatabase db;
     private Cursor datosSeleccionado, datosEscaneado, consultaIdCliente, consultaIdProducto, consultaIdDescuento, consultaIdVentas;
     private Cursor fila;
@@ -57,12 +54,11 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
         View view=inflater.inflate(R.layout.fragment_ventas, container, false);
         onViewCreated(view, savedInstanceState);
 
-        DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeGastos.DATABASE_NAME, null, ProviderDeGastos.DATABASE_VERSION);
+        DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
         db=admin.getWritableDatabase();
 
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
         fm2= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
-        //historial= view.findViewById(R.id.BtnHistorial);
 
         values = new ContentValues();
 
@@ -126,62 +122,6 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
         }, getContext());
         recycler.setAdapter(adapter);
     }
-    /*@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        eliminarCompra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {  ///al eliminar compra mostramos un AlertDialog
-                AlertDialog.Builder cancelarCompra = new AlertDialog.Builder(getActivity());
-                cancelarCompra.setTitle("Cuidado");
-                cancelarCompra.setMessage("¿Seguro que quieres cancelar la venta?");
-                cancelarCompra.setCancelable(false);
-                cancelarCompra.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface cancelarCompra, int id) {
-                        cerrar_compra();
-
-                    }
-                });
-                cancelarCompra.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface cancelarCompra, int id) {
-                        cancelarCompra.dismiss();
-                    }
-                });
-                cancelarCompra.show();
-            }
-        });
-        aceptarCompra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new pagar_DialogFragment(Float.parseFloat(String.valueOf(total.getText())), new interfaz_OnClick() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onClick(View view) {////ocultamos y guardamos los datos de la compra
-                        /////obtener fecha actual
-                        /*java.util.Calendar c = java.util.Calendar.getInstance();
-                            SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
-                            String formattedDate = df.format(c.getTime());*/
-
-                            /////DATOS DE LA VENTA
-                        /*consultaIdCliente=db.rawQuery("select idcliente from Clientes where nombre='"+String.valueOf(cliente.getText())+"'" ,null);
-                            values.put("tipo", RBseleccionadoTipo);
-                            values.put("fecha", formattedDate);
-                            values.put("fecha_entrega", String.valueOf(fechaEntrega.getText()) + " " + (horaEntrega.getText())); //
-                            values.put("descripcion", String.valueOf(descripcion.getText()));
-                            values.put("tipo_cobro", tipoCobro);
-                            if(consultaIdCliente.moveToFirst()) {
-                                values.put("idclienteFK", consultaIdCliente.getInt(0));
-                            }
-                            values.put("idmiembroFK", 1);
-                            db.insertOrThrow("Ventas", null, values);     ///cerrrar aqui
-                            cerrar_compra();
-                            Toast.makeText(getContext(), "Se ha guardado tu compra", Toast.LENGTH_LONG).show();
-                    }
-                }).show(getFragmentManager(),"pagarDiaogFragment");
-            }
-        });
-    }*/
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -238,7 +178,7 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
     }
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getContext(), ContractParaGastos.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(getContext(), ContractParaProductos.CONTENT_URI, null, null, null, null);
     }
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

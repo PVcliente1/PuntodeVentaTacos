@@ -2,30 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
-    <group android:checkableBehavior="single">
-        <item
+    <item
             android:id="@+id/Ventas"
             android:icon="@mipmap/ic_shopping_cart_black_24dp"
             android:title="Ventas" />
-        <item
-            android:id="@+id/Productos"
-            android:icon="@mipmap/ic_toc_black_24dp"
-            android:title="Productos" />
-    </group>
 
-    <item android:title="Administrar...">
-        <menu>
             <item
                 android:id="@+id/Inventario"
                 android:icon="@mipmap/ic_description_black_24dp"
                 android:title="Inventario" />
-            <item
-                android:id="@+id/Contrasena"
-                android:icon="@mipmap/ic_supervisor_account_black_24dp"
-                android:title="Contraseña" />
-        </menu>
-    </item>
     <item android:title="Más...">
         <menu>
             <item
@@ -38,5 +23,4 @@
                 android:title="Terminos y Condiciones" />
         </menu>
     </item>
-
 </menu>

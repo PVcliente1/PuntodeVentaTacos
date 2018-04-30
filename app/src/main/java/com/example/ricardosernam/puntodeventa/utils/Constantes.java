@@ -14,13 +14,11 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = "http://192.168.1.102";
+    private static final String IP = "http://192.168.1.100";
 
     /**
      * URLs del Web Service
      */
-    //public static final String GET_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/obtener_gastos.php";
-    //public static final String INSERT_URL = IP + PUERTO_HOST + "/Crunch%20Expenses/web/insertar_gasto.php";
 
     public static final String GET_URL = IP + PUERTO_HOST + "/Servicios%20Web/web/obtener_productos.php";
     public static final String INSERT_URL = IP + PUERTO_HOST + "/Servicios%20Web/web/insertar_producto.php";
@@ -30,7 +28,7 @@ public class Constantes {
      */
     public static final String ID_GASTO = "idproducto";
     public static final String ESTADO = "estado";
-    public static final String GASTOS = "producto";
+    public static final String PRODUCTO = "producto";
     public static final String MENSAJE = "mensaje";
 
 
