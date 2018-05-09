@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param database Instancia de la base de datos
      */
     private void productos(SQLiteDatabase database) {
-        /*String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
+        String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.NOMBRE + " TEXT, " +
                 ContractParaProductos.Columnas.PRECIO + " TEXT, " +
@@ -52,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
-        database.execSQL(cmd3);*/
+        database.execSQL(cmd3);
     }
 
     @Override
