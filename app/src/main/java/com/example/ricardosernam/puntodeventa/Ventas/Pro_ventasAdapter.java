@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,15 +32,11 @@ import java.util.ArrayList;
 public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.Productos_ventasViewHolder>{  ///adaptador para el Fragmet Ventas
     private ArrayList<Pro_ventas_class> itemsProductos;
     private actualizado Interfaz;
-    private Cursor cursor;
+    //private Cursor cursor;
     private Context context;
 
-    /*public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, actualizado Interfaz, Context context) {  ///recibe el arrayProductos como parametro y la interface
-        this.itemsProductos = itemsProductos;
-        this.Interfaz=Interfaz;
-        this.context= context;
-    }*/
-    public Pro_ventasAdapter(actualizado Interfaz, Context context) {  ///recibe el arrayProductos como parametro y la interface
+    public Pro_ventasAdapter(ArrayList<Pro_ventas_class> itemsProductos, actualizado Interfaz, Context context) {  ///recibe el arrayProductos como parametro y la interface
+        this.itemsProductos=itemsProductos;
         this.Interfaz=Interfaz;
         this.context= context;
     }
@@ -76,7 +74,7 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         }
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if (!(TextUtils.isEmpty(cantidad.getText()))) {
+            if(!(TextUtils.isEmpty(cantidad.getText()))){
                 Interfaz.actualizar(Integer.parseInt(String.valueOf((cantidad.getText()))), nombre);
             }
         }
@@ -86,10 +84,13 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
     }
     @Override
     public int getItemCount() {
-        //return itemsProductos.size();
-        if (cursor!=null)
+        /*if (cursor!=null){  ///hay algo
             return cursor.getCount();
-        return 0;
+        }
+        else{  ///no hay nada
+            return 0;
+        }*/
+        return itemsProductos.size();
     }
 
 
@@ -101,19 +102,16 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
 
     @Override
     public void onBindViewHolder(final Productos_ventasViewHolder holder, final int position) {
-        cursor.moveToPosition(position);
+        /*cursor.moveToPosition(position);
 
         String nombre;
         String precio;
 
         nombre = cursor.getString(1);
-        precio = cursor.getString(2);
+        precio = cursor.getString(2);*/
 
-        //holder.nombreP.setText(itemsProductos.get(position).getNombre());
-        //holder.precio.setText(String.valueOf(itemsProductos.get(position).getPrecio()));
-
-        holder.nombreP.setText(nombre);
-        holder.precio.setText(precio);
+        holder.nombreP.setText(itemsProductos.get(position).getNombre());
+        holder.precio.setText(String.valueOf(itemsProductos.get(position).getPrecio()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,12 +129,12 @@ public class Pro_ventasAdapter extends RecyclerView.Adapter <Pro_ventasAdapter.P
         });
         holder.cuenta.addTextChangedListener(new watcherCalculo1(String.valueOf(holder.nombreP.getText()), holder.cuenta, Interfaz));
     }
-    public void swapCursor(Cursor newCursor) {
+    /*public void swapCursor(Cursor newCursor) {
         cursor = newCursor;
         notifyDataSetChanged();
-    }
+    }*/
 
-    public Cursor getCursor() {
+    /*public Cursor getCursor() {
         return cursor;
-    }
+    }*/
 }

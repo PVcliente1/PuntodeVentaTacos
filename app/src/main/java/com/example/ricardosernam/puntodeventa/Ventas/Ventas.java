@@ -10,8 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,19 +20,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
-import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
-import com.example.ricardosernam.puntodeventa.DatabaseHelper;
-import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {     /////Fragment de categoria ventas
-    private RecyclerView recycler;
+//public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {     /////Fragment de categoria ventas
+public class Ventas extends Fragment  {     /////Fragment de categoria ventas
+
+private RecyclerView recycler;
     private Pro_ventasAdapter adapter;
     private LoaderManager lm;
     private RecyclerView.LayoutManager lManager;
@@ -45,9 +43,9 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
     private CardView cobro;
     private TextView total;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, datosEscaneado, consultaIdCliente, consultaIdProducto, consultaIdDescuento, consultaIdVentas;
-    private Cursor fila;
-    private ArrayList<Pro_ventas_class> itemsProductos= new ArrayList <>();
+    private Cursor datosSeleccionado, productos;
+    private TextView emptyView;
+    private ArrayList<Pro_ventas_class> itemsProductos;
     private ArrayList<Cobrar_ventas_class> itemsCobrar= new ArrayList <>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +59,8 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
         fm2= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
 
         values = new ContentValues();
+        emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
+        itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
 
         total=view.findViewById(R.id.TVtotal);
         cobro=view.findViewById(R.id.CVcobrar);
@@ -71,9 +71,6 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
 
         recycler = view.findViewById(R.id.RVrecicladorPro); ///declaramos el recycler
         relleno();
-        lm=getActivity().getSupportLoaderManager();
-        lm.initLoader(0, null, this);
-        SyncAdapter.inicializarSyncAdapter(getContext());
         return view;
     }
     public void calcularTotal(){
@@ -84,9 +81,22 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
         }
     }
     public void relleno(){    ///llamamos el adapter del recycler
+        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio!=0" ,null);
+        if(productos.moveToFirst()) {///si hay un elemento
+            itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
+            while (productos.moveToNext()) {
+                itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
+            }
+            cobro.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            cobro.setVisibility(View.INVISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
         lManager = new GridLayoutManager(this.getActivity(),2);  //declaramos el GridLayoutManager con dos columnas
         recycler.setLayoutManager(lManager);
-        adapter = new Pro_ventasAdapter(new actualizado() {  ///obtenemos los datos capturados para cada producto
+        adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
             @Override
             public void actualizar(int cantidad, String seleccionado) {
                 datosSeleccionado=db.rawQuery("select precio from productos where nombre='"+seleccionado+"'" ,null);
@@ -175,17 +185,5 @@ public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cu
                 aceptarVenta.show();
             }
         });
-    }
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getContext(), ContractParaProductos.CONTENT_URI, null, null, null, null);
-    }
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
-    }
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
     }
 }

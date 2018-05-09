@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.ricardosernam.puntodeventa.Inventario.Inventario">
-    <!--<Button
-        android:id="@+id/BtnImportarInventario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Importar" />-->
-
     <TextView
         android:id="@+id/recyclerview_data_empty"
         android:layout_width="match_parent"
@@ -26,7 +19,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reciclador"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="3dp"
         android:scrollbars="vertical"/>
 </RelativeLayout>

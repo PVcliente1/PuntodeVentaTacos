@@ -1,26 +1,16 @@
 package com.example.ricardosernam.puntodeventa.Ventas;
 
 public class Pro_ventas_class {  ///clase para obtener productos para cobrar
-    public String codigo;
     public String nombre;
     public float precio;
-    public String foto;
-    public String unidad;
+    public float porcion;
+    public String guisado;
 
-    public Pro_ventas_class(String codigo, String nombre, Float precio, String foto, String unidad ) {   ///se manda desde el arrayProductos
-        this.codigo = codigo;
+    public Pro_ventas_class(String nombre, Float precio, Float porcion, String guisado) {   ///se manda desde el arrayProductos
         this.nombre = nombre;
         this.precio = precio;
-        this.foto = foto;
-        this.unidad = unidad;
-    }
-    public Pro_ventas_class(String nombre, float precio) {   ///se manda desde el arrayProductos
-        this.nombre = nombre;
-        this.precio=precio;
-        this.foto = foto;
-    }
-    public String getCodigo() {
-        return codigo;
+        this.porcion = porcion;
+        this.guisado = guisado;
     }
     public String getNombre() {
         return nombre;
@@ -28,10 +18,10 @@ public class Pro_ventas_class {  ///clase para obtener productos para cobrar
     public Float getPrecio() {
         return precio;
     }
-    public String getFoto() {
-        return foto;
+    public Float getPorcion() {
+        return porcion;
     }
-    public String getUnidad() {
-        return unidad;
+    public String getGuisado() {
+        return guisado;
     }
 }

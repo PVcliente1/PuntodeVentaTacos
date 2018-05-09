@@ -1,7 +1,9 @@
 package com.example.ricardosernam.puntodeventa.Inventario;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +11,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 
-/**
- * Adaptador del recycler view
- */
+import java.util.ArrayList;
+
 public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventario.ViewHolder> {
+    private ArrayList<Inventario_class> itemsInventarios;
     private Cursor cursor;
     private Context context;
 
-    public AdaptadorInventario(Context context) {
-        this.context= context;
+    public AdaptadorInventario(ArrayList<Inventario_class> itemsInventarios, Context context) {
+        this.itemsInventarios = itemsInventarios;
+        this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,8 +34,8 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
 
         public ViewHolder(View v) {
             super(v);
-            nombre =  v.findViewById(R.id.monto);
-            precio =  v.findViewById(R.id.etiqueta);
+            nombre = v.findViewById(R.id.monto);
+            precio = v.findViewById(R.id.etiqueta);
             porcion = v.findViewById(R.id.fecha);
 
         }
@@ -39,9 +43,14 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
 
     @Override
     public int getItemCount() {
-        if (cursor!=null)
+        /*if (cursor!=null){  ///hay algo
         return cursor.getCount();
-        return 0;
+        }
+        else{  ///no hay nada
+            return 0;
+        }*/
+        return itemsInventarios.size();
+
     }
 
     @Override
@@ -52,27 +61,30 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        cursor.moveToPosition(i);
+        viewHolder.nombre.setText(itemsInventarios.get(i).getNombre());
+        viewHolder.precio.setText(String.valueOf(itemsInventarios.get(i).getExistente()));
+        /*cursor.moveToPosition(i);
 
         String nombre;
         String precio;
         String porcion;
 
-        nombre = cursor.getString(1);
-        precio = cursor.getString(2);
-        porcion = cursor.getString(3);
+        nombre = cursor.getString(4);
+        precio = cursor.getString(1);
+        porcion = cursor.getString(2);
 
-        viewHolder.nombre.setText("$"+nombre);
-        viewHolder.precio.setText(precio);
-        viewHolder.porcion.setText(porcion);
+        viewHolder.nombre.setText("idInventario "+nombre);
+        viewHolder.precio.setText("IdCarrito "+precio);
+        viewHolder.porcion.setText("Disponible "+porcion);
     }
 
-    public void swapCursor(Cursor newCursor) {
+    void swapCursor(Cursor newCursor) {
         cursor = newCursor;
         notifyDataSetChanged();
     }
 
     public Cursor getCursor() {
         return cursor;
+    }*/
     }
 }

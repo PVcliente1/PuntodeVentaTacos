@@ -11,67 +11,100 @@ public class ContractParaProductos {
     /**
      * Autoridad del Content Provider
      */
-    public final static String AUTHORITY
-            = "com.example.ricardosernam.puntodeventa";
-    /**
-     * Representación de la tabla a consultar
-     */
-    public static final String PRODUCTO = "productos";
-    /**
-     * Tipo MIME que retorna la consulta de una sola fila
-     */
-    public final static String SINGLE_MIME =
-            "vnd.android.cursor.item/vnd." + AUTHORITY + PRODUCTO;
+    public final static String AUTHORITY = "com.example.ricardosernam.puntodeventa";
 
-    public final static String MULTIPLE_MIME =
-            "vnd.android.cursor.dir/vnd." + AUTHORITY + PRODUCTO;
-    /**
-     * URI de contenido principal
-     */
-    public final static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + PRODUCTO);
-    /**
-     * Comparador de URIs de contenido
-     */
-    public static final UriMatcher uriMatcher;
-    /**
-     * Código para URIs de multiples registros
-     */
-    public static final int ALLROWS = 1;
-    /**
-     * Código para URIS de un solo registro
-     */
-    public static final int SINGLE_ROW = 2;
+public static final String INVENTARIO = "inventarios";
 
+public static final String PRODUCTO = "productos";
 
-    // Asignación de URIs
-    static {
-        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, PRODUCTO, ALLROWS);
-        uriMatcher.addURI(AUTHORITY, PRODUCTO + "/#", SINGLE_ROW);
-    }
+public static final String INVENTARIO_DETALLE = "inventario_detalles";
 
-    // Valores para la columna ESTADO
-    public static final int ESTADO_OK = 0;
-    public static final int ESTADO_SYNC = 1;
+/**
+ * Tipo MIME que retorna la consulta de una sola fila
+ */
+public final static String SINGLE_MIME_INVENTARIO = "vnd.android.cursor.item/vnd." + AUTHORITY + INVENTARIO;
+
+public final static String MULTIPLE_MIME_INVENTARIO = "vnd.android.cursor.dir/vnd." + AUTHORITY + INVENTARIO;
+
+public final static String SINGLE_MIME_INVENTARIO_DETALLE = "vnd.android.cursor.item/vnd." + AUTHORITY + INVENTARIO_DETALLE;
+
+public final static String MULTIPLE_MIME_INVENTARIO_DETALLE = "vnd.android.cursor.dir/vnd." + AUTHORITY + INVENTARIO_DETALLE;
+
+public final static String SINGLE_MIME_PRODUCTO = "vnd.android.cursor.item/vnd." + AUTHORITY + PRODUCTO;
+
+public final static String MULTIPLE_MIME_PRODUCTO = "vnd.android.cursor.dir/vnd." + AUTHORITY + PRODUCTO;
+/**
+ * URI de contenido principal
+ */
+public final static Uri CONTENT_URI_INVENTARIO = Uri.parse("content://" + AUTHORITY + "/" + INVENTARIO);
+
+public final static Uri CONTENT_URI_PRODUCTO = Uri.parse("content://" + AUTHORITY + "/" + PRODUCTO);
+
+public final static Uri CONTENT_URI_INVENTARIO_DETALLE = Uri.parse("content://" + AUTHORITY + "/" + INVENTARIO_DETALLE);
 
 
-    /**
-     * Estructura de la tabla
-     */
-    public static class Columnas implements BaseColumns {
+/**
+ * Comparador de URIs de contenido
+ */
+public static final UriMatcher uriMatcherInventario;
+public static final UriMatcher uriMatcherProducto;
+public static final UriMatcher uriMatcherInventarioDetalles;
 
-        private Columnas() {
-            // Sin instancias
+/**
+ * Código para URIs de multiples registros
+ */
+public static final int ALLROWS = 1;
+/**
+ * Código para URIS de un solo registro
+ */
+public static final int SINGLE_ROW = 2;
+
+
+// Asignación de URIs
+static {
+        uriMatcherInventario = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcherInventario.addURI(AUTHORITY, INVENTARIO, ALLROWS);
+        uriMatcherInventario.addURI(AUTHORITY, INVENTARIO + "/#", SINGLE_ROW);
+
+        uriMatcherProducto = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcherProducto.addURI(AUTHORITY, PRODUCTO, ALLROWS);
+        uriMatcherProducto.addURI(AUTHORITY, PRODUCTO + "/#", SINGLE_ROW);
+
+        uriMatcherInventarioDetalles = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcherInventarioDetalles.addURI(AUTHORITY, INVENTARIO_DETALLE, ALLROWS);
+        uriMatcherInventarioDetalles.addURI(AUTHORITY, INVENTARIO_DETALLE + "/#", SINGLE_ROW);
         }
 
-        public final static String NOMBRE = "nombre";
-        public final static String PRECIO = "precio";
-        public final static String PORCION = "porcion";
+// Valores para la columna ESTADO
+public static final int ESTADO_OK = 0;
+public static final int ESTADO_SYNC = 1;
 
 
-        public static final String ESTADO = "estado";
-        public static final String ID_REMOTA = "idRemota";
-        public final static String PENDIENTE_INSERCION = "pendiente_insercion";
+/**
+ * Estructura de la tabla
+ */
+public static class Columnas implements BaseColumns {
 
+    private Columnas() {
+        // Sin instancias
     }
+//////////////inventario//////////////////
+    public final static String ID_CARRITO = "idcarrito";
+    public final static String DISPONIBLE = "disponible";
+    public final static String FECHA = "fecha";
+
+////////////////////productos////////////
+    public final static String NOMBRE = "nombre";
+    public final static String PRECIO = "precio";
+    public final static String PORCION = "porcion";
+    public final static String GUISADO = "guisado";
+///////////////////inventario_detalles/////////////////
+    public final static String ID_PRODUCTO = "idproducto";
+    public final static String EXISTENTE = "existente";
+
+    public static final String ESTADO = "estado";
+    public static final String ID_REMOTA = "idRemota";
+    public final static String PENDIENTE_INSERCION = "pendiente_insercion";
+
+}
 }
