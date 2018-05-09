@@ -41,7 +41,7 @@ public class Inventario extends Fragment {
 
         SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
 
-        existente=db.rawQuery("select existente from inventario_detalles" ,null);
+        /*existente=db.rawQuery("select existente from inventario_detalles" ,null);
         nombre=db.rawQuery("select nombre from productos where idproducto=(select idproducto from inventario_detalles where idproducto=productos.idproducto)" ,null);
         //nombre=db.rawQuery("select nombre from productos inner join inventario_detalles on productos.idproducto=inventario_detalles.idproducto" ,null);
 
@@ -50,7 +50,7 @@ public class Inventario extends Fragment {
             while (existente.moveToNext()) {
                 itemsInventario.add(new Inventario_class(nombre.getString(0), existente.getFloat(0)));
             }
-        }
+        }*/
         recyclerView = view.findViewById(R.id.reciclador);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
