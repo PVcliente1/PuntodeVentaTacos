@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.exportar) {
             importar.setEnabled(true);
             exportar.setEnabled(false);
-            /*if(!exportar.isEnabled()){ ///esta desabilitado
+            /*if(!exportar.isEnabled()){ ///esta desabilitad
                 Toast.makeText(getApplicationContext(), "Importa el actual inventario para poder exportar", Toast.LENGTH_LONG).show();
             }*/
             return true;
