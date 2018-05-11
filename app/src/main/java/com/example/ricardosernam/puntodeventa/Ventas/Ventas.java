@@ -7,7 +7,9 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.CardView;
@@ -43,7 +45,7 @@ private RecyclerView recycler;
     private CardView cobro;
     private TextView total;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, productos;
+    private Cursor datosSeleccionado, productos, existente;
     private TextView emptyView;
     private ArrayList<Pro_ventas_class> itemsProductos;
     private ArrayList<Cobrar_ventas_class> itemsCobrar= new ArrayList <>();
@@ -99,9 +101,9 @@ private RecyclerView recycler;
         adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
             @Override
             public void actualizar(int cantidad, String seleccionado) {
-                datosSeleccionado=db.rawQuery("select precio from productos where nombre='"+seleccionado+"'" ,null);
+                datosSeleccionado=db.rawQuery("select precio, porcion from productos where nombre='"+seleccionado+"'" ,null);
                 if(datosSeleccionado.moveToFirst()) {
-                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0), datosSeleccionado.getFloat(1)));//obtenemos el cardview seleccionado y lo agregamos a items2
                 }
                 ///comprobamos si se repite
                 for(int i=0; i<itemsCobrar.size(); i++) {
@@ -169,7 +171,15 @@ private RecyclerView recycler;
                 aceptarVenta.setCancelable(false);
                 aceptarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
-                        Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();
+                        for(int i=0; i<itemsCobrar.size(); i++) {
+                            existente=db.rawQuery("select idproducto, existente from inventario_detalles WHERE idproducto=(select idproducto from productos where nombre=(select guisado from productos where nombre='"+itemsCobrar.get(i).getNombre()+"'))" ,null);
+                            if(existente.moveToFirst()){
+                                float porcion = existente.getFloat(1) - (itemsCobrar.get(i).getCantidad() * itemsCobrar.get(i).getPorcion());
+                                values.put("existente", porcion);
+                                db.update("inventario_detalles", values, "idproducto='" + existente.getString(0) + "'", null);
+                            }
+                        }
+                            Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();
                         itemsCobrar.removeAll(itemsCobrar);
                         relleno();
                         eliminarCompra.setVisibility(View.INVISIBLE);

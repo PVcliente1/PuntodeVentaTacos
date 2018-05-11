@@ -6,13 +6,14 @@ import android.text.Editable;
 public class Cobrar_ventas_class {   ///clase para obtener productos para cobrar
     private String nombre;
     private int cantidad;
-    private float precioVenta, subTotal;
+    private float precioVenta, subTotal, porcion;
 
-    Cobrar_ventas_class(String nombre, int cantidad, float precioVenta,  float subTotal) {  ///se manda desde el arrayProductos
+    Cobrar_ventas_class(String nombre, int cantidad, float precioVenta,  float subTotal, float porcion) {  ///se manda desde el arrayProductos
         this.nombre=nombre;
         this.cantidad=cantidad;
         this.precioVenta=precioVenta;
         this.subTotal=subTotal;
+        this.porcion=porcion;
     }
     public String getNombre(){
         return nombre;
@@ -25,5 +26,8 @@ public class Cobrar_ventas_class {   ///clase para obtener productos para cobrar
     }
     float getSubTotal(){
         return subTotal;
+    }
+    float getPorcion(){
+        return porcion;
     }
 }

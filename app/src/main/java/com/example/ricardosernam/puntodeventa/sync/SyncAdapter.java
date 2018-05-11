@@ -526,7 +526,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
-                com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
                 Log.i(TAG, "Aplicando operaciones...  INVENTARIO_DETALLES");
                 try {
                     resolver.applyBatch(ContractParaProductos.AUTHORITY, ops2);
