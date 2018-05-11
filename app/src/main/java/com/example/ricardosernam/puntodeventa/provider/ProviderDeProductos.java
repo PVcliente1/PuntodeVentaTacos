@@ -9,6 +9,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 
@@ -231,8 +232,7 @@ public class ProviderDeProductos extends ContentProvider {
             // Inserción de nueva fila
             long rowIdInventario = db.insert(ContractParaProductos.INVENTARIO_DETALLE, null, contentValues);
             if (rowIdInventario > 0) {
-                Uri uri_gasto = ContentUris.withAppendedId(
-                        ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, rowIdInventario);
+                Uri uri_gasto = ContentUris.withAppendedId(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, rowIdInventario);
                 resolver.notifyChange(uri_gasto, null, false);
                 return uri_gasto;
             }
@@ -288,8 +288,7 @@ public class ProviderDeProductos extends ContentProvider {
                         notifyChange(uri, null, false);
                 break;
             default:
-                throw new IllegalArgumentException("Elemento gasto desconocido: " +
-                        uri);
+                throw new IllegalArgumentException("Elemento gasto desconocido: " + uri);
         }
 
         switch (match3) {
@@ -297,6 +296,7 @@ public class ProviderDeProductos extends ContentProvider {
                 affected = db.delete(ContractParaProductos.INVENTARIO_DETALLE, selection, selectionArgs);
                 break;
             case ContractParaProductos.SINGLE_ROW:
+                //Toast.makeText(getContext(), "SINGLE_ROW", Toast.LENGTH_LONG).show();
                 long idGasto = ContentUris.parseId(uri);
                 affected = db.delete(ContractParaProductos.INVENTARIO_DETALLE,
                         ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
@@ -308,8 +308,7 @@ public class ProviderDeProductos extends ContentProvider {
                         notifyChange(uri, null, false);
                 break;
             default:
-                throw new IllegalArgumentException("Elemento gasto desconocido: " +
-                        uri);
+                throw new IllegalArgumentException("Elemento gasto desconocido: " + uri);
         }
         return affected;
     }

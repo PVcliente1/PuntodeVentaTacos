@@ -28,29 +28,19 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
         public TextView nombre;
-        public TextView precio;
-        public TextView porcion;
-
+        public TextView existente;
 
         public ViewHolder(View v) {
             super(v);
-            nombre = v.findViewById(R.id.monto);
-            precio = v.findViewById(R.id.etiqueta);
-            porcion = v.findViewById(R.id.fecha);
+            nombre = v.findViewById(R.id.TVproducto);
+            existente = v.findViewById(R.id.TVexistente);
 
         }
     }
 
     @Override
     public int getItemCount() {
-        /*if (cursor!=null){  ///hay algo
-        return cursor.getCount();
-        }
-        else{  ///no hay nada
-            return 0;
-        }*/
         return itemsInventarios.size();
-
     }
 
     @Override
@@ -62,29 +52,6 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.nombre.setText(itemsInventarios.get(i).getNombre());
-        viewHolder.precio.setText(String.valueOf(itemsInventarios.get(i).getExistente()));
-        /*cursor.moveToPosition(i);
-
-        String nombre;
-        String precio;
-        String porcion;
-
-        nombre = cursor.getString(4);
-        precio = cursor.getString(1);
-        porcion = cursor.getString(2);
-
-        viewHolder.nombre.setText("idInventario "+nombre);
-        viewHolder.precio.setText("IdCarrito "+precio);
-        viewHolder.porcion.setText("Disponible "+porcion);
-    }
-
-    void swapCursor(Cursor newCursor) {
-        cursor = newCursor;
-        notifyDataSetChanged();
-    }
-
-    public Cursor getCursor() {
-        return cursor;
-    }*/
+        viewHolder.existente.setText(String.valueOf(itemsInventarios.get(i).getExistente())+" gramos");
     }
 }

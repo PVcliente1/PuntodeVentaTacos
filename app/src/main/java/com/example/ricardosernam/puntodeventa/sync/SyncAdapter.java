@@ -224,8 +224,115 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param syncResult Registros de la sincronización
      */
     private void actualizarDatosLocales(JSONObject response, SyncResult syncResult, String  url) {   ///aqui esta el error
+///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
+        if (url == Constantes.GET_URL_INVENTARIO) {
+
+            JSONArray gastos = null;
+
+            try {
+                // Obtener array "gastos"
+                gastos = response.getJSONArray(Constantes.INVENTARIO);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            // Parsear con Gson
+            com.example.ricardosernam.puntodeventa.web.Inventario[] res2 = gson.fromJson(gastos != null ? gastos.toString() : null, com.example.ricardosernam.puntodeventa.web.Inventario[].class);
+            List<com.example.ricardosernam.puntodeventa.web.Inventario> data2 = Arrays.asList(res2);
+
+            // Lista para recolección de operaciones pendientes
+            ArrayList<ContentProviderOperation> ops2 = new ArrayList<ContentProviderOperation>();
+
+            // Tabla hash para recibir las entradas entrantes
+            HashMap<String, com.example.ricardosernam.puntodeventa.web.Inventario> expenseMap2 = new HashMap<String, com.example.ricardosernam.puntodeventa.web.Inventario>();   /////contiene los datos consultados
+            for (com.example.ricardosernam.puntodeventa.web.Inventario e : data2) {
+                expenseMap2.put(e.idinventario, e);
+            }
+            // Consultar registros remotos actuales
+            Uri uri2 = ContractParaProductos.CONTENT_URI_INVENTARIO;
+            String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
+            Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO, select2, null, null);
+            assert c2 != null;
+
+            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Encontrar datos obsoletos
+            String id2;
+            int idcarrito;
+            int disponible;
+            String fecha;
+
+            while (c2.moveToNext()) {
+                syncResult.stats.numEntries++;
+
+                id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO);
+                idcarrito = c2.getInt(COLUMNA_ID_CARRITO);
+                disponible = c2.getInt(COLUMNA_DISPONIBLE);
+                fecha = c2.getString(COLUMNA_FECHA);
+
+
+                Inventario match = expenseMap2.get(id2);
+
+                if (match != null) {  ////existen los mismos datos
+                    // Esta entrada existe, por lo que se remueve del mapeado
+                    expenseMap2.remove(id2);
+
+                    Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
+
+                    // Comprobar si el gasto necesita ser actualizado
+                    boolean b1 = match.idcarrito != idcarrito;
+                    boolean b2 = match.disponible != disponible;
+                    boolean b3 = match.fecha != null && !match.fecha.equals(fecha);
+
+                    if (b1 || b2 || b3) {
+                        Log.i(TAG, "Programando actualización de: " + existingUri + " INVENTARIO");
+                        ops2.add(ContentProviderOperation.newUpdate(existingUri)
+                                .withValue(ContractParaProductos.Columnas.ID_CARRITO, match.idcarrito)
+                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                .withValue(ContractParaProductos.Columnas.FECHA, match.fecha)
+                                .build());
+                        syncResult.stats.numUpdates++;
+                    } else {
+                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " INVENTARIO");
+                    }
+                } else {
+                    // eliminamos los datos que no estan en local host
+                    Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
+                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO");
+                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
+                    syncResult.stats.numDeletes++;
+                }
+            }
+            c2.close();
+
+            ////insertamos los valores de la base de datos
+            for (com.example.ricardosernam.puntodeventa.web.Inventario e : expenseMap2.values()) {
+                Log.i(TAG, "Programando inserción de: " + e.idinventario + " INVENTARIO");
+                ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_INVENTARIO)   /////error
+                        .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idinventario)
+                        .withValue(ContractParaProductos.Columnas.ID_CARRITO, e.idcarrito)
+                        .withValue(ContractParaProductos.Columnas.DISPONIBLE, e.disponible)
+                        .withValue(ContractParaProductos.Columnas.FECHA, e.fecha)
+                        .build());
+                syncResult.stats.numInserts++;
+            }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+                Log.i(TAG, "Aplicando operaciones... INVENTARIO");
+                try {
+                    resolver.applyBatch(ContractParaProductos.AUTHORITY, ops2);
+                } catch (RemoteException | OperationApplicationException e) {
+                    e.printStackTrace();
+                }
+                resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO, null, false);
+                Log.i(TAG, "Sincronización finalizada INVENTARIO.");
+            } else {
+                Log.i(TAG, "No se requiere sincronización INVENTARIO");
+            }
+            inicializarSyncAdapter(getContext(), Constantes.GET_URL_PRODUCTO);
+            sincronizarAhora(getContext(), false);
+        }
 ///////////////////////////////////PRODUCTOS//////////////////////////////////////////////////////7
-        if (url == Constantes.GET_URL_PRODUCTO) {
+        else if (url == Constantes.GET_URL_PRODUCTO) {
             JSONArray productos = null;
 
             try {
@@ -336,113 +443,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO_DETALLE);
             sincronizarAhora(getContext(), false);
         }
-///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
-        else if (url == Constantes.GET_URL_INVENTARIO) {
-
-            JSONArray gastos = null;
-
-            try {
-                // Obtener array "gastos"
-                gastos = response.getJSONArray(Constantes.INVENTARIO);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            // Parsear con Gson
-            com.example.ricardosernam.puntodeventa.web.Inventario[] res2 = gson.fromJson(gastos != null ? gastos.toString() : null, com.example.ricardosernam.puntodeventa.web.Inventario[].class);
-            List<com.example.ricardosernam.puntodeventa.web.Inventario> data2 = Arrays.asList(res2);
-
-            // Lista para recolección de operaciones pendientes
-            ArrayList<ContentProviderOperation> ops2 = new ArrayList<ContentProviderOperation>();
-
-            // Tabla hash para recibir las entradas entrantes
-            HashMap<String, com.example.ricardosernam.puntodeventa.web.Inventario> expenseMap2 = new HashMap<String, com.example.ricardosernam.puntodeventa.web.Inventario>();   /////contiene los datos consultados
-            for (com.example.ricardosernam.puntodeventa.web.Inventario e : data2) {
-                expenseMap2.put(e.idinventario, e);
-            }
-            // Consultar registros remotos actuales
-            Uri uri2 = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
-            Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO, select2, null, null);
-            assert c2 != null;
-
-            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Encontrar datos obsoletos
-            String id2;
-            int idcarrito;
-            int disponible;
-            String fecha;
-
-            while (c2.moveToNext()) {
-                syncResult.stats.numEntries++;
-
-                id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO);
-                idcarrito = c2.getInt(COLUMNA_ID_CARRITO);
-                disponible = c2.getInt(COLUMNA_DISPONIBLE);
-                fecha = c2.getString(COLUMNA_FECHA);
-
-
-                Inventario match = expenseMap2.get(id2);
-
-                if (match != null) {  ////existen los mismos datos
-                    // Esta entrada existe, por lo que se remueve del mapeado
-                    expenseMap2.remove(id2);
-
-                    Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
-
-                    // Comprobar si el gasto necesita ser actualizado
-                    boolean b1 = match.idcarrito != idcarrito;
-                    boolean b2 = match.disponible != disponible;
-                    boolean b3 = match.fecha != null && !match.fecha.equals(fecha);
-
-                    if (b1 || b2 || b3) {
-                        Log.i(TAG, "Programando actualización de: " + existingUri + " INVENTARIO");
-                        ops2.add(ContentProviderOperation.newUpdate(existingUri)
-                                .withValue(ContractParaProductos.Columnas.ID_CARRITO, match.idcarrito)
-                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
-                                .withValue(ContractParaProductos.Columnas.FECHA, match.fecha)
-                                .build());
-                        syncResult.stats.numUpdates++;
-                    } else {
-                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " INVENTARIO");
-                    }
-                } else {
-                    // eliminamos los datos que no estan en local host
-                    Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
-                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO");
-                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
-                    syncResult.stats.numDeletes++;
-                }
-            }
-            c2.close();
-
-            ////insertamos los valores de la base de datos
-            for (com.example.ricardosernam.puntodeventa.web.Inventario e : expenseMap2.values()) {
-                Log.i(TAG, "Programando inserción de: " + e.idinventario + " INVENTARIO");
-                ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_INVENTARIO)   /////error
-                        .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idinventario)
-                        .withValue(ContractParaProductos.Columnas.ID_CARRITO, e.idcarrito)
-                        .withValue(ContractParaProductos.Columnas.DISPONIBLE, e.disponible)
-                        .withValue(ContractParaProductos.Columnas.FECHA, e.fecha)
-                        .build());
-                syncResult.stats.numInserts++;
-            }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
-                Log.i(TAG, "Aplicando operaciones... INVENTARIO");
-                try {
-                    resolver.applyBatch(ContractParaProductos.AUTHORITY, ops2);
-                } catch (RemoteException | OperationApplicationException e) {
-                    e.printStackTrace();
-                }
-                resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO, null, false);
-                Log.i(TAG, "Sincronización finalizada INVENTARIO.");
-            } else {
-                Log.i(TAG, "No se requiere sincronización INVENTARIO");
-            }
-            inicializarSyncAdapter(getContext(), Constantes.GET_URL_PRODUCTO);
-            sincronizarAhora(getContext(), false);
-        }
 
         ///////////////////////////////////INVENTARIO_DETALLES//////////////////////////////////////////////////////////////////
         else if (url == Constantes.GET_URL_INVENTARIO_DETALLE) {
@@ -454,16 +454,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             Inventario_detalle[] res2 = gson.fromJson(inventario_detalles != null ? inventario_detalles.toString() : null, Inventario_detalle[].class);
             List<Inventario_detalle> data2 = Arrays.asList(res2);
 
             ArrayList<ContentProviderOperation> ops2 = new ArrayList<ContentProviderOperation>();
 
             // Tabla hash para recibir las entradas entrantes
-            HashMap<String, Inventario_detalle> expenseMap2 = new HashMap<String, Inventario_detalle>();   /////contiene los datos consultados
-            for (Inventario_detalle e : data2) {
-                expenseMap2.put(e.idinventario, e);
-            }
+            HashMap<String, Inventario_detalle> expenseMap2 = new HashMap<String, Inventario_detalle>();   /////contiene los datos consultados sin repeticion
 
             // Consultar registros remotos actuales
             Uri uri2 = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
@@ -517,13 +515,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             c2.close();
 
             ////insertamos los valores de la base de datos
-            for (Inventario_detalle e : expenseMap2.values()) {
+            for (Inventario_detalle e : data2) {    /////aqui se insertan //////////////////////////////////////////////////////////
                 Log.i(TAG, "Programando inserción de: " + e.idinventario +" INVENTARIO_DETALLES");
                 ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE)
                         .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idinventario)
                         .withValue(ContractParaProductos.Columnas.ID_PRODUCTO, e.idproducto)
                         .withValue(ContractParaProductos.Columnas.EXISTENTE, e.existente)
-
                         .build());
                 syncResult.stats.numInserts++;
             }
@@ -537,7 +534,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, null, false);
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
-            } else {
+            }
+            else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
             }
         }
