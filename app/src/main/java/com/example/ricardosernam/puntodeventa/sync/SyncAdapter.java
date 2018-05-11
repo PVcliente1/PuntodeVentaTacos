@@ -270,7 +270,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 fecha = c2.getString(COLUMNA_FECHA);
 
 
-                Inventario match = expenseMap2.get(id2);
+                com.example.ricardosernam.puntodeventa.web.Inventario match = expenseMap2.get(id2);
 
                 if (match != null) {  ////existen los mismos datos
                     // Esta entrada existe, por lo que se remueve del mapeado
@@ -526,6 +526,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+                com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
                 Log.i(TAG, "Aplicando operaciones...  INVENTARIO_DETALLES");
                 try {
                     resolver.applyBatch(ContractParaProductos.AUTHORITY, ops2);

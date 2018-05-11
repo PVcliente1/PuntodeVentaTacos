@@ -18,11 +18,9 @@ import java.util.ArrayList;
 public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventario.ViewHolder> {
     private ArrayList<Inventario_class> itemsInventarios;
     private Cursor cursor;
-    private Context context;
 
-    public AdaptadorInventario(ArrayList<Inventario_class> itemsInventarios, Context context) {
+    public AdaptadorInventario(ArrayList<Inventario_class> itemsInventarios) {
         this.itemsInventarios = itemsInventarios;
-        this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -23,14 +23,13 @@ import java.util.ArrayList;
 
 //public class Inventario extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 public class Inventario extends Fragment {
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    private AdaptadorInventario adapter;
-    private SQLiteDatabase db;
-    private TextView emptyView;
-    private LoaderManager lm;
-    private Cursor nombre;
-    private ArrayList<Inventario_class> itemsInventario;
+    public static RecyclerView recyclerView;
+    public static LinearLayoutManager layoutManager;
+    public static AdaptadorInventario adapter;
+    public static SQLiteDatabase db;
+    public static TextView emptyView;
+    public static Cursor nombre;
+    public static ArrayList<Inventario_class> itemsInventario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +42,13 @@ public class Inventario extends Fragment {
         SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
         emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
 
+        recyclerView = view.findViewById(R.id.reciclador);
+        layoutManager = new LinearLayoutManager(getContext());
+
+        relleno();
+        return view;
+    }
+    public static void relleno(){
         nombre=db.rawQuery("select nombre, existente from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
 
         if(nombre.moveToFirst()) {///si hay un elemento
@@ -55,12 +61,8 @@ public class Inventario extends Fragment {
         else{
             emptyView.setVisibility(View.VISIBLE);
         }
-        recyclerView = view.findViewById(R.id.reciclador);
-        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new AdaptadorInventario(itemsInventario, getContext());
+        adapter = new AdaptadorInventario(itemsInventario);
         recyclerView.setAdapter(adapter);
-        emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
-        return view;
     }
 }
