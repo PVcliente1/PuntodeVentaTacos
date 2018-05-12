@@ -105,12 +105,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(cmd2);
         String cmd3 = "CREATE TABLE " + ContractParaProductos.INVENTARIO_DETALLE + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT UNIQUE, " +
+                ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT , " +
                 ContractParaProductos.Columnas.EXISTENTE + " DOUBLE, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
         database.execSQL(cmd3);
+
+        String cmd4 = "CREATE TABLE " + ContractParaProductos.VENTA + " (" +
+                ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContractParaProductos.Columnas.FECHA + " TEXT , " +
+                ContractParaProductos.Columnas.ID_CARRITO + " DOUBLE, " +
+                ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
+                ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
+        database.execSQL(cmd4);
+
+        String cmd5 = "CREATE TABLE " + ContractParaProductos.VENTA_DETALLE + " (" +
+                ContractParaProductos.Columnas.ID_VENTA + " TEXT, " +
+                ContractParaProductos.Columnas.CANTIDAD + " INT, " +
+                ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT, " +
+                ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
+                ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
+        database.execSQL(cmd5);
     }
 
     @Override
@@ -119,6 +135,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
             db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
             db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
+            db.execSQL("drop table " + ContractParaProductos.VENTA);
+            db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);
 
         }
         catch (SQLiteException e) { }

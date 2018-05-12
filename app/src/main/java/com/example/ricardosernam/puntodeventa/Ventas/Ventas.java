@@ -27,11 +27,11 @@ import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 @SuppressLint("ValidFragment")
-//public class Ventas extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {     /////Fragment de categoria ventas
 public class Ventas extends Fragment  {     /////Fragment de categoria ventas
 
 private RecyclerView recycler;
@@ -41,11 +41,11 @@ private RecyclerView recycler;
     private android.support.v4.app.FragmentManager fm;
     private FragmentManager fm2;
     private Button eliminarCompra,aceptarCompra;
-    private ContentValues values;
+    private ContentValues values, values2, values3;
     private CardView cobro;
     private TextView total;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, productos, existente;
+    private Cursor datosSeleccionado, productos, existente, carrito, venta;
     private TextView emptyView;
     private ArrayList<Pro_ventas_class> itemsProductos;
     private ArrayList<Cobrar_ventas_class> itemsCobrar= new ArrayList <>();
@@ -83,7 +83,7 @@ private RecyclerView recycler;
         }
     }
     public void relleno(){    ///llamamos el adapter del recycler
-        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio!=0" ,null);
+        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio !=0 " ,null);
         if(productos.moveToFirst()) {///si hay un elemento
             itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
             while (productos.moveToNext()) {
@@ -101,9 +101,9 @@ private RecyclerView recycler;
         adapter = new Pro_ventasAdapter(itemsProductos, new actualizado() {  ///obtenemos los datos capturados para cada producto
             @Override
             public void actualizar(int cantidad, String seleccionado) {
-                datosSeleccionado=db.rawQuery("select precio, porcion from productos where nombre='"+seleccionado+"'" ,null);
+                datosSeleccionado=db.rawQuery("select precio, porcion, idRemota from productos where nombre='"+seleccionado+"'" ,null);
                 if(datosSeleccionado.moveToFirst()) {
-                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0), datosSeleccionado.getFloat(1)));//obtenemos el cardview seleccionado y lo agregamos a items2
+                    itemsCobrar.add(new Cobrar_ventas_class(seleccionado, cantidad, datosSeleccionado.getFloat(0), cantidad*datosSeleccionado.getFloat(0), datosSeleccionado.getFloat(1), datosSeleccionado.getString(2)));//obtenemos el cardview seleccionado y lo agregamos a items2
                 }
                 ///comprobamos si se repite
                 for(int i=0; i<itemsCobrar.size(); i++) {
@@ -171,17 +171,48 @@ private RecyclerView recycler;
                 aceptarVenta.setCancelable(false);
                 aceptarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
+/////////////////////////////////////insercion de ventas/////////////////////////////////////////////////////////
+                        /////obtener fecha actual
+                        java.util.Calendar c = java.util.Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                        String formattedDate = df.format(c.getTime());
+
+                        carrito=db.rawQuery("select idcarrito from inventarios" ,null);
+
+                        if(carrito.moveToFirst()) {
+                            values.put("idcarrito", carrito.getString(0));
+                        }
+                        values.put("fecha", formattedDate);
+                        db.insertOrThrow("ventas", null, values);
+
+/////////////////////////////////incersion-modificación ventas-inventario_detalles
+                        values2 = new ContentValues();
                         for(int i=0; i<itemsCobrar.size(); i++) {
-                            existente=db.rawQuery("select idproducto, existente from inventario_detalles WHERE idproducto=(select idproducto from productos where nombre=(select guisado from productos where nombre='"+itemsCobrar.get(i).getNombre()+"'))" ,null);
+                           ////////////////venta detalles/////////////////////////////77
+                           venta=db.rawQuery("select _id from ventas" ,null);
+                           if(venta.moveToFirst()) {
+                               venta.moveToLast();
+                               values2.put("idventa", venta.getString(0));
+                               values2.put("cantidad", itemsCobrar.get(i).getCantidad());
+                               values2.put("idproducto", itemsCobrar.get(i).getIdRemota());
+                               db.insertOrThrow("venta_detalles", null, values2);
+                           }
+                            //////////////////////////////////////////inventario detalles//////////////////////////////
+                            values3 = new ContentValues();
+                            existente = db.rawQuery("select idproducto, existente from inventario_detalles WHERE idproducto=(select idRemota from productos where nombre=(select guisado from productos where nombre='" + itemsCobrar.get(i).getNombre() + "'))", null);
                             if(existente.moveToFirst()){
                                 float porcion = existente.getFloat(1) - (itemsCobrar.get(i).getCantidad() * itemsCobrar.get(i).getPorcion());
-                                values.put("existente", porcion);
-                                db.update("inventario_detalles", values, "idproducto='" + existente.getString(0) + "'", null);
+                                values3.put("existente", porcion);
+                                db.update("inventario_detalles", values3, "idproducto='" + existente.getString(0) + "'", null);
                             }
                         }
-                            Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();
+
+                        Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();
+                        itemsProductos.removeAll(itemsProductos);
                         itemsCobrar.removeAll(itemsCobrar);
+                        adapter.notifyDataSetChanged();
                         relleno();
+
                         eliminarCompra.setVisibility(View.INVISIBLE);
                         aceptarCompra.setVisibility(View.INVISIBLE);
                         total.setText("0.0");

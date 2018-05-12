@@ -19,6 +19,12 @@ public static final String PRODUCTO = "productos";
 
 public static final String INVENTARIO_DETALLE = "inventario_detalles";
 
+public static final String VENTA = "ventas";
+
+public static final String VENTA_DETALLE = "venta_detalles";
+
+
+
 /**
  * Tipo MIME que retorna la consulta de una sola fila
  */
@@ -92,7 +98,6 @@ public static class Columnas implements BaseColumns {
     public final static String ID_CARRITO = "idcarrito";
     public final static String DISPONIBLE = "disponible";
     public final static String FECHA = "fecha";
-
 ////////////////////productos////////////
     public final static String NOMBRE = "nombre";
     public final static String PRECIO = "precio";
@@ -101,6 +106,12 @@ public static class Columnas implements BaseColumns {
 ///////////////////inventario_detalles/////////////////
     public final static String ID_PRODUCTO = "idproducto";
     public final static String EXISTENTE = "existente";
+/////////////////////ventas///////////////////7
+    public final static String CANTIDAD = "cantidad";
+    public final static String ID_VENTA = "idventa";
+
+
+
 
     public static final String ESTADO = "estado";
     public static final String ID_REMOTA = "idRemota";

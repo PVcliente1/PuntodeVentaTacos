@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa.Inventario;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,13 +16,14 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
 
 import java.util.ArrayList;
 
-//public class Inventario extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 public class Inventario extends Fragment {
     public static RecyclerView recyclerView;
     public static LinearLayoutManager layoutManager;
@@ -47,6 +49,9 @@ public class Inventario extends Fragment {
 
         relleno();
         return view;
+    }
+    public static void shit(Context context){
+        Toast.makeText(context, "Finalizado", Toast.LENGTH_LONG).show();
     }
     public static void relleno(){
         nombre=db.rawQuery("select nombre, existente from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);

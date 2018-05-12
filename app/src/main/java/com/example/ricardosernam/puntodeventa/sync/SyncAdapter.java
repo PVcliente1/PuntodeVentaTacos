@@ -21,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
+import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import com.example.ricardosernam.puntodeventa.web.Inventario;
@@ -534,6 +536,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, null, false);
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
+                com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
             }
             else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
