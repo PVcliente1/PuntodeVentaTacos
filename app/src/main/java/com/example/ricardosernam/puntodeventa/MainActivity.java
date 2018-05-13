@@ -1,5 +1,7 @@
 package com.example.ricardosernam.puntodeventa;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
@@ -12,16 +14,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
 import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
+import com.example.ricardosernam.puntodeventa.Inventario.Inventario_class;
 import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
+import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
+
+import java.text.SimpleDateFormat;
+
+import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private MenuItem importar, exportar;
     private Toolbar toolbar;
+    private ContentValues values;
+    private Cursor carrito;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        values=new ContentValues();
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
 
         manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
@@ -69,9 +81,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.exportar) {
             importar.setEnabled(true);
             exportar.setEnabled(false);
-            /*if(!exportar.isEnabled()){ ///esta desabilitad
-                Toast.makeText(getApplicationContext(), "Importa el actual inventario para poder exportar", Toast.LENGTH_LONG).show();
-            }*/
+            if(!exportar.isEnabled()){ ///esta desabilitad
+                java.util.Calendar c = java.util.Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                String formattedDate = df.format(c.getTime());
+
+                carrito=db.rawQuery("select idcarrito from inventarios" ,null);
+                if(carrito.moveToFirst()) {
+                    values.put("idcarrito", carrito.getString(0));
+                }
+                values.put("disponible", 0);
+                values.put("fecha", formattedDate);
+                values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error
+
+                /*consulta=db.rawQuery("select * from inventario_detalles" ,null);
+                if(consulta.moveToFirst()) {///si hay un elemento
+                    values.put("idRemota", consulta.getString(3));
+                    values.put("idproducto", consulta.getString(1));
+                    values.put("existente", consulta.getString(2));
+                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                    getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
+                    while (consulta.moveToNext()) {
+                        values.put("idRemota", consulta.getString(3));
+                        values.put("idproducto", consulta.getString(1));
+                        values.put("existente", consulta.getString(2));
+                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                        getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
+
+                    }
+                }*/
+                SyncAdapter.sincronizarAhora(this, true);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

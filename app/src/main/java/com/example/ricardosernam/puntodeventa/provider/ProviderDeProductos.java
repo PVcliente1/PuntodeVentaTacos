@@ -95,8 +95,7 @@ public class ProviderDeProductos extends ContentProvider {
                             ContractParaProductos.Columnas._ID + " = " + idGasto,
                             selectionArgs, null, null, sortOrder);
                     c.setNotificationUri(
-                            resolver,
-                            ContractParaProductos.CONTENT_URI_INVENTARIO);
+                            resolver, ContractParaProductos.CONTENT_URI_INVENTARIO);
                     break;
                 default:
                     throw new IllegalArgumentException("URI no soportada: " + uri);
@@ -317,54 +316,62 @@ public class ProviderDeProductos extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        int affected;
-        switch (ContractParaProductos.uriMatcherProducto.match(uri)) {
-            case ContractParaProductos.ALLROWS:
-                affected = db.update(ContractParaProductos.PRODUCTO, values,
-                        selection, selectionArgs);
-                break;
-            case ContractParaProductos.SINGLE_ROW:
-                String idGasto = uri.getPathSegments().get(1);
-                affected = db.update(ContractParaProductos.PRODUCTO, values,
-                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
-                                + (!TextUtils.isEmpty(selection) ?
-                                " AND (" + selection + ')' : ""),
-                        selectionArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("URI desconocida: " + uri);
+        int affected=0;
+        if(uri==ContractParaProductos.CONTENT_URI_PRODUCTO) {
+            switch (ContractParaProductos.uriMatcherProducto.match(uri)) {
+                case ContractParaProductos.ALLROWS:
+                    affected = db.update(ContractParaProductos.PRODUCTO, values,
+                            selection, selectionArgs);
+                    break;
+                case ContractParaProductos.SINGLE_ROW:
+                    String idGasto = uri.getPathSegments().get(1);
+                    affected = db.update(ContractParaProductos.PRODUCTO, values,
+                            ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
+                                    + (!TextUtils.isEmpty(selection) ?
+                                    " AND (" + selection + ')' : ""),
+                            selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("URI desconocida: " + uri);
+            }
         }
-        switch (ContractParaProductos.uriMatcherInventario.match(uri)) {
-            case ContractParaProductos.ALLROWS:
-                affected = db.update(ContractParaProductos.INVENTARIO, values,
-                        selection, selectionArgs);
-                break;
-            case ContractParaProductos.SINGLE_ROW:
-                String idGasto = uri.getPathSegments().get(1);
-                affected = db.update(ContractParaProductos.INVENTARIO, values,
-                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
-                                + (!TextUtils.isEmpty(selection) ?
-                                " AND (" + selection + ')' : ""),
-                        selectionArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("URI desconocida: " + uri);
+        else  if(uri==ContractParaProductos.CONTENT_URI_INVENTARIO) {
+
+            switch (ContractParaProductos.uriMatcherInventario.match(uri)) {
+                case ContractParaProductos.ALLROWS:
+                    affected = db.update(ContractParaProductos.INVENTARIO, values,
+                            selection, selectionArgs);
+                    break;
+                case ContractParaProductos.SINGLE_ROW:
+                    String idGasto = uri.getPathSegments().get(1);
+                    affected = db.update(ContractParaProductos.INVENTARIO, values,
+                            ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
+                                    + (!TextUtils.isEmpty(selection) ?
+                                    " AND (" + selection + ')' : ""),
+                            selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("URI desconocida: " + uri);
+            }
         }
-        switch (ContractParaProductos.uriMatcherInventarioDetalles.match(uri)) {
-            case ContractParaProductos.ALLROWS:
-                affected = db.update(ContractParaProductos.INVENTARIO_DETALLE, values,
-                        selection, selectionArgs);
-                break;
-            case ContractParaProductos.SINGLE_ROW:
-                String idGasto = uri.getPathSegments().get(1);
-                affected = db.update(ContractParaProductos.INVENTARIO_DETALLE, values,
-                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
-                                + (!TextUtils.isEmpty(selection) ?
-                                " AND (" + selection + ')' : ""),
-                        selectionArgs);
-                break;
-            default:
-                throw new IllegalArgumentException("URI desconocida: " + uri);
+        else if(uri==ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE) {
+
+            switch (ContractParaProductos.uriMatcherInventarioDetalles.match(uri)) {
+                case ContractParaProductos.ALLROWS:
+                    affected = db.update(ContractParaProductos.INVENTARIO_DETALLE, values,
+                            selection, selectionArgs);
+                    break;
+                case ContractParaProductos.SINGLE_ROW:
+                    String idGasto = uri.getPathSegments().get(1);
+                    affected = db.update(ContractParaProductos.INVENTARIO_DETALLE, values,
+                            ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
+                                    + (!TextUtils.isEmpty(selection) ?
+                                    " AND (" + selection + ')' : ""),
+                            selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("URI desconocida: " + uri);
+            }
         }
         resolver.notifyChange(uri, null, false);
         return affected;

@@ -13,7 +13,7 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
-    private static final String IP = "http://192.168.0.8";
+    private static final String IP = "http://192.168.1.101";
 
     /**
      * URLs del Web Service
@@ -34,12 +34,13 @@ public class Constantes {
     public static final String ID_PRODUCTO = "idproducto";
     public static final String PRODUCTO = "producto";
 
-    public static final String ID_INVENTARIO_DETALLE = "idinventario";
+    public static final String ID_INVENTARIO_DETALLE = "idinventario";//////////////id del localhost
     public static final String INVENTARIO_DETALLE = "inventario_detalle";
 
     public static final String ID_INVENTARIO = "idinventario";
-    public static final String ESTADO = "estado";
     public static final String INVENTARIO = "inventario";
+
+    public static final String ESTADO = "estado";
     public static final String MENSAJE = "mensaje";
 
     public static final String SUCCESS = "1";

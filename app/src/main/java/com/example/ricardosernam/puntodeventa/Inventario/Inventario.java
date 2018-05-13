@@ -50,9 +50,6 @@ public class Inventario extends Fragment {
         relleno();
         return view;
     }
-    public static void shit(Context context){
-        Toast.makeText(context, "Finalizado", Toast.LENGTH_LONG).show();
-    }
     public static void relleno(){
         nombre=db.rawQuery("select nombre, existente from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
 

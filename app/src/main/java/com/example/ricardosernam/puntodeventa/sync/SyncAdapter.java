@@ -6,6 +6,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.content.SyncResult;
@@ -25,6 +26,7 @@ import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
+import com.example.ricardosernam.puntodeventa.utils.Utilidades;
 import com.example.ricardosernam.puntodeventa.web.Inventario;
 import com.example.ricardosernam.puntodeventa.web.Inventario_detalle;
 import com.example.ricardosernam.puntodeventa.web.Producto;
@@ -35,10 +37,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 
 /**
  * Maneja la transferencia de datos entre el servidor y el cliente
@@ -46,6 +52,8 @@ import java.util.List;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static String url;
+    public Cursor carrito;
+    public ContentValues values;
     ContentResolver resolver;
     private Gson gson = new Gson();
 
@@ -92,7 +100,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     };
 
     // Indices para las columnas indicadas en la proyección
-    public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;
+    public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;      ///////funciona solo en la exportacion
     public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
     public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
     public static final int COLUMNA_EXISTENTE = 3;
@@ -126,7 +134,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (!soloSubida) {
             realizarSincronizacionLocal(syncResult, url);   ////sincronizar
         } else {
-            //realizarSincronizacionRemota();   ////subir datos
+            realizarSincronizacionRemota();   ////subir datos
         }
     }
     /////////////////////////////////////////////////////metodos de sincronizacion ///////////////////////////////////////////////////////
@@ -537,6 +545,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, null, false);
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
                 com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
+
             }
             else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
@@ -544,7 +553,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
     ////////////////////////////////////////////////////////metodos de incersion //////////////////////////////////////////////////////////
-/*private void realizarSincronizacionRemota() {
+private void realizarSincronizacionRemota() {
         Log.i(TAG, "Actualizando el servidor...");
 
         iniciarActualizacion();
@@ -555,12 +564,146 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         if (c.getCount() > 0) {
             while (c.moveToNext()) {
-                final int idLocal = c.getInt(COLUMNA_ID);
+                final int idLocal = c.getInt(COLUMNA_ID_INVENTARIO);
 
                 VolleySingleton.getInstance(getContext()).addToRequestQueue(
                         new JsonObjectRequest(
                                 Request.Method.POST,
-                                Constantes.INSERT_URL,
+                                Constantes.INSERT_URL_INVENTARIO,
+                                Utilidades.deCursorAJSONObject(c),  //////////////////////////////////////////////
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        procesarRespuestaInsert(response, idLocal);
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d(TAG, "Error Volley: " + error.getMessage());
+                                    }
+                                }
+
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> headers = new HashMap<String, String>();
+                                headers.put("Content-Type", "application/json; charset=utf-8");
+                                headers.put("Accept", "application/json");
+                                return headers;
+                            }
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8" + getParamsEncoding();
+                            }
+                        }
+                );
+            }
+
+        } else {
+            Log.i(TAG, "No se requiere sincronización");
+        }
+        c.close();
+    }
+
+    /**
+     * Obtiene el registro que se acaba de marcar como "pendiente por sincronizar" y
+     * con "estado de sincronización"
+     *
+     * @return Cursor con el registro.
+     */
+   private Cursor obtenerRegistrosSucios() {
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
+        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND "
+                + ContractParaProductos.Columnas.ESTADO + "=?";
+        String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
+
+        return resolver.query(uri, PROJECTION_INVENTARIO, selection, selectionArgs, null);
+    }
+
+    /**
+     * Cambia a estado "de sincronización" el registro que se acaba de insertar localmente
+     */
+    private void iniciarActualizacion() {
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
+        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND "
+                + ContractParaProductos.Columnas.ESTADO + "=?";
+        String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_OK + ""};
+
+        ContentValues v = new ContentValues();
+        v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_SYNC);
+
+        int results = resolver.update(uri, v, selection, selectionArgs);
+        Log.i(TAG, "Registros puestos en cola de inserción:" + results);
+    }
+
+    /**
+     * Limpia el registro que se sincronizó y le asigna la nueva id remota proveida
+     * por el servidor
+     *
+     * @param idRemota id remota
+     */
+    private void finalizarActualizacion(String idRemota, int idLocal) {
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
+        String selection = ContractParaProductos.Columnas._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(idLocal)};
+
+        ContentValues v = new ContentValues();
+        v.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, "0");
+        v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_OK);
+        v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
+
+        resolver.update(uri, v, selection, selectionArgs);
+    }
+
+    /**
+     * Procesa los diferentes tipos de respuesta obtenidos del servidor
+     *
+     * @param response Respuesta en formato Json
+     */
+    public void procesarRespuestaInsert(JSONObject response, int idLocal) {
+
+        try {
+            // Obtener estado
+            String estado = response.getString(Constantes.ESTADO);
+            // Obtener mensaje
+            String mensaje = response.getString(Constantes.MENSAJE);
+            // Obtener identificador del nuevo registro creado en el servidor
+            String idRemota = response.getString(Constantes.ID_INVENTARIO);
+
+
+            switch (estado) {
+                case Constantes.SUCCESS:
+                    Log.i(TAG, mensaje);
+                    finalizarActualizacion(idRemota, idLocal);
+                    break;
+
+                case Constantes.FAILED:
+                    Log.i(TAG, mensaje);
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*private void realizarSincronizacionRemota() {
+        Log.i(TAG, "Actualizando el servidor...");
+
+        iniciarActualizacion();
+
+        Cursor c = obtenerRegistrosSucios();
+
+        Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios.");
+
+        if (c.getCount() > 0) {
+            while (c.moveToNext()) {
+                final int idLocal = c.getInt(COLUMNA_ID_INVENTARIO_DETALLES);
+
+                VolleySingleton.getInstance(getContext()).addToRequestQueue(
+                        new JsonObjectRequest(Request.Method.POST, Constantes.INSERT_URL_INVENTARIO_DETALLE,
                                 Utilidades.deCursorAJSONObject(c),  //////////////////////////////////////////////
                                 new Response.Listener<JSONObject>() {
                                     @Override
@@ -605,21 +748,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @return Cursor con el registro.
      */
     /*private Cursor obtenerRegistrosSucios() {
-        Uri uri = ContractParaProductos.CONTENT_URI;
-        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND "
-                + ContractParaProductos.Columnas.ESTADO + "=?";
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
+        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
         String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
 
-        return resolver.query(uri, PROJECTION, selection, selectionArgs, null);
+        return resolver.query(uri, PROJECTION_INVENTARIO_DETALLES, selection, selectionArgs, null);
     }
 
     /**
      * Cambia a estado "de sincronización" el registro que se acaba de insertar localmente
      */
     /*private void iniciarActualizacion() {
-        Uri uri = ContractParaProductos.CONTENT_URI;
-        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND "
-                + ContractParaProductos.Columnas.ESTADO + "=?";
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
+        String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
         String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_OK + ""};
 
         ContentValues v = new ContentValues();
@@ -635,15 +776,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * @param idRemota id remota
      */
-    /*private void finalizarActualizacion(String idRemota, int idLocal) {
-        Uri uri = ContractParaProductos.CONTENT_URI;
+    /*private void finalizarActualizacion(String idRemota, int idLocal) {     /////actualizamos lo insertado en la app
+        Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
         String selection = ContractParaProductos.Columnas._ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(idLocal)};
 
         ContentValues v = new ContentValues();
         v.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, "0");
         v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_OK);
-        v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
+        v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);   /////id
 
         resolver.update(uri, v, selection, selectionArgs);
     }
@@ -654,14 +795,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param response Respuesta en formato Json
      */
     /*public void procesarRespuestaInsert(JSONObject response, int idLocal) {
-
+///////////////////////////////obtenemos los datos por php//////////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
             // Obtener estado
             String estado = response.getString(Constantes.ESTADO);
             // Obtener mensaje
             String mensaje = response.getString(Constantes.MENSAJE);
-            // Obtener identificador del nuevo registro creado en el servidor
-            String idRemota = response.getString(Constantes.ID_GASTO);
+            // Obtener id del nuevo registro creado en el servidor
+            //String idRemota = response.getString(Constantes.ID_INVENTARIO_DETALLE);
+            String idRemota = "2";
 
             switch (estado) {
                 case Constantes.SUCCESS:
@@ -673,7 +815,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.i(TAG, mensaje);
                     break;
             }
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
 

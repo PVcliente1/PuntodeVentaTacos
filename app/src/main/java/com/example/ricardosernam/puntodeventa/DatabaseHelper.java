@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(cmd);
         String cmd2 = "CREATE TABLE " + ContractParaProductos.INVENTARIO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ContractParaProductos.Columnas.ID_CARRITO + " TEXT UNIQUE, " +
+                ContractParaProductos.Columnas.ID_CARRITO + " TEXT, " +
                 ContractParaProductos.Columnas.DISPONIBLE + " INT, " +
                 ContractParaProductos.Columnas.FECHA + " INT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
