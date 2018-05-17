@@ -52,8 +52,8 @@ import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static String url;
-    public Cursor carrito;
-    public ContentValues values;
+    Cursor consulta, id;
+    ContentValues values;
     ContentResolver resolver;
     private Gson gson = new Gson();
 
@@ -134,7 +134,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (!soloSubida) {
             realizarSincronizacionLocal(syncResult, url);   ////sincronizar
         } else {
-            //realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO);   ////subir datos
+            realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO);   ////subir datos
         }
     }
     /////////////////////////////////////////////////////metodos de sincronizacion ///////////////////////////////////////////////////////
@@ -795,34 +795,36 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-        /**
-         * Obtiene el registro que se acaba de marcar como "pendiente por sincronizar" y
-         * con "estado de sincronización"
-         *
-         * @return Cursor con el registro.
-         */
+    /**
+     * Obtiene el registro que se acaba de marcar como "pendiente por sincronizar" y
+     * con "estado de sincronización"
+     *
+     * @return Cursor con el registro.
+     */
 
     private Cursor obtenerRegistrosSucios(String url) {
-        String projection[]=null;
-        Uri uri=null;
-        String selection=null;
-        String selectionArgs[]=null;
+        String projection[] = null;
+        Uri uri = null;
+        String selection = null;
+        String selectionArgs[] = null;
         if (url == Constantes.GET_URL_INVENTARIO) {
-            uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
+            uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
             selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
             selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection=PROJECTION_INVENTARIO;
+            projection = PROJECTION_INVENTARIO;
             //return resolver.query(uri, PROJECTION_INVENTARIO_DETALLES, selection, selectionArgs, null);
         }
 
         else if (url == Constantes.GET_URL_INVENTARIO_DETALLE) {
-            uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
+            uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
             selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
             selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
             projection=PROJECTION_INVENTARIO_DETALLES;
         }
         return resolver.query(uri, projection, selection, selectionArgs, null);
     }
+
+
 
     /**
      * Cambia a estado "de sincronización" el registro que se acaba de insertar localmente
@@ -863,6 +865,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param idRemota id remota
      */
     private void finalizarActualizacion(String idRemota, int idLocal, String url) {     /////actualizamos lo insertado en la app
+
         if (url == Constantes.GET_URL_INVENTARIO) {
             Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
             String selection = ContractParaProductos.Columnas._ID + "=?";
@@ -888,7 +891,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             resolver.update(uri, v, selection, selectionArgs);
         }
         //sincronizarAhora(getContext(), true, Constantes.GET_URL_INVENTARIO_DETALLE);
-        realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO);
+        realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO_DETALLE);
     }
 
     /**
@@ -900,6 +903,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 ///////////////////////////////obtenemos los datos por php//////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (url == Constantes.GET_URL_INVENTARIO) {
             try {
+                values=new ContentValues();
                 // Obtener estado
                 String estado = response.getString(Constantes.ESTADO);
                 // Obtener mensaje
@@ -907,6 +911,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_INVENTARIO);
 
+                 consulta=db.rawQuery("select * from inventario_detalles" ,null);
+                if(consulta.moveToFirst()) {///si hay un elemento
+                    values.put("idRemota", Integer.parseInt(idRemota));
+                    values.put("idproducto", consulta.getString(1));
+                    values.put("existente", consulta.getString(2));
+                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                    resolver.insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
+
+                    while (consulta.moveToNext()) {
+                        values.put("idRemota", Integer.parseInt(idRemota));
+                        values.put("idproducto", consulta.getString(1));
+                        values.put("existente", consulta.getString(2));
+                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                        resolver.insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
+                    }
+                }
                 Toast.makeText(getContext(), "IdRemota "+ idRemota, Toast.LENGTH_LONG).show();
 
                 switch (estado) {

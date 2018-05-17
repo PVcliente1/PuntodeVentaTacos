@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem importar, exportar;
     private Toolbar toolbar;
     private ContentValues values;
-    private Cursor carrito, consulta;
+    private Cursor carrito, consulta, idRemota;
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +83,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             importar.setEnabled(true);
             exportar.setEnabled(false);
             if(!exportar.isEnabled()){ ///esta desabilitad
-                /*java.util.Calendar c = java.util.Calendar.getInstance();
+                ///////////////////////inventario//////////////////////////
+                java.util.Calendar c = java.util.Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                 String formattedDate = df.format(c.getTime());
+
+                //String idRemota="";
 
                 carrito=db.rawQuery("select idcarrito from inventarios" ,null);
                 if(carrito.moveToFirst()) {
@@ -96,31 +99,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                 getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error*/
 
-                carrito=db.rawQuery("select idRemota from inventarios" ,null);
-                if(carrito.moveToFirst()) {
+                SyncAdapter.sincronizarAhora(this, true);
+
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////7
+                /*idRemota=db.rawQuery("select idRemota from inventarios" ,null);
+                if(idRemota.moveToFirst()) {
                     //values.put("idcarrito", carrito.getString(0));
-                    carrito.moveToLast();
-                    Toast.makeText(getApplicationContext(), "idinventario "+ carrito.getString(0), Toast.LENGTH_LONG).show();
-                }
-                consulta=db.rawQuery("select * from inventario_detalles" ,null);
+                    idRemota.moveToLast();
+                    Toast.makeText(getApplicationContext(), "ultimo inventario "+ idRemota.getString(0), Toast.LENGTH_LONG).show();
+                }*/
+
+                /*consulta=db.rawQuery("select * from inventario_detalles" ,null);
                 if(consulta.moveToFirst()) {///si hay un elemento
                     // values.put("idRemota", consulta.getString(3));
-                    values.put("idRemota", 1);
+                    values.put("idRemota", 2);
                     values.put("idproducto", consulta.getString(1));
                     values.put("existente", consulta.getString(2));
-                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                    //values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                     getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
                 }
                     while (consulta.moveToNext()) {
-                        values.put("idRemota", consulta.getString(3));
+                        values.put("idRemota", 2);
                         values.put("idproducto", consulta.getString(1));
                         values.put("existente", consulta.getString(2));
-                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                        //values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
 
                     //}
-                }
-                SyncAdapter.sincronizarAhora(this, true);
+                }*/
+                //SyncAdapter.sincronizarAhora(this, true);
             }
             return true;
         }
