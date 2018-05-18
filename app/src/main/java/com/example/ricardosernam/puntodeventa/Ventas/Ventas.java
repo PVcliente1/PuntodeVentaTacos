@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
+import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 
 import java.text.SimpleDateFormat;
@@ -60,7 +61,6 @@ private RecyclerView recycler;
         fm= getActivity().getSupportFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
         fm2= getActivity().getFragmentManager(); ////lo utilizamos para llamar el DialogFragment de producto
 
-        values = new ContentValues();
         emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
         itemsProductos= new ArrayList <>(); ///Arraylist que contiene los productos
 
@@ -83,7 +83,7 @@ private RecyclerView recycler;
         }
     }
     public void relleno(){    ///llamamos el adapter del recycler
-        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio !=0 " ,null);
+        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio > 0.0 " ,null);
         if(productos.moveToFirst()) {///si hay un elemento
             itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
             while (productos.moveToNext()) {
@@ -172,6 +172,7 @@ private RecyclerView recycler;
                 aceptarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
 /////////////////////////////////////insercion de ventas/////////////////////////////////////////////////////////
+                        values = new ContentValues();
                         /////obtener fecha actual
                         java.util.Calendar c = java.util.Calendar.getInstance();
                         SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
@@ -179,11 +180,13 @@ private RecyclerView recycler;
 
                         carrito=db.rawQuery("select idcarrito from inventarios" ,null);
 
+                        values.put("fecha", formattedDate);
                         if(carrito.moveToFirst()) {
                             values.put("idcarrito", carrito.getString(0));
                         }
-                        values.put("fecha", formattedDate);
-                        db.insertOrThrow("ventas", null, values);
+                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                        getContext().getContentResolver().insert(ContractParaProductos.CONTENT_URI_VENTA, values);   ////aqui esta el error*/
+
 
 /////////////////////////////////incersion-modificación ventas-inventario_detalles
                         values2 = new ContentValues();
@@ -192,7 +195,7 @@ private RecyclerView recycler;
                            venta=db.rawQuery("select _id from ventas" ,null);
                            if(venta.moveToFirst()) {
                                venta.moveToLast();
-                               values2.put("idventa", venta.getString(0));
+                               values2.put("idRemota", venta.getString(0));
                                values2.put("cantidad", itemsCobrar.get(i).getCantidad());
                                values2.put("idproducto", itemsCobrar.get(i).getIdRemota());
                                db.insertOrThrow("venta_detalles", null, values2);
