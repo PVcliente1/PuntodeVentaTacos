@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import java.util.ArrayList;
 
 public class Inventario extends Fragment {
+    public static EditText ip;
     public static RecyclerView recyclerView;
     public static LinearLayoutManager layoutManager;
     public static AdaptadorInventario adapter;
@@ -36,12 +38,12 @@ public class Inventario extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_inventario, container, false);
-
+        ip=view.findViewById(R.id.ETip);
         itemsInventario= new ArrayList <>(); ///Arraylist que contiene los productos
         DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
         db=admin.getWritableDatabase();
 
-        SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
+        //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
         emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
 
         recyclerView = view.findViewById(R.id.reciclador);

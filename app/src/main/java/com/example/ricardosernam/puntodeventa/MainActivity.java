@@ -14,16 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.ricardosernam.puntodeventa.Contactanos.Contactanos;
+import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
 import com.example.ricardosernam.puntodeventa.Inventario.Inventario;
-import com.example.ricardosernam.puntodeventa.Inventario.Inventario_class;
 import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
-import com.example.ricardosernam.puntodeventa.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 
@@ -74,12 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             importar.setEnabled(false);
             exportar.setEnabled(true);
             if(!(importar.isEnabled())){ ///esta desabilitado
-                SyncAdapter.sincronizarAhora(getApplicationContext(), false);
+                //SyncAdapter.sincronizarAhora(getApplicationContext(), false);
 
             }
             return true;
         }
         else if (id == R.id.exportar) {
+            //DatabaseHelper.limpiar(db);
+
             importar.setEnabled(true);
             exportar.setEnabled(false);
             if(!exportar.isEnabled()){ ///esta desabilitad
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                 getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error*/
 
-                SyncAdapter.sincronizarAhora(this, true);
+                //SyncAdapter.sincronizarAhora(this, true);
             }
             return true;
         }
@@ -116,18 +115,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             importar.setVisible(false);
             exportar.setVisible(false);
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragments
-        }  else if (id == R.id.Inventario) {
+        }
+        else if (id == R.id.Inventario) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario()).commit();
             importar.setVisible(true);
             exportar.setVisible(true);
-        } else if (id == R.id.Contáctanos) {
+        }
+        else if (id == R.id.Sincronizar) {
             importar.setVisible(false);
             exportar.setVisible(false);
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Contactanos()).commit();
-        } else if (id == R.id.Terminos) {
-            importar.setVisible(false);
-            exportar.setVisible(false);
-            manejador.beginTransaction().replace(R.id.LOprincipal, new Terminos()).commit();
+            manejador.beginTransaction().replace(R.id.LOprincipal, new Sincronizar()).commit();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

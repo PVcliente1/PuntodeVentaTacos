@@ -17,74 +17,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase database) {
         productos(database); // Crear la tabla "gasto"
-        //inventario_detalles(database); // Crear la tabla "gasto"
     }
 
-    /**
-     * Crear tabla en la base de datos
-     *
-     * @param database Instancia de la base de datos
-     */
-    private void productos(SQLiteDatabase database) {
-        /*database.execSQL("CREATE TABLE carritos (\n" +
-                "  `idcarrito` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `descripcion` VARCHAR(45) not null,\n" +
-                "  `ubicacion` VARCHAR(45) not null)");
-
-        database.execSQL("CREATE TABLE inventarios (\n" +
-                "  `idinventario` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `idcarrito` INT NOT NULL,\n" +
-                "  `disponible` CHAR(1),\n" +
-                "  `fecha` DATETIME ,\n" +
-                "  CONSTRAINT `fk_inventarios_carritos1`\n" +
-                "    FOREIGN KEY (`idcarrito`)\n" +
-                "    REFERENCES carritos (`idcarrito`))");
-
-        //"  PRIMARY KEY (`idinventario`, `idcarrito`),\n" +
-          //      "  INDEX `fk_inventarios_carritos1_idx` (`idcarrito` ASC),\n" +
-
-        database.execSQL("CREATE TABLE productos (\n" +
-                "  `idproducto` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `nombre` VARCHAR(45) ,\n" +
-                "  `precio` DOUBLE ,\n" +
-                "  `porcion` DOUBLE ,\n" +
-                "  `guisado` VARCHAR(45))");
-
-        database.execSQL("CREATE TABLE IF NOT EXISTS inventario_detalles (\n" +
-                "  `idinventario` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `idproducto` INT NOT NULL,\n" +
-                "  `existente` DOUBLE ,\n" +
-                //"  PRIMARY KEY (`idinventario`, `idproducto`),\n" +
-                "  CONSTRAINT `fk_inventarios_has_productos_inventarios1`\n" +
-                "    FOREIGN KEY (`idinventario`)\n" +
-                "    REFERENCES inventarios (`idinventario`),\n" +
-
-                "  CONSTRAINT `fk_inventarios_has_productos_productos1`\n" +
-                "    FOREIGN KEY (`idproducto`)\n" +
-                "    REFERENCES productos (`idproducto`))");
-
-        database.execSQL("CREATE TABLE IF NOT EXISTS ventas (\n" +
-                "  `idventa` INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "  `fecha` VARCHAR(45) ,\n" +
-                "  `idcarrito` INT NOT NULL,\n" +
-                //"  PRIMARY KEY (`idventa`, `idcarrito`),\n" +
-                "  CONSTRAINT `fk_ventas_carritos1`\n" +
-                "    FOREIGN KEY (`idcarrito`)\n" +
-                "    REFERENCES carritos (`idcarrito`))");
-
-        database.execSQL("CREATE TABLE venta_detalles (\n" +
-                "  `idventa` INT NOT NULL,\n" +
-                "  `cantidad` INT,\n" +
-                "  `idproducto` INT NOT NULL,\n" +
-                //"  PRIMARY KEY (`idventa`, `idproducto`),\n" +
-                "  CONSTRAINT `fk_venta_detalles_ventas`\n" +
-                "    FOREIGN KEY (`idventa`)\n" +
-                "    REFERENCES ventas (`idventa`),\n" +
-                "  CONSTRAINT `fk_venta_detalles_productos1`\n" +
-                "    FOREIGN KEY (`idproducto`)\n" +
-                "    REFERENCES productos (`idproducto`))");*/
-
-             String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
+    public static void productos(SQLiteDatabase database) {
+        String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.NOMBRE + " TEXT, " +
                 ContractParaProductos.Columnas.PRECIO + " DOUBLE, " +
@@ -131,18 +67,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(cmd5);
     }
 
-    @Override
+    //@Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        try {
-            db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
-            db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
-            db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
-            db.execSQL("drop table " + ContractParaProductos.VENTA);
-            db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);
+            limpiar(db);
+    }
 
-        }
-        catch (SQLiteException e) { }
-        onCreate(db);
+    public static void limpiar(SQLiteDatabase db) {
+        db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
+        db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
+        db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
+        db.execSQL("drop table " + ContractParaProductos.VENTA);
+        db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);
+
+        productos(db);
     }
 
 }

@@ -1,9 +1,15 @@
 package com.example.ricardosernam.puntodeventa.utils;
 
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
+
 /**
  * Constantes
  */
 public class Constantes {
+    public EditText ip;
     /**
      * Puerto que utilizas para la conexión.
      * Dejalo en blanco si no has configurado esta característica.
@@ -13,7 +19,9 @@ public class Constantes {
     /**
      * Dirección IP de genymotion o AVD
      */
+    //private static final String IP = "http://192.168.1.73";
     private static final String IP = "http://192.168.0.8";
+    //private static final String IP = String.valueOf(Sincronizar.ip.getText());
 
     /**
      * URLs del Web Service

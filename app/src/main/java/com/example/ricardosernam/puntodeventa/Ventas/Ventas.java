@@ -15,6 +15,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,7 @@ import java.util.ArrayList;
 
 @SuppressLint("ValidFragment")
 public class Ventas extends Fragment  {     /////Fragment de categoria ventas
-
-private RecyclerView recycler;
+    private RecyclerView recycler;
     private Pro_ventasAdapter adapter;
     private LoaderManager lm;
     private RecyclerView.LayoutManager lManager;
@@ -199,6 +199,7 @@ private RecyclerView recycler;
                                values2.put("cantidad", itemsCobrar.get(i).getCantidad());
                                values2.put("idproducto", itemsCobrar.get(i).getIdRemota());
                                db.insertOrThrow("venta_detalles", null, values2);
+                               Log.i("Datos", String.valueOf(values2));    ////mostramos que valores se han insertado
                            }
                             //////////////////////////////////////////inventario detalles//////////////////////////////
                             values3 = new ContentValues();

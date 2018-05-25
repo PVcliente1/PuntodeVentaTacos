@@ -53,7 +53,8 @@ import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static String url;
-    Cursor consulta, id;
+    Cursor consulta;
+    int cuenta=1;
     ContentValues values;
     ContentResolver resolver;
     private Gson gson = new Gson();
@@ -158,7 +159,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, final SyncResult syncResult) {
 
         Log.i(TAG, "onPerformSync()...");
-        //Toast.makeText(getContext(), String.valueOf(authority), Toast.LENGTH_LONG).show();
 
         boolean soloSubida = extras.getBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, false);
 
@@ -214,19 +214,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "Actualizando el cliente.");   ////hasta aqui bien
 
         VolleySingleton.getInstance(getContext()).addToRequestQueue(
-                //new JsonObjectRequest(Request.Method.GET, Constantes.GET_URL_INVENTARIO,  ////POSIBLE ERROR
                 new JsonObjectRequest(Request.Method.GET, url,  ////POSIBLE ERROR
-
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 procesarRespuestaGet(response, syncResult, url);
                             }
                         },
-                        new Response.ErrorListener() {
+                        new Response.ErrorListener() {  //// Si el ip es incorrecto
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d(TAG, error.networkResponse.toString());   ///error
+                                //Log.d(TAG, error.networkResponse.toString());   ///error
+                                Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
                             }
                         }
                 )
@@ -577,7 +576,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, null, false);
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
-                com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
+                //com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
 
             } else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
@@ -955,7 +954,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         resolver.insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
                     }
                 }
-                Toast.makeText(getContext(), "IdRemota "+ idRemota, Toast.LENGTH_LONG).show();
 
                 switch (estado) {
                     case Constantes.SUCCESS:
@@ -982,7 +980,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_VENTA);
 
-                consulta = db.rawQuery("select * from venta_detalles", null);
+                consulta = db.rawQuery("select * from venta_detalles where idRemota='"+cuenta+"'", null);
                 if (consulta.moveToFirst()) {///si hay un elemento
                     values.put("idRemota", Integer.parseInt(idRemota));
                     values.put("cantidad", consulta.getString(1));
@@ -998,7 +996,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
                     }
                 }
-                Toast.makeText(getContext(), "IdRemota " + idRemota, Toast.LENGTH_LONG).show();
+                cuenta++;
+                //Toast.makeText(getContext(), "IdRemota VENTA " + idRemota, Toast.LENGTH_LONG).show();
+                Log.i(TAG, "idRemota Ventas" + idRemota);
 
                 switch (estado) {
                     case Constantes.SUCCESS:

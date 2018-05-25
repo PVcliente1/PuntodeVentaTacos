@@ -11,16 +11,9 @@
                 android:id="@+id/Inventario"
                 android:icon="@mipmap/ic_description_black_24dp"
                 android:title="Inventario" />
-    <item android:title="Más...">
-        <menu>
-            <item
-                android:id="@+id/Contáctanos"
-                android:icon="@mipmap/ic_perm_phone_msg_black_24dp"
-                android:title="Contáctanos" />
-            <item
-                android:id="@+id/Terminos"
-                android:icon="@mipmap/ic_border_color_black_24dp"
-                android:title="Terminos y Condiciones" />
-        </menu>
-    </item>
+
+    <item
+        android:id="@+id/Sincronizar"
+        android:icon="@android:drawable/stat_notify_sync"
+        android:title="Sincronizar" />
 </menu>
