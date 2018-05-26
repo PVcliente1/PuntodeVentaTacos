@@ -13,7 +13,9 @@ public class ContractParaProductos {
      */
     public final static String AUTHORITY = "com.example.ricardosernam.puntodeventa";
 
-public static final String INVENTARIO = "inventarios";
+    public static final String CARRITO = "carritos";
+
+    public static final String INVENTARIO = "inventarios";
 
 public static final String PRODUCTO = "productos";
 
@@ -28,6 +30,10 @@ public static final String VENTA_DETALLE = "venta_detalles";
 /**
  * Tipo MIME que retorna la consulta de una sola fila
  */
+public final static String SINGLE_MIME_CARRITO = "vnd.android.cursor.item/vnd." + AUTHORITY + CARRITO;
+
+public final static String MULTIPLE_MIME_CARRITO = "vnd.android.cursor.dir/vnd." + AUTHORITY + CARRITO;
+
 public final static String SINGLE_MIME_INVENTARIO = "vnd.android.cursor.item/vnd." + AUTHORITY + INVENTARIO;
 
 public final static String MULTIPLE_MIME_INVENTARIO = "vnd.android.cursor.dir/vnd." + AUTHORITY + INVENTARIO;
@@ -52,6 +58,8 @@ public final static String MULTIPLE_MIME_VENTA_DETALLE = "vnd.android.cursor.dir
 /**
  * URI de contenido principal
  */
+public final static Uri CONTENT_URI_CARRITO = Uri.parse("content://" + AUTHORITY + "/" + CARRITO);
+
 public final static Uri CONTENT_URI_INVENTARIO = Uri.parse("content://" + AUTHORITY + "/" + INVENTARIO);
 
 public final static Uri CONTENT_URI_PRODUCTO = Uri.parse("content://" + AUTHORITY + "/" + PRODUCTO);
@@ -68,6 +76,7 @@ public final static Uri CONTENT_URI_VENTA_DETALLE = Uri.parse("content://" + AUT
 /**
  * Comparador de URIs de contenido
  */
+public static final UriMatcher uriMatcherCarrito;
 public static final UriMatcher uriMatcherProducto;
 public static final UriMatcher uriMatcherInventario;
 public static final UriMatcher uriMatcherInventarioDetalles;
@@ -88,6 +97,11 @@ public static final int SINGLE_ROW = 2;
 
 // Asignación de URIs
 static {
+
+        uriMatcherCarrito = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcherCarrito.addURI(AUTHORITY, CARRITO, ALLROWS);
+        uriMatcherCarrito.addURI(AUTHORITY, CARRITO + "/#", SINGLE_ROW);
+
         uriMatcherProducto = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcherProducto.addURI(AUTHORITY, PRODUCTO, ALLROWS);
         uriMatcherProducto.addURI(AUTHORITY, PRODUCTO + "/#", SINGLE_ROW);
@@ -123,8 +137,12 @@ public static class Columnas implements BaseColumns {
         // Sin instancias
     }
 //////////////inventario//////////////////
-    public final static String ID_CARRITO = "idcarrito";
+    public final static String DESCRIPCION = "descripcion";
+    public final static String UBICACION = "ubicacion";
     public final static String DISPONIBLE = "disponible";
+
+
+    public final static String ID_CARRITO = "idcarrito";
     public final static String FECHA = "fecha";
 ////////////////////productos////////////
     public final static String NOMBRE = "nombre";

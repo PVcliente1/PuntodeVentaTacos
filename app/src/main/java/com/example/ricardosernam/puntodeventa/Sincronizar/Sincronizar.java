@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class Sincronizar extends Fragment {
     public static EditText ip;
@@ -22,7 +25,7 @@ public class Sincronizar extends Fragment {
         importar=view.findViewById(R.id.BtnImportar);
         exportar=view.findViewById(R.id.BtnExportar);
 
-        SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
+        //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
 
         establecer=view.findViewById(R.id.BtnEstablecer);
         establecer.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +34,11 @@ public class Sincronizar extends Fragment {
                 if(establecer.getText().equals("Establecer")){
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
+                    new Constantes("http://"+String.valueOf(Sincronizar.ip.getText()));
+
+                    SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
+
+                    SyncAdapter.sincronizarAhora(getContext(), false);
                 }
                 else{
                     establecer.setText("Establecer");
@@ -41,14 +49,15 @@ public class Sincronizar extends Fragment {
         importar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.sincronizarAhora(getContext(), false);
+                /*SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
 
+                SyncAdapter.sincronizarAhora(getContext(), false);*/
             }
         });
         exportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.sincronizarAhora(getContext(), false);
+                SyncAdapter.sincronizarAhora(getContext(), true);
             }
         });
         return view;

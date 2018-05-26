@@ -26,7 +26,6 @@ import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import java.util.ArrayList;
 
 public class Inventario extends Fragment {
-    public static EditText ip;
     public static RecyclerView recyclerView;
     public static LinearLayoutManager layoutManager;
     public static AdaptadorInventario adapter;
@@ -38,7 +37,6 @@ public class Inventario extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_inventario, container, false);
-        ip=view.findViewById(R.id.ETip);
         itemsInventario= new ArrayList <>(); ///Arraylist que contiene los productos
         DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
         db=admin.getWritableDatabase();

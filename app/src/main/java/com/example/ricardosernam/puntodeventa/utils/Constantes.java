@@ -9,41 +9,40 @@ import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
  * Constantes
  */
 public class Constantes {
-    public EditText ip;
-    /**
-     * Puerto que utilizas para la conexión.
-     * Dejalo en blanco si no has configurado esta característica.
-     */
+    //public EditText ip;
+
+    public static  String GET_URL_CARRITO;
+
+    public static  String GET_URL_PRODUCTO;
+
+    public static String GET_URL_INVENTARIO;   //////
+    public static String INSERT_URL_INVENTARIO;
+
+    public static String GET_URL_INVENTARIO_DETALLE;
+    public static String INSERT_URL_INVENTARIO_DETALLE;
+
+    public static String INSERT_URL_VENTA;
+
+    public static String INSERT_URL_VENTA_DETALLE;
+
     private static final String PUERTO_HOST = "";
 
-    /**
-     * Dirección IP de genymotion o AVD
-     */
-    //private static final String IP = "http://192.168.1.73";
-    private static final String IP = "http://192.168.0.8";
-    //private static final String IP = String.valueOf(Sincronizar.ip.getText());
+    public Constantes(String ip){
+        GET_URL_PRODUCTO = ip + PUERTO_HOST + "/Servicios%20Web/productos/obtener_productos.php";
 
-    /**
-     * URLs del Web Service
-     */
+        GET_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/obtener_inventarios.php";   //////
+        INSERT_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/insertar_inventario.php";
 
-    public static final String GET_URL_PRODUCTO = IP + PUERTO_HOST + "/Servicios%20Web/productos/obtener_productos.php";
+         GET_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/obtener_inventario_detalles.php";
+        INSERT_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/insertar_inventario_detalle.php";
 
-    public static final String GET_URL_INVENTARIO = IP + PUERTO_HOST + "/Servicios%20Web/inventarios/obtener_inventarios.php";
-    public static final String INSERT_URL_INVENTARIO = IP + PUERTO_HOST + "/Servicios%20Web/inventarios/insertar_inventario.php";
+         INSERT_URL_VENTA = ip + PUERTO_HOST + "/Servicios%20Web/ventas/insertar_venta.php";
 
-    public static final String GET_URL_INVENTARIO_DETALLE = IP + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/obtener_inventario_detalles.php";
-    public static final String INSERT_URL_INVENTARIO_DETALLE = IP + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/insertar_inventario_detalle.php";
+       INSERT_URL_VENTA_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/venta_detalles/insertar_venta_detalle.php";
+    }
 
-    public static final String INSERT_URL_VENTA = IP + PUERTO_HOST + "/Servicios%20Web/ventas/insertar_venta.php";
+    public static final String CARRITO = "carrito";
 
-    public static final String INSERT_URL_VENTA_DETALLE = IP + PUERTO_HOST + "/Servicios%20Web/venta_detalles/insertar_venta_detalle.php";
-
-
-
-    /**
-     * Campos de las respuestas Json
-     */
     public static final String ID_PRODUCTO = "idproducto";
     public static final String PRODUCTO = "producto";
 

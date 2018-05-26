@@ -55,6 +55,8 @@ public class ProviderDeProductos extends ContentProvider {
         int match3 = ContractParaProductos.uriMatcherInventarioDetalles.match(uri);
         int match4 = ContractParaProductos.uriMatcherVenta.match(uri);
         int match5 = ContractParaProductos.uriMatcherVentaDetalles.match(uri);
+        int match6 = ContractParaProductos.uriMatcherCarrito.match(uri);
+
 
         Cursor c=null;
 

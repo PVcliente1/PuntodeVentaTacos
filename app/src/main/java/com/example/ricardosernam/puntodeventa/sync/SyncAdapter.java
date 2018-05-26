@@ -28,6 +28,7 @@ import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import com.example.ricardosernam.puntodeventa.utils.Utilidades;
+import com.example.ricardosernam.puntodeventa.web.Carrito;
 import com.example.ricardosernam.puntodeventa.web.Inventario;
 import com.example.ricardosernam.puntodeventa.web.Inventario_detalle;
 import com.example.ricardosernam.puntodeventa.web.Producto;
@@ -62,6 +63,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Proyección para las consultas
      */
+    private static final String[] PROJECTION_CARRITOS = new String[]{
+            ContractParaProductos.Columnas._ID,
+            ContractParaProductos.Columnas.ID_REMOTA,
+            ContractParaProductos.Columnas.DESCRIPCION,
+            ContractParaProductos.Columnas.UBICACION,
+            ContractParaProductos.Columnas.DISPONIBLE,
+    };
+
+    // Indices para las columnas indicadas en la proyección
+    public static final int COLUMNA_ID_CARRITO = 0;
+    public static final int COLUMNA_ID_REMOTA_CARRITOS = 1;
+    public static final int COLUMNA_DESCRIPCION = 2;
+    public static final int COLUMNA_UBICACION = 3;
+    public static final int COLUMNA_DISPONIBLE = 4;
+    /////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_PRODUCTOS = new String[]{
             ContractParaProductos.Columnas._ID,
             ContractParaProductos.Columnas.ID_REMOTA,
@@ -83,7 +99,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContractParaProductos.Columnas._ID,
             ContractParaProductos.Columnas.ID_REMOTA,
             ContractParaProductos.Columnas.ID_CARRITO,
-            ContractParaProductos.Columnas.DISPONIBLE,
             ContractParaProductos.Columnas.FECHA,
     };
 
@@ -91,8 +106,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int COLUMNA_ID_INVENTARIO = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
     public static final int COLUMNA_ID_CARRITO_INVENTARIO = 2;    ////
-    public static final int COLUMNA_DISPONIBLE = 3;
-    public static final int COLUMNA_FECHA_INVENTARIO = 4;    //////
+    public static final int COLUMNA_FECHA_INVENTARIO = 3;    //////
     ////////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_INVENTARIO_DETALLES = new String[]{
             ContractParaProductos.Columnas._ID,
@@ -267,7 +281,113 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private void actualizarDatosLocales(JSONObject response, SyncResult syncResult, String url) {   ///aqui esta el error
 ///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
-        if (url == Constantes.GET_URL_INVENTARIO) {
+        if (url == Constantes.GET_URL_CARRITO) {
+
+            JSONArray gastos = null;
+
+            try {
+                // Obtener array "gastos"
+                gastos = response.getJSONArray(Constantes.CARRITO);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            // Parsear con Gson
+            com.example.ricardosernam.puntodeventa.web.Carrito[] res2 = gson.fromJson(gastos != null ? gastos.toString() : null, com.example.ricardosernam.puntodeventa.web.Carrito[].class);
+            List<com.example.ricardosernam.puntodeventa.web.Carrito> data2 = Arrays.asList(res2);
+
+            // Lista para recolección de operaciones pendientes
+            ArrayList<ContentProviderOperation> ops2 = new ArrayList<ContentProviderOperation>();
+
+            // Tabla hash para recibir las entradas entrantes
+            HashMap<String, com.example.ricardosernam.puntodeventa.web.Carrito> expenseMap2 = new HashMap<String, Carrito>();   /////contiene los datos consultados
+            for (com.example.ricardosernam.puntodeventa.web.Carrito e : data2) {
+                expenseMap2.put(e.idcarrito, e);
+            }
+            // Consultar registros remotos actuales
+            Uri uri2 = ContractParaProductos.CONTENT_URI_CARRITO;
+            String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
+            Cursor c2 = resolver.query(uri2, PROJECTION_CARRITOS, select2, null, null);
+            assert c2 != null;
+
+            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Encontrar datos obsoletos
+             String id3;
+             String descripcion;
+             String ubicacion;
+             int disponible;
+
+            while (c2.moveToNext()) {
+                syncResult.stats.numEntries++;
+
+                id3 = c2.getString(COLUMNA_ID_REMOTA_CARRITOS);
+                descripcion = c2.getString(COLUMNA_DESCRIPCION);
+                ubicacion = c2.getString(COLUMNA_UBICACION);
+                disponible = c2.getInt(COLUMNA_DISPONIBLE);
+
+
+                com.example.ricardosernam.puntodeventa.web.Carrito match = expenseMap2.get(id3);
+
+                if (match != null) {  ////existen los mismos datos
+                    // Esta entrada existe, por lo que se remueve del mapeado
+                    expenseMap2.remove(id3);
+
+                    Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id3).build();
+
+                    // Comprobar si el gasto necesita ser actualizado
+                    boolean b = match.descripcion != null && !match.descripcion.equals(descripcion);
+                    boolean b2 = match.ubicacion != null && !match.ubicacion.equals(ubicacion);
+                    boolean b3 = match.disponible != disponible;
+
+
+                    if (b || b2 || b3) {
+                        Log.i(TAG, "Programando actualización de: " + existingUri + " CARRITO");
+                        ops2.add(ContentProviderOperation.newUpdate(existingUri)
+                                .withValue(ContractParaProductos.Columnas.DESCRIPCION, match.descripcion)
+                                .withValue(ContractParaProductos.Columnas.UBICACION, match.ubicacion)
+                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                .build());
+                        syncResult.stats.numUpdates++;
+                    } else {
+                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " CARRITO");
+                    }
+                } else {
+                    // eliminamos los datos que no estan en local host
+                    Uri deleteUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
+                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " CARRITO");
+                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
+                    syncResult.stats.numDeletes++;
+                }
+            }
+            c2.close();
+
+            ////insertamos los valores de la base de datos
+            for (com.example.ricardosernam.puntodeventa.web.Carrito e : expenseMap2.values()) {
+                Log.i(TAG, "Programando inserción de: " + e.idcarrito + " CARRITO");
+                ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_CARRITO)   /////error
+                        .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idcarrito)
+                        .withValue(ContractParaProductos.Columnas.DESCRIPCION, e.descripcion)
+                        .withValue(ContractParaProductos.Columnas.UBICACION, e.ubicacion)
+                        .withValue(ContractParaProductos.Columnas.DISPONIBLE, e.disponible)
+                        .build());
+                syncResult.stats.numInserts++;
+            }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (syncResult.stats.numInserts > 0 || syncResult.stats.numUpdates > 0 || syncResult.stats.numDeletes > 0) {
+                Log.i(TAG, "Aplicando operaciones... CARRITO");
+                try {
+                    resolver.applyBatch(ContractParaProductos.AUTHORITY, ops2);
+                } catch (RemoteException | OperationApplicationException e) {
+                    e.printStackTrace();
+                }
+                resolver.notifyChange(ContractParaProductos.CONTENT_URI_CARRITO, null, false);
+                Log.i(TAG, "Sincronización finalizada CARRITO.");
+            } else {
+                Log.i(TAG, "No se requiere sincronización CARRITO");
+            }
+
+        }
+        else if (url == Constantes.GET_URL_INVENTARIO) {
 
             JSONArray gastos = null;
 
