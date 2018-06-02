@@ -28,11 +28,26 @@
             android:layout_height="wrap_content"
             android:text="Establecer"/>
     </LinearLayout>
-    <Spinner
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"></Spinner>
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/SpnCarritos"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <!--android:entries="@array/Games">-->
+        </Spinner>
+        <Button
+            android:id="@+id/BtnBuscarCarritos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buscar..."/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"

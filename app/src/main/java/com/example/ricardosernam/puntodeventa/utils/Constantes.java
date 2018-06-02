@@ -14,6 +14,8 @@ public class Constantes {
     public static  String GET_URL_CARRITO;
 
     public static  String GET_URL_PRODUCTO;
+    public static  String UPDATE_URL_INVENTARIO;
+
 
     public static String GET_URL_INVENTARIO;   //////
     public static String INSERT_URL_INVENTARIO;
@@ -28,9 +30,16 @@ public class Constantes {
     private static final String PUERTO_HOST = "";
 
     public Constantes(String ip){
+        GET_URL_CARRITO = ip + PUERTO_HOST + "/Servicios%20Web/carritos/obtener_carritos.php";
+
+        UPDATE_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/carritos/actualizar_carrito.php";
+
         GET_URL_PRODUCTO = ip + PUERTO_HOST + "/Servicios%20Web/productos/obtener_productos.php";
 
+        //GET_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/obtener_inventarios.php?idcarrito=";   //////
+
         GET_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/obtener_inventarios.php";   //////
+
         INSERT_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/insertar_inventario.php";
 
          GET_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/obtener_inventario_detalles.php";

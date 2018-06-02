@@ -2,6 +2,7 @@ package com.example.ricardosernam.puntodeventa.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
 import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
 import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
@@ -54,7 +56,6 @@ import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static String url;
-    Cursor consulta;
     int cuenta=1;
     ContentValues values;
     ContentResolver resolver;
@@ -112,14 +113,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContractParaProductos.Columnas._ID,
             ContractParaProductos.Columnas.ID_REMOTA,
             ContractParaProductos.Columnas.ID_PRODUCTO,
-            ContractParaProductos.Columnas.EXISTENTE,
+            ContractParaProductos.Columnas.EXISTENTE_INICIAL,
+            ContractParaProductos.Columnas.EXISTENTE_FINAL,
+
     };
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;      ///////funciona solo en la exportacion
     public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
     public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
-    public static final int COLUMNA_EXISTENTE = 3;
+    public static final int COLUMNA_EXISTENTE_INICIAL = 3;
+    public static final int COLUMNA_EXISTENTE_FINAL = 4;
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_VENTA = new String[]{
@@ -226,12 +231,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private void realizarSincronizacionLocal(final SyncResult syncResult, final String url) {
         Log.i(TAG, "Actualizando el cliente.");   ////hasta aqui bien
-
         VolleySingleton.getInstance(getContext()).addToRequestQueue(
                 new JsonObjectRequest(Request.Method.GET, url,  ////POSIBLE ERROR
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+                                //Toast.makeText(getContext(), url , Toast.LENGTH_LONG).show();
                                 procesarRespuestaGet(response, syncResult, url);
                             }
                         },
@@ -256,13 +261,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             // Obtener atributo "estado"
             String estado = response.getString(Constantes.ESTADO);
-            switch (estado) {
-                case Constantes.SUCCESS: // EXITO
-                    actualizarDatosLocales(response, syncResult, url);
-                    break;
-                case Constantes.FAILED: // FALLIDO
-                    String mensaje = response.getString(Constantes.MENSAJE);
+            String mensaje;
 
+            switch (estado) {
+                case Constantes.SUCCESS: // EXITO En caso de 1
+                    actualizarDatosLocales(response, syncResult, url);
+//                    mensaje = response.getString(Constantes.MENSAJE);
+  //                  Log.i(TAG, mensaje);
+                    break;
+                case Constantes.FAILED: // FALLIDO En caso de 2
+                    mensaje = response.getString(Constantes.MENSAJE);
                     Log.i(TAG, mensaje);
                     break;
             }
@@ -309,7 +317,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Cursor c2 = resolver.query(uri2, PROJECTION_CARRITOS, select2, null, null);
             assert c2 != null;
 
-            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
+            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales CARRITO.");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Encontrar datos obsoletos
              String id3;
@@ -332,7 +340,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     // Esta entrada existe, por lo que se remueve del mapeado
                     expenseMap2.remove(id3);
 
-                    Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id3).build();
+                    Uri existingUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
 
                     // Comprobar si el gasto necesita ser actualizado
                     boolean b = match.descripcion != null && !match.descripcion.equals(descripcion);
@@ -382,6 +390,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_CARRITO, null, false);
                 Log.i(TAG, "Sincronización finalizada CARRITO.");
+                Sincronizar.adapterSpinner();
+
             } else {
                 Log.i(TAG, "No se requiere sincronización CARRITO");
             }
@@ -420,7 +430,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             // Encontrar datos obsoletos
             String id2;
             int idcarrito;
-            int disponible;
             String fecha;
 
             while (c2.moveToNext()) {
@@ -428,7 +437,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO);
                 idcarrito = c2.getInt(COLUMNA_ID_CARRITO_INVENTARIO);
-                disponible = c2.getInt(COLUMNA_DISPONIBLE);
                 fecha = c2.getString(COLUMNA_FECHA_INVENTARIO);
 
 
@@ -442,14 +450,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                     // Comprobar si el gasto necesita ser actualizado
                     boolean b1 = match.idcarrito != idcarrito;
-                    boolean b2 = match.disponible != disponible;
                     boolean b3 = match.fecha != null && !match.fecha.equals(fecha);
 
-                    if (b1 || b2 || b3) {
+                    if (b1 || b3) {
                         Log.i(TAG, "Programando actualización de: " + existingUri + " INVENTARIO");
                         ops2.add(ContentProviderOperation.newUpdate(existingUri)
                                 .withValue(ContractParaProductos.Columnas.ID_CARRITO, match.idcarrito)
-                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
                                 .withValue(ContractParaProductos.Columnas.FECHA, match.fecha)
                                 .build());
                         syncResult.stats.numUpdates++;
@@ -472,7 +478,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_INVENTARIO)   /////error
                         .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idinventario)
                         .withValue(ContractParaProductos.Columnas.ID_CARRITO, e.idcarrito)
-                        .withValue(ContractParaProductos.Columnas.DISPONIBLE, e.disponible)
                         .withValue(ContractParaProductos.Columnas.FECHA, e.fecha)
                         .build());
                 syncResult.stats.numInserts++;
@@ -636,14 +641,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             // Encontrar datos obsoletos
             String id2;
             String idproducto;
-            Double existente;
+            Double existente_inicial;
+            Double existente_final;
+
 
             while (c2.moveToNext()) {
                 syncResult.stats.numEntries++;
 
                 id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO_DETALLE);
                 idproducto = c2.getString(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
-                existente = c2.getDouble(COLUMNA_EXISTENTE);
+                existente_inicial = c2.getDouble(COLUMNA_EXISTENTE_INICIAL);
+                existente_final = c2.getDouble(COLUMNA_EXISTENTE_FINAL);
+
 
                 Inventario_detalle match2 = expenseMap2.get(id2);
 
@@ -654,13 +663,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     Uri existingUri2 = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE.buildUpon().appendPath(id2).build();
 
                     boolean b = match2.idproducto != null && !match2.idproducto.equals(idproducto);
-                    boolean b1 = match2.existente != existente;
+                    boolean b1 = match2.existente_inicial != existente_inicial;
+                    boolean b2 = match2.existente_final != existente_final;
 
-                    if (b || b1) {
+
+                    if (b || b2|| b1) {
                         Log.i(TAG, "Programando actualización de: " + existingUri2 + " INVENTARIO_DETALLES");
                         ops2.add(ContentProviderOperation.newUpdate(existingUri2)
                                 .withValue(ContractParaProductos.Columnas.ID_PRODUCTO, match2.idproducto)
-                                .withValue(ContractParaProductos.Columnas.EXISTENTE, match2.existente)
+                                .withValue(ContractParaProductos.Columnas.EXISTENTE_INICIAL, match2.existente_inicial)
+                                .withValue(ContractParaProductos.Columnas.EXISTENTE_FINAL, match2.existente_final)
                                 .build());
                         syncResult.stats.numUpdates++;
                     } else {
@@ -674,7 +686,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     syncResult.stats.numDeletes++;
                 }
             }
-            c2.close();
+            //c2.close();
 
             ////insertamos los valores de la base de datos
             for (Inventario_detalle e : data2) {    /////aqui se insertan //////////////////////////////////////////////////////////
@@ -682,7 +694,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 ops2.add(ContentProviderOperation.newInsert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE)
                         .withValue(ContractParaProductos.Columnas.ID_REMOTA, e.idinventario)
                         .withValue(ContractParaProductos.Columnas.ID_PRODUCTO, e.idproducto)
-                        .withValue(ContractParaProductos.Columnas.EXISTENTE, e.existente)
+                        .withValue(ContractParaProductos.Columnas.EXISTENTE_INICIAL, e.existente_inicial)
+                        .withValue(ContractParaProductos.Columnas.EXISTENTE_FINAL, e.existente_final)
                         .build());
                 syncResult.stats.numInserts++;
             }
@@ -695,8 +708,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     e.printStackTrace();
                 }
                 resolver.notifyChange(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, null, false);
+
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
+
+
+                /*copia=db.rawQuery("select idproducto, inventario_inicial from inventario_detalles" ,null);
+                if(copia.moveToFirst()) {///si hay un elemento
+                    values.put("existente_final", copia.getString(1));
+                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                    db.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
+
+                    while (copia.moveToNext()) {
+                        values.put("existente_final", copia.getString(1));
+                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                        db.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
+                    }
+                }*/
                 //com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
+                @SuppressLint("Recycle") Cursor copia = db.rawQuery("select * from inventarios", null);
+                if(copia.moveToFirst()){
+                    Toast.makeText(getContext(), "Hay algo",Toast.LENGTH_LONG ).show();
+                }
+
 
             } else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
@@ -820,7 +853,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                     VolleySingleton.getInstance(getContext()).addToRequestQueue(
                             new JsonObjectRequest(
-                                    Request.Method.POST, Constantes.INSERT_URL_VENTA,
+                                    Request.Method.POST,
+                                    Constantes.INSERT_URL_VENTA,
                                     Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
                                     new Response.Listener<JSONObject>() {
                                         @Override
@@ -869,7 +903,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     final int idLocal = c.getInt(COLUMNA_ID_VENTA_DETALLES);
 
                     VolleySingleton.getInstance(getContext()).addToRequestQueue(
-                            new JsonObjectRequest(Request.Method.POST, Constantes.INSERT_URL_VENTA_DETALLE,
+                            new JsonObjectRequest(Request.Method.POST,
+                                    Constantes.INSERT_URL_VENTA_DETALLE,
                                     Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
                                     new Response.Listener<JSONObject>() {
                                         @Override
@@ -957,8 +992,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         if (url == Constantes.GET_URL_INVENTARIO) {
             Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND "
-                    + ContractParaProductos.Columnas.ESTADO + "=?";
+            String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
             String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_OK + ""};
 
             ContentValues v = new ContentValues();
@@ -1048,6 +1082,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public void procesarRespuestaInsert(JSONObject response, int idLocal, String url) {
 ///////////////////////////////obtenemos los datos por php//////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Cursor consulta;
         if (url == Constantes.GET_URL_INVENTARIO) {
             try {
                 values=new ContentValues();
@@ -1058,7 +1093,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_INVENTARIO);
 
-                 consulta=db.rawQuery("select * from inventario_detalles" ,null);
+                 consulta =db.rawQuery("select * from inventario_detalles" ,null);
                 if(consulta.moveToFirst()) {///si hay un elemento
                     values.put("idRemota", Integer.parseInt(idRemota));
                     values.put("idproducto", consulta.getString(1));

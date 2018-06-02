@@ -136,12 +136,12 @@ public static class Columnas implements BaseColumns {
     private Columnas() {
         // Sin instancias
     }
-//////////////inventario//////////////////
+//////////////carrito//////////////////
     public final static String DESCRIPCION = "descripcion";
     public final static String UBICACION = "ubicacion";
     public final static String DISPONIBLE = "disponible";
 
-
+/////////////////inventario
     public final static String ID_CARRITO = "idcarrito";
     public final static String FECHA = "fecha";
 ////////////////////productos////////////
@@ -151,8 +151,10 @@ public static class Columnas implements BaseColumns {
     public final static String GUISADO = "guisado";
 ///////////////////inventario_detalles/////////////////
     public final static String ID_PRODUCTO = "idproducto";
-    public final static String EXISTENTE = "existente";
-/////////////////////ventas///////////////////7
+    public final static String EXISTENTE_INICIAL = "inventario_inicial";
+    public final static String EXISTENTE_FINAL = "inventario_final";
+
+    /////////////////////ventas///////////////////7
     public final static String CANTIDAD = "cantidad";
     //public final static String ID_VENTA = "idventa";
 

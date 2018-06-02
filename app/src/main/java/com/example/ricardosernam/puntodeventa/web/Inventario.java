@@ -6,16 +6,14 @@ package com.example.ricardosernam.puntodeventa.web;
 public class Inventario {
     public String idinventario;
     public int idcarrito;
-    public int disponible;
     public String fecha;
 
 
 
 
-    public Inventario(String idinventario, int idcarrito, int disponible, String fecha) {
+    public Inventario(String idinventario, int idcarrito, String fecha) {
         this.idinventario = idinventario;
         this.idcarrito = idcarrito;
-        this.disponible = disponible;
         this.fecha=fecha;
     }
 }

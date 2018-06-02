@@ -20,6 +20,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static void productos(SQLiteDatabase database) {
+        String cmd0 = "CREATE TABLE " + ContractParaProductos.CARRITO + " (" +
+                ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContractParaProductos.Columnas.DESCRIPCION + " TEXT, " +
+                ContractParaProductos.Columnas.UBICACION + " DOUBLE, " +
+                ContractParaProductos.Columnas.DISPONIBLE+ " DOUBLE, " +
+                ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
+                ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
+                ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
+        database.execSQL(cmd0);
+        //database.execSQL("INSERT INTO carritos(_id, descripcion) "+
+          //      "values (1,'Selecciona un carrito...')");
         String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.NOMBRE + " TEXT, " +
@@ -33,7 +44,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String cmd2 = "CREATE TABLE " + ContractParaProductos.INVENTARIO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_CARRITO + " TEXT, " +
-                ContractParaProductos.Columnas.DISPONIBLE + " INT, " +
                 ContractParaProductos.Columnas.FECHA + " INT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
@@ -42,7 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String cmd3 = "CREATE TABLE " + ContractParaProductos.INVENTARIO_DETALLE + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT , " +
-                ContractParaProductos.Columnas.EXISTENTE + " DOUBLE, " +
+                ContractParaProductos.Columnas.EXISTENTE_INICIAL + " DOUBLE, " +
+                ContractParaProductos.Columnas.EXISTENTE_FINAL + " DOUBLE, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -73,6 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static void limpiar(SQLiteDatabase db) {
+        db.execSQL("drop table " + ContractParaProductos.CARRITO);
         db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
         db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
         db.execSQL("drop table " + ContractParaProductos.INVENTARIO);

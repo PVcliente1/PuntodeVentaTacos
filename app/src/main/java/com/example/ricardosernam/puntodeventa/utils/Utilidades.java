@@ -11,16 +11,22 @@ import org.json.JSONObject;
 
 public class Utilidades {
     // Indices para las columnas indicadas en la proyección
+    public static final int COLUMNA_DESCRIPCION = 2;
+    public static final int COLUMNA_UBICACION = 3;
+    public static final int COLUMNA_DISPONIBLE = 4;
+
     public static final int COLUMNA_ID_INVENTARIO = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
     public static final int COLUMNA_ID_CARRITO = 2;
-    public static final int COLUMNA_DISPONIBLE = 3;
+    //public static final int COLUMNA_DISPONIBLE = 3;
     public static final int COLUMNA_FECHA = 4;
 
     public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
     public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
-    public static final int COLUMNA_EXISTENTE = 3;
+    public static final int COLUMNA_EXISTENTE_INICIAL = 3;
+    public static final int COLUMNA_EXISTENTE_FINAL = 4;
+
 
     public static final int COLUMNA_ID_VENTA = 0;
     public static final int COLUMNA_ID_REMOTA_VENTA = 1;
@@ -52,7 +58,26 @@ public class Utilidades {
     public static JSONObject deCursorAJSONObject(Cursor c, String url) {
         JSONObject jObject = new JSONObject();
 
-        if (url == Constantes.GET_URL_INVENTARIO) {
+        if (url == Constantes.GET_URL_CARRITO) {
+            String descripcion;
+            String ubicacion;
+            int disponible;
+
+            descripcion = c.getString(COLUMNA_DESCRIPCION);
+            ubicacion = c.getString(COLUMNA_UBICACION);
+            disponible = c.getInt(COLUMNA_DISPONIBLE);
+
+            try {
+                jObject.put(ContractParaProductos.Columnas.DESCRIPCION, descripcion);
+                jObject.put(ContractParaProductos.Columnas.UBICACION, ubicacion);
+                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        else if (url == Constantes.GET_URL_INVENTARIO) {
             int idcarrito;
             int disponible;
             String fecha;
@@ -65,6 +90,7 @@ public class Utilidades {
                 jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
                 jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
                 jObject.put(ContractParaProductos.Columnas.FECHA, fecha);
+
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -74,16 +100,21 @@ public class Utilidades {
         else if (url == Constantes.GET_URL_INVENTARIO_DETALLE) {
             int idinventario;
             int idproducto;
-            Double existente;
+            Double existente_inicial;
+            Double existente_final;
+
 
             idinventario = c.getInt(COLUMNA_ID_REMOTA_INVENTARIO_DETALLE);
             idproducto = c.getInt(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
-            existente = c.getDouble(COLUMNA_EXISTENTE);
+            existente_inicial = c.getDouble(COLUMNA_EXISTENTE_INICIAL);
+            existente_final = c.getDouble(COLUMNA_EXISTENTE_FINAL);
+
 
             try {
                 jObject.put("idinventario", idinventario);
                 jObject.put(ContractParaProductos.Columnas.ID_PRODUCTO, idproducto);
-                jObject.put(ContractParaProductos.Columnas.EXISTENTE, existente);
+                jObject.put(ContractParaProductos.Columnas.EXISTENTE_INICIAL, existente_inicial);
+                jObject.put(ContractParaProductos.Columnas.EXISTENTE_FINAL, existente_final);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

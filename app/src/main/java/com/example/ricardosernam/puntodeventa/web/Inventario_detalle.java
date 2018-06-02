@@ -6,13 +6,16 @@ package com.example.ricardosernam.puntodeventa.web;
 public class Inventario_detalle {
     public String idinventario;
     public String idproducto;
-    public double existente;
+    public double existente_inicial;
+    public double existente_final;
 
 
 
-    public Inventario_detalle(String idinventario, String idproducto, double existente) {
+
+    public Inventario_detalle(String idinventario, String idproducto, double existente_inicial, double existente_final) {
         this.idinventario = idinventario;
         this.idproducto = idproducto;
-        this.existente = existente;
+        this.existente_inicial = existente_inicial;
+        this.existente_inicial = existente_final;
     }
 }

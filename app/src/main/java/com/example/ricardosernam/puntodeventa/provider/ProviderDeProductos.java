@@ -60,7 +60,28 @@ public class ProviderDeProductos extends ContentProvider {
 
         Cursor c=null;
 
-        if(uri==ContractParaProductos.CONTENT_URI_PRODUCTO) {
+        if(uri==ContractParaProductos.CONTENT_URI_CARRITO) {
+            switch (match6) {
+                case ContractParaProductos.ALLROWS:
+                    // Consultando todos los registros
+                    c = db.query(ContractParaProductos.CARRITO, projection, selection, selectionArgs, null, null, sortOrder);
+                    c.setNotificationUri(resolver, ContractParaProductos.CONTENT_URI_CARRITO);
+                    break;
+                case ContractParaProductos.SINGLE_ROW:
+                    // Consultando un solo registro basado en el Id del Uri
+                    long idGasto = ContentUris.parseId(uri);
+                    c = db.query(ContractParaProductos.CARRITO, projection,
+                            ContractParaProductos.Columnas._ID + " = " + idGasto, selectionArgs, null, null, sortOrder);
+                    c.setNotificationUri(
+                            resolver,
+                            ContractParaProductos.CONTENT_URI_CARRITO);
+                    break;
+                default:
+                    throw new IllegalArgumentException("URI no soportada: " + uri);
+            }
+        }
+
+        else if(uri==ContractParaProductos.CONTENT_URI_PRODUCTO) {
             switch (match2) {
                 case ContractParaProductos.ALLROWS:
                     // Consultando todos los registros
@@ -185,7 +206,20 @@ public class ProviderDeProductos extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         String caso="";
-        if(ContractParaProductos.uriMatcherProducto.match(uri)!=0) {
+        if(ContractParaProductos.uriMatcherCarrito.match(uri)!=0) {
+            switch (ContractParaProductos.uriMatcherCarrito.match(uri)) {
+                case ContractParaProductos.ALLROWS:
+                    //return ContractParaProductos.MULTIPLE_MIME_PRODUCTO;
+                    caso=ContractParaProductos.MULTIPLE_MIME_CARRITO;
+                case ContractParaProductos.SINGLE_ROW:
+                    //return ContractParaProductos.SINGLE_MIME_PRODUCTO;
+                    caso=ContractParaProductos.SINGLE_MIME_CARRITO;
+                default:
+                    throw new IllegalArgumentException("Tipo de gasto desconocido: " + uri);
+            }
+            //return caso;
+        }
+        else if(ContractParaProductos.uriMatcherProducto.match(uri)!=0) {
             switch (ContractParaProductos.uriMatcherProducto.match(uri)) {
                 case ContractParaProductos.ALLROWS:
                     //return ContractParaProductos.MULTIPLE_MIME_PRODUCTO;
@@ -258,7 +292,26 @@ public class ProviderDeProductos extends ContentProvider {
         ContentValues contentValues;
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         // Validar la uri
-        if (uri == ContractParaProductos.CONTENT_URI_PRODUCTO) {
+        if (uri == ContractParaProductos.CONTENT_URI_CARRITO) {
+            if (ContractParaProductos.uriMatcherCarrito.match(uri) != ContractParaProductos.ALLROWS) {
+                throw new IllegalArgumentException("URI desconocida : " + uri);
+            }
+            if (values != null) {
+                contentValues = new ContentValues(values);
+            } else {
+                contentValues = new ContentValues();
+            }
+            // Inserción de nueva fila
+            long rowIdProducto = db.insert(ContractParaProductos.CARRITO, null, contentValues);
+            if (rowIdProducto > 0) {
+                Uri uri_gasto = ContentUris.withAppendedId(
+                        ContractParaProductos.CONTENT_URI_CARRITO, rowIdProducto);
+                resolver.notifyChange(uri_gasto, null, false);
+                return uri_gasto;
+            }
+        }
+
+        else if (uri == ContractParaProductos.CONTENT_URI_PRODUCTO) {
             if (ContractParaProductos.uriMatcherProducto.match(uri) != ContractParaProductos.ALLROWS) {
                 throw new IllegalArgumentException("URI desconocida : " + uri);
             }
@@ -364,10 +417,30 @@ public class ProviderDeProductos extends ContentProvider {
         int match3 = ContractParaProductos.uriMatcherInventarioDetalles.match(uri);
         int match4 = ContractParaProductos.uriMatcherVenta.match(uri);
         int match5 = ContractParaProductos.uriMatcherVentaDetalles.match(uri);
+        int match6 = ContractParaProductos.uriMatcherCarrito.match(uri);
+
 
 
         int affected;
 
+        switch (match6) {
+            case ContractParaProductos.ALLROWS:
+                affected = db.delete(ContractParaProductos.PRODUCTO, selection, selectionArgs);
+                break;
+            case ContractParaProductos.SINGLE_ROW:
+                long idGasto = ContentUris.parseId(uri);
+                affected = db.delete(ContractParaProductos.PRODUCTO,
+                        ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
+                                + (!TextUtils.isEmpty(selection) ?
+                                " AND (" + selection + ')' : ""),
+                        selectionArgs);
+                // Notificar cambio asociado a la uri
+                resolver.
+                        notifyChange(uri, null, false);
+                break;
+            default:
+                throw new IllegalArgumentException("Elemento gasto desconocido: " + uri);
+        }
         switch (match) {
             case ContractParaProductos.ALLROWS:
                 affected = db.delete(ContractParaProductos.PRODUCTO, selection, selectionArgs);
@@ -473,7 +546,26 @@ public class ProviderDeProductos extends ContentProvider {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int affected=0;
-        if(uri==ContractParaProductos.CONTENT_URI_PRODUCTO) {
+        if(uri==ContractParaProductos.CONTENT_URI_CARRITO) {
+            switch (ContractParaProductos.uriMatcherCarrito.match(uri)) {
+                case ContractParaProductos.ALLROWS:
+                    affected = db.update(ContractParaProductos.CARRITO, values,
+                            selection, selectionArgs);
+                    break;
+                case ContractParaProductos.SINGLE_ROW:
+                    String idGasto = uri.getPathSegments().get(1);
+                    affected = db.update(ContractParaProductos.CARRITO, values,
+                            ContractParaProductos.Columnas.ID_REMOTA + "=" + idGasto
+                                    + (!TextUtils.isEmpty(selection) ?
+                                    " AND (" + selection + ')' : ""),
+                            selectionArgs);
+                    break;
+                default:
+                    throw new IllegalArgumentException("URI desconocida: " + uri);
+            }
+        }
+
+        else if(uri==ContractParaProductos.CONTENT_URI_PRODUCTO) {
             switch (ContractParaProductos.uriMatcherProducto.match(uri)) {
                 case ContractParaProductos.ALLROWS:
                     affected = db.update(ContractParaProductos.PRODUCTO, values,
