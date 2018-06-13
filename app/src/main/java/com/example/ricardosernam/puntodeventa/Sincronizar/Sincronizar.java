@@ -24,8 +24,10 @@ import com.example.ricardosernam.puntodeventa.utils.Constantes;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class Sincronizar extends Fragment {
+    //public static Spinner carritoSeleccionado;
     public static Spinner carritos;
     public static Context context;
+    public String carritoSeleccionado;
     public  EditText ip;
     public Button establecer, importar, exportar, buscar;
     @Override
@@ -62,25 +64,16 @@ public class Sincronizar extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //while (importar.isEnabled()){
-                    SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO);
-                //Toast.makeText(getContext(), Constantes.GET_URL_CARRITO, LENGTH_LONG).show();
+
+                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
                 SyncAdapter.sincronizarAhora(getContext(), false);
-                //}
             }
         });
         importar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //importar.setEnabled(false);
-
-                //Toast.makeText(getContext(), String.valueOf(carritos.getSelectedItemId()) ,Toast.LENGTH_SHORT).show();
-
-
-                //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO+carritos.getSelectedItemId());
-                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
-
-                //Toast.makeText(getContext(), Constantes.GET_URL_INVENTARIO, LENGTH_LONG).show();
+                //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO+carritos.getSelectedItemId(), String.valueOf(carritos.getSelectedItemId()));
+                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, String.valueOf(carritos.getSelectedItemId()));
 
                 SyncAdapter.sincronizarAhora(getContext(), false);
             }
@@ -98,7 +91,9 @@ public class Sincronizar extends Fragment {
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        Cursor c = db.rawQuery("select idRemota AS _id, descripcion, ubicacion from carritos", null);
+        //Cursor c = db.rawQuery("select idRemota AS _id, descripcion, ubicacion from carritos", null);
+        Cursor c = db.rawQuery("select idRemota AS _id, descripcion from carritos", null);
+
 
 
         if (c.moveToFirst()){

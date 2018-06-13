@@ -47,16 +47,19 @@ public class Inventario extends Fragment {
         recyclerView = view.findViewById(R.id.reciclador);
         layoutManager = new LinearLayoutManager(getContext());
 
-        relleno();
+        relleno(getContext());
         return view;
     }
-    public static void relleno(){
-        nombre=db.rawQuery("select nombre, inventario_final from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
+    public static void relleno(Context context){
+        nombre=db.rawQuery("select nombre, inventario_inicial from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
 
         if(nombre.moveToFirst()) {///si hay un elemento
             itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getFloat(1)));
+            Toast.makeText(context, nombre.getString(0)+" "+nombre.getFloat(1), Toast.LENGTH_LONG ).show();
+
             while (nombre.moveToNext()) {
                 itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getFloat(1)));
+                Toast.makeText(context, nombre.getString(0)+" "+nombre.getFloat(1), Toast.LENGTH_LONG ).show();
             }
             emptyView.setVisibility(View.INVISIBLE);
         }

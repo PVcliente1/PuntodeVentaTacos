@@ -139,12 +139,13 @@ public static class Columnas implements BaseColumns {
 //////////////carrito//////////////////
     public final static String DESCRIPCION = "descripcion";
     public final static String UBICACION = "ubicacion";
-    public final static String DISPONIBLE = "disponible";
 
 /////////////////inventario
     public final static String ID_CARRITO = "idcarrito";
     public final static String FECHA = "fecha";
-////////////////////productos////////////
+    public final static String DISPONIBLE = "disponible";
+
+    ////////////////////productos////////////
     public final static String NOMBRE = "nombre";
     public final static String PRECIO = "precio";
     public final static String PORCION = "porcion";
