@@ -2,16 +2,21 @@ package com.example.ricardosernam.puntodeventa.Inventario;
 
 public class Inventario_class {  ///clase para obtener productos para cobrar
     public String nombre;
-    public float existente;
+    public double existente;
+    public String tipo;
 
-    public Inventario_class(String nombre, Float existente) {   ///se manda desde el arrayProductos
+    public Inventario_class(String nombre, Double existente, String tipo) {   ///se manda desde el arrayProductos
         this.nombre = nombre;
         this.existente = existente;
+        this.tipo=tipo;
     }
     public String getNombre() {
         return nombre;
     }
-    public Float getExistente() {
+    public double getExistente() {
         return existente;
+    }
+    public String getTipo() {
+        return tipo;
     }
 }

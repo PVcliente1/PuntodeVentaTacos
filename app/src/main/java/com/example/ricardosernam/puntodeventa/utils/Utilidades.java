@@ -18,8 +18,7 @@ public class Utilidades {
     public static final int COLUMNA_ID_INVENTARIO = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
     public static final int COLUMNA_ID_CARRITO = 2;
-    //public static final int COLUMNA_DISPONIBLE = 3;
-    public static final int COLUMNA_FECHA = 4;
+    public static final int COLUMNA_FECHA = 3;
 
     public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
@@ -58,7 +57,46 @@ public class Utilidades {
     public static JSONObject deCursorAJSONObject(Cursor c, String url) {
         JSONObject jObject = new JSONObject();
 
-        if (url == Constantes.GET_URL_CARRITO) {
+        if (url.equals(Constantes.UPDATE_URL_INVENTARIO)) {
+            /*int idinventario;
+            int idcarrito;
+            String fecha;
+
+            idinventario = c.getInt(COLUMNA_ID_REMOTA_INVENTARIO);
+            idcarrito = c.getInt(COLUMNA_ID_CARRITO);
+            fecha = c.getString(COLUMNA_FECHA);*/
+
+            try {
+                /*jObject.put("idinventario", idinventario);
+                jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
+                jObject.put(ContractParaProductos.Columnas.FECHA, fecha);*/
+
+                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, 0);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
+            int idcarrito;
+            int disponible;
+            String fecha;
+
+            disponible = c.getInt(COLUMNA_DISPONIBLE);
+            idcarrito = c.getInt(COLUMNA_ID_CARRITO);
+            fecha = c.getString(COLUMNA_FECHA);
+
+            try {
+                jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
+                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
+                jObject.put(ContractParaProductos.Columnas.FECHA, fecha);
+
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (url.equals(Constantes.GET_URL_CARRITO)) {
             String descripcion;
             String ubicacion;
             int disponible;
@@ -77,27 +115,7 @@ public class Utilidades {
             }
 
         }
-        else if (url == Constantes.GET_URL_INVENTARIO) {
-            int idcarrito;
-            int disponible;
-            String fecha;
-
-            idcarrito = c.getInt(COLUMNA_ID_CARRITO);
-            disponible = c.getInt(COLUMNA_DISPONIBLE);
-            fecha = c.getString(COLUMNA_FECHA);
-
-            try {
-                jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
-                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
-                jObject.put(ContractParaProductos.Columnas.FECHA, fecha);
-
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        else if (url == Constantes.GET_URL_INVENTARIO_DETALLE) {
+        else if (url.equals(Constantes.GET_URL_INVENTARIO_DETALLE)) {
             int idinventario;
             int idproducto;
             Double existente_inicial;
@@ -113,13 +131,13 @@ public class Utilidades {
             try {
                 jObject.put("idinventario", idinventario);
                 jObject.put(ContractParaProductos.Columnas.ID_PRODUCTO, idproducto);
-                jObject.put(ContractParaProductos.Columnas.EXISTENTE_INICIAL, existente_inicial);
-                jObject.put(ContractParaProductos.Columnas.EXISTENTE_FINAL, existente_final);
+                jObject.put(ContractParaProductos.Columnas.INVENTARIO_INICIAL, existente_inicial);
+                jObject.put(ContractParaProductos.Columnas.INVENTARIO_FINAL, existente_final);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        else if (url == Constantes.INSERT_URL_VENTA) {
+        else if (url.equals(Constantes.INSERT_URL_VENTA)) {
             int idcarrito;
             String fecha;
 
@@ -133,7 +151,7 @@ public class Utilidades {
                 e.printStackTrace();
             }
         }
-        else if (url == Constantes.INSERT_URL_VENTA_DETALLE) {
+        else if (url.equals(Constantes.INSERT_URL_VENTA_DETALLE)) {
             int idventa;
             int cantidad;
             int idproducto;

@@ -14,14 +14,15 @@ public class Constantes {
     public static  String GET_URL_CARRITO;
 
     public static  String GET_URL_PRODUCTO;
-    public static  String UPDATE_URL_INVENTARIO;
 
+    public static  String UPDATE_URL_INVENTARIO;
 
     public static String GET_URL_INVENTARIO;   //////
 
     public static String INSERT_URL_INVENTARIO;
 
     public static String GET_URL_INVENTARIO_DETALLE;
+
     public static String INSERT_URL_INVENTARIO_DETALLE;
 
     public static String INSERT_URL_VENTA;
@@ -33,7 +34,9 @@ public class Constantes {
     public Constantes(String ip){
         GET_URL_CARRITO = ip + PUERTO_HOST + "/Servicios%20Web/carritos/obtener_carritos.php";
 
-        UPDATE_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/carritos/actualizar_carrito.php";
+        UPDATE_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/actualizar_inventario.php?idinventario=";   //////
+
+        //UPDATE_URL_INVENTARIO = ip + PUERTO_HOST + "/Servicios%20Web/inventarios/actualizar_inventario.php?";   //////
 
         GET_URL_PRODUCTO = ip + PUERTO_HOST + "/Servicios%20Web/productos/obtener_productos.php";
 

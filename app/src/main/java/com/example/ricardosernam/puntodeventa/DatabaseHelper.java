@@ -37,6 +37,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas.PRECIO + " DOUBLE, " +
                 ContractParaProductos.Columnas.PORCION + " DOUBLE, " +
                 ContractParaProductos.Columnas.GUISADO + " VARCHAR(45), " +
+                ContractParaProductos.Columnas.DISPONIBLE+ " DOUBLE, " +
+                ContractParaProductos.Columnas.TIPO_PRODUCTO+ " VARCHAR(45), " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -45,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_CARRITO + " TEXT, " +
                 ContractParaProductos.Columnas.FECHA + " INT, " +
+                ContractParaProductos.Columnas.DISPONIBLE+ " INT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -52,8 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String cmd3 = "CREATE TABLE " + ContractParaProductos.INVENTARIO_DETALLE + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT , " +
-                ContractParaProductos.Columnas.EXISTENTE_INICIAL + " DOUBLE, " +
-                ContractParaProductos.Columnas.EXISTENTE_FINAL + " DOUBLE, " +
+                ContractParaProductos.Columnas.INVENTARIO_INICIAL + " DOUBLE, " +
+                ContractParaProductos.Columnas.INVENTARIO_FINAL + " DOUBLE, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";

@@ -150,10 +150,11 @@ public static class Columnas implements BaseColumns {
     public final static String PRECIO = "precio";
     public final static String PORCION = "porcion";
     public final static String GUISADO = "guisado";
+    public final static String TIPO_PRODUCTO = "tipo_producto";
 ///////////////////inventario_detalles/////////////////
     public final static String ID_PRODUCTO = "idproducto";
-    public final static String EXISTENTE_INICIAL = "inventario_inicial";
-    public final static String EXISTENTE_FINAL = "inventario_final";
+    public final static String INVENTARIO_INICIAL = "inventario_inicial";
+    public final static String INVENTARIO_FINAL = "inventario_final";
 
     /////////////////////ventas///////////////////7
     public final static String CANTIDAD = "cantidad";

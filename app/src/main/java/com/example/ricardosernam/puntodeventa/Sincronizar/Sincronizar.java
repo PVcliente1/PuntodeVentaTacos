@@ -66,22 +66,21 @@ public class Sincronizar extends Fragment {
             public void onClick(View v) {
 
                 SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
-                SyncAdapter.sincronizarAhora(getContext(), false);
+                SyncAdapter.sincronizarAhora(getContext(), false, null);
             }
         });
         importar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO+carritos.getSelectedItemId(), String.valueOf(carritos.getSelectedItemId()));
                 SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, String.valueOf(carritos.getSelectedItemId()));
 
-                SyncAdapter.sincronizarAhora(getContext(), false);
+                SyncAdapter.sincronizarAhora(getContext(), false, null);
             }
         });
         exportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.sincronizarAhora(getContext(), true);
+                SyncAdapter.sincronizarAhora(getContext(), true, null);
             }
         });
         return view;

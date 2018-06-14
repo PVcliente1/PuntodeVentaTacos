@@ -50,6 +50,12 @@ public class AdaptadorInventario extends RecyclerView.Adapter<AdaptadorInventari
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.nombre.setText(itemsInventarios.get(i).getNombre());
-        viewHolder.existente.setText(String.valueOf(itemsInventarios.get(i).getExistente())+" gramos");
+        if(itemsInventarios.get(i).getTipo().equals("Guisado")){
+            viewHolder.existente.setText(String.valueOf(itemsInventarios.get(i).getExistente())+" gramo(s)");
+        }
+        else if(itemsInventarios.get(i).getTipo().equals("Pieza")){
+            //int pieza= (int)(itemsInventarios.get(i).getExistente());
+            viewHolder.existente.setText(String.valueOf(  (int)(itemsInventarios.get(i).getExistente()) )+" pieza(s)");
+        }
     }
 }

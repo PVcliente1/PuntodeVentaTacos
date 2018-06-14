@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             exportar.setEnabled(false);
             if(!exportar.isEnabled()){ ///esta desabilitad
                 ///////////////////////inventario//////////////////////////
+
                 java.util.Calendar c = java.util.Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                 String formattedDate = df.format(c.getTime());
