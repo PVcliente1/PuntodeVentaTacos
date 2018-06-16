@@ -57,6 +57,7 @@
 
         <Button
             android:id="@+id/BtnImportar"
+            android:enabled="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@android:drawable/stat_sys_download"
@@ -64,6 +65,7 @@
 
         <Button
             android:id="@+id/BtnExportar"
+            android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTop="@android:drawable/stat_sys_upload"

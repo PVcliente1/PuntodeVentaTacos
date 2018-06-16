@@ -21,6 +21,7 @@ import com.example.ricardosernam.puntodeventa.Terminos.Terminos;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
+import com.example.ricardosernam.puntodeventa.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(!exportar.isEnabled()){ ///esta desabilitad
                 ///////////////////////inventario//////////////////////////
 
-                java.util.Calendar c = java.util.Calendar.getInstance();
+                /*java.util.Calendar c = java.util.Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
                 String formattedDate = df.format(c.getTime());
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                 getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error*/
 
-                //SyncAdapter.sincronizarAhora(this, true);
+                SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
             }
             return true;
         }

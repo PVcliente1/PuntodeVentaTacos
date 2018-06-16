@@ -31,7 +31,7 @@ public class Inventario extends Fragment {
     public static AdaptadorInventario adapter;
     public static SQLiteDatabase db;
     public static TextView emptyView;
-    public static Cursor nombre;
+    public static Cursor nombre, ventas;
     public static ArrayList<Inventario_class> itemsInventario;
 
     @Override
@@ -60,6 +60,17 @@ public class Inventario extends Fragment {
             }
             emptyView.setVisibility(View.INVISIBLE);
         }
+
+        ventas=db.rawQuery("select _id from ventas" ,null);
+
+        if(ventas.moveToFirst()) {///si hay un elemento
+                Toast.makeText(context, String.valueOf(ventas.getInt(0)), Toast.LENGTH_LONG).show();
+            while (nombre.moveToNext()) {
+                Toast.makeText(context, String.valueOf(ventas.getInt(0)) , Toast.LENGTH_LONG).show();
+            }
+            emptyView.setVisibility(View.INVISIBLE);
+        }
+
         else{
             emptyView.setVisibility(View.VISIBLE);
         }

@@ -58,26 +58,15 @@ public class Utilidades {
         JSONObject jObject = new JSONObject();
 
         if (url.equals(Constantes.UPDATE_URL_INVENTARIO)) {
-            /*int idinventario;
-            int idcarrito;
-            String fecha;
-
-            idinventario = c.getInt(COLUMNA_ID_REMOTA_INVENTARIO);
-            idcarrito = c.getInt(COLUMNA_ID_CARRITO);
-            fecha = c.getString(COLUMNA_FECHA);*/
 
             try {
-                /*jObject.put("idinventario", idinventario);
-                jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
-                jObject.put(ContractParaProductos.Columnas.FECHA, fecha);*/
-
                 jObject.put(ContractParaProductos.Columnas.DISPONIBLE, 0);
             }
             catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
+        /*else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
             int idcarrito;
             int disponible;
             String fecha;
@@ -95,7 +84,7 @@ public class Utilidades {
             catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         else if (url.equals(Constantes.GET_URL_CARRITO)) {
             String descripcion;
             String ubicacion;
@@ -115,7 +104,7 @@ public class Utilidades {
             }
 
         }
-        else if (url.equals(Constantes.GET_URL_INVENTARIO_DETALLE)) {
+        else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             int idinventario;
             int idproducto;
             Double existente_inicial;
@@ -126,6 +115,8 @@ public class Utilidades {
             idproducto = c.getInt(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
             existente_inicial = c.getDouble(COLUMNA_EXISTENTE_INICIAL);
             existente_final = c.getDouble(COLUMNA_EXISTENTE_FINAL);
+            //existente_final = c.getDouble(2);
+
 
 
             try {

@@ -23,7 +23,7 @@ public class Constantes {
 
     public static String GET_URL_INVENTARIO_DETALLE;
 
-    public static String INSERT_URL_INVENTARIO_DETALLE;
+    public static String UPDATE_URL_INVENTARIO_DETALLE;
 
     public static String INSERT_URL_VENTA;
 
@@ -46,9 +46,13 @@ public class Constantes {
 
          GET_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/obtener_inventario_detalles.php?idinventario=";
 
-        INSERT_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/insertar_inventario_detalle.php";
+        UPDATE_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/actualizar_inventario_detalle.php";
 
-         INSERT_URL_VENTA = ip + PUERTO_HOST + "/Servicios%20Web/ventas/insertar_venta.php";
+        //UPDATE_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/insertar_inventario_detalle.php?idinventario=inventario&idproducto=producto";
+
+        //UPDATE_URL_INVENTARIO_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/inventario_detalles/insertar_inventario_detalle.php?idinventario=";
+
+        INSERT_URL_VENTA = ip + PUERTO_HOST + "/Servicios%20Web/ventas/insertar_venta.php";
 
        INSERT_URL_VENTA_DETALLE = ip + PUERTO_HOST + "/Servicios%20Web/venta_detalles/insertar_venta_detalle.php";
     }

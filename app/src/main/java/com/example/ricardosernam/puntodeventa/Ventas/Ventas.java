@@ -83,7 +83,8 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
         }
     }
     public void relleno(){    ///llamamos el adapter del recycler
-        productos=db.rawQuery("select nombre, precio, porcion, guisado from productos where precio > 0.0 " ,null);
+        productos=db.rawQuery("select nombre, precio, porcion, guisado, tipo_producto from productos p inner join (select nombre as nombrev from inventario_detalles inner join productos on inventario_detalles.idproducto=productos.idRemota)v on (p.guisado=v.nombrev and p.tipo_producto='Preparado') or (p.nombre=v.nombrev and p.tipo_producto='Pieza')",null);
+
         if(productos.moveToFirst()) {///si hay un elemento
             itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
             while (productos.moveToNext()) {
@@ -175,7 +176,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                         values = new ContentValues();
                         /////obtener fecha actual
                         java.util.Calendar c = java.util.Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd H:m");
                         String formattedDate = df.format(c.getTime());
 
                         carrito=db.rawQuery("select idcarrito from inventarios" ,null);
@@ -203,12 +204,27 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                            }
                             //////////////////////////////////////////inventario detalles//////////////////////////////
                             values3 = new ContentValues();
-                            existente = db.rawQuery("select idproducto, inventario_final from inventario_detalles WHERE idproducto=(select idRemota from productos where nombre=(select guisado from productos where nombre='" + itemsCobrar.get(i).getNombre() + "'))", null);
-                            if(existente.moveToFirst()){
-                                float porcion = existente.getFloat(1) - (itemsCobrar.get(i).getCantidad() * itemsCobrar.get(i).getPorcion());
-                                values3.put("existente_final", porcion);
-                                db.update("inventario_detalles", values3, "idproducto='" + existente.getString(0) + "'", null);
-                            }
+                           if(itemsCobrar.get(i).getPorcion()!=0){  //////  es Preparado
+                               ///obtenemos el guisado donde tenemos que descontar
+                               //Toast.makeText(getContext(), "Preparado "+ itemsCobrar.get(i).getNombre(), Toast.LENGTH_LONG).show();
+                               existente = db.rawQuery("select idproducto, inventario_final from inventario_detalles WHERE idproducto=(select idRemota from productos where nombre=(select guisado from productos where nombre='" + itemsCobrar.get(i).getNombre() + "'))", null);
+                               if(existente.moveToFirst()){
+                                   float porcion = existente.getFloat(1) - (itemsCobrar.get(i).getCantidad() * itemsCobrar.get(i).getPorcion());
+                                   values3.put("inventario_final", porcion);
+                                   db.update("inventario_detalles", values3, "idproducto='" + existente.getString(0) + "'", null);
+                               }
+                           }
+                           else{   //////  es Pieza
+                               //Toast.makeText(getContext(), "Pieza "+ itemsCobrar.get(i).getNombre(), Toast.LENGTH_LONG).show();
+                               existente = db.rawQuery("select idproducto, inventario_final from inventario_detalles WHERE idproducto='"+ itemsCobrar.get(i).getIdRemota()+ "'", null);
+                               if(existente.moveToFirst()){
+                                   float porcion = existente.getFloat(1) - itemsCobrar.get(i).getCantidad();
+                                   values3.put("inventario_final", porcion);
+
+                                   db.update("inventario_detalles", values3, "idproducto='" + existente.getString(0) + "'", null);
+                               }
+
+                           }
                         }
 
                         Toast.makeText(getContext(), "Venta exitosa", Toast.LENGTH_LONG ).show();

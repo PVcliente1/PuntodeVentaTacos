@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa.Sincronizar;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,19 +18,24 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
+import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
 
+import java.text.SimpleDateFormat;
+
 import static android.widget.Toast.LENGTH_LONG;
+import static com.example.ricardosernam.puntodeventa.Inventario.Inventario.db;
 
 public class Sincronizar extends Fragment {
-    //public static Spinner carritoSeleccionado;
     public static Spinner carritos;
     public static Context context;
     public String carritoSeleccionado;
     public  EditText ip;
-    public Button establecer, importar, exportar, buscar;
+    public Cursor carrito;
+    public ContentValues values=new ContentValues();
+    public static Button establecer, importar, exportar, buscar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_sincronizar, container, false);
@@ -39,9 +45,8 @@ public class Sincronizar extends Fragment {
         importar=view.findViewById(R.id.BtnImportar);
         exportar=view.findViewById(R.id.BtnExportar);
         buscar=view.findViewById(R.id.BtnBuscarCarritos);
-
-        //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
         establecer=view.findViewById(R.id.BtnEstablecer);
+
         establecer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +54,7 @@ public class Sincronizar extends Fragment {
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
                     //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.0.9");
+                    new Constantes("http://192.168.1.106");
 
                     //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO);
 
@@ -64,7 +69,6 @@ public class Sincronizar extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
                 SyncAdapter.sincronizarAhora(getContext(), false, null);
             }
@@ -72,15 +76,30 @@ public class Sincronizar extends Fragment {
         importar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, String.valueOf(carritos.getSelectedItemId()));
-
+                String idcarrito= String.valueOf(carritos.getSelectedItemId());
+                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, idcarrito);
                 SyncAdapter.sincronizarAhora(getContext(), false, null);
+
             }
         });
         exportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.sincronizarAhora(getContext(), true, null);
+                /*java.util.Calendar c = java.util.Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("d-M-yyyy H:m");
+                String formattedDate = df.format(c.getTime());
+
+                carrito=db.rawQuery("select idcarrito from inventarios" ,null);
+                if(carrito.moveToFirst()) {
+                    values.put("idcarrito", carrito.getString(0));
+                }
+                values.put("disponible", 0);
+                values.put("fecha", formattedDate);
+                values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
+                getActivity().getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error*/
+
+
+                SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
             }
         });
         return view;
@@ -90,9 +109,7 @@ public class Sincronizar extends Fragment {
         SQLiteDatabase db = admin.getReadableDatabase();
 
         //cursor
-        //Cursor c = db.rawQuery("select idRemota AS _id, descripcion, ubicacion from carritos", null);
         Cursor c = db.rawQuery("select idRemota AS _id, descripcion from carritos", null);
-
 
 
         if (c.moveToFirst()){
