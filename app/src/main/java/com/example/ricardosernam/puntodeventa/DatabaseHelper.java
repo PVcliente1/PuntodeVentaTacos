@@ -64,8 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String cmd4 = "CREATE TABLE " + ContractParaProductos.VENTA + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContractParaProductos.Columnas.ID_CARRITO + " INTEGER, " +
                 ContractParaProductos.Columnas.FECHA + " TEXT , " +
-                ContractParaProductos.Columnas.ID_CARRITO + " DOUBLE, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -87,14 +87,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static void limpiar(SQLiteDatabase db) {
-        db.execSQL("drop table " + ContractParaProductos.CARRITO);
-        db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
-        db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
-        db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
-        db.execSQL("drop table " + ContractParaProductos.VENTA);
-        db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);
+        db.execSQL("delete from " + ContractParaProductos.VENTA_DETALLE);
+        db.execSQL("delete from " + ContractParaProductos.VENTA);
+        db.execSQL("delete from " + ContractParaProductos.INVENTARIO_DETALLE);
+        db.execSQL("delete from " + ContractParaProductos.INVENTARIO);
+        db.execSQL("delete from " + ContractParaProductos.PRODUCTO);
+        db.execSQL("delete from " + ContractParaProductos.CARRITO);
 
-        productos(db);
+
+        //productos(db);
     }
 
 }

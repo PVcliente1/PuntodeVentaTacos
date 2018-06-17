@@ -29,8 +29,8 @@ public class Utilidades {
 
     public static final int COLUMNA_ID_VENTA = 0;
     public static final int COLUMNA_ID_REMOTA_VENTA = 1;
-    public static final int COLUMNA_FECHA_VENTA = 2;
-    public static final int COLUMNA_ID_CARRITO_VENTA = 3;
+    public static final int COLUMNA_ID_CARRITO_VENTA = 2;
+    public static final int COLUMNA_FECHA_VENTA = 3;
 
     public static final int COLUMNA_ID_VENTA_DETALLES = 0;
     public static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 1;
@@ -85,7 +85,7 @@ public class Utilidades {
                 e.printStackTrace();
             }
         }*/
-        else if (url.equals(Constantes.GET_URL_CARRITO)) {
+        /*else if (url.equals(Constantes.GET_URL_CARRITO)) {
             String descripcion;
             String ubicacion;
             int disponible;
@@ -103,7 +103,7 @@ public class Utilidades {
                 e.printStackTrace();
             }
 
-        }
+        }*/
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             int idinventario;
             int idproducto;

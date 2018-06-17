@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if (id == R.id.exportar) {
-            //DatabaseHelper.limpiar(db);
-
             importar.setEnabled(true);
             exportar.setEnabled(false);
             if(!exportar.isEnabled()){ ///esta desabilitad
@@ -98,7 +96,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                 getContentResolver().insert(ContractParaProductos.CONTENT_URI_INVENTARIO, values);   ////aqui esta el error*/
 
-                SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
+                SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.INSERT_URL_VENTA);
+                //SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
+
+                //DatabaseHelper.limpiar(db);
+
             }
             return true;
         }

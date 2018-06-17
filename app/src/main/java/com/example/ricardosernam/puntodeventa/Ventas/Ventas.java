@@ -181,10 +181,10 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
 
                         carrito=db.rawQuery("select idcarrito from inventarios" ,null);
 
-                        values.put("fecha", formattedDate);
                         if(carrito.moveToFirst()) {
                             values.put("idcarrito", carrito.getString(0));
                         }
+                        values.put("fecha", formattedDate);
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         getContext().getContentResolver().insert(ContractParaProductos.CONTENT_URI_VENTA, values);   ////aqui esta el error*/
 

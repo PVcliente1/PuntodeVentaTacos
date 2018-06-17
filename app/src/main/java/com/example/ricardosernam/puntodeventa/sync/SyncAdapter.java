@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.ricardosernam.puntodeventa.utils.Constantes.UPDATE_URL_INVENTARIO;
+import static com.example.ricardosernam.puntodeventa.utils.Constantes.UPDATE_URL_INVENTARIO_DETALLE;
 
 
 /**
@@ -147,15 +148,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String[] PROJECTION_VENTA = new String[]{
             ContractParaProductos.Columnas._ID,
             ContractParaProductos.Columnas.ID_REMOTA,
-            ContractParaProductos.Columnas.FECHA,
             ContractParaProductos.Columnas.ID_CARRITO,
+            ContractParaProductos.Columnas.FECHA,
+
     };
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_VENTA = 0;
     public static final int COLUMNA_ID_REMOTA_VENTA = 1;
-    public static final int COLUMNA_FECHA_VENTA = 2;
-    public static final int COLUMNA_ID_CARRITO_VENTA = 3;
+    public static final int COLUMNA_ID_CARRITO_VENTA = 2;
+    public static final int COLUMNA_FECHA_VENTA = 3;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_VENTA_DETALLE = new String[]{
@@ -852,84 +854,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
             c.close();
         }
-        /*else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
-            iniciarActualizacion(url);
-
-            Cursor c = obtenerRegistrosSucios(url);
-
-            Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios ");
-
-            if (c.getCount() > 0) {
-                while (c.moveToNext()) {
-                    final int idLocal = c.getInt(COLUMNA_ID_INVENTARIO);
-
-                    VolleySingleton.getInstance(getContext()).addToRequestQueue(
-                            new JsonObjectRequest(
-                                    Request.Method.POST,
-                                    Constantes.INSERT_URL_INVENTARIO,
-                                    Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            procesarRespuestaInsert(response, idLocal, url);
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d(TAG, "Error Volley: " + error.getMessage());
-                                        }
-                                    }
-
-                            ) {
-                                @Override
-                                public Map<String, String> getHeaders() {
-                                    Map<String, String> headers = new HashMap<String, String>();
-                                    headers.put("Content-Type", "application/json; charset=utf-8");
-                                    headers.put("Accept", "application/json");
-                                    return headers;
-                                }
-
-                                @Override
-                                public String getBodyContentType() {
-                                    return "application/json; charset=utf-8" + getParamsEncoding();
-                                }
-                            }
-                    );
-                }
-
-            } else {
-                Log.i(TAG, "No se requiere sincronización");
-            }
-            c.close();
-        }*/
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             iniciarActualizacion(url);
 
             Cursor c = obtenerRegistrosSucios(url);
-            //Cursor c=database.rawQuery("select idRemota, idproducto, inventario_final from inventario_detalles",null);
-
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios.");   ////muestra la cantidad a sincronizar
 
             if (c.getCount() > 0) {
-                //int cont=0;
                 while (c.moveToNext()) {
-                    //final int idLocal = c.getInt(COLUMNA_ID_INVENTARIO_DETALLES);
-
-                    //Toast.makeText(getContext(), String.valueOf(c.getPosition()) , Toast.LENGTH_LONG).show();
                     Log.i(TAG, "Va en " + c.getPosition());   ////muestra la cantidad a sincronizar
+                    final int idLocal = c.getInt(COLUMNA_ID_VENTA);
 
-                    //if(c.moveToFirst() & c.moveToFirst()) {
-                        VolleySingleton.getInstance(getContext()).addToRequestQueue(
+                    VolleySingleton.getInstance(getContext()).addToRequestQueue(
                                 new JsonObjectRequest(Request.Method.POST,
-                                        //Constantes.UPDATE_URL_INVENTARIO_DETALLE+c.getString(0)+"&idproducto="+c.getString(1),
                                         Constantes.UPDATE_URL_INVENTARIO_DETALLE,
                                         Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
+                                                //procesarRespuestaInsert(response, idLocal, url);
+                                                Log.d(TAG, "Incersión exitosa INVENTARIO_DETALLE");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
@@ -953,40 +899,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     }
                                 }
                         );
-                        /*if(idinventario.moveToNext() & idinventario.moveToNext()) {
-                            VolleySingleton.getInstance(getContext()).addToRequestQueue(
-                                    new JsonObjectRequest(Request.Method.POST,
-                                            Constantes.UPDATE_URL_INVENTARIO_DETALLE+idinventario.getString(0)+"&idproducto="+idinventario.getString(1),
-                                            Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
-                                            new Response.Listener<JSONObject>() {
-                                                @Override
-                                                public void onResponse(JSONObject response) {
-                                                    //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
-                                                }
-                                            }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d(TAG, "Error Volley INVENTARIO_DETALLES: " + error.getMessage());
-                                        }
-                                    }
-
-                                    ) {
-                                        @Override
-                                        public Map<String, String> getHeaders() {
-                                            Map<String, String> headers = new HashMap<String, String>();
-                                            headers.put("Content-Type", "application/json; charset=utf-8");
-                                            headers.put("Accept", "application/json");
-                                            return headers;
-                                        }
-
-                                        @Override
-                                        public String getBodyContentType() {
-                                            return "application/json; charset=utf-8" + getParamsEncoding();
-                                        }
-                                    }
-                            );
-                        }*/
-                    //}
                 }
 
             } else {
@@ -999,7 +911,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Cursor c = obtenerRegistrosSucios(url);
 
-            Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios.");
+            Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios VENTAS.");
 
             if (c.getCount() > 0) {
                 while (c.moveToNext()) {
@@ -1007,8 +919,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                     VolleySingleton.getInstance(getContext()).addToRequestQueue(
                             new JsonObjectRequest(
-                                    Request.Method.POST, Constantes.INSERT_URL_VENTA,
-                                    Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
+                                    Request.Method.POST,
+                                    Constantes.INSERT_URL_VENTA,
+                                    Utilidades.deCursorAJSONObject(c, url),  /////////////// vuelve al principio
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
@@ -1062,8 +975,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
-
-                                        }
+                                            Log.d(TAG, "Incersión exitosa VENTA_DETALLE");
+                                            realizarSincronizacionRemota(Constantes.UPDATE_URL_INVENTARIO_DETALLE);
+                                            }
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
@@ -1114,13 +1028,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             projection = PROJECTION_INVENTARIO;
         }
 
-        /*if (url.equals(Constantes.GET_URL_INVENTARIO)) {
-            uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection = PROJECTION_INVENTARIO;
-        }*/
-
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
             selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
@@ -1160,18 +1067,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             int results = resolver.update(uri, v, selection, selectionArgs);
             Log.i(TAG, "Registros puestos en cola de inserción:" + results);
         }
-
-        /*else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
-            Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            String[] selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_OK + ""};
-
-            ContentValues v = new ContentValues();
-            v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_SYNC);
-
-            int results = resolver.update(uri, v, selection, selectionArgs);
-            Log.i(TAG, "Registros puestos en cola de inserción:" + results);
-        }*/
 
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
                 Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
@@ -1218,19 +1113,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void finalizarActualizacion(String idRemota, int idLocal, String url) {     /////actualizamos lo insertado en la app
 
-        /*if (url.equals(Constantes.GET_URL_INVENTARIO)) {
-            Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            String selection = ContractParaProductos.Columnas._ID + "=?";
-            String[] selectionArgs = new String[]{String.valueOf(idLocal)};
-
-            ContentValues v = new ContentValues();
-            v.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, "0");
-            v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_OK);
-            v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
-
-            resolver.update(uri, v, selection, selectionArgs);
-            realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO_DETALLE);
-        }*/
         if (url.equals(Constantes.INSERT_URL_VENTA)) {
             Log.i(TAG, "TERMINA VENTAS");
 
@@ -1244,7 +1126,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
 
             resolver.update(uri, v, selection, selectionArgs);
-            //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA_DETALLE);
+            realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA_DETALLE);
+            //SyncAdapter.sincronizarAhora(getContext(), true, Constantes.INSERT_URL_VENTA_DETALLE);
+
         }
     }
 
@@ -1281,8 +1165,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
         }
-
-        /*else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
+        else if (url.equals(UPDATE_URL_INVENTARIO_DETALLE)) {
             try {
                 values=new ContentValues();
                 // Obtener estado
@@ -1290,43 +1173,29 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener mensaje
                 String mensaje = response.getString(Constantes.MENSAJE);
                 // Obtener identificador del nuevo registro creado en el servidor
-                String idRemota = response.getString(Constantes.ID_INVENTARIO);
+                //String idRemota = response.getString(Constantes.ID_INVENTARIO);
+                //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
+                //SyncAdapter.sincronizarAhora(getContext(), true, Constantes.INSERT_URL_VENTA);
 
-                ///hacemos copia de inventario detalles
-                consulta =database.rawQuery("select * from inventario_detalles" ,null);
-                if(consulta.moveToFirst()) {///si hay un elemento
-                    values.put("idRemota", Integer.parseInt(idRemota));
-                    values.put("idproducto", consulta.getString(1));
-                    values.put("inventario_inicial", consulta.getString(2));
-                    values.put("inventario_final", consulta.getString(3));
-                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                    resolver.insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
 
-                    while (consulta.moveToNext()) {
-                        values.put("idRemota", Integer.parseInt(idRemota));
-                        values.put("idproducto", consulta.getString(1));
-                        values.put("inventario_inicial", consulta.getString(2));
-                        values.put("inventario_final", consulta.getString(3));
-                        values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                        resolver.insert(ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE, values);   ////aqui esta el error
-                    }
-                }
 
                 switch (estado) {
                     case Constantes.SUCCESS:
                         Log.i(TAG, mensaje); ////muestra el " creacion exitosa"
-                        finalizarActualizacion(idRemota, idLocal, url);
+                        //finalizarActualizacion(idRemota, idLocal, url);
+                        //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
+
                         break;
 
                     case Constantes.FAILED:
-                        Log.i(TAG, mensaje);
+                        //Log.i(TAG, mensaje +" "+ idRemota);
                         break;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }*/
+        }
         else if (url.equals(Constantes.INSERT_URL_VENTA)) {
             try {
                 values = new ContentValues();
@@ -1338,7 +1207,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String idRemota = response.getString(Constantes.ID_VENTA);
 
                 ///creacion de ventas
-                /*consulta = database.rawQuery("select * from venta_detalles where idRemota='"+cuenta+"'", null);
+                consulta = database.rawQuery("select * from venta_detalles where idRemota='"+cuenta+"'", null);
                 if (consulta.moveToFirst()) {///si hay un elemento
                     values.put("idRemota", Integer.parseInt(idRemota));
                     values.put("cantidad", consulta.getString(1));
@@ -1354,7 +1223,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
                     }
                 }
-                cuenta++;*/
+                cuenta++;
                 //Toast.makeText(getContext(), "IdRemota VENTA " + idRemota, Toast.LENGTH_LONG).show();
                 //Log.i(TAG, "idRemota Ventas " + idRemota);
 
