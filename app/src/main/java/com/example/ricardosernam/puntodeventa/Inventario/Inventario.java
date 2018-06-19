@@ -57,23 +57,22 @@ public class Inventario extends Fragment {
             itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getDouble(1), nombre.getString(2) ));
             while (nombre.moveToNext()) {
                 itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getDouble(1), nombre.getString(2)));
-            }
+                }
             emptyView.setVisibility(View.INVISIBLE);
         }
-
-        ventas=db.rawQuery("select _id from ventas" ,null);
-
-        if(ventas.moveToFirst()) {///si hay un elemento
-                Toast.makeText(context, String.valueOf(ventas.getInt(0)), Toast.LENGTH_LONG).show();
-            while (nombre.moveToNext()) {
-                Toast.makeText(context, String.valueOf(ventas.getInt(0)) , Toast.LENGTH_LONG).show();
-            }
-            emptyView.setVisibility(View.INVISIBLE);
-        }
-
         else{
             emptyView.setVisibility(View.VISIBLE);
         }
+
+        ventas=db.rawQuery("select * from inventario_detalles" ,null);
+
+        //if(ventas.moveToFirst()) {///si hay un elemento
+                int i=0;
+            while (i<ventas.getColumnCount()) {
+                Toast.makeText(context, String.valueOf(ventas.getColumnName(i)) , Toast.LENGTH_LONG).show();
+                i++;
+            }
+        //}
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AdaptadorInventario(itemsInventario);
         recyclerView.setAdapter(adapter);

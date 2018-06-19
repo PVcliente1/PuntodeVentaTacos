@@ -772,18 +772,23 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Sincronizar.importar.setEnabled(false);
                 Sincronizar.exportar.setEnabled(true);
                 Sincronizar.carritos.setEnabled(false);
-                Sincronizar.establecer.setEnabled(false);
                 Sincronizar.buscar.setEnabled(false);
 
 
-                Cursor copia=database.rawQuery("select idproducto, inventario_inicial from inventario_detalles" ,null);
+                Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
                 if(copia.moveToFirst()) {///si hay un elemento
+                    //values.put("idproducto", copia.getString(0));
+                    //values.put("inventario_inicial", copia.getString(1));
                     values.put("inventario_final", copia.getString(1));
+                    //values.put("idRemota", copia.getString(2));
                     values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                     database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
 
                     while (copia.moveToNext()) {
+                        //values.put("idproducto", copia.getString(0));
+                        //values.put("inventario_inicial", copia.getString(1));
                         values.put("inventario_final", copia.getString(1));
+                        //values.put("idRemota", copia.getString(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
                     }
@@ -800,7 +805,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(TAG, "Actualizando el servidor...");
 
         if (url.equals(UPDATE_URL_INVENTARIO)) {
-            iniciarActualizacion(url);
+           iniciarActualizacion(url);
 
             Cursor c = obtenerRegistrosSucios(url);
 
@@ -875,6 +880,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                             public void onResponse(JSONObject response) {
                                                 //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
                                                 //procesarRespuestaInsert(response, idLocal, url);
+                                                //DatabaseHelper.limpiar(database);
+                                                DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
+                                                DatabaseHelper.limpiar(admin.getWritableDatabase());
+
+
+
                                                 Log.d(TAG, "Incersión exitosa INVENTARIO_DETALLE");
                                             }
                                         }, new Response.ErrorListener() {

@@ -47,14 +47,31 @@ public class Sincronizar extends Fragment {
         buscar=view.findViewById(R.id.BtnBuscarCarritos);
         establecer=view.findViewById(R.id.BtnEstablecer);
 
+        return view;
+    }
+    /*@Override
+    protected boolean hasSavedState() {
+        Bundle state = getSavedState();
+
+        if (state == null) {
+            return false;
+        }
+
+        //restore your data here
+
+        return true;
+    }*/
+    @Override
+    public void onActivityCreated(Bundle state) {
+        super.onActivityCreated(state);
         establecer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(establecer.getText().equals("Establecer")){
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
-                    //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.1.106");
+                    new Constantes("http://"+String.valueOf(ip.getText()));
+                    //new Constantes("http://192.168.0.8");
 
                     //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO);
 
@@ -102,7 +119,7 @@ public class Sincronizar extends Fragment {
                 SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
             }
         });
-        return view;
+        //your code here
     }
     public static void adapterSpinner(){
         DatabaseHelper admin = new DatabaseHelper(context, ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);

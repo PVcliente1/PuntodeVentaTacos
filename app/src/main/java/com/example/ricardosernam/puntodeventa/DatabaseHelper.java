@@ -11,12 +11,13 @@ import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
  * Clase envoltura para el gestor de Bases de datos
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
+
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     public void onCreate(SQLiteDatabase database) {
-        productos(database); // Crear la tabla "gasto"
+        productos(database);
     }
 
     public static void productos(SQLiteDatabase database) {
@@ -54,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL(cmd2);
         String cmd3 = "CREATE TABLE " + ContractParaProductos.INVENTARIO_DETALLE + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT , " +
+                ContractParaProductos.Columnas.ID_PRODUCTO + " TEXT, " +
                 ContractParaProductos.Columnas.INVENTARIO_INICIAL + " DOUBLE, " +
                 ContractParaProductos.Columnas.INVENTARIO_FINAL + " DOUBLE, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
@@ -65,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String cmd4 = "CREATE TABLE " + ContractParaProductos.VENTA + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_CARRITO + " INTEGER, " +
-                ContractParaProductos.Columnas.FECHA + " TEXT , " +
+                ContractParaProductos.Columnas.FECHA + " TEXT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -84,18 +85,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //@Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             limpiar(db);
+            onCreate(db);
     }
 
     public static void limpiar(SQLiteDatabase db) {
-        db.execSQL("delete from " + ContractParaProductos.VENTA_DETALLE);
-        db.execSQL("delete from " + ContractParaProductos.VENTA);
-        db.execSQL("delete from " + ContractParaProductos.INVENTARIO_DETALLE);
-        db.execSQL("delete from " + ContractParaProductos.INVENTARIO);
-        db.execSQL("delete from " + ContractParaProductos.PRODUCTO);
-        db.execSQL("delete from " + ContractParaProductos.CARRITO);
+        db.execSQL("drop table if exists " + ContractParaProductos.VENTA_DETALLE);
+        db.execSQL("drop table if exists " + ContractParaProductos.VENTA);
+        db.execSQL("drop table if exists " + ContractParaProductos.INVENTARIO_DETALLE);
+        db.execSQL("drop table if exists " + ContractParaProductos.INVENTARIO);
+        db.execSQL("drop table if exists " + ContractParaProductos.PRODUCTO);
+        db.execSQL("drop table if exists " + ContractParaProductos.CARRITO);
 
+        /*db.execSQL("drop table " + ContractParaProductos.CARRITO);
+        db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
+        db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
+        db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
+        db.execSQL("drop table " + ContractParaProductos.VENTA);
+        db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);*/
 
-        //productos(db);
+        productos(db);
     }
 
 }
