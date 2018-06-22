@@ -878,13 +878,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
-                                                //procesarRespuestaInsert(response, idLocal, url);
-                                                //DatabaseHelper.limpiar(database);
+                                                Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
+
                                                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
                                                 DatabaseHelper.limpiar(admin.getWritableDatabase());
-
-
 
                                                 Log.d(TAG, "Incersión exitosa INVENTARIO_DETALLE");
                                             }
@@ -1138,9 +1135,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             resolver.update(uri, v, selection, selectionArgs);
             realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA_DETALLE);
-            //SyncAdapter.sincronizarAhora(getContext(), true, Constantes.INSERT_URL_VENTA_DETALLE);
-
-        }
+            }
     }
 
     /**
@@ -1185,21 +1180,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String mensaje = response.getString(Constantes.MENSAJE);
                 // Obtener identificador del nuevo registro creado en el servidor
                 //String idRemota = response.getString(Constantes.ID_INVENTARIO);
-                //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
-                //SyncAdapter.sincronizarAhora(getContext(), true, Constantes.INSERT_URL_VENTA);
-
-
 
                 switch (estado) {
                     case Constantes.SUCCESS:
                         Log.i(TAG, mensaje); ////muestra el " creacion exitosa"
-                        //finalizarActualizacion(idRemota, idLocal, url);
-                        //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
-
                         break;
 
                     case Constantes.FAILED:
-                        //Log.i(TAG, mensaje +" "+ idRemota);
                         break;
                 }
             } catch (JSONException e) {
@@ -1235,8 +1222,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
                 cuenta++;
-                //Toast.makeText(getContext(), "IdRemota VENTA " + idRemota, Toast.LENGTH_LONG).show();
-                //Log.i(TAG, "idRemota Ventas " + idRemota);
 
                 switch (estado) {
                     case Constantes.SUCCESS:
