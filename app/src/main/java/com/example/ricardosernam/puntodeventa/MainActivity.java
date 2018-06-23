@@ -26,14 +26,9 @@ import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Fragment myFragment;
-    private MenuItem importar, exportar;
+    private MenuItem exportar;
     private Toolbar toolbar;
     private ContentValues values;
-
-    //Fragment Ventas, Inventario, Sincronizar;
-    /*Ventas Ventas= new Ventas();
-    Inventario Inventario= new Inventario();
-    Sincronizar Sincronizar= new Sincronizar();*/
 
     private android.support.v4.app.FragmentManager manejador = getSupportFragmentManager();  //manejador que permite hacer el cambio de ventanas
     @Override
@@ -92,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        importar=menu.findItem(R.id.importar);
+        //importar=menu.findItem(R.id.importar);
         exportar=menu.findItem(R.id.exportar);
         return true;
     }
@@ -100,23 +95,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.importar) {
-            importar.setEnabled(false);
-            exportar.setEnabled(true);
-            if(!(importar.isEnabled())){ ///esta desabilitado
-                //SyncAdapter.sincronizarAhora(getApplicationContext(), false);
-
-            }
-            return true;
-        }
-        else if (id == R.id.exportar) {
-            importar.setEnabled(true);
-            exportar.setEnabled(false);
-            if(!exportar.isEnabled()){ ///esta desabilitad
+        if (id == R.id.exportar) {
                 ///////////////////////inventario//////////////////////////
                 //SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.INSERT_URL_VENTA);
                 SyncAdapter.sincronizarAhora(getApplicationContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
-                }
+
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -163,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Crea otro", LENGTH_LONG).show();
                 transaction.replace(R.id.LOprincipal, new Ventas(), "Ventas").addToBackStack("Ventas").commit();
             }
-            importar.setVisible(false);
             exportar.setVisible(false);
         }
         else if (id == R.id.Inventario) {
@@ -178,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(R.id.LOprincipal, new Inventario(), "Inventario").addToBackStack("Inventario").commit();
             }
             //manejador.beginTransaction().replace(R.id.LOprincipal, new Inventario(), "Inventario").addToBackStack("Inventario").commit();
-            importar.setVisible(true);
             exportar.setVisible(true);
         }
         else if (id == R.id.Sincronizar) {
@@ -191,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Crea otro", LENGTH_LONG).show();
                 transaction.replace(R.id.LOprincipal, new Sincronizar(), "Sincronizar").addToBackStack("Sincronizar").commit();
             }
-            importar.setVisible(false);
             exportar.setVisible(false);
             //manejador.beginTransaction().replace(R.id.LOprincipal, new Sincronizar(), "Sincronizar").addToBackStack("Sincronizar").commit();
         }

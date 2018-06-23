@@ -206,7 +206,6 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                             values3 = new ContentValues();
                            if(itemsCobrar.get(i).getPorcion()!=0){  //////  es Preparado
                                ///obtenemos el guisado donde tenemos que descontar
-                               //Toast.makeText(getContext(), "Preparado "+ itemsCobrar.get(i).getNombre(), Toast.LENGTH_LONG).show();
                                existente = db.rawQuery("select idproducto, inventario_final from inventario_detalles WHERE idproducto=(select idRemota from productos where nombre=(select guisado from productos where nombre='" + itemsCobrar.get(i).getNombre() + "'))", null);
                                if(existente.moveToFirst()){
                                    float porcion = existente.getFloat(1) - (itemsCobrar.get(i).getCantidad() * itemsCobrar.get(i).getPorcion());
@@ -220,7 +219,6 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                                if(existente.moveToFirst()){
                                    float porcion = existente.getFloat(1) - itemsCobrar.get(i).getCantidad();
                                    values3.put("inventario_final", porcion);
-
                                    db.update("inventario_detalles", values3, "idproducto='" + existente.getString(0) + "'", null);
                                }
 

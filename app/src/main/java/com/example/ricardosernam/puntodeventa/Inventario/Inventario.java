@@ -51,7 +51,7 @@ public class Inventario extends Fragment {
         return view;
     }
     public static void relleno(Context context){
-        nombre=db.rawQuery("select nombre, inventario_final, tipo_producto from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
+        nombre=db.rawQuery("select nombre, inventario_inicial, tipo_producto from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
 
         if(nombre.moveToFirst()) {///si hay un elemento
             itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getDouble(1), nombre.getString(2) ));

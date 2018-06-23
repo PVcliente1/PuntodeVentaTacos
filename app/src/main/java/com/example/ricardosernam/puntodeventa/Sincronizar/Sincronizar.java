@@ -81,7 +81,7 @@ public class Sincronizar extends Fragment {
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
                     //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.0.8");
+                    new Constantes("http://192.168.1.105");
 
                     //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO);
 
@@ -106,8 +106,7 @@ public class Sincronizar extends Fragment {
                 String idcarrito= String.valueOf(carritos.getSelectedItemId());    ////obtenemos el carrito sincronizado
                 SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, idcarrito);
                 SyncAdapter.sincronizarAhora(getContext(), false, null);
-
-            }
+                }
         });
         exportar.setOnClickListener(new View.OnClickListener() {
             @Override

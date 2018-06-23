@@ -115,8 +115,6 @@ public class Utilidades {
             idproducto = c.getInt(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
             existente_inicial = c.getDouble(COLUMNA_EXISTENTE_INICIAL);
             existente_final = c.getDouble(COLUMNA_EXISTENTE_FINAL);
-            //existente_final = c.getDouble(2);
-
 
 
             try {
