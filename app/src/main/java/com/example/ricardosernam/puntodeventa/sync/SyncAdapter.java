@@ -1130,11 +1130,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             //v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
             resolver.update(uri, v, selection, selectionArgs);
 
-            Log.i(TAG, "TAMAÑO INVENTARIO DETALLES "+cuenta);
             if(idLocal==cuenta){
                 Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
-                realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
                 conteo=1;
+                realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
             }
         }
         else if (url.equals(Constantes.INSERT_URL_VENTA)) {
@@ -1150,7 +1149,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
 
             resolver.update(uri, v, selection, selectionArgs);
-            Log.i(TAG, "TAMAÑO VENTA "+cuenta);
             if(idLocal==cuenta){
                 realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA_DETALLE);
             }
@@ -1168,9 +1166,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
 
             resolver.update(uri, v, selection, selectionArgs);
-            Log.i(TAG, "TAMAÑO VENTA_DETALLE "+cuenta);
             if(idLocal==(cuenta*2)){
-                //realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA_DETALLE);
+                Log.i(TAG, "RECREA BD");
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
                 DatabaseHelper.limpiar(admin.getWritableDatabase());
             }
@@ -1182,6 +1179,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * @param response Respuesta en formato Json*/
 
+    @SuppressLint("Recycle")
     public void procesarRespuestaInsert(JSONObject response, int idLocal, String url, int cuenta) {
 ///////////////////////////////obtenemos los datos por php//////////////////////////////////////////////////////////////////////////////////////////////////////////
         Cursor consulta;
@@ -1244,13 +1242,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 ///creacion de venta_detalles
                 //consulta = database.rawQuery("select * from venta_detalles where idRemota='"+cuenta+"'", null);
-                consulta = database.rawQuery("select * from venta_detalles where idRemota='"+conteo+"'", null);
-                if (consulta.moveToFirst()) {///si hay un elemento
-                    values.put("idRemota", Integer.parseInt(idRemota));
+                Log.i(TAG, "Conteo "+conteo);
+                                                                            ///idRemota es idventa
+                consulta = database.rawQuery("select * from venta_detalles where idRemota='"+conteo+"' and pendiente_insercion=0", null);
+                //if (consulta.moveToFirst()) {///si hay un elemento
+                if (consulta.getCount()>0) {///si hay un elemento
+                    /*values.put("idRemota", Integer.parseInt(idRemota));
                     values.put("cantidad", consulta.getString(1));
                     values.put("idproducto", consulta.getString(2));
                     values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                    resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
+                    resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);*/   ////aqui esta el error
 
                     while (consulta.moveToNext()) {
                         values.put("idRemota", Integer.parseInt(idRemota));
@@ -1258,6 +1259,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         values.put("idproducto", consulta.getString(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
+                        Log.i("Datos", String.valueOf(values));    ////mostramos que valores se han insertado
                     }
                 }
                 conteo++;

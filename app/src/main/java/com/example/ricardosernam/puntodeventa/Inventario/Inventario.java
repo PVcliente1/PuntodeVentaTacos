@@ -51,7 +51,7 @@ public class Inventario extends Fragment {
         return view;
     }
     public static void relleno(Context context){
-        nombre=db.rawQuery("select nombre, inventario_inicial, tipo_producto from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
+        nombre=db.rawQuery("select nombre, inventario_final, tipo_producto from productos inner join inventario_detalles on productos.idRemota=inventario_detalles.idproducto" ,null);
 
         if(nombre.moveToFirst()) {///si hay un elemento
             itemsInventario.add(new Inventario_class(nombre.getString(0), nombre.getDouble(1), nombre.getString(2) ));
@@ -64,15 +64,17 @@ public class Inventario extends Fragment {
             emptyView.setVisibility(View.VISIBLE);
         }
 
-        ventas=db.rawQuery("select * from inventario_detalles" ,null);
+        ventas=db.rawQuery("select * from venta_detalles" ,null);
 
-        //if(ventas.moveToFirst()) {///si hay un elemento
-                int i=0;
-            while (i<ventas.getColumnCount()) {
-                Toast.makeText(context, String.valueOf(ventas.getColumnName(i)) , Toast.LENGTH_LONG).show();
-                i++;
-            }
-        //}
+        if(ventas.getCount() > 0) {///si hay un elemento
+                //int i=0;
+            //while (i<ventas.getColumnCount()) {
+            //Toast.makeText(context, String.valueOf(ventas.getColumnName(i)) , Toast.LENGTH_LONG).show();
+
+            Toast.makeText(context, "Numero de venta_detalles "+ String.valueOf(ventas.getCount()) , Toast.LENGTH_LONG).show();
+                //i++;
+            //}
+        }
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AdaptadorInventario(itemsInventario);
         recyclerView.setAdapter(adapter);

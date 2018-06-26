@@ -81,7 +81,7 @@ public class Sincronizar extends Fragment {
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
                     //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.1.105");
+                    new Constantes("http://192.168.0.8");
 
                     //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO);
 

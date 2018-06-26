@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Log.i(TAG, "backStackCount = " + backStackCount);
         for (x = 0; x < backStackCount; x++){
             //Log.i(TAG, "Iter = " + x +" "+ getSupportFragmentManager().getBackStackEntryAt(x).getName());
-            if (tag == getSupportFragmentManager().getBackStackEntryAt(x).getName()){
+            if (tag.equals(getSupportFragmentManager().getBackStackEntryAt(x).getName())){
                 toReturn = true;
             }
         }
