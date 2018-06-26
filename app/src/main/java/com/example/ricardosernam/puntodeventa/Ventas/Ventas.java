@@ -146,7 +146,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                 cancelarVenta.setTitle("Cuidado");
                 cancelarVenta.setMessage("¿Cancelar venta?");
                 cancelarVenta.setCancelable(false);
-                cancelarVenta.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                cancelarVenta.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
                         itemsCobrar.removeAll(itemsCobrar);
                         relleno();
@@ -155,7 +155,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                         total.setText("0.0");
                     }
                 });
-                cancelarVenta.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                cancelarVenta.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
                         cancelarCompra.dismiss();
                     }

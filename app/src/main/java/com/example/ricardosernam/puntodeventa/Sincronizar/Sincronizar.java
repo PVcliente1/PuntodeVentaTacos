@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa.Sincronizar;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -35,6 +36,7 @@ public class Sincronizar extends Fragment {
     public Fragment myFragment;
     public static Spinner carritos;
     public static Context context;
+    public static ProgressDialog progressDialog;
     public String carritoSeleccionado;
     public  EditText ip;
     public Cursor carrito;
@@ -106,6 +108,23 @@ public class Sincronizar extends Fragment {
                 String idcarrito= String.valueOf(carritos.getSelectedItemId());    ////obtenemos el carrito sincronizado
                 SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, idcarrito);
                 SyncAdapter.sincronizarAhora(getContext(), false, null);
+
+                progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Importando datos...");
+                progressDialog.show();
+
+                // TODO: Implement your own signup logic here.
+
+                /*new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                //onSignupSuccess();////cuando cargue
+                                //getFragmentManager().beginTransaction().replace(R.id.CLcontenedorTotal, new Inicio_sesion()).commit();
+                                progressDialog.dismiss();
+                            }
+                        }, 3000);*/
+
                 }
         });
         exportar.setOnClickListener(new View.OnClickListener() {

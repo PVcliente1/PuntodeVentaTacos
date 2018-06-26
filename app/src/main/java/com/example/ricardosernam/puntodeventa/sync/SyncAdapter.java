@@ -198,13 +198,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (!soloSubida) {
             realizarSincronizacionLocal(syncResult, url, seleccionado);   ////descargar
         } else {
-            //realizarSincronizacionRemota(Constantes.GET_URL_INVENTARIO);   ////subir datos
-            //if(url3.equals(Constantes.UPDATE_URL_INVENTARIO)){
-                realizarSincronizacionRemota(url3);
-            ///}
-            //else if(url3.equals(Constantes.GET_URL_INVENTARIO)){
-                //realizarSincronizacionRemota(url3);
-            //}
+            realizarSincronizacionRemota(url3);
         }
     }
     /////////////////////////////////////////////////////metodos de sincronizacion ///////////////////////////////////////////////////////
@@ -254,15 +248,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                //Toast.makeText(getContext(), url , Toast.LENGTH_LONG).show();
                                 procesarRespuestaGet(response, syncResult, url);
                             }
                         },
                         new Response.ErrorListener() {  //// Si el ip es incorrecto
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                //Log.d(TAG, error.networkResponse.toString());   ///error
-                                Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                if(!(uri.isEmpty())){
+                                    Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                    }
+                                //Sincronizar.progressDialog.dismiss();
                             }
                         }
                 )
@@ -287,13 +282,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 //
                     break;
                 case Constantes.FAILED: // FALLIDO En caso de 2
-
                     if(url.equals(Constantes.GET_URL_CARRITO)){   ////no hay carritos
                         Sincronizar.carritos.setAdapter(null);
                         database.execSQL("delete from carritos");
                         Toast.makeText(getContext(), "No hay carritos disponibles. Vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
                     }
                     else if(url.equals(Constantes.GET_URL_INVENTARIO)){   ///el carrro seleccionado ya no existe
+                        Sincronizar.progressDialog.dismiss();
                         Sincronizar.carritos.clearFocus();
                         Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
 
@@ -764,6 +759,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Sincronizar.exportar.setEnabled(true);
                 Sincronizar.carritos.setEnabled(false);
                 Sincronizar.buscar.setEnabled(false);
+
+                Sincronizar.progressDialog.dismiss();
+
 
 
                 Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
