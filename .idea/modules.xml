@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../PuntodeVenta1.0/.idea/PuntodeVenta.iml" filepath="$PROJECT_DIR$/../PuntodeVenta1.0/.idea/PuntodeVenta.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../PuntodeVenta1.0/PuntodeVenta.iml" filepath="$PROJECT_DIR$/../PuntodeVenta1.0/PuntodeVenta.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../Martin/AndroidStudioProjects/PuntodeVenta1.0/PuntodeVenta.iml" filepath="$PROJECT_DIR$/../../../Martin/AndroidStudioProjects/PuntodeVenta1.0/PuntodeVenta.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../Daniel/AndroidStudioProjects/PuntodeVenta/.idea/PuntodeVenta1.0.iml" filepath="$PROJECT_DIR$/../../../Daniel/AndroidStudioProjects/PuntodeVenta/.idea/PuntodeVenta1.0.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../Daniel/AndroidStudioProjects/PuntodeVenta/PuntodeVenta1.0.iml" filepath="$PROJECT_DIR$/../../../Daniel/AndroidStudioProjects/PuntodeVenta/PuntodeVenta1.0.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../PuntodeVentaFood/PuntodeVenta1.0.iml" filepath="$PROJECT_DIR$/../PuntodeVentaFood/PuntodeVenta1.0.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/PuntodeVentaFood.iml" filepath="$PROJECT_DIR$/.idea/PuntodeVentaFood.iml" />
       <module fileurl="file://$PROJECT_DIR$/PuntodeVentaTacos.iml" filepath="$PROJECT_DIR$/PuntodeVentaTacos.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

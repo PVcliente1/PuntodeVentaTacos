@@ -66,9 +66,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     ContentResolver resolver;
     DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
     SQLiteDatabase database=admin.getWritableDatabase();;
-
-    //database=admin.getWritableDatabase();
-
     private Gson gson = new Gson();
 
     /**
@@ -254,11 +251,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         new Response.ErrorListener() {  //// Si el ip es incorrecto
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                if(!(uri.isEmpty())){
-                                    Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
-                                    }
-                                //Sincronizar.progressDialog.dismiss();
-                            }
+                                if(!(uri.equals(Constantes.GET_URL_CARRITO))){
+                                    Sincronizar.progressDialog.dismiss();
+                                }
+                                Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                }
                         }
                 )
         );
@@ -289,7 +286,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                     else if(url.equals(Constantes.GET_URL_INVENTARIO)){   ///el carrro seleccionado ya no existe
                         Sincronizar.progressDialog.dismiss();
-                        Sincronizar.carritos.clearFocus();
                         Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
 
                         SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
@@ -766,23 +762,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
                 if(copia.moveToFirst()) {///si hay un elemento
-                    //values.put("idproducto", copia.getString(0));
-                    //values.put("inventario_inicial", copia.getString(1));
                     values.put("inventario_final", copia.getString(1));
-                    //values.put("idRemota", copia.getString(2));
                     values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                     database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
 
                     while (copia.moveToNext()) {
-                        //values.put("idproducto", copia.getString(0));
-                        //values.put("inventario_inicial", copia.getString(1));
                         values.put("inventario_final", copia.getString(1));
-                        //values.put("idRemota", copia.getString(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
                     }
                 }
-                //com.example.ricardosernam.puntodeventa.Inventario.Inventario.relleno();
 
             } else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
@@ -869,12 +858,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                             public void onResponse(JSONObject response) {
 
                                                 procesarRespuestaInsert(response, idLocal, url, c.getCount());
-                                                /*Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
 
-                                                DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
-                                                DatabaseHelper.limpiar(admin.getWritableDatabase());*/
-
-                                                //Log.d(TAG, "Incersión exitosa INVENTARIO_DETALLE");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
@@ -952,7 +936,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
 
             } else {
-                Log.i(TAG, "No se requiere sincronización");   ////debe ir otro borrado aqui
+                Log.i(TAG, "No se requiere sincronización");   ////si no hay venta
+                Log.i(TAG, "RECREA BD");
+                Sincronizar.importar.setEnabled(true);
+                Sincronizar.exportar.setEnabled(false);
+                Sincronizar.carritos.setEnabled(true);
+                Sincronizar.buscar.setEnabled(true);
+                Sincronizar.carritos.setAdapter(null);
+                Sincronizar.progressDialog.dismiss();
+                Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
                 DatabaseHelper.limpiar(admin.getWritableDatabase());
             }
@@ -976,9 +968,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
-                                            //Log.d(TAG, "Incersión exitosa VENTA_DETALLE");
                                             procesarRespuestaInsert(response, idLocal, url, c.getCount());
-                                            //realizarSincronizacionRemota(Constantes.UPDATE_URL_INVENTARIO_DETALLE);
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
@@ -1125,11 +1115,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContentValues v = new ContentValues();
             v.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, "0");
             v.put(ContractParaProductos.Columnas.ESTADO, ContractParaProductos.ESTADO_OK);
-            //v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
             resolver.update(uri, v, selection, selectionArgs);
 
             if(idLocal==cuenta){
-                Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
                 conteo=1;
                 realizarSincronizacionRemota(Constantes.INSERT_URL_VENTA);
             }
@@ -1166,6 +1154,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             resolver.update(uri, v, selection, selectionArgs);
             if(idLocal==(cuenta*2)){
                 Log.i(TAG, "RECREA BD");
+                Sincronizar.importar.setEnabled(true);
+                Sincronizar.exportar.setEnabled(false);
+                Sincronizar.carritos.setEnabled(true);
+                Sincronizar.buscar.setEnabled(true);
+                Sincronizar.carritos.setAdapter(null);
+                Sincronizar.progressDialog.dismiss();
+                Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
                 DatabaseHelper.limpiar(admin.getWritableDatabase());
             }
@@ -1239,18 +1234,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String idRemota = response.getString(Constantes.ID_VENTA);
 
                 ///creacion de venta_detalles
-                //consulta = database.rawQuery("select * from venta_detalles where idRemota='"+cuenta+"'", null);
                 Log.i(TAG, "Conteo "+conteo);
                                                                             ///idRemota es idventa
                 consulta = database.rawQuery("select * from venta_detalles where idRemota='"+conteo+"' and pendiente_insercion=0", null);
-                //if (consulta.moveToFirst()) {///si hay un elemento
                 if (consulta.getCount()>0) {///si hay un elemento
-                    /*values.put("idRemota", Integer.parseInt(idRemota));
-                    values.put("cantidad", consulta.getString(1));
-                    values.put("idproducto", consulta.getString(2));
-                    values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                    resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);*/   ////aqui esta el error
-
                     while (consulta.moveToNext()) {
                         values.put("idRemota", Integer.parseInt(idRemota));
                         values.put("cantidad", consulta.getString(1));
@@ -1290,7 +1277,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         break;
 
                         case Constantes.FAILED:
-                        //Log.i(TAG, mensaje); ////muestra el " creacion FALLIDA"   POR AQUÍ
                         finalizarActualizacion(null, idLocal, url, cuenta);
                         break;
                 }

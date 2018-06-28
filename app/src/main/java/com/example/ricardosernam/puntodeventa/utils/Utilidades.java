@@ -66,44 +66,6 @@ public class Utilidades {
                 e.printStackTrace();
             }
         }
-        /*else if (url.equals(Constantes.GET_URL_INVENTARIO)) {
-            int idcarrito;
-            int disponible;
-            String fecha;
-
-            disponible = c.getInt(COLUMNA_DISPONIBLE);
-            idcarrito = c.getInt(COLUMNA_ID_CARRITO);
-            fecha = c.getString(COLUMNA_FECHA);
-
-            try {
-                jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
-                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
-                jObject.put(ContractParaProductos.Columnas.FECHA, fecha);
-
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }*/
-        /*else if (url.equals(Constantes.GET_URL_CARRITO)) {
-            String descripcion;
-            String ubicacion;
-            int disponible;
-
-            descripcion = c.getString(COLUMNA_DESCRIPCION);
-            ubicacion = c.getString(COLUMNA_UBICACION);
-            disponible = c.getInt(COLUMNA_DISPONIBLE);
-
-            try {
-                jObject.put(ContractParaProductos.Columnas.DESCRIPCION, descripcion);
-                jObject.put(ContractParaProductos.Columnas.UBICACION, ubicacion);
-                jObject.put(ContractParaProductos.Columnas.DISPONIBLE, disponible);
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }*/
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             int idinventario;
             int idproducto;
