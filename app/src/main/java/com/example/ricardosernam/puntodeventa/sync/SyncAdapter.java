@@ -163,13 +163,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContractParaProductos.Columnas.ID_REMOTA,
             ContractParaProductos.Columnas.CANTIDAD,
             ContractParaProductos.Columnas.ID_PRODUCTO,
+            ContractParaProductos.Columnas.PRECIO,
     };
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_VENTA_DETALLES = 0;      ///////funciona solo en la exportacion
     public static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 1;
-    public static final int COLUMNA_CANTIDAD = 3;
     public static final int COLUMNA_ID_PRODUCTO_VENTA_DETALLE = 2;
+    public static final int COLUMNA_CANTIDAD = 3;
+    public static final int COLUMNA_PRECIO_VENTA_DETALLES = 4;
+
 
 
 
@@ -1241,7 +1244,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     while (consulta.moveToNext()) {
                         values.put("idRemota", Integer.parseInt(idRemota));
                         values.put("cantidad", consulta.getString(1));
-                        values.put("idproducto", consulta.getString(2));
+                        values.put("idproducto", consulta.getString(3));
+                        values.put("precio", consulta.getDouble(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                         resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
                         Log.i("Datos", String.valueOf(values));    ////mostramos que valores se han insertado

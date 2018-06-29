@@ -10,16 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Utilidades {
-    // Indices para las columnas indicadas en la proyección
-    public static final int COLUMNA_DESCRIPCION = 2;
-    public static final int COLUMNA_UBICACION = 3;
-    public static final int COLUMNA_DISPONIBLE = 4;
-
-    public static final int COLUMNA_ID_INVENTARIO = 0;
-    public static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
-    public static final int COLUMNA_ID_CARRITO = 2;
-    public static final int COLUMNA_FECHA = 3;
-
     public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;
     public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
     public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
@@ -36,6 +26,8 @@ public class Utilidades {
     public static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 1;
     public static final int COLUMNA_CANTIDAD = 2;
     public static final int COLUMNA_ID_PRODUCTO_VENTA_DETALLE = 3;
+    public static final int COLUMNA_PRECIO = 4;
+
 
     /**
      * Determina si la aplicación corre en versiones superiores o iguales
@@ -106,17 +98,21 @@ public class Utilidades {
             int idventa;
             int cantidad;
             int idproducto;
+            Double precio;
 
             idventa = c.getInt(COLUMNA_ID_REMOTA_VENTA_DETALLE);
             cantidad = c.getInt(COLUMNA_CANTIDAD);
             idproducto = c.getInt(COLUMNA_ID_PRODUCTO_VENTA_DETALLE);
+            precio = c.getDouble(COLUMNA_PRECIO);
+
 
 
             try {
                 jObject.put("idventa", idventa);
                 jObject.put(ContractParaProductos.Columnas.CANTIDAD, cantidad);
                 jObject.put(ContractParaProductos.Columnas.ID_PRODUCTO, idproducto);
-            } catch (JSONException e) {
+                jObject.put(ContractParaProductos.Columnas.PRECIO, precio);
+                } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

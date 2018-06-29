@@ -199,6 +199,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                                values2.put("idRemota", venta.getString(0));
                                values2.put("cantidad", itemsCobrar.get(i).getCantidad());
                                values2.put("idproducto", itemsCobrar.get(i).getIdRemota());
+                               values2.put("precio", itemsCobrar.get(i).getPrecio());
                                db.insertOrThrow("venta_detalles", null, values2);
                                Log.i("Datos", String.valueOf(values2));    ////mostramos que valores se han insertado
                            }

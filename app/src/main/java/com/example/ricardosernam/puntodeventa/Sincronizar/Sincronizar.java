@@ -82,7 +82,7 @@ public class Sincronizar extends Fragment {
                     establecer.setText("Modificar");
                     ip.setEnabled(false);
                     //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.0.8");
+                    new Constantes("http://192.168.0.10");
                     }
                 else{
                     establecer.setText("Establecer");

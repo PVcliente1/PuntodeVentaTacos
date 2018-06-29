@@ -158,7 +158,7 @@ public static class Columnas implements BaseColumns {
 
     /////////////////////ventas///////////////////7
     public final static String CANTIDAD = "cantidad";
-    //public final static String ID_VENTA = "idventa";
+    //public final static String ID_VENT = "idventa";
 
 
 
