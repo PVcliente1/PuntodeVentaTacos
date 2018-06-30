@@ -27,7 +27,6 @@ import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Fragment myFragment;
-    public static ProgressDialog progressDialog;
     private Toolbar toolbar;
     private ContentValues values;
 
@@ -42,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
+            }
+        else{
+            Toast.makeText(getApplicationContext(), "HAY CAMBIOS", LENGTH_LONG).show();
         }
         values=new ContentValues();
         ////////////////////////////////////////7
@@ -55,18 +57,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
     }
-
-    /*@Override
-    public void onRestoreInstanceState(Bundle inState){
-        myFragment = getFragmentManager().getFragment(inState,"sincronizar");
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getFragmentManager().putFragment(outState, "sincronizar", myFragment);
+        //getFragmentManager().putFragment(outState, "sincronizar", myFragment);
+        Toast.makeText(getApplicationContext(), "GUARDA", LENGTH_LONG).show();
+        outState.putString("NUMERO", "Hijos de puta");
         //Save the fragment's state here
-    }*/
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

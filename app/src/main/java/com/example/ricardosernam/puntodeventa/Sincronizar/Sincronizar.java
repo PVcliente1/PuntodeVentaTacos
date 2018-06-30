@@ -108,7 +108,8 @@ public class Sincronizar extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
                 progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Importando datos...");
+                progressDialog.setMessage("Importando datos..." +
+                 "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
                 progressDialog.show();
                 }
         });
@@ -119,7 +120,8 @@ public class Sincronizar extends Fragment {
 
                 progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
                 progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Exportando datos...");
+                progressDialog.setMessage("Exportando datos..." +
+                 "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
                 progressDialog.show();
                 }
         });
@@ -130,7 +132,7 @@ public class Sincronizar extends Fragment {
         super.onSaveInstanceState(outState);
         //getFragmentManager().putFragment(outState,"Sincronizar", this);
         //Toast.makeText(getContext(), "Entra a onsavedintance" , LENGTH_LONG).show();
-        outState.putString("NUMERO", String.valueOf(ip.getText()));
+        outState.putString("NUMERO", "Hijos de puta");
     }
 
     public static void adapterSpinner(){
