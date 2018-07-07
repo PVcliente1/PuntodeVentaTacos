@@ -25,6 +25,8 @@ public static final String VENTA = "ventas";
 
 public static final String VENTA_DETALLE = "venta_detalles";
 
+public static final String ESTADOS= "estados";
+
 
 
 /**
@@ -158,8 +160,11 @@ public static class Columnas implements BaseColumns {
 
     /////////////////////ventas///////////////////7
     public final static String CANTIDAD = "cantidad";
-    //public final static String ID_VENT = "idventa";
 
+    /////////////////////ventas///////////////////7
+    public final static String IP = "ip";
+    public final static String IMPORTADO = "importado";
+    //public final static String EDITTEXT = "edittext";
 
 
 

@@ -42,9 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             manejador.beginTransaction().replace(R.id.LOprincipal, new Ventas()).commit(); ///cambio de fragment
             }
-        else{
-            Toast.makeText(getApplicationContext(), "HAY CAMBIOS", LENGTH_LONG).show();
-        }
+
         values=new ContentValues();
         ////////////////////////////////////////7
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
@@ -56,14 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View hView = navigationView.getHeaderView(0);
 
         navigationView.setNavigationItemSelectedListener(this);
-    }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //getFragmentManager().putFragment(outState, "sincronizar", myFragment);
-        Toast.makeText(getApplicationContext(), "GUARDA", LENGTH_LONG).show();
-        outState.putString("NUMERO", "Hijos de puta");
-        //Save the fragment's state here
     }
 
     @Override

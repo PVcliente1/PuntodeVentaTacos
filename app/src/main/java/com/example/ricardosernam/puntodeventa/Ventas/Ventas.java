@@ -215,7 +215,6 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                                }
                            }
                            else{   //////  es Pieza
-                               //Toast.makeText(getContext(), "Pieza "+ itemsCobrar.get(i).getNombre(), Toast.LENGTH_LONG).show();
                                existente = db.rawQuery("select idproducto, inventario_final from inventario_detalles WHERE idproducto='"+ itemsCobrar.get(i).getIdRemota()+ "'", null);
                                if(existente.moveToFirst()){
                                    float porcion = existente.getFloat(1) - itemsCobrar.get(i).getCantidad();

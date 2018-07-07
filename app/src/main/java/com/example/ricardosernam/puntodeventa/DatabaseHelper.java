@@ -81,6 +81,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
         database.execSQL(cmd5);
+        String cmd6 = "CREATE TABLE " + ContractParaProductos.ESTADOS + " (" +
+                ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContractParaProductos.Columnas.IMPORTADO + " INTEGER NOT NULL DEFAULT 1, " +
+                ContractParaProductos.Columnas.IP + " TEXT)";
+
+        database.execSQL(cmd6);
+        database.execSQL("INSERT INTO estados (ip) values ('0')");
+        database.execSQL("INSERT INTO estados (importado) values (1)");
+
     }
 
     //@Override
@@ -96,14 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + ContractParaProductos.INVENTARIO);
         db.execSQL("drop table if exists " + ContractParaProductos.PRODUCTO);
         db.execSQL("drop table if exists " + ContractParaProductos.CARRITO);
-
-        /*db.execSQL("drop table " + ContractParaProductos.CARRITO);
-        db.execSQL("drop table " + ContractParaProductos.PRODUCTO);
-        db.execSQL("drop table " + ContractParaProductos.INVENTARIO);
-        db.execSQL("drop table " + ContractParaProductos.INVENTARIO_DETALLE);
-        db.execSQL("drop table " + ContractParaProductos.VENTA);
-        db.execSQL("drop table " + ContractParaProductos.VENTA_DETALLE);*/
-
+        db.execSQL("drop table if exists " + ContractParaProductos.ESTADOS);
         productos(db);
     }
 

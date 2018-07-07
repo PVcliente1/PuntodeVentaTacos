@@ -1,5 +1,6 @@
 package com.example.ricardosernam.puntodeventa.Sincronizar;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
+import com.example.ricardosernam.puntodeventa.Inventario.AdaptadorInventario;
+import com.example.ricardosernam.puntodeventa.Inventario.Inventario_class;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Ventas.Ventas;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
@@ -38,7 +42,8 @@ public class Sincronizar extends Fragment {
     public static Context context;
     public static ProgressDialog progressDialog;
     public static SQLiteDatabase db;
-    public  EditText ip;
+    public static  EditText ip;
+    public static Cursor estado;
     public View view;
     public ContentValues values=new ContentValues();
     public static Button establecer, importar, exportar, buscar;
@@ -51,38 +56,63 @@ public class Sincronizar extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            if(view==null){
+        DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
+        db=admin.getWritableDatabase();
+        if(view==null){  //si la vista es nueva
                 view=inflater.inflate(R.layout.fragment_sincronizar, container, false);
+                context=getContext();
+                ip=view.findViewById(R.id.ETip);
+                carritos=view.findViewById(R.id.SpnCarritos);
+                importar=view.findViewById(R.id.BtnImportar);
+                exportar=view.findViewById(R.id.BtnExportar);
+                buscar=view.findViewById(R.id.BtnBuscarCarritos);
+                establecer=view.findViewById(R.id.BtnEstablecer);
+                relleno();
             }
+        adapterSpinner();
         return view;
+    }
+
+    public static void relleno(){
+        estado=db.rawQuery("select ip, importado from estados" ,null);
+        if(estado.moveToFirst()) {///si hay un elemento
+            ip.setText(estado.getString(0));
+
+            if(estado.getInt(1)==0) { //importar esta deshabilitado
+                importar.setEnabled(false);
+                exportar.setEnabled(true);    //boton
+                carritos.setEnabled(false);   //spinner
+                buscar.setEnabled(false);     //boton
+            }
+            else {///si hay un elemento     //importar esta habilitado
+                importar.setEnabled(true);
+                exportar.setEnabled(false);
+                carritos.setEnabled(true);
+                buscar.setEnabled(true);
+            }
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
-
-        /*if (state != null) {
-            Toast.makeText(getContext(), state.getString("NUMERO") , LENGTH_LONG).show();
-             //myFragment = getFragmentManager().getFragment(state,"Sincronizar");
-            //getFragmentManager().beginTransaction().replace(R.id.LOprincipal, myFragment).commit(); ///cambio de fragment*
-        }*/
-        DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
-        db=admin.getWritableDatabase();
-        context=getContext();
-        carritos=(Spinner) getActivity().findViewById(R.id.SpnCarritos);
-        ip=getActivity().findViewById(R.id.ETip);
-        importar=getActivity().findViewById(R.id.BtnImportar);
-        exportar=getActivity().findViewById(R.id.BtnExportar);
-        buscar=getActivity().findViewById(R.id.BtnBuscarCarritos);
-        establecer=getActivity().findViewById(R.id.BtnEstablecer);
-        establecer.setOnClickListener(new View.OnClickListener() {
+             establecer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(establecer.getText().equals("Establecer")){
-                    establecer.setText("Modificar");
-                    ip.setEnabled(false);
-                    //new Constantes("http://"+String.valueOf(ip.getText()));
-                    new Constantes("http://192.168.0.10");
+                if(establecer.getText().equals("Establecer")){  //validamos que no este vacio
+                    if(TextUtils.isEmpty(ip.getText())){
+                        Toast.makeText(getContext(), "Ingresa un valor", LENGTH_LONG).show();
+                    }
+                    else{
+                        establecer.setText("Modificar");
+                        ip.setEnabled(false);
+                        ///guardamo el estado de la pantalla
+                        values.put(ContractParaProductos.Columnas.IP,  String.valueOf(ip.getText()));
+                        db.update("estados", values, null, null);
+
+                        new Constantes("http://"+String.valueOf(ip.getText()));
+                        //new Constantes("http://192.168.0.10");
+                    }
                     }
                 else{
                     establecer.setText("Establecer");
@@ -93,51 +123,57 @@ public class Sincronizar extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.execSQL("delete from carritos");  ///vaciamos la tabla
-                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
-                SyncAdapter.sincronizarAhora(getContext(), false, null);
-
+                if(ip.isEnabled()){
+                    Toast.makeText(getContext(), "Establece la IP", LENGTH_LONG).show();
+                }
+                else{
+                    db.execSQL("delete from carritos");  ///vaciamos la tabla
+                    SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
+                    SyncAdapter.sincronizarAhora(getContext(), false, null);
+                }
             }
         });
         importar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idcarrito= String.valueOf(carritos.getSelectedItemId());    ////obtenemos el carrito sincronizado
-                SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, idcarrito);
-                SyncAdapter.sincronizarAhora(getContext(), false, null);
+                if(ip.isEnabled()){
+                    Toast.makeText(getContext(), "Establece la IP", LENGTH_LONG).show();
+                }
+                else {
+                    String idcarrito = String.valueOf(carritos.getSelectedItemId());    ////obtenemos el carrito sincronizado
+                    SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, idcarrito);
+                    SyncAdapter.sincronizarAhora(getContext(), false, null);
 
-                progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Importando datos..." +
-                 "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
-                progressDialog.show();
+                    progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Importando datos..." +
+                            "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
+                    progressDialog.show();
+                }
                 }
         });
         exportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
+                if(ip.isEnabled()){
+                    Toast.makeText(getContext(), "Establece la IP", LENGTH_LONG).show();
+                }
+                else {
+                    SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
 
-                progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Exportando datos..." +
-                 "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
-                progressDialog.show();
+                    progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Exportando datos..." +
+                            "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
+                    progressDialog.show();
+                }
                 }
         });
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {   ///solo entra cuando gira
-        super.onSaveInstanceState(outState);
-        //getFragmentManager().putFragment(outState,"Sincronizar", this);
-        //Toast.makeText(getContext(), "Entra a onsavedintance" , LENGTH_LONG).show();
-        outState.putString("NUMERO", "Hijos de puta");
-    }
-
     public static void adapterSpinner(){
         //cursor
-        Cursor c = db.rawQuery("select idRemota AS _id, descripcion from carritos", null);
+        @SuppressLint("Recycle") Cursor c = db.rawQuery("select idRemota AS _id, descripcion from carritos", null);
 
 
         if (c.moveToFirst()){
@@ -148,5 +184,6 @@ public class Sincronizar extends Fragment {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             carritos.setAdapter(adapter);
         }
-    }
+
+        }
 }

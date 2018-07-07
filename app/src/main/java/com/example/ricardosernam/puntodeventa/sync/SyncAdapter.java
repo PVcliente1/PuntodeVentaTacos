@@ -62,7 +62,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
     public static String url, seleccionado, url2;
     int conteo;
-    ContentValues values= new ContentValues();
+    private ContentValues values= new ContentValues();
+    private ContentValues values2= new ContentValues();
+
     ContentResolver resolver;
     DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
     SQLiteDatabase database=admin.getWritableDatabase();;
@@ -198,7 +200,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (!soloSubida) {
             realizarSincronizacionLocal(syncResult, url, seleccionado);   ////descargar
         } else {
-            realizarSincronizacionRemota(url3);
+            realizarSincronizacionRemota(url3);  //subir
         }
     }
     /////////////////////////////////////////////////////metodos de sincronizacion ///////////////////////////////////////////////////////
@@ -255,14 +257,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 if(!(uri.equals(Constantes.GET_URL_CARRITO))){
-                                    SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO, String.valueOf(Sincronizar.carritos.getSelectedItemId()));
-                                    SyncAdapter.sincronizarAhora(getContext(), false, null);
-                                    //Sincronizar.progressDialog.dismiss();
+                                    Sincronizar.progressDialog.dismiss();
                                 }
-                                else{
                                     Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
-                                    }
-
                             }
                         }
                 )
@@ -758,11 +755,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO);   ///actualizamos el disponible a cero
 
-
-
-
-
-
             } else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
             }
@@ -801,7 +793,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d(TAG, "Error Volley: " + error.getMessage()); ///error aqui
-                                                                        realizarSincronizacionRemota(url);
+                                realizarSincronizacionRemota(url);
 
                             }
                         }
@@ -855,7 +847,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         Log.d(TAG, "Error Volley INVENTARIO_DETALLES: " + error.getMessage());
-                                        realizarSincronizacionRemota(url);
+                                        Sincronizar.progressDialog.dismiss();
+                                        Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
                                         }
                                 }
 
@@ -936,6 +929,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Sincronizar.carritos.setEnabled(true);
                 Sincronizar.buscar.setEnabled(true);
                 Sincronizar.carritos.setAdapter(null);
+
+                values.put(ContractParaProductos.Columnas.IMPORTADO, 1);
+                database.update("estados", values, null, null);
+
                 Sincronizar.progressDialog.dismiss();
                 Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
@@ -1153,6 +1150,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Sincronizar.carritos.setEnabled(true);
                 Sincronizar.buscar.setEnabled(true);
                 Sincronizar.carritos.setAdapter(null);
+
+                values.put(ContractParaProductos.Columnas.IMPORTADO, 1);
+                database.update("estados", values, null, null);
+
                 Sincronizar.progressDialog.dismiss();
                 Toast.makeText(getContext(), "Tus datos han sido subidos", Toast.LENGTH_LONG).show();
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
@@ -1180,13 +1181,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_INVENTARIO);
 
-                Sincronizar.importar.setEnabled(false);
-                Sincronizar.exportar.setEnabled(true);
-                Sincronizar.carritos.setEnabled(false);
-                Sincronizar.buscar.setEnabled(false);
+                //cuando termina la importación
+                Sincronizar.importar.setEnabled(false);   //boton
+                Sincronizar.exportar.setEnabled(true);    //boton
+                Sincronizar.carritos.setEnabled(false);   //spinner
+                Sincronizar.buscar.setEnabled(false);     //boton
 
                 Sincronizar.progressDialog.dismiss();
-
+                Toast.makeText(getContext(), "Tus datos han sido descargados", Toast.LENGTH_LONG).show();
 
 
                 Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
@@ -1201,6 +1203,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
                     }
                 }
+
+                values2.put(ContractParaProductos.Columnas.IMPORTADO, 0);
+                database.update("estados", values2, null, null);
 
                 switch (estado) {
                     case Constantes.SUCCESS:
