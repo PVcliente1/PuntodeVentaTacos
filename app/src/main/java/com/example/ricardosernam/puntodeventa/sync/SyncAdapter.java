@@ -293,8 +293,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         Sincronizar.progressDialog.dismiss();
                         Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
 
-                        SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
-                        SyncAdapter.sincronizarAhora(getContext(), false, null);
                         Sincronizar.carritos.setAdapter(null);
                         }
                     String mensaje = response.getString(Constantes.MENSAJE);
