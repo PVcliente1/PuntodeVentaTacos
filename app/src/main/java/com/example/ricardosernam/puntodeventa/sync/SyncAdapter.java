@@ -28,8 +28,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
-import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ContractParaProductos;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;

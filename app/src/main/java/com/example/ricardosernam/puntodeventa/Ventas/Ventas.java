@@ -112,7 +112,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                     for(int j=i+1; j<itemsCobrar.size(); j++) {
                         if(dato.equals(itemsCobrar.get(j).getNombre())){  ///si se repite
                             if(itemsCobrar.get(j).getCantidad()==0){  ///si es cero, lo eliminamos de la lista
-                                itemsCobrar.remove(j);   ////eliminamos el previamente agregado
+                                itemsCobrar.remove(j);   ////eliminamos el previamente gregado
                                 itemsCobrar.remove(i);   ////eliminamos el previamente agregado
                             }
                             else {

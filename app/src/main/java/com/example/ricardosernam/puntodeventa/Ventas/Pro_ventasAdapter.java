@@ -24,8 +24,6 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.R;
 import com.example.ricardosernam.puntodeventa._____interfazes.actualizado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClickFecha;
 
 import java.util.ArrayList;
 

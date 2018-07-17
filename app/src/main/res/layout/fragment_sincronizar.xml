@@ -80,6 +80,7 @@
         </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"
+                android:layout_marginRight="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -106,6 +107,7 @@
 
         <Button
             android:id="@+id/BtnBuscarCarritos"
+            android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text=" Buscar carritos... "

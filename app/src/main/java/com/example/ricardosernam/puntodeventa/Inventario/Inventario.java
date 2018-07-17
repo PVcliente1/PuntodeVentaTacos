@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import com.example.ricardosernam.puntodeventa.DatabaseHelper;
 import com.example.ricardosernam.puntodeventa.R;
-import com.example.ricardosernam.puntodeventa._____interfazes.agregado;
-import com.example.ricardosernam.puntodeventa._____interfazes.interfaz_OnClick;
 import com.example.ricardosernam.puntodeventa.provider.ProviderDeProductos;
 import com.example.ricardosernam.puntodeventa.sync.SyncAdapter;
 import com.example.ricardosernam.puntodeventa.utils.Constantes;
