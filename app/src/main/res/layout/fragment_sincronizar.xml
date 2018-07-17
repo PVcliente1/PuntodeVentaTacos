@@ -6,75 +6,179 @@
     tools:context="com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar">
     <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center"
+        android:gravity="bottom"
         android:layout_height="match_parent"
         android:orientation="vertical">
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_weight=".75"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
         <TextView
             android:layout_weight="1"
             android:gravity="center"
+            android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="IP: " />
 
-        <EditText
-            android:id="@+id/ETip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Ingresa tu IP" />
-        <Button
-            android:saveEnabled="true"
-            android:id="@+id/BtnEstablecer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Establecer"/>
+            <EditText
+                android:id="@+id/ETip"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="Ingresa tu IP"
+                android:textColorLink="@color/colorPrimary"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/BtnEstablecer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:saveEnabled="true"
+                android:text=" Establecer IP "
+                android:textColor="@color/cardview_dark_background"
+                android:background="@drawable/botones_sincronizar"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:gravity="center"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Spinner
-            android:id="@+id/SpnCarritos"
-            android:layout_marginTop="20dp"
+        android:orientation="vertical">
+ -----      <LinearLayout
+            android:layout_weight=".90"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <!--android:entries="@array/Games">-->
-        </Spinner>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Carritos " />
+
+                <Spinner
+                    android:id="@+id/SpnCarritos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:popupBackground="?attr/colorButtonNormal"
+                    android:background="@drawable/spinner">
+                    <!--android:entries="@array/Games">
+                    android:backgroundTint="@color/cardview_dark_background"-->
+                </Spinner>
+            </LinearLayout>
+
         <Button
             android:id="@+id/BtnBuscarCarritos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buscar..."/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:text=" Buscar carritos... "
+            android:textColor="@color/cardview_dark_background"
+            android:background="@drawable/botones_sincronizar"/>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
+        </LinearLayout>
+  ------    <LinearLayout
+            android:layout_weight=".90"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+    </LinearLayout>
+        <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_weight="2"
+            android:gravity="top|center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_weight="1.1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+            <Button
+                android:id="@+id/BtnImportar"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:enabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Importar&#10;inventario"
+                android:textColor="@color/cardview_dark_background"
+                android:background="@drawable/botones_sincronizar"/>
+            <!--android:drawableTop="@android:drawable/stat_sys_download"-->
 
-        <Button
-            android:id="@+id/BtnImportar"
-            android:enabled="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@android:drawable/stat_sys_download"
-            android:text="Importar" />
-
-        <Button
-            android:id="@+id/BtnExportar"
-            android:enabled="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@android:drawable/stat_sys_upload"
-            android:text="Exportar" />
+            <Button
+                android:id="@+id/BtnExportar"
+                android:enabled="false"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Exportar&#10;inventario"
+                android:textColor="@color/cardview_dark_background"
+                android:background="@drawable/botones_sincronizar"/>
+            <!--android:drawableTop="@android:drawable/stat_sys_upload"-->
+            <LinearLayout
+                android:layout_weight="1.1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_weight=".90"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
     </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

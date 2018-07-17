@@ -13,6 +13,8 @@ import android.content.OperationApplicationException;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -256,10 +258,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         new Response.ErrorListener() {  //// Si el ip es incorrecto
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                if(!(uri.equals(Constantes.GET_URL_CARRITO))){
-                                    Sincronizar.progressDialog.dismiss();
+                                if(!(uri.equals(Constantes.GET_URL_CARRITO))){  //SI NO ES CARRRITO
+                                    new android.os.Handler().postDelayed(
+                                                            new Runnable() {
+                                                                public void run() {
+                                                                    Sincronizar.progressDialog.dismiss();
+                                                                    Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }, 3000);
                                 }
+                                else{
                                     Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                    }
                             }
                         }
                 )
@@ -290,10 +300,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         Toast.makeText(getContext(), "No hay carritos disponibles. Vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
                     }
                     else if(url.equals(Constantes.GET_URL_INVENTARIO)){   ///el carrro seleccionado ya no existe
-                        Sincronizar.progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        Sincronizar.progressDialog.dismiss();
+                                        Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
 
-                        Sincronizar.carritos.setAdapter(null);
+                                        Sincronizar.carritos.setAdapter(null);
+                                    }
+                                }, 3000);
                         }
                     String mensaje = response.getString(Constantes.MENSAJE);
                     Log.i(TAG, mensaje);
@@ -845,8 +860,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         Log.d(TAG, "Error Volley INVENTARIO_DETALLES: " + error.getMessage());
-                                        Sincronizar.progressDialog.dismiss();
-                                        Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+
+                                        new android.os.Handler().postDelayed(
+                                                new Runnable() {
+                                                    public void run() {
+                                                        Sincronizar.progressDialog.dismiss();
+                                                        Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }, 3000);
                                         }
                                 }
 
@@ -922,11 +943,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 Log.i(TAG, "No se requiere sincronización");   ////si no hay venta
                 Log.i(TAG, "RECREA BD");
+                Sincronizar.carritos.setEnabled(true);
+                Sincronizar.carritos.setAdapter(null);
+
+
                 Sincronizar.importar.setEnabled(true);
                 Sincronizar.exportar.setEnabled(false);
-                Sincronizar.carritos.setEnabled(true);
                 Sincronizar.buscar.setEnabled(true);
-                Sincronizar.carritos.setAdapter(null);
+
+                Sincronizar.importar.getBackground().setColorFilter(null);  //habilitado
+                Sincronizar.exportar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
+                Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado
 
                 values.put(ContractParaProductos.Columnas.IMPORTADO, 1);
                 database.update("estados", values, null, null);
@@ -1143,11 +1170,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             resolver.update(uri, v, selection, selectionArgs);
             if(idLocal==(cuenta*2)){
                 Log.i(TAG, "RECREA BD");
+                Sincronizar.carritos.setEnabled(true);
+                Sincronizar.carritos.setAdapter(null);
+
+
                 Sincronizar.importar.setEnabled(true);
                 Sincronizar.exportar.setEnabled(false);
-                Sincronizar.carritos.setEnabled(true);
                 Sincronizar.buscar.setEnabled(true);
-                Sincronizar.carritos.setAdapter(null);
+
+                Sincronizar.importar.getBackground().setColorFilter(null);  //habilitado
+                Sincronizar.exportar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
+                Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado
 
                 values.put(ContractParaProductos.Columnas.IMPORTADO, 1);
                 database.update("estados", values, null, null);
@@ -1179,11 +1212,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_INVENTARIO);
 
+                Sincronizar.carritos.setEnabled(false);   //spinner
+
                 //cuando termina la importación
                 Sincronizar.importar.setEnabled(false);   //boton
                 Sincronizar.exportar.setEnabled(true);    //boton
-                Sincronizar.carritos.setEnabled(false);   //spinner
                 Sincronizar.buscar.setEnabled(false);     //boton
+
+                Sincronizar.importar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
+                Sincronizar.exportar.getBackground().setColorFilter(null);  //habilitado
+                Sincronizar.buscar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
 
                 Sincronizar.progressDialog.dismiss();
                 Toast.makeText(getContext(), "Tus datos han sido descargados", Toast.LENGTH_LONG).show();

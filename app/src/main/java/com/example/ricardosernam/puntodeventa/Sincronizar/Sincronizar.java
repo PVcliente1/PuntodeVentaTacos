@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,16 +81,25 @@ public class Sincronizar extends Fragment {
             ip.setText(estado.getString(0));
 
             if(estado.getInt(1)==0) { //importar esta deshabilitado
+                carritos.setEnabled(false);   //spinner
+                //rgb(230,228,228)
+
                 importar.setEnabled(false);
                 exportar.setEnabled(true);    //boton
-                carritos.setEnabled(false);   //spinner
                 buscar.setEnabled(false);     //boton
+                importar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
+                exportar.getBackground().setColorFilter(null);  //habilitado
+                buscar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado*/
             }
             else {///si hay un elemento     //importar esta habilitado
+                carritos.setEnabled(true);
+
                 importar.setEnabled(true);
                 exportar.setEnabled(false);
-                carritos.setEnabled(true);
                 buscar.setEnabled(true);
+                importar.getBackground().setColorFilter(null);  //habilitado
+                exportar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado
+                buscar.getBackground().setColorFilter(null);  //habilitado*/
             }
         }
     }
@@ -99,12 +110,12 @@ public class Sincronizar extends Fragment {
              establecer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(establecer.getText().equals("Establecer")){  //validamos que no este vacio
+                if(establecer.getText().equals(" Establecer IP ")){  //validamos que no este vacio
                     if(TextUtils.isEmpty(ip.getText())){
                         Toast.makeText(getContext(), "Ingresa un valor", LENGTH_LONG).show();
                     }
                     else{
-                        establecer.setText("Modificar");
+                        establecer.setText(" Modificar IP ");
                         ip.setEnabled(false);
                         ///guardamo el estado de la pantalla
                         values.put(ContractParaProductos.Columnas.IP,  String.valueOf(ip.getText()));
@@ -115,7 +126,7 @@ public class Sincronizar extends Fragment {
                     }
                     }
                 else{
-                    establecer.setText("Establecer");
+                    establecer.setText(" Establecer IP ");
                     ip.setEnabled(true);
                 }
             }

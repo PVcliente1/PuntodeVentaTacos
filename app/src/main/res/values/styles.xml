@@ -18,6 +18,10 @@
         <item name="colorAccent">@color/cardview_light_background</item><!--elementos del activity-->
     </style>
 
+    <style name="spinner_style" parent="Widget.AppCompat.Spinner">
+        <item name="backgroundTint">@color/cardview_dark_background</item>
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

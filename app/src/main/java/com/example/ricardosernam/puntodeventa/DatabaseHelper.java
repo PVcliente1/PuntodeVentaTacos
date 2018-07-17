@@ -30,8 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
         database.execSQL(cmd0);
-        //database.execSQL("INSERT INTO carritos(_id, descripcion) "+
-          //      "values (1,'Selecciona un carrito...')");
+        //database.execSQL("INSERT INTO estados (ip) values ('0')");
+
         String cmd = "CREATE TABLE " + ContractParaProductos.PRODUCTO + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.NOMBRE + " TEXT, " +
