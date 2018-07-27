@@ -139,6 +139,9 @@ public class Sincronizar extends Fragment {
                 }
                 else{
                     db.execSQL("delete from carritos");  ///vaciamos la tabla
+                    buscar.setEnabled(false);
+                    buscar.setText(" Buscando... ");
+                    buscar.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); ///deshabilitado*/
                     SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_CARRITO, null);
                     SyncAdapter.sincronizarAhora(getContext(), false, null);
                 }

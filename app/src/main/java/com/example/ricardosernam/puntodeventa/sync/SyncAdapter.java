@@ -273,6 +273,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                                             }, 3000);
                                 }
                                 else{
+                                    Sincronizar.buscar.setEnabled(true);
+                                    Sincronizar.buscar.setText(" Buscar carritos ");
+                                    Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado*/  SE PRESIONO BUSCAR
                                     Toast.makeText(getContext(), "Revisa los servicios de XAMPP, tu IP, o tu conexión a Internet e intentalo nuevamente", Toast.LENGTH_LONG).show();
                                     }
                             }
@@ -304,6 +307,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     if(url.equals(Constantes.GET_URL_CARRITO)){   ////no hay carritos
                         Sincronizar.carritos.setAdapter(null);
                         database.execSQL("delete from carritos");
+                        Sincronizar.buscar.setEnabled(true);
+                        Sincronizar.buscar.setText(" Buscar carritos ");
+                        Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado*/
                         Toast.makeText(getContext(), "No hay carritos disponibles. Vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
                     }
                     else if(url.equals(Constantes.GET_URL_INVENTARIO)){   ///el carrro seleccionado ya no existe
@@ -312,7 +318,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                     public void run() {
                                         Sincronizar.progressDialog.dismiss();
                                         Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
-
                                         Sincronizar.carritos.setAdapter(null);
                                     }
                                 }, 3000);
@@ -441,6 +446,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 Log.i(TAG, "No se requiere sincronización CARRITO");
             }
+            Sincronizar.buscar.setEnabled(true);
+            Sincronizar.buscar.setText(" Buscar carritos ");
+            Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado*/
 
         }
 

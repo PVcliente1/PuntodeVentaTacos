@@ -61,18 +61,6 @@ public class Inventario extends Fragment {
         else{
             emptyView.setVisibility(View.VISIBLE);
         }
-
-        ventas=db.rawQuery("select * from venta_detalles" ,null);
-
-        if(ventas.getCount() > 0) {///si hay un elemento
-                //int i=0;
-            //while (i<ventas.getColumnCount()) {
-            //Toast.makeText(context, String.valueOf(ventas.getColumnName(i)) , Toast.LENGTH_LONG).show();
-
-            Toast.makeText(context, "Numero de venta_detalles "+ String.valueOf(ventas.getCount()) , Toast.LENGTH_LONG).show();
-                //i++;
-            //}
-        }
         recyclerView.setLayoutManager(layoutManager);
         adapter = new AdaptadorInventario(itemsInventario);
         recyclerView.setAdapter(adapter);
