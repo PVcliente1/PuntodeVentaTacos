@@ -12,11 +12,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
-        android:maxSdkVersion="22" />
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
-        android:maxSdkVersion="22" />
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <!-- Sincronización -->
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
@@ -46,11 +44,6 @@
             android:exported="false"
             android:syncable="true" />
 
-        <!--<provider
-            android:name=".provider.ProviderDeInventario"
-            android:authorities="@string/provider_authority"
-            android:exported="false"
-            android:syncable="true" />-->
 
         <!-- SERVICIO DE AUTENTICACIÓN -->
         <service android:name=".sync.AuthenticationService">
@@ -74,18 +67,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_adapter" />
         </service>
-
-        <!--<service
-            android:name=".sync.SyncServiceInventario"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapterInventario" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapterInventario"
-                android:resource="@xml/sync_adapter_inventario_detalles" />
-        </service>-->
 
     </application>
 

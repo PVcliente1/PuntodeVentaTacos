@@ -10,23 +10,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Utilidades {
-    public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;
-    public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
-    public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
-    public static final int COLUMNA_EXISTENTE_INICIAL = 3;
-    public static final int COLUMNA_EXISTENTE_FINAL = 4;
+    private static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 4;
+    private static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 1;
+    private static final int COLUMNA_EXISTENTE_INICIAL = 2;
+    private static final int COLUMNA_EXISTENTE_FINAL = 3;
 
+    private static final int COLUMNA_FECHA_VENTA = 2;
+    private static final int COLUMNA_ID_CARRITO_VENTA = 1;
 
-    public static final int COLUMNA_ID_VENTA = 0;
-    public static final int COLUMNA_ID_REMOTA_VENTA = 1;
-    public static final int COLUMNA_ID_CARRITO_VENTA = 2;
-    public static final int COLUMNA_FECHA_VENTA = 3;
-
-    public static final int COLUMNA_ID_VENTA_DETALLES = 0;
-    public static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 1;
-    public static final int COLUMNA_CANTIDAD = 2;
-    public static final int COLUMNA_ID_PRODUCTO_VENTA_DETALLE = 3;
-    public static final int COLUMNA_PRECIO = 4;
+    private static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 4;
+    private static final int COLUMNA_CANTIDAD = 1;
+    private static final int COLUMNA_ID_PRODUCTO_VENTA_DETALLE = 3;
+    private static final int COLUMNA_PRECIO = 2;
 
 
     /**

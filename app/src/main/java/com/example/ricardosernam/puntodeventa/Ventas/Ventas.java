@@ -83,7 +83,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
         }
     }
     public void relleno(){    ///llamamos el adapter del recycler
-        productos=db.rawQuery("select nombre, precio, porcion, guisado, tipo_producto from productos p inner join (select nombre as nombrev from inventario_detalles inner join productos on inventario_detalles.idproducto=productos.idRemota)v on (p.guisado=v.nombrev and p.tipo_producto='Preparado') or (p.nombre=v.nombrev and p.tipo_producto='Pieza')",null);
+        productos=db.rawQuery("select nombre, precio, porcion, guisado, tipo_producto from productos p inner join (select nombre as nombrev from inventario_detalles inner join productos on inventario_detalles.idproducto=productos.idRemota)v on (p.guisado=v.nombrev and p.tipo_producto='Preparado') or (p.nombre=v.nombrev and p.tipo_producto='Pieza') ORDER by p.tipo_producto DESC",null);
 
         if(productos.moveToFirst()) {///si hay un elemento
             itemsProductos.add(new Pro_ventas_class(productos.getString(0), productos.getFloat(1), productos.getFloat(2), productos.getString(3)));
@@ -148,7 +148,9 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                 cancelarVenta.setCancelable(false);
                 cancelarVenta.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface cancelarCompra, int id) {
+                        itemsProductos.removeAll(itemsProductos);
                         itemsCobrar.removeAll(itemsCobrar);
+                        adapter.notifyDataSetChanged();
                         relleno();
                         eliminarCompra.setVisibility(View.INVISIBLE);
                         aceptarCompra.setVisibility(View.INVISIBLE);
@@ -186,7 +188,8 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                         }
                         values.put("fecha", formattedDate);
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                        getContext().getContentResolver().insert(ContractParaProductos.CONTENT_URI_VENTA, values);   ////aqui esta el error*/
+                        //getContext().getContentResolver().insert(ContractParaProductos.CONTENT_URI_VENTA, values);   ////aqui esta el error*/
+                        db.insertOrThrow("ventas", null, values);
 
 
 /////////////////////////////////incersion-modificación ventas-inventario_detalles

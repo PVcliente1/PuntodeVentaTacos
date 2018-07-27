@@ -156,6 +156,7 @@ public class Sincronizar extends Fragment {
                     SyncAdapter.sincronizarAhora(getContext(), false, null);
 
                     progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
+                    progressDialog.setCancelable(false);
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Importando datos..." +
                             "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");
@@ -173,6 +174,7 @@ public class Sincronizar extends Fragment {
                     SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO_DETALLE);
 
                     progressDialog = new ProgressDialog(getContext(), R.style.Theme_AppCompat_DayNight);  ////dialogo de carga
+                    progressDialog.setCancelable(false);
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Exportando datos..." +
                             "Si tardamos checa tus servicios de XAMPP o tu conexión a Internet y espera que termine el proceso");

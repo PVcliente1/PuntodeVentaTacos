@@ -16,6 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,14 +60,6 @@
                 app:autoSizeMaxTextSize="50sp"
                 app:autoSizeMinTextSize="40sp"
                 app:autoSizeStepGranularity="1sp"/>
-
-            <!--<ImageView
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:id="@+id/IVimagenProducto"
-                android:layout_width="match_parent"
-                android:layout_height="85dp"
-                app:srcCompat="@android:drawable/btn_star_big_on" />-->
         </LinearLayout>
         <TextView
             android:layout_gravity="center"
@@ -71,6 +68,7 @@
             android:layout_height="wrap_content"
             android:text="Large Text"
             android:textSize="30sp" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

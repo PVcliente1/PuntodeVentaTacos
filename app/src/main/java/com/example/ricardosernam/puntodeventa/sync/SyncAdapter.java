@@ -3,6 +3,7 @@ package com.example.ricardosernam.puntodeventa.sync;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
@@ -16,8 +17,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -49,6 +52,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.example.ricardosernam.puntodeventa.utils.Constantes.INSERT_URL_VENTA_DETALLE;
 import static com.example.ricardosernam.puntodeventa.utils.Constantes.UPDATE_URL_INVENTARIO;
@@ -60,14 +64,14 @@ import static com.example.ricardosernam.puntodeventa.utils.Constantes.UPDATE_URL
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = SyncAdapter.class.getSimpleName();
-    public static String url, seleccionado, url2;
-    int conteo;
+    private static String url, seleccionado, url2;
+    private int conteo;
     private ContentValues values= new ContentValues();
     private ContentValues values2= new ContentValues();
 
-    ContentResolver resolver;
-    DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
-    SQLiteDatabase database=admin.getWritableDatabase();;
+    private ContentResolver resolver;
+    private DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
+    private SQLiteDatabase database=admin.getWritableDatabase();
     private Gson gson = new Gson();
 
     /**
@@ -83,9 +87,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_CARRITO = 0;
-    public static final int COLUMNA_ID_REMOTA_CARRITOS = 1;
-    public static final int COLUMNA_DESCRIPCION = 2;
-    public static final int COLUMNA_UBICACION = 3;
+    private static final int COLUMNA_ID_REMOTA_CARRITOS = 1;
+    private static final int COLUMNA_DESCRIPCION = 2;
+    private static final int COLUMNA_UBICACION = 3;
     //public static final int COLUMNA_DISPONIBLE = 4;
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -102,13 +106,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_PRODUCTO = 0;
-    public static final int COLUMNA_ID_REMOTA_PRODUCTOS = 1;
-    public static final int COLUMNA_NOMBRE = 2;
-    public static final int COLUMNA_PRECIO = 3;
-    public static final int COLUMNA_PORCION = 4;
-    public static final int COLUMNA_GUISADO = 5;
-    public static final int COLUMNA_DISPONIBLE_PRODUCTO = 6;
-    public static final int COLUMNA_TIPO_PRODUCTO= 5;
+    private static final int COLUMNA_ID_REMOTA_PRODUCTOS = 1;
+    private static final int COLUMNA_NOMBRE = 2;
+    private static final int COLUMNA_PRECIO = 3;
+    private static final int COLUMNA_PORCION = 4;
+    private static final int COLUMNA_GUISADO = 5;
+    private static final int COLUMNA_DISPONIBLE_PRODUCTO = 6;
+    private static final int COLUMNA_TIPO_PRODUCTO= 5;
 
     /////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_INVENTARIO = new String[]{
@@ -121,10 +125,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     // Indices para las columnas indicadas en la proyección
     public static final int COLUMNA_ID_INVENTARIO = 0;
-    public static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
-    public static final int COLUMNA_ID_CARRITO_INVENTARIO = 2;    ////
-    public static final int COLUMNA_FECHA_INVENTARIO = 3;    //////
-    public static final int COLUMNA_DISPONIBLE = 4;
+    private static final int COLUMNA_ID_REMOTA_INVENTARIO = 1;
+    private static final int COLUMNA_ID_CARRITO_INVENTARIO = 2;    ////
+    private static final int COLUMNA_FECHA_INVENTARIO = 3;    //////
+    private static final int COLUMNA_DISPONIBLE = 4;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_INVENTARIO_DETALLES = new String[]{
@@ -137,11 +141,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     };
 
     // Indices para las columnas indicadas en la proyección
-    public static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;      ///////funciona solo en la exportacion
-    public static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
-    public static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
-    public static final int COLUMNA_EXISTENTE_INICIAL = 3;
-    public static final int COLUMNA_EXISTENTE_FINAL = 4;
+    private static final int COLUMNA_ID_INVENTARIO_DETALLES = 0;      ///////funciona solo en la exportacion
+    private static final int COLUMNA_ID_REMOTA_INVENTARIO_DETALLE = 1;
+    private static final int COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE = 2;
+    private static final int COLUMNA_EXISTENTE_INICIAL = 3;
+    private static final int COLUMNA_EXISTENTE_FINAL = 4;
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +158,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     };
 
     // Indices para las columnas indicadas en la proyección
-    public static final int COLUMNA_ID_VENTA = 0;
+    private static final int COLUMNA_ID_VENTA = 0;
     public static final int COLUMNA_ID_REMOTA_VENTA = 1;
     public static final int COLUMNA_ID_CARRITO_VENTA = 2;
     public static final int COLUMNA_FECHA_VENTA = 3;
@@ -169,7 +173,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     };
 
     // Indices para las columnas indicadas en la proyección
-    public static final int COLUMNA_ID_VENTA_DETALLES = 0;      ///////funciona solo en la exportacion
+    private static final int COLUMNA_ID_VENTA_DETALLES = 0;      ///////funciona solo en la exportacion
     public static final int COLUMNA_ID_REMOTA_VENTA_DETALLE = 1;
     public static final int COLUMNA_ID_PRODUCTO_VENTA_DETALLE = 2;
     public static final int COLUMNA_CANTIDAD = 3;
@@ -177,8 +181,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-
-    public SyncAdapter(Context context, boolean autoInitialize) {
+    SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         resolver = context.getContentResolver();
     }
@@ -189,6 +192,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         obtenerCuentaASincronizar(context);
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override    ////metodo de la clase
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, final SyncResult syncResult) {
 
@@ -206,7 +211,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /////////////////////////////////////////////////////metodos de sincronizacion ///////////////////////////////////////////////////////
 
 
-    public static Account obtenerCuentaASincronizar(Context context) {
+    private static Account obtenerCuentaASincronizar(Context context) {
         // Obtener instancia del administrador de cuentas
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
@@ -248,6 +253,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         VolleySingleton.getInstance(getContext()).addToRequestQueue(
                 new JsonObjectRequest(Request.Method.GET, uri,  ////POSIBLE ERROR
                         new Response.Listener<JSONObject>() {
+                            @TargetApi(Build.VERSION_CODES.KITKAT)
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void onResponse(JSONObject response) {
                                 procesarRespuestaGet(response, syncResult, url);
@@ -280,6 +287,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param response   Respuesta en formato Json
      * @param syncResult Registro de resultados de sincronización
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void procesarRespuestaGet(JSONObject response, SyncResult syncResult, String url) {
         try {
             // Obtener atributo "estado"
@@ -318,6 +327,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void actualizarDatosLocales(JSONObject response, SyncResult syncResult, String url) {   ///aqui esta el error
 ///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
         if (url.equals(Constantes.GET_URL_CARRITO)) {
@@ -345,9 +355,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Uri uri2 = ContractParaProductos.CONTENT_URI_CARRITO;
             String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
             Cursor c2 = resolver.query(uri2, PROJECTION_CARRITOS, select2, null, null);
-            assert c2 != null;
+            //assert c2 != null;
 
-            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales CARRITO.");
+//            Log.i(TAG, "Se encontraron " + String.valueOf(c2.getCount()) + " registros locales CARRITO.");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Encontrar datos obsoletos
              String id3;
@@ -355,49 +365,55 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
              String ubicacion;
              int disponible;
 
+            //if ((c2.moveToFirst())){
+            if ((c2 != null ? c2.getCount() : 0) > 0) {  ///api 19
             while (c2.moveToNext()) {
-                syncResult.stats.numEntries++;
+                     syncResult.stats.numEntries++;
 
-                id3 = c2.getString(COLUMNA_ID_REMOTA_CARRITOS);
-                descripcion = c2.getString(COLUMNA_DESCRIPCION);
-                ubicacion = c2.getString(COLUMNA_UBICACION);
-                disponible = c2.getInt(COLUMNA_DISPONIBLE);
-
-
-                com.example.ricardosernam.puntodeventa.web.Carrito match = expenseMap2.get(id3);
-
-                if (match != null) {  ////existen los mismos datos
-                    // Esta entrada existe, por lo que se remueve del mapeado
-                    expenseMap2.remove(id3);
-
-                    Uri existingUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
-
-                    // Comprobar si el gasto necesita ser actualizado
-                    boolean b = match.descripcion != null && !match.descripcion.equals(descripcion);
-                    boolean b2 = match.ubicacion != null && !match.ubicacion.equals(ubicacion);
-                    boolean b3 = match.disponible != disponible;
+                     id3 = c2.getString(COLUMNA_ID_REMOTA_CARRITOS);
+                     descripcion = c2.getString(COLUMNA_DESCRIPCION);
+                     ubicacion = c2.getString(COLUMNA_UBICACION);
+                     disponible = c2.getInt(COLUMNA_DISPONIBLE);
 
 
-                    if (b || b2 || b3) {
-                        Log.i(TAG, "Programando actualización de: " + existingUri + " CARRITO");
-                        ops2.add(ContentProviderOperation.newUpdate(existingUri)
-                                .withValue(ContractParaProductos.Columnas.DESCRIPCION, match.descripcion)
-                                .withValue(ContractParaProductos.Columnas.UBICACION, match.ubicacion)
-                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
-                                .build());
-                        syncResult.stats.numUpdates++;
-                    } else {
-                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " CARRITO");
-                    }
-                } else {
-                    // eliminamos los datos que no estan en local host
-                    Uri deleteUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
-                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " CARRITO");
-                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
-                    syncResult.stats.numDeletes++;
-                }
+                     com.example.ricardosernam.puntodeventa.web.Carrito match = expenseMap2.get(id3);
+
+                     if (match != null) {  ////existen los mismos datos
+                         // Esta entrada existe, por lo que se remueve del mapeado
+                         expenseMap2.remove(id3);
+
+                         Uri existingUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
+
+                         // Comprobar si el gasto necesita ser actualizado
+                         boolean b = match.descripcion != null && !match.descripcion.equals(descripcion);
+                         boolean b2 = match.ubicacion != null && !match.ubicacion.equals(ubicacion);
+                         boolean b3 = match.disponible != disponible;
+
+
+                         if (b || b2 || b3) {
+                             Log.i(TAG, "Programando actualización de: " + existingUri + " CARRITO");
+                             ops2.add(ContentProviderOperation.newUpdate(existingUri)
+                                     .withValue(ContractParaProductos.Columnas.DESCRIPCION, match.descripcion)
+                                     .withValue(ContractParaProductos.Columnas.UBICACION, match.ubicacion)
+                                     .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                     .build());
+                             syncResult.stats.numUpdates++;
+                         } else {
+                             Log.i(TAG, "No hay acciones para este registro: " + existingUri + " CARRITO");
+                         }
+                     } else {
+                         // eliminamos los datos que no estan en local host
+                         Uri deleteUri = ContractParaProductos.CONTENT_URI_CARRITO.buildUpon().appendPath(id3).build();
+                         Log.i(TAG, "Programando eliminación de: " + deleteUri + " CARRITO");
+                         ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
+                         syncResult.stats.numDeletes++;
+                     }
+                 }
+             }
+            //assert c2 != null;
+            if (c2 != null) {
+                c2.close();
             }
-            c2.close();
 
             ////insertamos los valores de la base de datos
             for (com.example.ricardosernam.puntodeventa.web.Carrito e : expenseMap2.values()) {
@@ -453,9 +469,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Uri uri2 = ContractParaProductos.CONTENT_URI_INVENTARIO;
             String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
             Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO, select2, null, null);
-            assert c2 != null;
+            //assert c2 != null;
 
-            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
+            //Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO.");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Encontrar datos obsoletos
             String id2;
@@ -463,49 +479,52 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String fecha;
             int disponible;
 
-            while (c2.moveToNext()) {
-                syncResult.stats.numEntries++;
+            if ((c2 != null ? c2.getCount() : 0) > 0) {  ///api 19
+                while (c2.moveToNext()) {
+                    syncResult.stats.numEntries++;
 
-                id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO);
-                idcarrito = c2.getInt(COLUMNA_ID_CARRITO_INVENTARIO);
-                fecha = c2.getString(COLUMNA_FECHA_INVENTARIO);
-                disponible = c2.getInt(COLUMNA_DISPONIBLE);
+                    id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO);
+                    idcarrito = c2.getInt(COLUMNA_ID_CARRITO_INVENTARIO);
+                    fecha = c2.getString(COLUMNA_FECHA_INVENTARIO);
+                    disponible = c2.getInt(COLUMNA_DISPONIBLE);
 
 
+                    com.example.ricardosernam.puntodeventa.web.Inventario match = expenseMap2.get(id2);
 
-                com.example.ricardosernam.puntodeventa.web.Inventario match = expenseMap2.get(id2);
+                    if (match != null) {  ////existen los mismos datos
+                        // Esta entrada existe, por lo que se remueve del mapeado
+                        expenseMap2.remove(id2);
 
-                if (match != null) {  ////existen los mismos datos
-                    // Esta entrada existe, por lo que se remueve del mapeado
-                    expenseMap2.remove(id2);
+                        Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
 
-                    Uri existingUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
+                        // Comprobar si el gasto necesita ser actualizado
+                        boolean b = match.idcarrito != idcarrito;
+                        boolean b1 = match.fecha != null && !match.fecha.equals(fecha);
+                        boolean b2 = match.disponible != disponible;
 
-                    // Comprobar si el gasto necesita ser actualizado
-                    boolean b = match.idcarrito != idcarrito;
-                    boolean b1 = match.fecha != null && !match.fecha.equals(fecha);
-                    boolean b2 = match.disponible != disponible;
-
-                    if (b || b1 || b2) {
-                        Log.i(TAG, "Programando actualización de: " + existingUri + " INVENTARIO");
-                        ops2.add(ContentProviderOperation.newUpdate(existingUri)
-                                .withValue(ContractParaProductos.Columnas.ID_CARRITO, match.idcarrito)
-                                .withValue(ContractParaProductos.Columnas.FECHA, match.fecha)
-                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
-                                .build());
-                        syncResult.stats.numUpdates++;
+                        if (b || b1 || b2) {
+                            Log.i(TAG, "Programando actualización de: " + existingUri + " INVENTARIO");
+                            ops2.add(ContentProviderOperation.newUpdate(existingUri)
+                                    .withValue(ContractParaProductos.Columnas.ID_CARRITO, match.idcarrito)
+                                    .withValue(ContractParaProductos.Columnas.FECHA, match.fecha)
+                                    .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                    .build());
+                            syncResult.stats.numUpdates++;
+                        } else {
+                            Log.i(TAG, "No hay acciones para este registro: " + existingUri + " INVENTARIO");
+                        }
                     } else {
-                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " INVENTARIO");
+                        // eliminamos los datos que no estan en local host
+                        Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
+                        Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO");
+                        ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
+                        syncResult.stats.numDeletes++;
                     }
-                } else {
-                    // eliminamos los datos que no estan en local host
-                    Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO.buildUpon().appendPath(id2).build();
-                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO");
-                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
-                    syncResult.stats.numDeletes++;
                 }
             }
-            c2.close();
+            if (c2 != null) {
+                c2.close();
+            }
 
             ////insertamos los valores de la base de datos
             for (com.example.ricardosernam.puntodeventa.web.Inventario e : expenseMap2.values()) {
@@ -563,9 +582,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Uri uri = ContractParaProductos.CONTENT_URI_PRODUCTO;
             String select = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
             Cursor c = resolver.query(uri, PROJECTION_PRODUCTOS, select, null, null);
-            assert c != null;
+            //assert c != null;
 
-            Log.i(TAG, "Se encontraron " + c.getCount() + " registros locales PRODUCTOS.");
+            //Log.i(TAG, "Se encontraron " + c.getCount() + " registros locales PRODUCTOS.");
 
             String id;
             String nombre;
@@ -575,57 +594,60 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             int disponible;
             String tipo_producto;
 
+            if ((c != null ? c.getCount() : 0) > 0) {  ///api 19
+                while (c.moveToNext()) {
+                    syncResult.stats.numEntries++;
 
-            while (c.moveToNext()) {
-                syncResult.stats.numEntries++;
+                    id = c.getString(COLUMNA_ID_REMOTA_PRODUCTOS);
+                    nombre = c.getString(COLUMNA_NOMBRE);
+                    precio = c.getDouble(COLUMNA_PRECIO);
+                    porcion = c.getDouble(COLUMNA_PORCION);
+                    guisado = c.getString(COLUMNA_GUISADO);
+                    disponible = c.getInt(COLUMNA_DISPONIBLE_PRODUCTO);
+                    tipo_producto = c.getString(COLUMNA_TIPO_PRODUCTO);
 
-                id = c.getString(COLUMNA_ID_REMOTA_PRODUCTOS);
-                nombre = c.getString(COLUMNA_NOMBRE);
-                precio = c.getDouble(COLUMNA_PRECIO);
-                porcion = c.getDouble(COLUMNA_PORCION);
-                guisado = c.getString(COLUMNA_GUISADO);
-                disponible = c.getInt(COLUMNA_DISPONIBLE_PRODUCTO);
-                tipo_producto = c.getString(COLUMNA_TIPO_PRODUCTO);
+                    Producto match = expenseMap.get(id);
 
-                Producto match = expenseMap.get(id);
+                    if (match != null) {  ////existen los mismos datos
+                        // Esta entrada existe, por lo que se remueve del mapeado
+                        expenseMap.remove(id);
 
-                if (match != null) {  ////existen los mismos datos
-                    // Esta entrada existe, por lo que se remueve del mapeado
-                    expenseMap.remove(id);
+                        Uri existingUri = ContractParaProductos.CONTENT_URI_PRODUCTO.buildUpon().appendPath(id).build();
 
-                    Uri existingUri = ContractParaProductos.CONTENT_URI_PRODUCTO.buildUpon().appendPath(id).build();
+                        // Comprobar si el gasto necesita ser actualizado
+                        boolean b = match.nombre != null && !match.nombre.equals(nombre);
+                        boolean b1 = match.precio != precio;
+                        boolean b2 = match.porcion != porcion;
+                        boolean b3 = match.guisado != null && !match.guisado.equals(guisado);
+                        boolean b4 = match.disponible != disponible;
+                        boolean b5 = match.tipo_producto != null && !match.tipo_producto.equals(guisado);
 
-                    // Comprobar si el gasto necesita ser actualizado
-                    boolean b = match.nombre != null && !match.nombre.equals(nombre);
-                    boolean b1 = match.precio != precio;
-                    boolean b2 = match.porcion != porcion;
-                    boolean b3 = match.guisado != null && !match.guisado.equals(guisado);
-                    boolean b4 = match.disponible != disponible;
-                    boolean b5 = match.tipo_producto != null && !match.tipo_producto.equals(guisado);
-
-                    if (b || b1 || b2 || b3 || b4 || b5) {
-                        Log.i(TAG, "Programando actualización de: " + existingUri + " PRODUCTOS");
-                        ops.add(ContentProviderOperation.newUpdate(existingUri)
-                                .withValue(ContractParaProductos.Columnas.NOMBRE, match.nombre)
-                                .withValue(ContractParaProductos.Columnas.PRECIO, match.precio)
-                                .withValue(ContractParaProductos.Columnas.PORCION, match.porcion)
-                                .withValue(ContractParaProductos.Columnas.GUISADO, match.guisado)
-                                .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
-                                .withValue(ContractParaProductos.Columnas.TIPO_PRODUCTO, match.tipo_producto)
-                                .build());
-                        syncResult.stats.numUpdates++;
+                        if (b || b1 || b2 || b3 || b4 || b5) {
+                            Log.i(TAG, "Programando actualización de: " + existingUri + " PRODUCTOS");
+                            ops.add(ContentProviderOperation.newUpdate(existingUri)
+                                    .withValue(ContractParaProductos.Columnas.NOMBRE, match.nombre)
+                                    .withValue(ContractParaProductos.Columnas.PRECIO, match.precio)
+                                    .withValue(ContractParaProductos.Columnas.PORCION, match.porcion)
+                                    .withValue(ContractParaProductos.Columnas.GUISADO, match.guisado)
+                                    .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                    .withValue(ContractParaProductos.Columnas.TIPO_PRODUCTO, match.tipo_producto)
+                                    .build());
+                            syncResult.stats.numUpdates++;
+                        } else {
+                            Log.i(TAG, "No hay acciones para este registro: " + existingUri + " PRODUCTOS");
+                        }
                     } else {
-                        Log.i(TAG, "No hay acciones para este registro: " + existingUri + " PRODUCTOS");
+                        // eliminamos los datos que no estan en local host
+                        Uri deleteUri = ContractParaProductos.CONTENT_URI_PRODUCTO.buildUpon().appendPath(id).build();
+                        Log.i(TAG, "Programando eliminación de: " + deleteUri + " PRODUCTOS");
+                        ops.add(ContentProviderOperation.newDelete(deleteUri).build());
+                        syncResult.stats.numDeletes++;
                     }
-                } else {
-                    // eliminamos los datos que no estan en local host
-                    Uri deleteUri = ContractParaProductos.CONTENT_URI_PRODUCTO.buildUpon().appendPath(id).build();
-                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " PRODUCTOS");
-                    ops.add(ContentProviderOperation.newDelete(deleteUri).build());
-                    syncResult.stats.numDeletes++;
                 }
             }
-            c.close();
+            if (c != null) {
+                c.close();
+            }
 
             ////insertamos los valores de la base de datos
             for (Producto e : expenseMap.values()) {
@@ -655,9 +677,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.i(TAG, "No se requiere sincronización PRODUCTOS");
             }
 
-            Cursor idinventario=database.rawQuery("select idRemota from inventarios",null);
-                if(idinventario.moveToFirst()) {///si hay un elemento
-                    inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO_DETALLE, idinventario.getString(0));
+            @SuppressLint("Recycle") Cursor idinventario=database.rawQuery("select idRemota from inventarios",null);
+              if(idinventario.moveToFirst()) {///si hay un elemento
+                  inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO_DETALLE, idinventario.getString(0));
                     sincronizarAhora(getContext(), false, null);
                 }
         }
@@ -685,10 +707,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             // Consultar registros remotos actuales
             Uri uri2 = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
             String select2 = ContractParaProductos.Columnas.ID_REMOTA + " IS NOT NULL";
-            Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO_DETALLES, select2, null, null);
-            assert c2 != null;
+            @SuppressLint("Recycle") Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO_DETALLES, select2, null, null);
+            //assert c2 != null;
 
-            Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO_DETALLES.");
+            //Log.i(TAG, "Se encontraron " + c2.getCount() + " registros locales INVENTARIO_DETALLES.");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Encontrar datos obsoletos
             String id2;
@@ -697,45 +719,47 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Double existente_final;
 
 
-            while (c2.moveToNext()) {
-                syncResult.stats.numEntries++;
+            if ((c2 != null ? c2.getCount() : 0) > 0) {  ///api 19
+                while (c2.moveToNext()) {
+                    syncResult.stats.numEntries++;
 
-                id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO_DETALLE);
-                idproducto = c2.getString(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
-                existente_inicial = c2.getDouble(COLUMNA_EXISTENTE_INICIAL);
-                existente_final = c2.getDouble(COLUMNA_EXISTENTE_FINAL);
-
-
-                Inventario_detalle match2 = expenseMap2.get(id2);
-
-                if (match2 != null) {  ////existen los mismos datos
-                    // Esta entrada existe, por lo que se remueve del mapeado
-                    expenseMap2.remove(id2);
-
-                    Uri existingUri2 = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE.buildUpon().appendPath(id2).build();
-
-                    boolean b = match2.idproducto != null && !match2.idproducto.equals(idproducto);
-                    boolean b1 = match2.inventario_inicial != existente_inicial;
-                    boolean b2 = match2.inventario_final != existente_final;
+                    id2 = c2.getString(COLUMNA_ID_REMOTA_INVENTARIO_DETALLE);
+                    idproducto = c2.getString(COLUMNA_ID_PRODUCTO_INVENTARIO_DETALLE);
+                    existente_inicial = c2.getDouble(COLUMNA_EXISTENTE_INICIAL);
+                    existente_final = c2.getDouble(COLUMNA_EXISTENTE_FINAL);
 
 
-                    if (b || b2|| b1) {
-                        Log.i(TAG, "Programando actualización de: " + existingUri2 + " INVENTARIO_DETALLES");
-                        ops2.add(ContentProviderOperation.newUpdate(existingUri2)
-                                .withValue(ContractParaProductos.Columnas.ID_PRODUCTO, match2.idproducto)
-                                .withValue(ContractParaProductos.Columnas.INVENTARIO_INICIAL, match2.inventario_inicial)
-                                .withValue(ContractParaProductos.Columnas.INVENTARIO_FINAL, match2.inventario_final)
-                                .build());
-                        syncResult.stats.numUpdates++;
+                    Inventario_detalle match2 = expenseMap2.get(id2);
+
+                    if (match2 != null) {  ////existen los mismos datos
+                        // Esta entrada existe, por lo que se remueve del mapeado
+                        expenseMap2.remove(id2);
+
+                        Uri existingUri2 = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE.buildUpon().appendPath(id2).build();
+
+                        boolean b = match2.idproducto != null && !match2.idproducto.equals(idproducto);
+                        boolean b1 = !match2.inventario_inicial.equals(existente_inicial);
+                        boolean b2 = !match2.inventario_final.equals(existente_final);
+
+
+                        if (b || b2 || b1) {
+                            Log.i(TAG, "Programando actualización de: " + existingUri2 + " INVENTARIO_DETALLES");
+                            ops2.add(ContentProviderOperation.newUpdate(existingUri2)
+                                    .withValue(ContractParaProductos.Columnas.ID_PRODUCTO, match2.idproducto)
+                                    .withValue(ContractParaProductos.Columnas.INVENTARIO_INICIAL, match2.inventario_inicial)
+                                    .withValue(ContractParaProductos.Columnas.INVENTARIO_FINAL, match2.inventario_final)
+                                    .build());
+                            syncResult.stats.numUpdates++;
+                        } else {
+                            Log.i(TAG, "No hay acciones para este registro: " + existingUri2 + " INVENTARIO_DETALLES");
+                        }
                     } else {
-                        Log.i(TAG, "No hay acciones para este registro: " + existingUri2 + " INVENTARIO_DETALLES");
+                        // eliminamos los datos que no estan en local host
+                        Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE.buildUpon().appendPath(id2).build();
+                        Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO_DETALLES");
+                        ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
+                        syncResult.stats.numDeletes++;
                     }
-                } else {
-                    // eliminamos los datos que no estan en local host
-                    Uri deleteUri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE.buildUpon().appendPath(id2).build();
-                    Log.i(TAG, "Programando eliminación de: " + deleteUri + " INVENTARIO_DETALLES");
-                    ops2.add(ContentProviderOperation.newDelete(deleteUri).build());
-                    syncResult.stats.numDeletes++;
                 }
             }
             //c2.close();
@@ -764,7 +788,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Log.i(TAG, "Sincronización finalizada  INVENTARIO_DETALLES.");
 
-                SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO);   ///actualizamos el disponible a cero
+                SyncAdapter.sincronizarAhora(getContext(), true, Constantes.UPDATE_URL_INVENTARIO);   ///actualizamos el inventario disponible a cero
 
             } else {
                 Log.i(TAG, "No se requiere sincronización INVENTARIO_DETALLES");
@@ -772,74 +796,96 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
     ////////////////////////////////////////////////////////metodos de incersion //////////////////////////////////////////////////////////
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void realizarSincronizacionRemota(final String url) {
         Log.i(TAG, "Actualizando el servidor...");
+        /*String projection[] = null;
+        Uri uri = null;
+        String selection = null;
+        String selectionArgs[] = null;*/
 
         if (url.equals(UPDATE_URL_INVENTARIO)) {  ///actualizamos al importar
-           iniciarActualizacion(url);
+           iniciarActualizacion(url); //esta vacio en versiones nuevas
+            /*Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
+            String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
+            String selectionArgs[] = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};*/
 
-            final Cursor c = obtenerRegistrosSucios(url);
+            //@SuppressLint("Recycle") final Cursor c = obtenerRegistrosSucios(url);
+            //final Cursor c = resolver.query(uri, PROJECTION_INVENTARIO, selection, selectionArgs, null);
+            //final Cursor c=database.query("inventarios", PROJECTION_INVENTARIO, selection, selectionArgs,null,null,null);
 
-
+            final Cursor c=database.rawQuery("select * from inventarios where pendiente_insercion=1", null);
+            //Toast.makeText(getContext(), "se encontro "+ c.getString(3), Toast.LENGTH_LONG).show();
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO");
 
-            if (c.getCount() > 0) {
+            //@SuppressLint("Recycle") Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO_DETALLES, select2, null, null);
+
+            //Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO");
+            if (c.getCount() > 0) {  ///api 19
+            //if (c != null) {  ///api 19
+
+            //if (Objects.requireNonNull(c).moveToFirst()) {
+            //assert c != null;
+            //if (c.getCount() >0 ) {  ///api 19    esta vacio en versiones nuevas
                 while (c.moveToNext()) {
+                        @SuppressLint("Recycle") Cursor idinventario=database.rawQuery("select idRemota from inventarios",null);
+                        //if(idinventario.moveToFirst()) {///si hay un elemento
+                        //if ((idinventario != null ? idinventario.getCount() : 0) > 0) {  ///api 19
+                        if(idinventario.moveToFirst()){
+                    VolleySingleton.getInstance(getContext()).addToRequestQueue(
+                            new JsonObjectRequest(Request.Method.POST,
+                                    UPDATE_URL_INVENTARIO+idinventario.getString(0),
+                                    Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            procesarRespuestaInsert(response, 0, url, c.getCount());
+                                            }
+                                    },
+                                    new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d(TAG, "Error Volley: " + error.getMessage()); ///error aqui
+                                    realizarSincronizacionRemota(url);
 
-                    Cursor idinventario=database.rawQuery("select idRemota from inventarios",null);
-
-                    if(idinventario.moveToFirst()) {///si hay un elemento
-                VolleySingleton.getInstance(getContext()).addToRequestQueue(
-                        new JsonObjectRequest(Request.Method.POST,
-                                UPDATE_URL_INVENTARIO+idinventario.getString(0),
-                                //Constantes.UPDATE_URL_INVENTARIO,
-                                Utilidades.deCursorAJSONObject(c, url),  //////////////////////////////////////////////
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        procesarRespuestaInsert(response, 0, url, c.getCount());
-                                        }
-                                },
-                                new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d(TAG, "Error Volley: " + error.getMessage()); ///error aqui
-                                realizarSincronizacionRemota(url);
-
-                            }
-                        }
-
-                        ) {
-                            @Override
-                            public Map<String, String> getHeaders() {
-                                Map<String, String> headers = new HashMap<String, String>();
-                                headers.put("Content-Type", "application/json; charset=utf-8");
-                                headers.put("Accept", "application/json");
-                                return headers;
+                                }
                             }
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8" + getParamsEncoding();
+                            ) {
+                                @Override
+                                public Map<String, String> getHeaders() {
+                                    Map<String, String> headers = new HashMap<String, String>();
+                                    headers.put("Content-Type", "application/json; charset=utf-8");
+                                    headers.put("Accept", "application/json");
+                                    return headers;
+                                }
+
+                                @Override
+                                public String getBodyContentType() {
+                                    return "application/json; charset=utf-8" + getParamsEncoding();
+                                }
                             }
-                        }
-                );
-            }
+                    );
                 }
+                    }
 
-            } else {
-                Log.i(TAG, "No se requiere sincronización");
+               }
+                else {
+                    Log.i(TAG, "No se requiere sincronización UPDATE INVENTARIO");
+                //}
             }
-            c.close();
+                c.close();
         }
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             iniciarActualizacion(url);
 
-            final Cursor c = obtenerRegistrosSucios(url);
+            //final Cursor c = obtenerRegistrosSucios(url);
+            final Cursor c=database.rawQuery("select * from inventario_detalles where pendiente_insercion=1", null);
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO_DETALLES");   ////muestra la cantidad a sincronizar
 
-            if (c.getCount() > 0) {
+                if (c.getCount()> 0) {  ///api 19
                 while (c.moveToNext()) {
                     Log.i(TAG, "Va en " + c.getPosition());   ////muestra la cantidad a sincronizar
                     final int idLocal = c.getInt(COLUMNA_ID_INVENTARIO_DETALLES);
@@ -852,7 +898,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 procesarRespuestaInsert(response, idLocal, url, c.getCount());
-
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
@@ -889,16 +934,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 Log.i(TAG, "No se requiere sincronización");
             }
-            c.close();
+                c.close();
         }
         else if (url.equals(Constantes.INSERT_URL_VENTA)) {
             iniciarActualizacion(url);
 
-            final Cursor c = obtenerRegistrosSucios(url);
+            //final Cursor c = obtenerRegistrosSucios(url);
+            final Cursor c=database.rawQuery("select * from ventas where pendiente_insercion=1", null);
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios VENTAS.");
 
-            if (c.getCount() > 0) {
+            if (c.getCount() > 0) {  ///api 19
                 while (c.moveToNext()) {
                     final int idLocal = c.getInt(COLUMNA_ID_VENTA);
 
@@ -939,7 +985,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
 
             } else {
-                Log.i(TAG, "No se requiere sincronización");   ////si no hay venta
+                Log.i(TAG, "No se requiere sincronización VENTAS");   ////si no hay venta
                 Log.i(TAG, "RECREA BD");
                 Sincronizar.carritos.setEnabled(true);
                 Sincronizar.carritos.setAdapter(null);
@@ -961,16 +1007,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
                 DatabaseHelper.limpiar(admin.getWritableDatabase());
             }
-            c.close();
+                c.close();
         }
         else if (url.equals(Constantes.INSERT_URL_VENTA_DETALLE)) {
             iniciarActualizacion(url);   //NO OBTIENE BIEN LA CUENTA
 
-            final Cursor c = obtenerRegistrosSucios(url);
+            //final Cursor c = obtenerRegistrosSucios(url);
+            final Cursor c=database.rawQuery("select * from venta_detalles where pendiente_insercion=1", null);
+
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios VENTA DETALLE.");
 
-            if (c.getCount() > 0) {
+                if (c.getCount()  > 0) {  ///api 19
                 while (c.moveToNext()) {
                     final int idLocal = c.getInt(COLUMNA_ID_VENTA_DETALLES);
 
@@ -1011,7 +1059,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 Log.i(TAG, "No se requiere sincronización VENTA_DETALLE");
             }
-            c.close();
+            //c.close();
+                c.close();
         }
     }
 
@@ -1027,14 +1076,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Uri uri = null;
         String selection = null;
         String selectionArgs[] = null;
-        if (url.equals(UPDATE_URL_INVENTARIO)) {
+        /*if (url.equals(UPDATE_URL_INVENTARIO)) {
             uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
             selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
             selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
             projection = PROJECTION_INVENTARIO;
-        }
+        }*/
 
-        else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
+         if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
             selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
             selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
@@ -1117,6 +1166,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * @param idRemota id remota*/
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void finalizarActualizacion(String idRemota, int idLocal, String url, int cuenta) {     /////actualizamos lo insertado en la app
 
         if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
@@ -1166,7 +1217,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(ContractParaProductos.Columnas.ID_REMOTA, idRemota);
 
             resolver.update(uri, v, selection, selectionArgs);
-            if(idLocal==(cuenta*2)){
+            if(idLocal==(cuenta*2)){    //idlocal son 10      cuenta es siempre la mitad
                 Log.i(TAG, "RECREA BD");
                 Sincronizar.carritos.setEnabled(true);
                 Sincronizar.carritos.setAdapter(null);
@@ -1196,8 +1247,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      *
      * @param response Respuesta en formato Json*/
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("Recycle")
-    public void procesarRespuestaInsert(JSONObject response, int idLocal, String url, int cuenta) {
+    private void procesarRespuestaInsert(JSONObject response, int idLocal, String url, int cuenta) {
 ///////////////////////////////obtenemos los datos por php//////////////////////////////////////////////////////////////////////////////////////////////////////////
         Cursor consulta;
         if (url.equals(UPDATE_URL_INVENTARIO)) {
@@ -1227,6 +1280,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
                 if(copia.moveToFirst()) {///si hay un elemento
+                //if ((copia != null ? copia.getCount() : 0) > 0) {  ///api 19
                     values.put("inventario_final", copia.getString(1));
                     values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                     database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
@@ -1292,14 +1346,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.i(TAG, "Conteo "+conteo);
                                                                             ///idRemota es idventa
                 consulta = database.rawQuery("select * from venta_detalles where idRemota='"+conteo+"' and pendiente_insercion=0", null);
-                if (consulta.getCount()>0) {///si hay un elemento
+                if (consulta.getCount()  > 0) {
                     while (consulta.moveToNext()) {
                         values.put("idRemota", Integer.parseInt(idRemota));
                         values.put("cantidad", consulta.getString(1));
                         values.put("idproducto", consulta.getString(3));
                         values.put("precio", consulta.getDouble(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                        resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
+                        ///resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
+                        database.insertOrThrow("venta_detalles", null, values);
                         Log.i("Datos", String.valueOf(values));    ////mostramos que valores se han insertado
                     }
                 }
