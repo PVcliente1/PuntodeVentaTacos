@@ -164,7 +164,6 @@ public static class Columnas implements BaseColumns {
     /////////////////////ventas///////////////////7
     public final static String IP = "ip";
     public final static String IMPORTADO = "importado";
-    //public final static String EDITTEXT = "edittext";
 
 
 

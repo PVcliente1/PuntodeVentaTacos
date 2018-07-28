@@ -39,7 +39,6 @@ public class Inventario extends Fragment {
         DatabaseHelper admin=new DatabaseHelper(getContext(), ProviderDeProductos.DATABASE_NAME, null, ProviderDeProductos.DATABASE_VERSION);
         db=admin.getWritableDatabase();
 
-        //SyncAdapter.inicializarSyncAdapter(getContext(), Constantes.GET_URL_INVENTARIO);
         emptyView = (TextView) view.findViewById(R.id.recyclerview_data_empty);
 
         recyclerView = view.findViewById(R.id.reciclador);

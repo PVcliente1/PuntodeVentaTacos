@@ -82,7 +82,6 @@ public class Sincronizar extends Fragment {
 
             if(estado.getInt(1)==0) { //importar esta deshabilitado
                 carritos.setEnabled(false);   //spinner
-                //rgb(230,228,228)
 
                 importar.setEnabled(false);
                 exportar.setEnabled(true);    //boton
@@ -122,7 +121,6 @@ public class Sincronizar extends Fragment {
                         db.update("estados", values, null, null);
 
                         new Constantes("http://"+String.valueOf(ip.getText()));
-                        //new Constantes("http://192.168.0.10");
                     }
                     }
                 else{

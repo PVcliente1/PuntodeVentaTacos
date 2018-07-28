@@ -808,38 +808,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void realizarSincronizacionRemota(final String url) {
         Log.i(TAG, "Actualizando el servidor...");
-        /*String projection[] = null;
-        Uri uri = null;
-        String selection = null;
-        String selectionArgs[] = null;*/
-
         if (url.equals(UPDATE_URL_INVENTARIO)) {  ///actualizamos al importar
-           iniciarActualizacion(url); //esta vacio en versiones nuevas
-            /*Uri uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            String selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            String selectionArgs[] = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};*/
-
-            //@SuppressLint("Recycle") final Cursor c = obtenerRegistrosSucios(url);
-            //final Cursor c = resolver.query(uri, PROJECTION_INVENTARIO, selection, selectionArgs, null);
-            //final Cursor c=database.query("inventarios", PROJECTION_INVENTARIO, selection, selectionArgs,null,null,null);
-
+           iniciarActualizacion(url);
             final Cursor c=database.rawQuery("select * from inventarios where pendiente_insercion=1", null);
-            //Toast.makeText(getContext(), "se encontro "+ c.getString(3), Toast.LENGTH_LONG).show();
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO");
 
-            //@SuppressLint("Recycle") Cursor c2 = resolver.query(uri2, PROJECTION_INVENTARIO_DETALLES, select2, null, null);
-
-            //Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO");
             if (c.getCount() > 0) {  ///api 19
-            //if (c != null) {  ///api 19
-
-            //if (Objects.requireNonNull(c).moveToFirst()) {
-            //assert c != null;
-            //if (c.getCount() >0 ) {  ///api 19    esta vacio en versiones nuevas
                 while (c.moveToNext()) {
                         @SuppressLint("Recycle") Cursor idinventario=database.rawQuery("select idRemota from inventarios",null);
-                        //if(idinventario.moveToFirst()) {///si hay un elemento
-                        //if ((idinventario != null ? idinventario.getCount() : 0) > 0) {  ///api 19
+
                         if(idinventario.moveToFirst()){
                     VolleySingleton.getInstance(getContext()).addToRequestQueue(
                             new JsonObjectRequest(Request.Method.POST,
@@ -888,7 +865,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         else if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
             iniciarActualizacion(url);
 
-            //final Cursor c = obtenerRegistrosSucios(url);
             final Cursor c=database.rawQuery("select * from inventario_detalles where pendiente_insercion=1", null);
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios INVENTARIO_DETALLES");   ////muestra la cantidad a sincronizar
@@ -947,7 +923,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         else if (url.equals(Constantes.INSERT_URL_VENTA)) {
             iniciarActualizacion(url);
 
-            //final Cursor c = obtenerRegistrosSucios(url);
             final Cursor c=database.rawQuery("select * from ventas where pendiente_insercion=1", null);
 
             Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios VENTAS.");
@@ -1020,7 +995,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         else if (url.equals(Constantes.INSERT_URL_VENTA_DETALLE)) {
             iniciarActualizacion(url);   //NO OBTIENE BIEN LA CUENTA
 
-            //final Cursor c = obtenerRegistrosSucios(url);
             final Cursor c=database.rawQuery("select * from venta_detalles where pendiente_insercion=1", null);
 
 
@@ -1077,43 +1051,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * con "estado de sincronización"
      *
      * @return Cursor con el registro.*/
-
-
-    private Cursor obtenerRegistrosSucios(String url) {
-        String projection[] = null;
-        Uri uri = null;
-        String selection = null;
-        String selectionArgs[] = null;
-        /*if (url.equals(UPDATE_URL_INVENTARIO)) {
-            uri = ContractParaProductos.CONTENT_URI_INVENTARIO;
-            selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection = PROJECTION_INVENTARIO;
-        }*/
-
-         if (url.equals(Constantes.UPDATE_URL_INVENTARIO_DETALLE)) {
-            uri = ContractParaProductos.CONTENT_URI_INVENTARIO_DETALLE;
-            selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection=PROJECTION_INVENTARIO_DETALLES;
-        }
-        else if (url.equals(Constantes.INSERT_URL_VENTA)) {
-            uri = ContractParaProductos.CONTENT_URI_VENTA;
-            selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection=PROJECTION_VENTA;
-        }
-        else if (url.equals(Constantes.INSERT_URL_VENTA_DETALLE)) {
-            uri = ContractParaProductos.CONTENT_URI_VENTA_DETALLE;
-            selection = ContractParaProductos.Columnas.PENDIENTE_INSERCION + "=? AND " + ContractParaProductos.Columnas.ESTADO + "=?";
-            selectionArgs = new String[]{"1", ContractParaProductos.ESTADO_SYNC + ""};
-            projection=PROJECTION_VENTA_DETALLE;
-        }
-        return resolver.query(uri, projection, selection, selectionArgs, null);
-    }
-
-
-
     /**
      * Cambia a estado "de sincronización" el registro que se acaba de insertar localmente*/
 
@@ -1288,7 +1225,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Cursor copia=database.rawQuery("select idproducto, inventario_inicial, idRemota from inventario_detalles" ,null);
                 if(copia.moveToFirst()) {///si hay un elemento
-                //if ((copia != null ? copia.getCount() : 0) > 0) {  ///api 19
                     values.put("inventario_final", copia.getString(1));
                     values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
                     database.update("inventario_detalles", values, "idproducto='" + copia.getString(0) + "'", null);
@@ -1361,7 +1297,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         values.put("idproducto", consulta.getString(3));
                         values.put("precio", consulta.getDouble(2));
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                        ///resolver.insert(ContractParaProductos.CONTENT_URI_VENTA_DETALLE, values);   ////aqui esta el error
                         database.insertOrThrow("venta_detalles", null, values);
                         Log.i("Datos", String.valueOf(values));    ////mostramos que valores se han insertado
                     }

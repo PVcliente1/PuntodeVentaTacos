@@ -188,7 +188,6 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                         }
                         values.put("fecha", formattedDate);
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);
-                        //getContext().getContentResolver().insert(ContractParaProductos.CONTENT_URI_VENTA, values);   ////aqui esta el error*/
                         db.insertOrThrow("ventas", null, values);
 
 

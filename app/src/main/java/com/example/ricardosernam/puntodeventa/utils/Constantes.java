@@ -9,7 +9,6 @@ import com.example.ricardosernam.puntodeventa.Sincronizar.Sincronizar;
  * Constantes
  */
 public class Constantes {
-    //public EditText ip;
 
     public static  String GET_URL_CARRITO;
 
