@@ -317,7 +317,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 new Runnable() {
                                     public void run() {
                                         Sincronizar.progressDialog.dismiss();
-                                        Toast.makeText(getContext(), "Selecciona otro carrito o vuelve a buscar", Toast.LENGTH_LONG).show();  ////error con los carritos
+                                        Toast.makeText(getContext(), "Vuelve a buscar y selecciona otro carrito", Toast.LENGTH_LONG).show();  ////error con los carritos
                                         Sincronizar.carritos.setAdapter(null);
                                     }
                                 }, 3000);
