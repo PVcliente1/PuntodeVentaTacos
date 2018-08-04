@@ -91,7 +91,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Carritos " />
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner"
+                    android:orientation="vertical">
                 <Spinner
                     android:id="@+id/SpnCarritos"
                     android:layout_width="match_parent"
@@ -99,10 +103,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:popupBackground="?attr/colorButtonNormal"
-                    android:background="@drawable/spinner">
+                    >
+
                     <!--android:entries="@array/Games">
-                    android:backgroundTint="@color/cardview_dark_background"-->
+                    android:background="@drawable/spinner"-->
                 </Spinner>
+                </LinearLayout>
             </LinearLayout>
 
         <Button
