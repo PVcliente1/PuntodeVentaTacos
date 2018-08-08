@@ -46,7 +46,7 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
     private CardView cobro;
     private TextView total;
     private SQLiteDatabase db;
-    private Cursor datosSeleccionado, productos, existente, carrito, venta;
+    private Cursor datosSeleccionado, productos, existente, carrito, venta, inventario;
     private TextView emptyView;
     private ArrayList<Pro_ventas_class> itemsProductos;
     private ArrayList<Cobrar_ventas_class> itemsCobrar= new ArrayList <>();
@@ -181,10 +181,16 @@ public class Ventas extends Fragment  {     /////Fragment de categoria ventas
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd H:m");
                         String formattedDate = df.format(c.getTime());
 
-                        carrito=db.rawQuery("select idcarrito from inventarios" ,null);
+                        carrito=db.rawQuery("select idRemota, ubicacion, vendedor from carritos" ,null);
+                        inventario=db.rawQuery("select idRemota from inventarios" ,null);
 
                         if(carrito.moveToFirst()) {
                             values.put("idcarrito", carrito.getString(0));
+                            values.put("ubicacion", carrito.getString(1));
+                            values.put("vendedor", carrito.getString(2));
+                        }
+                        if(inventario.moveToFirst()) {
+                            values.put("idinventario", inventario.getString(0));
                         }
                         values.put("fecha", formattedDate);
                         values.put(ContractParaProductos.Columnas.PENDIENTE_INSERCION, 1);

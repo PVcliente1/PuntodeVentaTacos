@@ -129,6 +129,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int COLUMNA_ID_CARRITO_INVENTARIO = 2;    ////
     private static final int COLUMNA_FECHA_INVENTARIO = 3;    //////
     private static final int COLUMNA_DISPONIBLE = 4;
+    private static final int COLUMNA_VENDEDOR = 5;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     private static final String[] PROJECTION_INVENTARIO_DETALLES = new String[]{
@@ -334,7 +335,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void actualizarDatosLocales(JSONObject response, SyncResult syncResult, String url) {   ///aqui esta el error
-///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
+/////////////////////////////////////////////// CARRITO /////////////////////////////////////////////////////7
         if (url.equals(Constantes.GET_URL_CARRITO)) {
             JSONArray gastos = null;
 
@@ -369,6 +370,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
              String descripcion;
              String ubicacion;
              int disponible;
+             String vendedor;
+
 
             //if ((c2.moveToFirst())){
             if ((c2 != null ? c2.getCount() : 0) > 0) {  ///api 19
@@ -379,9 +382,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                      descripcion = c2.getString(COLUMNA_DESCRIPCION);
                      ubicacion = c2.getString(COLUMNA_UBICACION);
                      disponible = c2.getInt(COLUMNA_DISPONIBLE);
+                     vendedor= c2.getString(COLUMNA_VENDEDOR);
 
 
-                     com.example.ricardosernam.puntodeventa.web.Carrito match = expenseMap2.get(id3);
+
+                com.example.ricardosernam.puntodeventa.web.Carrito match = expenseMap2.get(id3);
 
                      if (match != null) {  ////existen los mismos datos
                          // Esta entrada existe, por lo que se remueve del mapeado
@@ -393,14 +398,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                          boolean b = match.descripcion != null && !match.descripcion.equals(descripcion);
                          boolean b2 = match.ubicacion != null && !match.ubicacion.equals(ubicacion);
                          boolean b3 = match.disponible != disponible;
+                         boolean b4 = match.vendedor!= null && !match.vendedor.equals(vendedor);
 
 
-                         if (b || b2 || b3) {
+
+                         if (b || b2 || b3 || b4) {
                              Log.i(TAG, "Programando actualización de: " + existingUri + " CARRITO");
                              ops2.add(ContentProviderOperation.newUpdate(existingUri)
                                      .withValue(ContractParaProductos.Columnas.DESCRIPCION, match.descripcion)
                                      .withValue(ContractParaProductos.Columnas.UBICACION, match.ubicacion)
                                      .withValue(ContractParaProductos.Columnas.DISPONIBLE, match.disponible)
+                                     .withValue(ContractParaProductos.Columnas.VENDEDOR, match.vendedor)
+
                                      .build());
                              syncResult.stats.numUpdates++;
                          } else {
@@ -428,6 +437,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .withValue(ContractParaProductos.Columnas.DESCRIPCION, e.descripcion)
                         .withValue(ContractParaProductos.Columnas.UBICACION, e.ubicacion)
                         .withValue(ContractParaProductos.Columnas.DISPONIBLE, e.disponible)
+                        .withValue(ContractParaProductos.Columnas.VENDEDOR, e.vendedor)
                         .build());
                 syncResult.stats.numInserts++;
             }
@@ -451,7 +461,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Sincronizar.buscar.getBackground().setColorFilter(null);  //habilitado*/
 
         }
-
+///////////////////////////////////////////////INVENTARIO/////////////////////////////////////////////////////7
         else if (url.equals(Constantes.GET_URL_INVENTARIO) ) {
             JSONArray gastos = null;
 

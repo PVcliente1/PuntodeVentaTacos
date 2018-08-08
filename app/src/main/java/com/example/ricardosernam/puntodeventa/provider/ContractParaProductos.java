@@ -146,6 +146,8 @@ public static class Columnas implements BaseColumns {
     public final static String ID_CARRITO = "idcarrito";
     public final static String FECHA = "fecha";
     public final static String DISPONIBLE = "disponible";
+    public final static String VENDEDOR = "vendedor";
+
 
     ////////////////////productos////////////
     public final static String NOMBRE = "nombre";
@@ -159,6 +161,7 @@ public static class Columnas implements BaseColumns {
     public final static String INVENTARIO_FINAL = "inventario_final";
 
     /////////////////////ventas///////////////////7
+    public final static String ID_INVENTARIO = "idinventario";
     public final static String CANTIDAD = "cantidad";
 
     /////////////////////ventas///////////////////7

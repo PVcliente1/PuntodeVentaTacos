@@ -26,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContractParaProductos.Columnas.DESCRIPCION + " TEXT, " +
                 ContractParaProductos.Columnas.UBICACION + " DOUBLE, " +
                 ContractParaProductos.Columnas.DISPONIBLE+ " DOUBLE, " +
+                ContractParaProductos.Columnas.VENDEDOR + " TEXT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT UNIQUE," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -66,7 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String cmd4 = "CREATE TABLE " + ContractParaProductos.VENTA + " (" +
                 ContractParaProductos.Columnas._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContractParaProductos.Columnas.ID_CARRITO + " INTEGER, " +
+                ContractParaProductos.Columnas.ID_INVENTARIO + " INTEGER, " +
                 ContractParaProductos.Columnas.FECHA + " TEXT, " +
+                ContractParaProductos.Columnas.UBICACION + " DOUBLE, " +
+                ContractParaProductos.Columnas.VENDEDOR + " TEXT, " +
                 ContractParaProductos.Columnas.ID_REMOTA + " TEXT," +
                 ContractParaProductos.Columnas.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContractParaProductos.ESTADO_OK+"," +
                 ContractParaProductos.Columnas.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)";
@@ -105,7 +109,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + ContractParaProductos.INVENTARIO);
         db.execSQL("drop table if exists " + ContractParaProductos.PRODUCTO);
         db.execSQL("drop table if exists " + ContractParaProductos.CARRITO);
-        //db.execSQL("drop table if exists " + ContractParaProductos.ESTADOS);
         productos(db);
     }
 
