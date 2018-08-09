@@ -96,7 +96,7 @@ public class Utilidades {
                 jObject.put(ContractParaProductos.Columnas.ID_CARRITO, idcarrito);
                 jObject.put(ContractParaProductos.Columnas.ID_INVENTARIO, idinventario);
                 jObject.put(ContractParaProductos.Columnas.FECHA, fecha);
-                    jObject.put(ContractParaProductos.Columnas.UBICACION, ubicacion);
+                jObject.put(ContractParaProductos.Columnas.UBICACION, ubicacion);
                 jObject.put(ContractParaProductos.Columnas.VENDEDOR, vendedor);
 
             } catch (JSONException e) {

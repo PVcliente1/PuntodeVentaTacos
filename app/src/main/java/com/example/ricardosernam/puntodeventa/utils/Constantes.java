@@ -26,7 +26,7 @@ public class Constantes {
 
     public static String INSERT_URL_VENTA_DETALLE;
 
-    private static final String PUERTO_HOST = ":82";
+    private static final String PUERTO_HOST = "";
 
     public Constantes(String ip){
         GET_URL_CARRITO = ip + PUERTO_HOST + "/Servicios%20Web/carritos/obtener_carritos.php";

@@ -1293,8 +1293,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String estado = response.getString(Constantes.ESTADO);
                 // Obtener mensaje
                 String mensaje = response.getString(Constantes.MENSAJE);
+
+                Log.i(TAG, mensaje);
+
                 // Obtener identificador del nuevo registro creado en el servidor
                 String idRemota = response.getString(Constantes.ID_VENTA);
+
 
                 ///creacion de venta_detalles
                 Log.i(TAG, "Conteo "+conteo);
